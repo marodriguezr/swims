@@ -6,14 +6,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.sonatype.mavenbook.multi</groupId>
-		<artifactId>simple-parent</artifactId>
+		<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+		<artifactId>swims</artifactId>
 		<version>1.0</version>
 	</parent>
 
-	<artifactId>ejb-module</artifactId>
+	<artifactId>swimsEJB</artifactId>
 	<packaging>ejb</packaging>
-	<name>ejb-module</name>
+	<name>swims Enterprise Java Bean</name>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api -->

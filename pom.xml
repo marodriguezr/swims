@@ -4,16 +4,16 @@
                          http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.sonatype.mavenbook.multi</groupId>
-	<artifactId>simple-parent</artifactId>
+	<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+	<artifactId>swims</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0</version>
-	<name>Multi Chapter Simple Parent Project</name>
+	<name>Software Impact Measurement System</name>
 
 	<modules>
-		<module>ear-module</module>
-		<module>ejb-module</module>
-		<module>war-module</module>
+		<module>swimsEAP</module>
+		<module>swimsEJB</module>
+		<module>swimsWeb</module>
 	</modules>
 
 	<distributionManagement>
@@ -31,14 +31,14 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.sonatype.mavenbook.multi</groupId>
-				<artifactId>ejb-module</artifactId>
+				<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+				<artifactId>swimsEJB</artifactId>
 				<version>1.0</version>
 				<type>ejb</type>
 			</dependency>
 			<dependency>
-				<groupId>org.sonatype.mavenbook.multi</groupId>
-				<artifactId>war-module</artifactId>
+				<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+				<artifactId>swimsWeb</artifactId>
 				<version>1.0</version>
 				<type>war</type>
 			</dependency>

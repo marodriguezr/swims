@@ -5,14 +5,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.sonatype.mavenbook.multi</groupId>
-		<artifactId>simple-parent</artifactId>
+		<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+		<artifactId>swims</artifactId>
 		<version>1.0</version>
 	</parent>
 
-	<artifactId>war-module</artifactId>
+	<artifactId>swimsWeb</artifactId>
 	<packaging>war</packaging>
-	<name>war-module</name>
+	<name>swims Web</name>
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
@@ -48,8 +48,8 @@
 		</dependency>
 		
 		<dependency>
-            <groupId>org.sonatype.mavenbook.multi</groupId>
-            <artifactId>ejb-module</artifactId>
+            <groupId>utn.edu.ec.marodriguezr.swims</groupId>
+            <artifactId>swimsEJB</artifactId>
             <version>1.0</version>
         </dependency>
 	</dependencies>

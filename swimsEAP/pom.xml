@@ -4,24 +4,24 @@
                          http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.sonatype.mavenbook.multi</groupId>
-		<artifactId>simple-parent</artifactId>
+		<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+		<artifactId>swims</artifactId>
 		<version>1.0</version>
 	</parent>
 
-	<artifactId>ear-module</artifactId>
+	<artifactId>swimsEAP</artifactId>
 	<packaging>ear</packaging>
-	<name>ear-module</name>
+	<name>swims Enterprise Application Project</name>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.sonatype.mavenbook.multi</groupId>
-			<artifactId>ejb-module</artifactId>
+			<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+			<artifactId>swimsEJB</artifactId>
 			<type>ejb</type>
 		</dependency>
 		<dependency>
-			<groupId>org.sonatype.mavenbook.multi</groupId>
-			<artifactId>war-module</artifactId>
+			<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+			<artifactId>swimsWeb</artifactId>
 			<type>war</type>
 		</dependency>
 	</dependencies>
@@ -38,15 +38,15 @@
 					</archive>
 					<modules>
 						<ejbModule>
-							<groupId>org.sonatype.mavenbook.multi</groupId>
-							<artifactId>ejb-module</artifactId>
-							<bundleFileName>ejb-module-1.0.jar</bundleFileName>
+							<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+							<artifactId>swimsEJB</artifactId>
+							<bundleFileName>swimsEJB-1.0.jar</bundleFileName>
 						</ejbModule>
 						<webModule>
-							<groupId>org.sonatype.mavenbook.multi</groupId>
-							<artifactId>war-module</artifactId>
-							<contextRoot>/jear_boilerplate</contextRoot>
-							<bundleFileName>war-module-1.0.war</bundleFileName>
+							<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+							<artifactId>swimsWeb</artifactId>
+							<contextRoot>/swims</contextRoot>
+							<bundleFileName>swimsWeb-1.0.war</bundleFileName>
 						</webModule>
 					</modules>
 				</configuration>
