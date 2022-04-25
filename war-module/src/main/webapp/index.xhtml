@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>index</title>
+</h:head>
+<h:body>
+	<p:panel header="create">
+		<h:form>
+			<p:panelGrid columns="2">
+				<h:outputText value="id" />
+				<p:inputText value="#{helloworld.id}"></p:inputText>
+
+				<h:outputText value="nombre" />
+				<p:inputText value="#{helloworld.name}"></p:inputText>
+			</p:panelGrid>
+			<p:commandButton value="Send"
+				actionListener="#{helloworld.actionListener()}"></p:commandButton>
+		</h:form>
+	</p:panel>
+</h:body>
+</html>
