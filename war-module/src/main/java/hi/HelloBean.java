@@ -35,7 +35,7 @@ public String getMessage() {
 	}
 	
 	public void actionListener() {
-		hm.add(0, "miguel");
+		hm.add(id, name);
 	}
 
 	public int getId() {
