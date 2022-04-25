@@ -41,7 +41,7 @@ Eg:
 	<bundleFileName>new-war-module-1.0.war</bundleFileName>
 </webModule>
 ```
-
+	
 ## Made possible by 
 1. [Maven J2EE Archetype](https://pastebin.com/raw/TLTFh9aW)
 2. [How to build an EAR project with EJB and WAR using Maven?](https://stackoverflow.com/questions/32990664/how-to-build-an-ear-project-with-ejb-and-war-using-maven)
