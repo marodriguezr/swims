@@ -41,8 +41,31 @@ Eg:
 	<bundleFileName>new-war-module-1.0.war</bundleFileName>
 </webModule>
 ```
+
+## Available commands  
+1. Package:  
+```bash
+mvn package
+```
+2. Deploy to wildfly server:
+	1. Start an instance of wildfly.
+	2. Change directory to ear-module
+	3. Execute:
+	```bash
+	mvn clean install && mvn wildfly:deploy
+	```
+3. Get help of wildfly plugin:
+	1. Under the ear-module directory execute:
+	```bash
+	mvn wildfly:help
+	```
+4. Redeploy to widlfly server:
+	1. Under the ear-module directory execute:  
+	```bash
+	mvn wildfly:redeploy
+	```
 	
-## Made possible by 
+## Msade possible by 
 1. [Maven J2EE Archetype](https://pastebin.com/raw/TLTFh9aW)
 2. [How to build an EAR project with EJB and WAR using Maven?](https://stackoverflow.com/questions/32990664/how-to-build-an-ear-project-with-ejb-and-war-using-maven)
 3. [Apache Maven EAR Plugin Documentation](https://maven.apache.org/plugins/maven-ear-plugin/index.html)
