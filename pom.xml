@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                          http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -42,18 +40,12 @@
 				<version>1.0</version>
 				<type>war</type>
 			</dependency>
-			<!-- https://mvnrepository.com/artifact/org.wildfly.plugins/wildfly-maven-plugin -->
-			<dependency>
-				<groupId>org.wildfly.plugins</groupId>
-				<artifactId>wildfly-maven-plugin</artifactId>
-				<version>3.0.0.Final</version>
-				<type>maven-plugin</type>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
-		<pluginManagement><!-- lock down plugins versions to avoid using Maven 
+		<pluginManagement>
+			<!-- lock down plugins versions to avoid using Maven 
 				defaults (may be moved to parent pom) -->
 			<plugins>
 				<plugin>
@@ -100,6 +92,11 @@
 				<plugin>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>3.0.0</version>
+				</plugin>
+				<plugin>
+					<groupId>org.wildfly.plugins</groupId>
+					<artifactId>wildfly-maven-plugin</artifactId>
+					<version>3.0.0.Final</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
