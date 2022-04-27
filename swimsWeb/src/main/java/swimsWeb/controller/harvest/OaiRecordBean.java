@@ -1,7 +1,7 @@
 /**
  * 
  */
-package swimsWeb.controller.harvesting;
+package swimsWeb.controller.harvest;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -9,8 +9,11 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.xml.parsers.ParserConfigurationException;
 
-import swimsEJB.model.harvesting.managers.OaiRecordManager;
+import org.xml.sax.SAXException;
+
+import swimsEJB.model.harvest.managers.OaiRecordManager;
 
 
 @Named("oaiRecordBean")
@@ -47,6 +50,12 @@ public class OaiRecordBean implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
