@@ -5,13 +5,11 @@ package swimsWeb.controller.harvest;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.ParseException;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import swimsEJB.model.harvest.managers.OaiRecordManager;
 
@@ -43,7 +41,7 @@ public class OaiRecordBean implements Serializable {
 		return "HiMom";
 	}
 	
-	public void actionListener() {
+	public void findAllRecordsactionListener() {
 		try {
 			this.oaiRecordManager.findAllCISICOaiRecords();
 		} catch (IOException e) {
@@ -52,10 +50,7 @@ public class OaiRecordBean implements Serializable {
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
