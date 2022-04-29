@@ -29,15 +29,15 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>swimsEJB</artifactId>
-				<version>1.0</version>
+				<version>${project.version}</version>
 				<type>ejb</type>
 			</dependency>
 			<dependency>
-				<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+				<groupId>${project.groupId}</groupId>
 				<artifactId>swimsWeb</artifactId>
-				<version>1.0</version>
+				<version>${project.version}</version>
 				<type>war</type>
 			</dependency>
 		</dependencies>
@@ -97,6 +97,9 @@
 					<groupId>org.wildfly.plugins</groupId>
 					<artifactId>wildfly-maven-plugin</artifactId>
 					<version>3.0.0.Final</version>
+					<configuration>
+						<skip>true</skip>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>

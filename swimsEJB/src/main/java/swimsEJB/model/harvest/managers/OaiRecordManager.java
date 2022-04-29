@@ -11,11 +11,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
-
+import swimsEJB.model.core.entities.Test;
 import swimsEJB.model.harvest.dtos.OaiRecordDto;
 import swimsEJB.utilities.StringHelpers;
 
@@ -26,6 +29,9 @@ import swimsEJB.utilities.StringHelpers;
 @LocalBean
 public class OaiRecordManager {
 
+	@PersistenceContext
+	private EntityManager entityManager;
+	
 	/**
 	 * Default constructor.
 	 */
@@ -33,8 +39,7 @@ public class OaiRecordManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LinkedList<OaiRecordDto> findAllCISICOaiRecords()
-			throws ParseException, IOException, InterruptedException {
+	public LinkedList<OaiRecordDto> findAllCISICOaiRecords() throws ParseException, IOException, InterruptedException {
 
 		HttpClient httpClient = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(
@@ -76,7 +81,7 @@ public class OaiRecordManager {
 
 		String DC_FORMAT_OT = "<dc:format>";
 		String DC_FORMAT_CT = "</dc:format>";
-		
+
 		String DC_IDENTIFIER_OT = "<dc:identifier>";
 		String DC_IDENTIFIER_CT = "</dc:identifier>";
 
@@ -127,7 +132,7 @@ public class OaiRecordManager {
 			oaiRecordDto.setRelations(extractStringBetweenManyXMLTags(oaiDc, DC_RELATION_OT, DC_RELATION_CT));
 			oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc, DC_COVERAGE_OT, DC_COVERAGE_CT));
 			oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc, DC_RIGHTS_OT, DC_RIGHTS_CT));
-						
+
 			oaiRecordDtos.add(oaiRecordDto);
 		}
 
@@ -160,11 +165,12 @@ public class OaiRecordManager {
 
 		return list;
 	}
-	
-	public LinkedList<Date> extractDateBetweenManyXMLTags(String oaiDc, String openingTag, String closingTag) throws ParseException {
+
+	public LinkedList<Date> extractDateBetweenManyXMLTags(String oaiDc, String openingTag, String closingTag)
+			throws ParseException {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		int indexOfOT;
 		int indexOfCT;
 
@@ -176,7 +182,7 @@ public class OaiRecordManager {
 
 			if (indexOfOT == -1 || indexOfCT == -1)
 				break;
-			
+
 			try {
 				list.add(df.parse(oaiDc.substring(indexOfOT + openingTag.length(), indexOfCT)));
 			} catch (Exception e) {
@@ -185,13 +191,17 @@ public class OaiRecordManager {
 				} catch (Exception e2) {
 					// TODO: handle exception
 				}
-			}			
+			}
 			oaiDc = StringHelpers.removeSubstring(oaiDc, 0, oaiDc.indexOf(closingTag) + closingTag.length());
 		}
 
 		return list;
 	}
 
+	public List<Test> findAllTest() {
+		return entityManager.createNamedQuery("Test.findAll", Test.class).getResultList();
+	}
+	
 	/*
 	 * public void bd(String oaiDc, String openingTag, String closingTag) { int
 	 * indexOfOT; int indexOfCT; while (true) { indexOfOT =

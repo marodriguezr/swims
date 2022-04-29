@@ -13,18 +13,19 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>swimsEJB</artifactId>
 			<type>ejb</type>
 		</dependency>
 		<dependency>
-			<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>swimsWeb</artifactId>
 			<type>war</type>
 		</dependency>
 	</dependencies>
 
 	<build>
+		<finalName>${project.parent.artifactId}-${project.version}</finalName>
 		<plugins>
 			<plugin>
 				<artifactId>maven-ear-plugin</artifactId>
@@ -36,17 +37,24 @@
 					</archive>
 					<modules>
 						<ejbModule>
-							<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+							<groupId>${project.groupId}</groupId>
 							<artifactId>swimsEJB</artifactId>
-							<bundleFileName>swimsEJB-1.0.jar</bundleFileName>
+							<bundleFileName>swimsEJB-${project.version}.jar</bundleFileName>
 						</ejbModule>
 						<webModule>
-							<groupId>utn.edu.ec.marodriguezr.swims</groupId>
+							<groupId>${project.groupId}</groupId>
 							<artifactId>swimsWeb</artifactId>
 							<contextRoot>/swims</contextRoot>
-							<bundleFileName>swimsWeb-1.0.war</bundleFileName>
+							<bundleFileName>swimsWeb-${project.version}.war</bundleFileName>
 						</webModule>
 					</modules>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.wildfly.plugins</groupId>
+				<artifactId>wildfly-maven-plugin</artifactId>
+				<configuration>
+					<skip>false</skip>
 				</configuration>
 			</plugin>
 		</plugins>

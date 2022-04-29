@@ -114,3 +114,6 @@
 
 # Maven
 **log/
+
+# vscode
+.vscode/

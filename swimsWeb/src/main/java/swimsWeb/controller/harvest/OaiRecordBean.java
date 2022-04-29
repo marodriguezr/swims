@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -35,6 +36,11 @@ public class OaiRecordBean implements Serializable {
 	 */
 	public OaiRecordBean() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	@PostConstruct
+	public void onInit() {
+		oaiRecordManager.findAllTest();
 	}
 
 	public String getMessage() {
