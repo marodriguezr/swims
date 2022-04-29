@@ -5,30 +5,30 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the test database table.
+ * The persistent class for the oai_sets database table.
  * 
  */
 @Entity
-@Table(name="test")
-@NamedQuery(name="Test.findAll", query="SELECT t FROM Test t")
-public class Test implements Serializable {
+@Table(name="oai_sets")
+@NamedQuery(name="OaiSet.findAll", query="SELECT o FROM OaiSet o")
+public class OaiSet implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false)
-	private Integer id;
+	@Column(unique=true, nullable=false, length=2147483647)
+	private String id;
 
 	@Column(nullable=false, length=2147483647)
 	private String name;
 
-	public Test() {
+	public OaiSet() {
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

@@ -11,14 +11,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import swimsEJB.model.core.entities.Test;
 import swimsEJB.model.harvest.dtos.OaiRecordDto;
 import swimsEJB.utilities.StringHelpers;
 
@@ -37,6 +35,15 @@ public class OaiRecordManager {
 	 */
 	public OaiRecordManager() {
 		// TODO Auto-generated constructor stub
+	}
+	
+	public LinkedList<OaiRecordDto> xmlStringToOaiRecordDtos() {
+		return null;
+	}
+	
+	public String findAllOaiRecords() {
+		String OAI_URI = "http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&metadataPrefix=oai_dc&from=2011-01-01&until=2021-01-01&set=col_123456789_40";
+		return "";
 	}
 
 	public LinkedList<OaiRecordDto> findAllCISICOaiRecords() throws ParseException, IOException, InterruptedException {
@@ -198,9 +205,10 @@ public class OaiRecordManager {
 		return list;
 	}
 
-	public List<Test> findAllTest() {
-		return entityManager.createNamedQuery("Test.findAll", Test.class).getResultList();
-	}
+	/*
+	 * public List<Test> findAllTest() { return
+	 * entityManager.createNamedQuery("Test.findAll", Test.class).getResultList(); }
+	 */
 	
 	/*
 	 * public void bd(String oaiDc, String openingTag, String closingTag) { int

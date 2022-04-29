@@ -40,7 +40,7 @@ public class OaiRecordBean implements Serializable {
 	
 	@PostConstruct
 	public void onInit() {
-		oaiRecordManager.findAllTest();
+		// oaiRecordManager.findAllTest();
 	}
 
 	public String getMessage() {
