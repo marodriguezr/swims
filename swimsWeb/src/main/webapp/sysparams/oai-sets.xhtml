@@ -17,7 +17,7 @@
 		<h:form>
 			<p:menubar>
 				<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
-					action="/?faces-redirect=true"></p:menuitem>
+					action="/index?faces-redirect=true"></p:menuitem>
 				<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog">
 					<p:menuitem value="Sets OAI"
 						action="/sysparams/oai-sets?faces-redirect=true">
@@ -32,33 +32,33 @@
 	</div>
 
 	<div class="p-pt-2">
-		<p:card>
-			<f:facet name="title">
+		<h:form>
+			<p:card>
+				<f:facet name="title">
 			Sets OAI
 			</f:facet>
-			<h:form>
+
 				<div class="ui-fluid">
 					<div class="p-field">
 						<p:outputLabel for="name">Nombre</p:outputLabel>
-						<p:inputText id="name" required="true" />
+						<p:inputText value="#{oaiSetBean.name}" id="name" required="true" />
 					</div>
 					<div class="p-field">
 						<p:outputLabel for="identifier">Identificador</p:outputLabel>
-						<p:inputText id="identifier" required="true" />
+						<p:inputText id="identifier" value="#{oaiSetBean.identifier}"
+							required="true" />
 					</div>
 				</div>
-			</h:form>
-			<f:facet name="footer">
-				<h:form>
-					<p:commandButton icon="pi pi-save" value="Guardar" />
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-save" update="@form" value="Guardar"
+						actionListener="#{oaiSetBean.createOneOaiSetActionListener()}" />
 
 					<p:commandButton oncomplete="PF('oaiSetsHelpDialog').show()"
 						icon="pi pi-question" value="Ayuda"
 						styleClass="p-ml-2 ui-button-secondary" />
-
-				</h:form>
-			</f:facet>
-		</p:card>
+				</f:facet>
+			</p:card>
+		</h:form>
 	</div>
 
 	<p:dialog header="Ayuda" showEffect="fade" modal="true"
@@ -68,7 +68,7 @@
 				href="http://repositorio.utn.edu.ec/oai/request?verb=ListSets">http://repositorio.utn.edu.ec/oai/request?verb=ListSets</a>
 			para conocer los identificadores y nombres de los sets puestos a
 			disposición por la Universidad Técnica del Norte.
-		</p>		
+		</p>
 	</p:dialog>
 </h:body>
 </html>

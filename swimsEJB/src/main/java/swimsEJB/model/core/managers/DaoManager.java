@@ -171,6 +171,15 @@ public class DaoManager {
 		return listado;
 	}
 
+	@SuppressWarnings("rawtypes")
+	public Object findOneWhere(Class class1, String whereClause) {
+		Query query;
+		String jpqlStatement;
+		jpqlStatement = "SELECT o FROM " + class1.getSimpleName() + " o WHERE " + whereClause;
+		query = em.createQuery(jpqlStatement);
+		return query.getSingleResult();
+	}
+
 	/**
 	 * Almacena un objeto (persistencia).
 	 *

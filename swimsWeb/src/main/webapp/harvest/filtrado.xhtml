@@ -6,9 +6,8 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title>Inicio</title>
+	<title>Filtrado de registros</title>
 	<h:outputStylesheet name="/css/primeflex.min.css" />
-
 </h:head>
 <h:body>
 	<p:growl>
@@ -32,6 +31,43 @@
 				</f:facet>
 			</p:menubar>
 		</h:form>
+
+		<div class="p-pt-2">
+			<h:form>
+				<p:card>
+					<f:facet name="title">
+			Selección de trabajos de titulación
+			</f:facet>
+					<p:steps activeIndex="2">
+						<p:menuitem value="Origen" />
+						<p:menuitem value="Fecha"
+							action="#{oaiRecordBean.forwardToDateSelection()}" />
+						<p:menuitem value="Filtrado" />
+						<p:menuitem value="Confirmación" />
+					</p:steps>
+					<div class="p-pt-4">
+						<div class="ui-fluid">
+							<p:dataTable value="#{oaiRecordBean.oaiRecordDtos}"
+								var="oaiRecordDto">
+								<p:column headerText="Titulo">
+									<h:outputText value="#{oaiRecordDto.titles.get(0)}" />
+								</p:column>
+							</p:dataTable>
+						</div>
+					</div>
+					<f:facet name="footer">
+						<p:commandButton icon="pi pi-fw pi-angle-double-left"
+							value="Regresar" styleClass="ui-button-secondary"
+							action="/harvest/fecha?faces-redirect=true" />
+
+						<p:commandButton styleClass="p-ml-2"
+							icon="pi pi-fw pi-angle-double-right" value="Avanzar" />
+
+					</f:facet>
+				</p:card>
+			</h:form>
+		</div>
+
 	</div>
 </h:body>
 </html>

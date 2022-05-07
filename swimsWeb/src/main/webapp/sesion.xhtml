@@ -6,9 +6,8 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title>Inicio</title>
+	<title>Inicio de sesión</title>
 	<h:outputStylesheet name="/css/primeflex.min.css" />
-
 </h:head>
 <h:body>
 	<p:growl>
@@ -19,8 +18,6 @@
 			<p:menubar>
 				<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
 					action="/index?faces-redirect=true"></p:menuitem>
-				<p:menuitem icon="pi pi-fw pi-sign-in" value="Iniciar sesión"
-					action="sesion?faces-redirect=true"></p:menuitem>
 				<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog">
 					<p:menuitem value="Sets OAI"
 						action="/sysparams/oai-sets?faces-redirect=true">
@@ -32,6 +29,33 @@
 				</f:facet>
 			</p:menubar>
 		</h:form>
+
+		<div class="p-pt-2">
+			<h:form>
+				<p:card>
+					<f:facet name="title">
+			Inicio de sesión
+			</f:facet>
+
+					<div class="ui-fluid">
+						<div class="p-field">
+							<p:outputLabel for="email">Correo electrónico</p:outputLabel>
+							<p:inputText value="#{oaiSetBean.name}" id="email"
+								required="true" />
+						</div>
+						<div class="p-field">
+							<p:outputLabel for="password">Contraseña</p:outputLabel>
+							<p:inputText id="password" value="#{oaiSetBean.identifier}"
+								required="true" />
+						</div>
+					</div>
+					<f:facet name="footer">
+						<p:commandButton icon="pi pi-sign-in" value="Iniciar sesión"
+							actionListener="#{oaiSetBean.createOneOaiSetActionListener()}" />
+					</f:facet>
+				</p:card>
+			</h:form>
+		</div>
 	</div>
 </h:body>
 </html>

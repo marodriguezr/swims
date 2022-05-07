@@ -23,6 +23,10 @@
 	</distributionManagement>
 
 	<properties>
+		<!-- https://stackoverflow.com/questions/38882080/specifying-java-version-in-maven-differences-between-properties-and-compiler-p -->
+		<maven.compiler.release>11</maven.compiler.release>
+		<!-- <maven.compiler.target>11</maven.compiler.target>
+    	<maven.compiler.source>11</maven.compiler.source> -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
