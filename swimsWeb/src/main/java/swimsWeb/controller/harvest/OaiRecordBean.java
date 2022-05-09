@@ -76,8 +76,7 @@ public class OaiRecordBean implements Serializable {
 			return "/harvest/origen?faces-redirect=true";
 		}
 		if (from == null || until == null) {
-			JSFMessages.WARN(
-					"Debe seleccionar fechas entre las cuales se extraerán los datos.");
+			JSFMessages.WARN("Debe seleccionar fechas entre las cuales se extraerán los datos.");
 			return "";
 		}
 		if (until.compareTo(LocalDate.now()) > 0) {
@@ -86,21 +85,19 @@ public class OaiRecordBean implements Serializable {
 			return "";
 		}
 		if (from.compareTo(until) >= 0) {
-			JSFMessages.WARN(
-					"Debe seleccionar fechas apropiadas. La fecha de inicio debe ser menor a la fecha de fin.");
+			JSFMessages
+					.WARN("Debe seleccionar fechas apropiadas. La fecha de inicio debe ser menor a la fecha de fin.");
 			return "";
 		}
 		try {
 			this.oaiRecordDtos = oaiRecordManager
-					.parseStringToOaiRecordDtos2(oaiRecordManager
-							.findManyOaiRecords2(oaiSetId, from, until));
+					.parseStringToOaiRecordDtos2(oaiRecordManager.findManyOaiRecords2(oaiSetId, from, until));
 			System.out.println(oaiRecordDtos.size());
 			return "/harvest/filtrado?faces-redirect=true";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			JSFMessages.ERROR(
-					"Ha ocurrido un error en la adquisición de registros OAI.");
+			JSFMessages.ERROR("Ha ocurrido un error en la adquisición de registros OAI.");
 			return "";
 		}
 	}

@@ -46,45 +46,33 @@ public class OaiRecordManager {
 	 * @return A XML string with many OAI Records
 	 * @throws Exception In case of being unable to perform the request.
 	 */
-	public String findManyOaiRecords(String oaiSetIdentifier, LocalDate from,
-			LocalDate until) throws Exception {
+	public String findManyOaiRecords(String oaiSetIdentifier, LocalDate from, LocalDate until) throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
 		String OAI_URI = MessageFormat.format(
 				"http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&metadataPrefix=oai_dc&from={1}&until={2}&set={0}",
-				oaiSetIdentifier,
-				dateFormat.format(Date.from(
-						from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
-				dateFormat.format(Date.from(until
-						.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+				oaiSetIdentifier, dateFormat.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
+				dateFormat.format(Date.from(until.atStartOfDay(ZoneId.systemDefault()).toInstant())));
 		HttpClient httpClient = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI))
-				.build();
+		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI)).build();
 		try {
-			HttpResponse<String> response = httpClient.send(request,
-					BodyHandlers.ofString());
+			HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
 			return response.body();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new Exception(
-					"Ha ocurrido un error en la adquisición de recursos externos.");
+			throw new Exception("Ha ocurrido un error en la adquisición de recursos externos.");
 		}
 
 	}
 
-	public List<String> findManyOaiRecords2(String oaiSetIdentifier,
-			LocalDate from, LocalDate until) throws Exception {
+	public List<String> findManyOaiRecords2(String oaiSetIdentifier, LocalDate from, LocalDate until) throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
 		String OAI_URI = MessageFormat.format(
 				"http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&metadataPrefix=oai_dc&from={1}&until={2}&set={0}",
-				oaiSetIdentifier,
-				dateFormat.format(Date.from(
-						from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
-				dateFormat.format(Date.from(until
-						.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+				oaiSetIdentifier, dateFormat.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
+				dateFormat.format(Date.from(until.atStartOfDay(ZoneId.systemDefault()).toInstant())));
 		HttpClient httpClient = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI))
-				.build();
+		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI)).build();
 
 		List<String> oaiRecords = new ArrayList<String>();
 
@@ -95,14 +83,16 @@ public class OaiRecordManager {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new Exception(
-					"Ha ocurrido un error en la adquisición de recursos externos.");
+			throw new Exception("Ha ocurrido un error en la adquisición de recursos externos.");
 		}
 		while (response.body().indexOf("</resumptionToken>") != -1) {
-			request = HttpRequest.newBuilder().uri(URI.create(
-					"http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&resumptionToken="
-							+ StringUtils.substringBetween(">",
-									"</resumptionToken>")))
+			request = HttpRequest.newBuilder()
+					.uri(URI.create(
+							"http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&resumptionToken="
+									+ StringUtils.substringBetween(
+											StringHelpers.removeSubstring(response.body(), 0,
+													response.body().indexOf("<resumptionToken")),
+											">", "</resumptionToken>")))
 					.build();
 			try {
 				response = httpClient.send(request, BodyHandlers.ofString());
@@ -110,15 +100,13 @@ public class OaiRecordManager {
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				throw new Exception(
-						"Ha ocurrido un error en la adquisición de recursos externos.");
+				throw new Exception("Ha ocurrido un error en la adquisición de recursos externos.");
 			}
 		}
 		return oaiRecords;
 	}
 
-	public ArrayList<OaiRecordDto> parseStringToOaiRecordDtos2(
-			List<String> oaiRecords) throws Exception {
+	public ArrayList<OaiRecordDto> parseStringToOaiRecordDtos2(List<String> oaiRecords) throws Exception {
 		String LIST_RECORDS_OT = "<ListRecords>";
 		String LIST_RECORDS_CT = "</ListRecords>";
 
@@ -178,9 +166,7 @@ public class OaiRecordManager {
 		String listRecords;
 
 		for (String oaiRecord : oaiRecords) {
-			listRecords = oaiRecord.substring(
-					oaiRecord.indexOf(LIST_RECORDS_OT)
-							+ LIST_RECORDS_OT.length(),
+			listRecords = oaiRecord.substring(oaiRecord.indexOf(LIST_RECORDS_OT) + LIST_RECORDS_OT.length(),
 					oaiRecord.indexOf(LIST_RECORDS_CT));
 
 			while (true) {
@@ -189,50 +175,33 @@ public class OaiRecordManager {
 
 				if (indexOfOAI_DC_OT == -1 || indexOfOAI_DC_CT == -1)
 					break;
-				oaiDc = listRecords.substring(
-						indexOfOAI_DC_OT + OAI_DC_OT.length(),
-						indexOfOAI_DC_CT);
-				listRecords = StringHelpers.removeSubstring(listRecords, 0,
-						indexOfOAI_DC_CT + OAI_DC_CT.length());
+				oaiDc = listRecords.substring(indexOfOAI_DC_OT + OAI_DC_OT.length(), indexOfOAI_DC_CT);
+				listRecords = StringHelpers.removeSubstring(listRecords, 0, indexOfOAI_DC_CT + OAI_DC_CT.length());
 				oaiRecordDto = new OaiRecordDto();
 
-				oaiRecordDto.setTitles(extractStringBetweenManyXMLTags(oaiDc,
-						DC_TITLE_OT, DC_TITLE_CT));
-				oaiRecordDto.setCreators(extractStringBetweenManyXMLTags(oaiDc,
-						DC_CREATOR_OT, DC_CREATOR_CT));
-				oaiRecordDto.setSubjects(extractStringBetweenManyXMLTags(oaiDc,
-						DC_SUBJECT_OT, DC_SUBJECT_CT));
-				oaiRecordDto.setDescriptions(extractStringBetweenManyXMLTags(
-						oaiDc, DC_DESCRIPTION_OT, DC_DESCRIPTION_CT));
-				oaiRecordDto.setPublishers(extractStringBetweenManyXMLTags(
-						oaiDc, DC_PUBLISHER_OT, DC_PUBLISHER_CT));
-				oaiRecordDto.setContributors(extractStringBetweenManyXMLTags(
-						oaiDc, DC_CONTRIBUTOR_OT, DC_CONTRIBUTOR_CT));
+				oaiRecordDto.setTitles(extractStringBetweenManyXMLTags(oaiDc, DC_TITLE_OT, DC_TITLE_CT));
+				oaiRecordDto.setCreators(extractStringBetweenManyXMLTags(oaiDc, DC_CREATOR_OT, DC_CREATOR_CT));
+				oaiRecordDto.setSubjects(extractStringBetweenManyXMLTags(oaiDc, DC_SUBJECT_OT, DC_SUBJECT_CT));
+				oaiRecordDto
+						.setDescriptions(extractStringBetweenManyXMLTags(oaiDc, DC_DESCRIPTION_OT, DC_DESCRIPTION_CT));
+				oaiRecordDto.setPublishers(extractStringBetweenManyXMLTags(oaiDc, DC_PUBLISHER_OT, DC_PUBLISHER_CT));
+				oaiRecordDto
+						.setContributors(extractStringBetweenManyXMLTags(oaiDc, DC_CONTRIBUTOR_OT, DC_CONTRIBUTOR_CT));
 				try {
-					oaiRecordDto.setDates(extractDateBetweenManyXMLTags(oaiDc,
-							DC_DATE_OT, DC_DATE_CT));
+					oaiRecordDto.setDates(extractDateBetweenManyXMLTags(oaiDc, DC_DATE_OT, DC_DATE_CT));
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					throw new Exception(
-							"A ocurrido un error en la conversión de registros OAI.");
+					throw new Exception("A ocurrido un error en la conversión de registros OAI.");
 				}
-				oaiRecordDto.setTypes(extractStringBetweenManyXMLTags(oaiDc,
-						DC_TYPE_OT, DC_TYPE_CT));
-				oaiRecordDto.setFormats(extractStringBetweenManyXMLTags(oaiDc,
-						DC_FORMAT_OT, DC_FORMAT_CT));
-				oaiRecordDto.setIdentifiers(extractStringBetweenManyXMLTags(
-						oaiDc, DC_IDENTIFIER_OT, DC_IDENTIFIER_CT));
-				oaiRecordDto.setSources(extractStringBetweenManyXMLTags(oaiDc,
-						DC_SOURCE_OT, DC_SOURCE_CT));
-				oaiRecordDto.setLanguages(extractStringBetweenManyXMLTags(oaiDc,
-						DC_LANGUAGE_OT, DC_LANGUAGE_CT));
-				oaiRecordDto.setRelations(extractStringBetweenManyXMLTags(oaiDc,
-						DC_RELATION_OT, DC_RELATION_CT));
-				oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc,
-						DC_COVERAGE_OT, DC_COVERAGE_CT));
-				oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc,
-						DC_RIGHTS_OT, DC_RIGHTS_CT));
+				oaiRecordDto.setTypes(extractStringBetweenManyXMLTags(oaiDc, DC_TYPE_OT, DC_TYPE_CT));
+				oaiRecordDto.setFormats(extractStringBetweenManyXMLTags(oaiDc, DC_FORMAT_OT, DC_FORMAT_CT));
+				oaiRecordDto.setIdentifiers(extractStringBetweenManyXMLTags(oaiDc, DC_IDENTIFIER_OT, DC_IDENTIFIER_CT));
+				oaiRecordDto.setSources(extractStringBetweenManyXMLTags(oaiDc, DC_SOURCE_OT, DC_SOURCE_CT));
+				oaiRecordDto.setLanguages(extractStringBetweenManyXMLTags(oaiDc, DC_LANGUAGE_OT, DC_LANGUAGE_CT));
+				oaiRecordDto.setRelations(extractStringBetweenManyXMLTags(oaiDc, DC_RELATION_OT, DC_RELATION_CT));
+				oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc, DC_COVERAGE_OT, DC_COVERAGE_CT));
+				oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc, DC_RIGHTS_OT, DC_RIGHTS_CT));
 				oaiRecordDtos.add(oaiRecordDto);
 			}
 		}
@@ -240,8 +209,7 @@ public class OaiRecordManager {
 		return oaiRecordDtos;
 	}
 
-	public ArrayList<OaiRecordDto> parseStringToOaiRecordDtos(String oaiRecord)
-			throws Exception {
+	public ArrayList<OaiRecordDto> parseStringToOaiRecordDtos(String oaiRecord) throws Exception {
 		String LIST_RECORDS_OT = "<ListRecords>";
 		String LIST_RECORDS_CT = "</ListRecords>";
 
@@ -295,8 +263,7 @@ public class OaiRecordManager {
 		String DC_RIGHTS_OT = "<dc:rights>";
 		String DC_RIGHTS_CT = "</dc:rights>";
 
-		String listRecords = oaiRecord.substring(
-				oaiRecord.indexOf(LIST_RECORDS_OT) + LIST_RECORDS_OT.length(),
+		String listRecords = oaiRecord.substring(oaiRecord.indexOf(LIST_RECORDS_OT) + LIST_RECORDS_OT.length(),
 				oaiRecord.indexOf(LIST_RECORDS_CT));
 		String oaiDc;
 		OaiRecordDto oaiRecordDto;
@@ -308,56 +275,37 @@ public class OaiRecordManager {
 
 			if (indexOfOAI_DC_OT == -1 || indexOfOAI_DC_CT == -1)
 				break;
-			oaiDc = listRecords.substring(indexOfOAI_DC_OT + OAI_DC_OT.length(),
-					indexOfOAI_DC_CT);
-			listRecords = StringHelpers.removeSubstring(listRecords, 0,
-					indexOfOAI_DC_CT + OAI_DC_CT.length());
+			oaiDc = listRecords.substring(indexOfOAI_DC_OT + OAI_DC_OT.length(), indexOfOAI_DC_CT);
+			listRecords = StringHelpers.removeSubstring(listRecords, 0, indexOfOAI_DC_CT + OAI_DC_CT.length());
 			oaiRecordDto = new OaiRecordDto();
 
-			oaiRecordDto.setTitles(extractStringBetweenManyXMLTags(oaiDc,
-					DC_TITLE_OT, DC_TITLE_CT));
-			oaiRecordDto.setCreators(extractStringBetweenManyXMLTags(oaiDc,
-					DC_CREATOR_OT, DC_CREATOR_CT));
-			oaiRecordDto.setSubjects(extractStringBetweenManyXMLTags(oaiDc,
-					DC_SUBJECT_OT, DC_SUBJECT_CT));
-			oaiRecordDto.setDescriptions(extractStringBetweenManyXMLTags(oaiDc,
-					DC_DESCRIPTION_OT, DC_DESCRIPTION_CT));
-			oaiRecordDto.setPublishers(extractStringBetweenManyXMLTags(oaiDc,
-					DC_PUBLISHER_OT, DC_PUBLISHER_CT));
-			oaiRecordDto.setContributors(extractStringBetweenManyXMLTags(oaiDc,
-					DC_CONTRIBUTOR_OT, DC_CONTRIBUTOR_CT));
+			oaiRecordDto.setTitles(extractStringBetweenManyXMLTags(oaiDc, DC_TITLE_OT, DC_TITLE_CT));
+			oaiRecordDto.setCreators(extractStringBetweenManyXMLTags(oaiDc, DC_CREATOR_OT, DC_CREATOR_CT));
+			oaiRecordDto.setSubjects(extractStringBetweenManyXMLTags(oaiDc, DC_SUBJECT_OT, DC_SUBJECT_CT));
+			oaiRecordDto.setDescriptions(extractStringBetweenManyXMLTags(oaiDc, DC_DESCRIPTION_OT, DC_DESCRIPTION_CT));
+			oaiRecordDto.setPublishers(extractStringBetweenManyXMLTags(oaiDc, DC_PUBLISHER_OT, DC_PUBLISHER_CT));
+			oaiRecordDto.setContributors(extractStringBetweenManyXMLTags(oaiDc, DC_CONTRIBUTOR_OT, DC_CONTRIBUTOR_CT));
 			try {
-				oaiRecordDto.setDates(extractDateBetweenManyXMLTags(oaiDc,
-						DC_DATE_OT, DC_DATE_CT));
+				oaiRecordDto.setDates(extractDateBetweenManyXMLTags(oaiDc, DC_DATE_OT, DC_DATE_CT));
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				throw new Exception(
-						"A ocurrido un error en la conversión de registros OAI.");
+				throw new Exception("A ocurrido un error en la conversión de registros OAI.");
 			}
-			oaiRecordDto.setTypes(extractStringBetweenManyXMLTags(oaiDc,
-					DC_TYPE_OT, DC_TYPE_CT));
-			oaiRecordDto.setFormats(extractStringBetweenManyXMLTags(oaiDc,
-					DC_FORMAT_OT, DC_FORMAT_CT));
-			oaiRecordDto.setIdentifiers(extractStringBetweenManyXMLTags(oaiDc,
-					DC_IDENTIFIER_OT, DC_IDENTIFIER_CT));
-			oaiRecordDto.setSources(extractStringBetweenManyXMLTags(oaiDc,
-					DC_SOURCE_OT, DC_SOURCE_CT));
-			oaiRecordDto.setLanguages(extractStringBetweenManyXMLTags(oaiDc,
-					DC_LANGUAGE_OT, DC_LANGUAGE_CT));
-			oaiRecordDto.setRelations(extractStringBetweenManyXMLTags(oaiDc,
-					DC_RELATION_OT, DC_RELATION_CT));
-			oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc,
-					DC_COVERAGE_OT, DC_COVERAGE_CT));
-			oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc,
-					DC_RIGHTS_OT, DC_RIGHTS_CT));
+			oaiRecordDto.setTypes(extractStringBetweenManyXMLTags(oaiDc, DC_TYPE_OT, DC_TYPE_CT));
+			oaiRecordDto.setFormats(extractStringBetweenManyXMLTags(oaiDc, DC_FORMAT_OT, DC_FORMAT_CT));
+			oaiRecordDto.setIdentifiers(extractStringBetweenManyXMLTags(oaiDc, DC_IDENTIFIER_OT, DC_IDENTIFIER_CT));
+			oaiRecordDto.setSources(extractStringBetweenManyXMLTags(oaiDc, DC_SOURCE_OT, DC_SOURCE_CT));
+			oaiRecordDto.setLanguages(extractStringBetweenManyXMLTags(oaiDc, DC_LANGUAGE_OT, DC_LANGUAGE_CT));
+			oaiRecordDto.setRelations(extractStringBetweenManyXMLTags(oaiDc, DC_RELATION_OT, DC_RELATION_CT));
+			oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc, DC_COVERAGE_OT, DC_COVERAGE_CT));
+			oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc, DC_RIGHTS_OT, DC_RIGHTS_CT));
 			oaiRecordDtos.add(oaiRecordDto);
 		}
 		return oaiRecordDtos;
 	}
 
-	public ArrayList<String> extractStringBetweenManyXMLTags(String oaiDc,
-			String openingTag, String closingTag) {
+	public ArrayList<String> extractStringBetweenManyXMLTags(String oaiDc, String openingTag, String closingTag) {
 		int indexOfOT;
 		int indexOfCT;
 
@@ -369,16 +317,14 @@ public class OaiRecordManager {
 
 			if (indexOfOT == -1 || indexOfCT == -1)
 				break;
-			list.add(oaiDc.substring(indexOfOT + openingTag.length(),
-					indexOfCT));
-			oaiDc = StringHelpers.removeSubstring(oaiDc, 0,
-					oaiDc.indexOf(closingTag) + closingTag.length());
+			list.add(oaiDc.substring(indexOfOT + openingTag.length(), indexOfCT));
+			oaiDc = StringHelpers.removeSubstring(oaiDc, 0, oaiDc.indexOf(closingTag) + closingTag.length());
 		}
 		return list;
 	}
 
-	public ArrayList<Date> extractDateBetweenManyXMLTags(String oaiDc,
-			String openingTag, String closingTag) throws ParseException {
+	public ArrayList<Date> extractDateBetweenManyXMLTags(String oaiDc, String openingTag, String closingTag)
+			throws ParseException {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -395,18 +341,15 @@ public class OaiRecordManager {
 				break;
 
 			try {
-				list.add(df.parse(oaiDc.substring(
-						indexOfOT + openingTag.length(), indexOfCT)));
+				list.add(df.parse(oaiDc.substring(indexOfOT + openingTag.length(), indexOfCT)));
 			} catch (Exception e) {
 				try {
-					list.add(df2.parse(oaiDc.substring(
-							indexOfOT + openingTag.length(), indexOfCT)));
+					list.add(df2.parse(oaiDc.substring(indexOfOT + openingTag.length(), indexOfCT)));
 				} catch (Exception e2) {
 					// TODO: handle exception
 				}
 			}
-			oaiDc = StringHelpers.removeSubstring(oaiDc, 0,
-					oaiDc.indexOf(closingTag) + closingTag.length());
+			oaiDc = StringHelpers.removeSubstring(oaiDc, 0, oaiDc.indexOf(closingTag) + closingTag.length());
 		}
 
 		return list;
