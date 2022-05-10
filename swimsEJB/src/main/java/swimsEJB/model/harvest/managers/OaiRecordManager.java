@@ -109,6 +109,8 @@ public class OaiRecordManager {
 	public ArrayList<OaiRecordDto> parseStringToOaiRecordDtos2(List<String> oaiRecords) throws Exception {
 		String LIST_RECORDS_OT = "<ListRecords>";
 		String LIST_RECORDS_CT = "</ListRecords>";
+		int indexOfLIST_RECORDS_OT;
+		int indexOfLIST_RECORDS_CT;
 
 		String OAI_DC_OT = "<oai_dc:dc";
 		String OAI_DC_CT = "</oai_dc:dc>";
@@ -166,19 +168,20 @@ public class OaiRecordManager {
 		String listRecords;
 
 		for (String oaiRecord : oaiRecords) {
-			listRecords = oaiRecord.substring(oaiRecord.indexOf(LIST_RECORDS_OT) + LIST_RECORDS_OT.length(),
-					oaiRecord.indexOf(LIST_RECORDS_CT));
-
+			indexOfLIST_RECORDS_OT = oaiRecord.indexOf(LIST_RECORDS_OT);
+			indexOfLIST_RECORDS_CT = oaiRecord.indexOf(LIST_RECORDS_CT);
+			if (indexOfLIST_RECORDS_OT == -1 || indexOfLIST_RECORDS_CT == -1)
+				break;
+			listRecords = oaiRecord.substring(indexOfLIST_RECORDS_OT + LIST_RECORDS_OT.length(),
+					indexOfLIST_RECORDS_CT);
 			while (true) {
 				indexOfOAI_DC_OT = listRecords.indexOf(OAI_DC_OT);
 				indexOfOAI_DC_CT = listRecords.indexOf(OAI_DC_CT);
-
 				if (indexOfOAI_DC_OT == -1 || indexOfOAI_DC_CT == -1)
 					break;
 				oaiDc = listRecords.substring(indexOfOAI_DC_OT + OAI_DC_OT.length(), indexOfOAI_DC_CT);
 				listRecords = StringHelpers.removeSubstring(listRecords, 0, indexOfOAI_DC_CT + OAI_DC_CT.length());
 				oaiRecordDto = new OaiRecordDto();
-
 				oaiRecordDto.setTitles(extractStringBetweenManyXMLTags(oaiDc, DC_TITLE_OT, DC_TITLE_CT));
 				oaiRecordDto.setCreators(extractStringBetweenManyXMLTags(oaiDc, DC_CREATOR_OT, DC_CREATOR_CT));
 				oaiRecordDto.setSubjects(extractStringBetweenManyXMLTags(oaiDc, DC_SUBJECT_OT, DC_SUBJECT_CT));
@@ -205,7 +208,6 @@ public class OaiRecordManager {
 				oaiRecordDtos.add(oaiRecordDto);
 			}
 		}
-
 		return oaiRecordDtos;
 	}
 

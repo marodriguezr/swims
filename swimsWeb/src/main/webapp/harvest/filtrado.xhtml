@@ -48,9 +48,51 @@
 					<div class="p-pt-4">
 						<div class="ui-fluid">
 							<p:dataTable value="#{oaiRecordBean.oaiRecordDtos}"
-								var="oaiRecordDto">
+								var="oaiRecordDto" reflow="true" rows="10" paginator="true">
 								<p:column headerText="Titulo">
-									<h:outputText value="#{oaiRecordDto.titles.get(0)}" />
+									<h:outputText rendered="#{oaiRecordDto.titles.size() ge 1}"
+										value="#{oaiRecordDto.titles.get(0)}" />
+									<h:outputText rendered="#{oaiRecordDto.titles.size() eq 0}"
+										value="Registro sin título" />
+								</p:column>
+
+								<p:column headerText="Autor">
+									<h:outputText rendered="#{oaiRecordDto.creators.size() ge 1}"
+										value="#{oaiRecordDto.creators.get(0)}" />
+									<h:outputText rendered="#{oaiRecordDto.creators.size() eq 0}"
+										value="Registro sin autor" />
+								</p:column>
+
+								<p:column headerText="Director">
+									<h:outputText
+										rendered="#{oaiRecordDto.contributors.size() ge 1}"
+										value="#{oaiRecordDto.creators.get(0)}" />
+									<h:outputText
+										rendered="#{oaiRecordDto.contributors.size() eq 0}"
+										value="Registro sin director" />
+								</p:column>
+
+								<p:column headerText="Descripción">
+									<h:outputText
+										rendered="#{oaiRecordDto.descriptions.size() ge 1}"
+										value="#{oaiRecordDto.descriptions.get(0)}" />
+									<h:outputText
+										rendered="#{oaiRecordDto.descriptions.size() eq 0}"
+										value="Registro sin descripción" />
+								</p:column>
+
+								<p:column headerText="Fecha">
+									<h:outputText rendered="#{oaiRecordDto.dates.size() ge 1}"
+										value="#{oaiRecordBean.dateFormat.format(oaiRecordDto.dates.get(0))}" />
+									<h:outputText rendered="#{oaiRecordDto.dates.size() eq 0}"
+										value="Registro sin fecha" />
+								</p:column>
+
+								<p:column>
+									<p:commandButton icon="pi pi-fw pi-plus"
+										oncomplete="PF('allRecordInfoDialog').show()"
+										update=":allRecordInfoForm"
+										onclick="#{oaiRecordBean.setSelectedOaiRecordDto(oaiRecordDto)}"></p:commandButton>
 								</p:column>
 							</p:dataTable>
 						</div>
@@ -67,6 +109,86 @@
 				</p:card>
 			</h:form>
 		</div>
+
+		<p:dialog blockScroll="true" header="Toda la información del registro" showEffect="fade"
+			modal="true" widgetVar="allRecordInfoDialog" responsive="true">
+			<h:form id="allRecordInfoForm">
+				<div class="ui-fluid">
+					<div class="p-field">
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.titles.size() gt 1}"
+							header="Títulos" toggleable="true" collapsed="true">
+							<p:dataScroller
+								value="#{oaiRecordBean.selectedOaiRecordDto.titles}" var="title">
+								<h:outputText value="#{title}" />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.titles.size() eq 1}"
+							header="Título" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{oaiRecordBean.selectedOaiRecordDto.titles.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.creators.size() gt 1}"
+							header="Autores" toggleable="true" collapsed="true">
+							<p:dataScroller
+								value="#{oaiRecordBean.selectedOaiRecordDto.creators}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.creators.size() eq 1}"
+							header="Autor" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{oaiRecordBean.selectedOaiRecordDto.creators.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.creators.size() gt 1}"
+							header="Autores" toggleable="true" collapsed="true">
+							<p:dataScroller
+								value="#{oaiRecordBean.selectedOaiRecordDto.creators}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.creators.size() eq 1}"
+							header="Autor" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{oaiRecordBean.selectedOaiRecordDto.creators.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.subjects.size() gt 1}"
+							header="Palabras clave" toggleable="true" collapsed="true">
+							<p:dataScroller
+								value="#{oaiRecordBean.selectedOaiRecordDto.subjects}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.subjects.size() eq 1}"
+							header="Palabra clave" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{oaiRecordBean.selectedOaiRecordDto.subjects.get(0)}" />
+						</p:panel>
+					</div>
+
+				</div>
+			</h:form>
+		</p:dialog>
+
 
 	</div>
 </h:body>

@@ -4,6 +4,8 @@
 package swimsWeb.controller.harvest;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,8 @@ public class OaiRecordBean implements Serializable {
 	private LocalDate from;
 	private LocalDate until;
 	private List<OaiRecordDto> oaiRecordDtos;
+	private DateFormat dateFormat;
+	private OaiRecordDto selectedOaiRecordDto;
 
 	/**
 	 * 
@@ -52,12 +56,14 @@ public class OaiRecordBean implements Serializable {
 	@PostConstruct
 	public void onInit() {
 		this.oaiSets = oaiSetManager.findAllOaiSets();
+		dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 		setDefaultValues();
 	}
 
 	public void setDefaultValues() {
 		oaiSetId = "";
 		oaiRecordDtos = new ArrayList<OaiRecordDto>();
+		selectedOaiRecordDto = new OaiRecordDto();
 	}
 
 	public String forwardToDateSelection() {
@@ -90,14 +96,14 @@ public class OaiRecordBean implements Serializable {
 			return "";
 		}
 		try {
+
 			this.oaiRecordDtos = oaiRecordManager
 					.parseStringToOaiRecordDtos2(oaiRecordManager.findManyOaiRecords2(oaiSetId, from, until));
-			System.out.println(oaiRecordDtos.size());
 			return "/harvest/filtrado?faces-redirect=true";
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			JSFMessages.ERROR("Ha ocurrido un error en la adquisición de registros OAI.");
+			JSFMessages.ERROR(e.getMessage());
 			return "";
 		}
 	}
@@ -142,4 +148,20 @@ public class OaiRecordBean implements Serializable {
 		this.oaiRecordDtos = oaiRecordDtos;
 	}
 
+	public DateFormat getDateFormat() {
+		return dateFormat;
+	}
+
+	public void setDateFormat(DateFormat dateFormat) {
+		this.dateFormat = dateFormat;
+	}
+
+	public OaiRecordDto getSelectedOaiRecordDto() {
+		return selectedOaiRecordDto;
+	}
+
+	public void setSelectedOaiRecordDto(OaiRecordDto selectedOaiRecordDto) {
+		System.out.println("this one");
+		this.selectedOaiRecordDto = selectedOaiRecordDto;
+	}
 }
