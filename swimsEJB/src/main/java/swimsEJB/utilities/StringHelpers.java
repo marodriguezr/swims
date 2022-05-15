@@ -1,5 +1,7 @@
 package swimsEJB.utilities;
 
+import java.text.Normalizer;
+
 public class StringHelpers {
 	/**
 	 * made possible by: https://dirask.com/posts/Java-remove-substring-from-string-between-indexes-DKooeD
@@ -17,5 +19,12 @@ public class StringHelpers {
 		String b = text.substring(endIndex);
 
 		return a + b;
+	}
+	
+	public static String stripAccents(String s) 
+	{
+	    s = Normalizer.normalize(s, Normalizer.Form.NFD);
+	    s = s.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+	    return s;
 	}
 }

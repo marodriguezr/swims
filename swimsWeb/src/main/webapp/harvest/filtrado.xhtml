@@ -45,63 +45,72 @@
 						<p:menuitem value="Filtrado" />
 						<p:menuitem value="Confirmación" />
 					</p:steps>
-					<div class="p-pt-4">
-						<div class="ui-fluid">
-							<p:dataTable value="#{oaiRecordBean.oaiRecordDtos}"
-								var="oaiRecordDto" reflow="true" rows="10" paginator="true">
-								<p:column headerText="Titulo">
-									<h:outputText rendered="#{oaiRecordDto.titles.size() ge 1}"
-										value="#{oaiRecordDto.titles.get(0)}" />
-									<h:outputText rendered="#{oaiRecordDto.titles.size() eq 0}"
-										value="Registro sin título" />
-								</p:column>
+					<div class="p-pt-4 p-pb-2">
+						<p:commandButton update="@form"
+							actionListener="#{oaiRecordBean.autoSelectOaiRecordDtosActionListener()}"
+							icon="pi pi-fw pi-check-square"
+							value="Seleccionar de forma automática"></p:commandButton>
+					</div>
+					<div class="ui-fluid">
+						<p:dataTable paginatorPosition="bottom"
+							value="#{oaiRecordBean.oaiRecordDtos}" var="oaiRecordDto"
+							reflow="true" rows="10" paginator="true" id="availableOaiRecords"
+							rowSelectMode="add" rowKey="#{oaiRecordDto.uid}"
+							selection="#{oaiRecordBean.selectedOaiRecordDtos}">
+							<p:column selectionMode="multiple" exportable="false"></p:column>
 
-								<p:column headerText="Autor">
-									<h:outputText rendered="#{oaiRecordDto.creators.size() ge 1}"
-										value="#{oaiRecordDto.creators.get(0)}" />
-									<h:outputText rendered="#{oaiRecordDto.creators.size() eq 0}"
-										value="Registro sin autor" />
-								</p:column>
+							<p:column headerText="Titulo">
+								<a href="#{oaiRecordBean.getURLFromOaiRecordDto(oaiRecordDto)}"><h:outputText
+										rendered="#{oaiRecordDto.titles.size() ge 1}"
+										value="#{oaiRecordDto.titles.get(0)}" /></a>
+								<h:outputText rendered="#{oaiRecordDto.titles.size() eq 0}"
+									value="Registro sin título" />
+							</p:column>
 
-								<p:column headerText="Director">
-									<h:outputText
-										rendered="#{oaiRecordDto.contributors.size() ge 1}"
-										value="#{oaiRecordDto.creators.get(0)}" />
-									<h:outputText
-										rendered="#{oaiRecordDto.contributors.size() eq 0}"
-										value="Registro sin director" />
-								</p:column>
+							<p:column headerText="Autor">
+								<h:outputText rendered="#{oaiRecordDto.creators.size() ge 1}"
+									value="#{oaiRecordDto.creators.get(0)}" />
+								<h:outputText rendered="#{oaiRecordDto.creators.size() eq 0}"
+									value="Registro sin autor" />
+							</p:column>
 
-								<p:column headerText="Descripción">
-									<h:outputText
-										rendered="#{oaiRecordDto.descriptions.size() ge 1}"
-										value="#{oaiRecordDto.descriptions.get(0)}" />
-									<h:outputText
-										rendered="#{oaiRecordDto.descriptions.size() eq 0}"
-										value="Registro sin descripción" />
-								</p:column>
+							<p:column headerText="Director">
+								<h:outputText
+									rendered="#{oaiRecordDto.contributors.size() ge 1}"
+									value="#{oaiRecordDto.creators.get(0)}" />
+								<h:outputText
+									rendered="#{oaiRecordDto.contributors.size() eq 0}"
+									value="Registro sin director" />
+							</p:column>
 
-								<p:column headerText="Fecha">
-									<h:outputText rendered="#{oaiRecordDto.dates.size() ge 1}"
-										value="#{oaiRecordBean.dateFormat.format(oaiRecordDto.dates.get(0))}" />
-									<h:outputText rendered="#{oaiRecordDto.dates.size() eq 0}"
-										value="Registro sin fecha" />
-								</p:column>
+							<p:column headerText="Descripción">
+								<h:outputText
+									rendered="#{oaiRecordDto.descriptions.size() ge 1}"
+									value="#{oaiRecordDto.descriptions.get(0)}" />
+								<h:outputText
+									rendered="#{oaiRecordDto.descriptions.size() eq 0}"
+									value="Registro sin descripción" />
+							</p:column>
 
-								<p:column>
-									<p:commandButton icon="pi pi-fw pi-plus"
-										oncomplete="PF('allRecordInfoDialog').show()"
-										update=":allRecordInfoForm"
-										onclick="#{oaiRecordBean.setSelectedOaiRecordDto(oaiRecordDto)}"></p:commandButton>
-								</p:column>
-							</p:dataTable>
-						</div>
+							<p:column headerText="Fecha">
+								<h:outputText rendered="#{oaiRecordDto.dates.size() ge 1}"
+									value="#{oaiRecordBean.dateFormat.format(oaiRecordDto.dates.get(0))}" />
+								<h:outputText rendered="#{oaiRecordDto.dates.size() eq 0}"
+									value="Registro sin fecha" />
+							</p:column>
+
+							<p:column>
+								<p:commandButton icon="pi pi-fw pi-plus"
+									oncomplete="PF('allRecordInfoDialog').show()"
+									update=":allRecordInfoForm"
+									actionListener="#{oaiRecordBean.setSelectedOaiRecordDto(oaiRecordDto)}"></p:commandButton>
+							</p:column>
+						</p:dataTable>
 					</div>
 					<f:facet name="footer">
 						<p:commandButton icon="pi pi-fw pi-angle-double-left"
 							value="Regresar" styleClass="ui-button-secondary"
 							action="/harvest/fecha?faces-redirect=true" />
-
 						<p:commandButton styleClass="p-ml-2"
 							icon="pi pi-fw pi-angle-double-right" value="Avanzar" />
 
@@ -110,10 +119,12 @@
 			</h:form>
 		</div>
 
-		<p:dialog blockScroll="true" header="Toda la información del registro" showEffect="fade"
+		<p:dialog height="50vh" width="65vh" blockScroll="true"
+			header="Toda la información del registro" showEffect="fade"
 			modal="true" widgetVar="allRecordInfoDialog" responsive="true">
 			<h:form id="allRecordInfoForm">
 				<div class="ui-fluid">
+
 					<div class="p-field">
 						<p:panel
 							rendered="#{oaiRecordBean.selectedOaiRecordDto.titles.size() gt 1}"
@@ -121,6 +132,8 @@
 							<p:dataScroller
 								value="#{oaiRecordBean.selectedOaiRecordDto.titles}" var="title">
 								<h:outputText value="#{title}" />
+								<br />
+								<br />
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
@@ -139,24 +152,8 @@
 								value="#{oaiRecordBean.selectedOaiRecordDto.creators}"
 								var="iterable">
 								<h:outputText value="#{iterable}" />
-							</p:dataScroller>
-						</p:panel>
-						<p:panel
-							rendered="#{oaiRecordBean.selectedOaiRecordDto.creators.size() eq 1}"
-							header="Autor" toggleable="true" collapsed="false">
-							<h:outputText
-								value="#{oaiRecordBean.selectedOaiRecordDto.creators.get(0)}" />
-						</p:panel>
-					</div>
-
-					<div class="p-field">
-						<p:panel
-							rendered="#{oaiRecordBean.selectedOaiRecordDto.creators.size() gt 1}"
-							header="Autores" toggleable="true" collapsed="true">
-							<p:dataScroller
-								value="#{oaiRecordBean.selectedOaiRecordDto.creators}"
-								var="iterable">
-								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
@@ -175,6 +172,8 @@
 								value="#{oaiRecordBean.selectedOaiRecordDto.subjects}"
 								var="iterable">
 								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
@@ -185,11 +184,90 @@
 						</p:panel>
 					</div>
 
+					<div class="p-field">
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.descriptions.size() gt 1}"
+							header="Descripciones" toggleable="true" collapsed="true">
+							<p:dataScroller
+								value="#{oaiRecordBean.selectedOaiRecordDto.descriptions}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.descriptions.size() eq 1}"
+							header="Descripcion" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{oaiRecordBean.selectedOaiRecordDto.descriptions.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.contributors.size() gt 1}"
+							header="Directores" toggleable="true" collapsed="true">
+							<p:dataScroller
+								value="#{oaiRecordBean.selectedOaiRecordDto.contributors}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.contributors.size() eq 1}"
+							header="Director" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{oaiRecordBean.selectedOaiRecordDto.contributors.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.dates.size() gt 1}"
+							header="Fechas" toggleable="true" collapsed="true">
+							<p:dataScroller
+								value="#{oaiRecordBean.selectedOaiRecordDto.dates}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.dates.size() eq 1}"
+							header="Fecha" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{oaiRecordBean.selectedOaiRecordDto.dates.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.identifiers.size() gt 1}"
+							header="Identificadores" toggleable="true" collapsed="true">
+							<p:dataScroller
+								value="#{oaiRecordBean.selectedOaiRecordDto.identifiers}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{oaiRecordBean.selectedOaiRecordDto.identifiers.size() eq 1}"
+							header="Identificador" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{oaiRecordBean.selectedOaiRecordDto.identifiers.get(0)}" />
+						</p:panel>
+					</div>
+
+
 				</div>
 			</h:form>
 		</p:dialog>
-
-
 	</div>
 </h:body>
 </html>

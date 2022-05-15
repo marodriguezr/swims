@@ -13,7 +13,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -46,7 +48,8 @@ public class OaiRecordManager {
 	 * @return A XML string with many OAI Records
 	 * @throws Exception In case of being unable to perform the request.
 	 */
-	public String findManyOaiRecords(String oaiSetIdentifier, LocalDate from, LocalDate until) throws Exception {
+	public String findManyOaiRecordsSingleRequest(String oaiSetIdentifier, LocalDate from, LocalDate until)
+			throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
 		String OAI_URI = MessageFormat.format(
 				"http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&metadataPrefix=oai_dc&from={1}&until={2}&set={0}",
@@ -205,13 +208,17 @@ public class OaiRecordManager {
 				oaiRecordDto.setRelations(extractStringBetweenManyXMLTags(oaiDc, DC_RELATION_OT, DC_RELATION_CT));
 				oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc, DC_COVERAGE_OT, DC_COVERAGE_CT));
 				oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc, DC_RIGHTS_OT, DC_RIGHTS_CT));
+				for (String identifier : oaiRecordDto.getIdentifiers()) {
+					oaiRecordDto.setUid(oaiRecordDto.getUid() + identifier);
+				}
+				oaiRecordDto.setUid(UUID.nameUUIDFromBytes(oaiRecordDto.getUid().getBytes()).toString());
 				oaiRecordDtos.add(oaiRecordDto);
 			}
 		}
 		return oaiRecordDtos;
 	}
 
-	public ArrayList<OaiRecordDto> parseStringToOaiRecordDtos(String oaiRecord) throws Exception {
+	public ArrayList<OaiRecordDto> parseStringToOaiRecordDtosSingleRequest(String oaiRecord) throws Exception {
 		String LIST_RECORDS_OT = "<ListRecords>";
 		String LIST_RECORDS_CT = "</ListRecords>";
 
@@ -302,9 +309,23 @@ public class OaiRecordManager {
 			oaiRecordDto.setRelations(extractStringBetweenManyXMLTags(oaiDc, DC_RELATION_OT, DC_RELATION_CT));
 			oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc, DC_COVERAGE_OT, DC_COVERAGE_CT));
 			oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc, DC_RIGHTS_OT, DC_RIGHTS_CT));
+			for (String identifier : oaiRecordDto.getIdentifiers()) {
+				oaiRecordDto.setUid(oaiRecordDto.getUid() + identifier);
+			}
+			oaiRecordDto.setUid(UUID.nameUUIDFromBytes(oaiRecordDto.getUid().getBytes()).toString());
 			oaiRecordDtos.add(oaiRecordDto);
 		}
 		return oaiRecordDtos;
+	}
+
+	public String getURLFromOaiRecordDto(OaiRecordDto oaiRecordDto) {
+		if (oaiRecordDto.getIdentifiers().size() == 0)
+			return "";
+		for (String identifier : oaiRecordDto.getIdentifiers()) {
+			if (identifier.contains("http://") || identifier.contains("https://"))
+				return identifier;
+		}
+		return "";
 	}
 
 	public ArrayList<String> extractStringBetweenManyXMLTags(String oaiDc, String openingTag, String closingTag) {
@@ -355,6 +376,50 @@ public class OaiRecordManager {
 		}
 
 		return list;
+	}
+
+	public List<OaiRecordDto> filterOaiRecordDtosByKeyWords(String[] keywords, List<OaiRecordDto> oaiRecordDtos) {
+		LinkedList<OaiRecordDto> filteredOaiRecordDtos = new LinkedList<>();
+
+		Boolean hastOaiRecordBeenAdded;
+		
+		String[] normalizedKeywords = new String[keywords.length];
+		for (int i = 0; i < keywords.length; i++) {
+			normalizedKeywords[i] = StringHelpers.stripAccents(keywords[i]).toLowerCase();
+		}
+		
+		for (String keyword : normalizedKeywords) {
+			for (OaiRecordDto oaiRecordDto : oaiRecordDtos) {
+				hastOaiRecordBeenAdded = false;
+				for (String title : oaiRecordDto.getTitles()) {
+					if (StringHelpers.stripAccents(title).toLowerCase().contains(keyword)) {
+						filteredOaiRecordDtos.add(oaiRecordDto);
+						hastOaiRecordBeenAdded = true;
+						break;
+					}
+				}
+				
+				if (hastOaiRecordBeenAdded) continue;
+				for (String subject : oaiRecordDto.getSubjects()) {
+					if (StringHelpers.stripAccents(subject).toLowerCase().contains(keyword)) {
+						filteredOaiRecordDtos.add(oaiRecordDto);
+						hastOaiRecordBeenAdded = true;
+						break;
+					}
+				}
+				
+				if (hastOaiRecordBeenAdded) continue;
+				for (String description : oaiRecordDto.getDescriptions()) {
+					if (StringHelpers.stripAccents(description).toLowerCase().contains(keyword)) {
+						filteredOaiRecordDtos.add(oaiRecordDto);
+						hastOaiRecordBeenAdded = true;
+						break;
+					}
+				}
+			}
+		}
+
+		return filteredOaiRecordDtos;
 	}
 
 }

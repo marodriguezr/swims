@@ -7,10 +7,12 @@ import java.util.List;
 /**
  * Instant representation of the XML Schema Adjusted for usage in the OAI-PMH.
  * http://www.openarchives.org/OAI/2.0/oai_dc.xsd
+ * 
  * @author miguel
  *
  */
 public class OaiRecordDto {
+	private String uid;
 	private List<String> titles;
 	private List<String> creators;
 	private List<String> subjects;
@@ -26,8 +28,9 @@ public class OaiRecordDto {
 	private List<String> relations;
 	private List<String> coverages;
 	private List<String> rights;
-	
+
 	public OaiRecordDto() {
+		this.uid = "";
 		this.titles = new ArrayList<String>();
 		this.creators = new ArrayList<String>();
 		this.subjects = new ArrayList<String>();
@@ -164,4 +167,13 @@ public class OaiRecordDto {
 	public void setRights(List<String> rights) {
 		this.rights = rights;
 	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
+	}
+
 }

@@ -45,7 +45,8 @@ public class OaiRecordBean implements Serializable {
 	private List<OaiRecordDto> oaiRecordDtos;
 	private DateFormat dateFormat;
 	private OaiRecordDto selectedOaiRecordDto;
-
+	private List<OaiRecordDto> selectedOaiRecordDtos;
+	
 	/**
 	 * 
 	 */
@@ -64,6 +65,7 @@ public class OaiRecordBean implements Serializable {
 		oaiSetId = "";
 		oaiRecordDtos = new ArrayList<OaiRecordDto>();
 		selectedOaiRecordDto = new OaiRecordDto();
+		selectedOaiRecordDtos = new ArrayList<OaiRecordDto>();
 	}
 
 	public String forwardToDateSelection() {
@@ -106,6 +108,14 @@ public class OaiRecordBean implements Serializable {
 			JSFMessages.ERROR(e.getMessage());
 			return "";
 		}
+	}
+	
+	public String getURLFromOaiRecordDto(OaiRecordDto oaiRecordDto) {
+		return oaiRecordManager.getURLFromOaiRecordDto(oaiRecordDto);
+	}
+	
+	public void autoSelectOaiRecordDtosActionListener() {
+		this.selectedOaiRecordDtos = oaiRecordManager.filterOaiRecordDtosByKeyWords(new String[] {"desarrollo de", "implementación de", "desarrollar", "implementar"}, oaiRecordDtos);
 	}
 
 	public List<OaiSet> getOaiSets() {
@@ -161,7 +171,17 @@ public class OaiRecordBean implements Serializable {
 	}
 
 	public void setSelectedOaiRecordDto(OaiRecordDto selectedOaiRecordDto) {
-		System.out.println("this one");
+		System.out.println(selectedOaiRecordDto.getTitles().get(0));
 		this.selectedOaiRecordDto = selectedOaiRecordDto;
 	}
+
+	public List<OaiRecordDto> getSelectedOaiRecordDtos() {
+		return selectedOaiRecordDtos;
+	}
+
+	public void setSelectedOaiRecordDtos(List<OaiRecordDto> selectedOaiRecordDtos) {
+		this.selectedOaiRecordDtos = selectedOaiRecordDtos;
+	}
+
+	
 }
