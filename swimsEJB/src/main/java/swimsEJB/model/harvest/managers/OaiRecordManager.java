@@ -13,16 +13,21 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
+import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import org.apache.commons.lang3.StringUtils;
 
+import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvest.dtos.OaiRecordDto;
+import swimsEJB.model.harvest.entities.OaiRecord;
 import swimsEJB.utilities.StringHelpers;
 
 /**
@@ -32,11 +37,65 @@ import swimsEJB.utilities.StringHelpers;
 @LocalBean
 public class OaiRecordManager {
 
+	@EJB
+	private DaoManager daoManager;
+
 	/**
 	 * Default constructor.
 	 */
 	public OaiRecordManager() {
 		// TODO Auto-generated constructor stub
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<OaiRecord> findAllOaiRecords() {
+		return daoManager.findAll(OaiRecord.class);
+	}
+
+	public OaiRecordDto oaiRecordToOaiRecordDto(OaiRecord oaiRecord) {
+		OaiRecordDto oaiRecordDto;
+		oaiRecordDto = new OaiRecordDto();
+		oaiRecordDto.setId(oaiRecord.getId());
+		oaiRecordDto
+				.setTitles(oaiRecord.getOaiRecordTitles().stream().map(t -> t.getTitle()).collect(Collectors.toList()));
+		oaiRecordDto.setCreators(
+				oaiRecord.getOaiRecordCreators().stream().map(t -> t.getCreator()).collect(Collectors.toList()));
+		oaiRecordDto.setSubjects(
+				oaiRecord.getOaiRecordSubjects().stream().map(t -> t.getSubject()).collect(Collectors.toList()));
+		oaiRecordDto.setDescriptions(oaiRecord.getOaiRecordDescriptions().stream().map(t -> t.getDescription())
+				.collect(Collectors.toList()));
+		oaiRecordDto.setPublishers(
+				oaiRecord.getOaiRecordPublishers().stream().map(t -> t.getPublisher()).collect(Collectors.toList()));
+		oaiRecordDto.setContributors(oaiRecord.getOaiRecordContributors().stream().map(t -> t.getContributor())
+				.collect(Collectors.toList()));
+		oaiRecordDto
+				.setDates(oaiRecord.getOaiRecordDates().stream().map(t -> t.getDate()).collect(Collectors.toList()));
+		oaiRecordDto.setIdentifiers(
+				oaiRecord.getOaiRecordIdentifiers().stream().map(t -> t.getIdentifier()).collect(Collectors.toList()));
+		return oaiRecordDto;
+	}
+
+	public List<OaiRecordDto> oaiRecordsToOaiRecordDtos(List<OaiRecord> oaiRecords) {
+		List<OaiRecordDto> oaiRecordDtos = new ArrayList<OaiRecordDto>();
+		for (OaiRecord oaiRecord : oaiRecords) {
+			oaiRecordDtos.add(oaiRecordToOaiRecordDto(oaiRecord));
+		}
+		return oaiRecordDtos;
+	}
+	
+	public List<OaiRecordDto> removeDuplicateOaiRecordDtos(List<OaiRecordDto> oaiRecordDtos,List<OaiRecordDto> oaiRecordDtos2) {
+		HashMap<String, OaiRecordDto> oaiRecordDtoHashMap = new HashMap<>();
+		for (OaiRecordDto oaiRecordDto : oaiRecordDtos) {
+			oaiRecordDtoHashMap.put(oaiRecordDto.getId(), oaiRecordDto);
+		}
+		
+		List<OaiRecordDto> oaiRecordDtos3 = new ArrayList<OaiRecordDto>();
+		for (OaiRecordDto oaiRecordDto : oaiRecordDtos2) {
+			if (oaiRecordDtoHashMap.containsKey(oaiRecordDto.getId())) continue;
+			oaiRecordDtos3.add(oaiRecordDto);
+		}
+		
+		return oaiRecordDtos3;
 	}
 
 	/**
@@ -65,7 +124,6 @@ public class OaiRecordManager {
 			e.printStackTrace();
 			throw new Exception("Ha ocurrido un error en la adquisición de recursos externos.");
 		}
-
 	}
 
 	public List<String> findManyOaiRecords2(String oaiSetIdentifier, LocalDate from, LocalDate until) throws Exception {
@@ -209,9 +267,9 @@ public class OaiRecordManager {
 				oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc, DC_COVERAGE_OT, DC_COVERAGE_CT));
 				oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc, DC_RIGHTS_OT, DC_RIGHTS_CT));
 				for (String identifier : oaiRecordDto.getIdentifiers()) {
-					oaiRecordDto.setUid(oaiRecordDto.getUid() + identifier);
+					oaiRecordDto.setId(oaiRecordDto.getId() + identifier);
 				}
-				oaiRecordDto.setUid(UUID.nameUUIDFromBytes(oaiRecordDto.getUid().getBytes()).toString());
+				oaiRecordDto.setId(UUID.nameUUIDFromBytes(oaiRecordDto.getId().getBytes()).toString());
 				oaiRecordDtos.add(oaiRecordDto);
 			}
 		}
@@ -310,9 +368,9 @@ public class OaiRecordManager {
 			oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc, DC_COVERAGE_OT, DC_COVERAGE_CT));
 			oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc, DC_RIGHTS_OT, DC_RIGHTS_CT));
 			for (String identifier : oaiRecordDto.getIdentifiers()) {
-				oaiRecordDto.setUid(oaiRecordDto.getUid() + identifier);
+				oaiRecordDto.setId(oaiRecordDto.getId() + identifier);
 			}
-			oaiRecordDto.setUid(UUID.nameUUIDFromBytes(oaiRecordDto.getUid().getBytes()).toString());
+			oaiRecordDto.setId(UUID.nameUUIDFromBytes(oaiRecordDto.getId().getBytes()).toString());
 			oaiRecordDtos.add(oaiRecordDto);
 		}
 		return oaiRecordDtos;
@@ -382,12 +440,12 @@ public class OaiRecordManager {
 		LinkedList<OaiRecordDto> filteredOaiRecordDtos = new LinkedList<>();
 
 		Boolean hastOaiRecordBeenAdded;
-		
+
 		String[] normalizedKeywords = new String[keywords.length];
 		for (int i = 0; i < keywords.length; i++) {
 			normalizedKeywords[i] = StringHelpers.stripAccents(keywords[i]).toLowerCase();
 		}
-		
+
 		for (String keyword : normalizedKeywords) {
 			for (OaiRecordDto oaiRecordDto : oaiRecordDtos) {
 				hastOaiRecordBeenAdded = false;
@@ -398,8 +456,9 @@ public class OaiRecordManager {
 						break;
 					}
 				}
-				
-				if (hastOaiRecordBeenAdded) continue;
+
+				if (hastOaiRecordBeenAdded)
+					continue;
 				for (String subject : oaiRecordDto.getSubjects()) {
 					if (StringHelpers.stripAccents(subject).toLowerCase().contains(keyword)) {
 						filteredOaiRecordDtos.add(oaiRecordDto);
@@ -407,8 +466,9 @@ public class OaiRecordManager {
 						break;
 					}
 				}
-				
-				if (hastOaiRecordBeenAdded) continue;
+
+				if (hastOaiRecordBeenAdded)
+					continue;
 				for (String description : oaiRecordDto.getDescriptions()) {
 					if (StringHelpers.stripAccents(description).toLowerCase().contains(keyword)) {
 						filteredOaiRecordDtos.add(oaiRecordDto);

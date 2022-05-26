@@ -6,5 +6,14 @@
 		<class>swimsEJB.model.auth.entities.Group</class>
 		<class>swimsEJB.model.auth.entities.User</class>
 		<class>swimsEJB.model.auth.entities.UserGroup</class>
+		<class>swimsEJB.model.harvest.entities.OaiRecordContributor</class>
+		<class>swimsEJB.model.harvest.entities.OaiRecordCreator</class>
+		<class>swimsEJB.model.harvest.entities.OaiRecordDate</class>
+		<class>swimsEJB.model.harvest.entities.OaiRecordDescription</class>
+		<class>swimsEJB.model.harvest.entities.OaiRecordIdentifier</class>
+		<class>swimsEJB.model.harvest.entities.OaiRecordPublisher</class>
+		<class>swimsEJB.model.harvest.entities.OaiRecordSubject</class>
+		<class>swimsEJB.model.harvest.entities.OaiRecordTitle</class>
+		<class>swimsEJB.model.harvest.entities.OaiRecord</class>
 	</persistence-unit>
 </persistence>

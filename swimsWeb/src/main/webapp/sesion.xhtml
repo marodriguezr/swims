@@ -1,61 +1,34 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<title>Inicio de sesión</title>
-	<h:outputStylesheet name="/css/primeflex.min.css" />
-</h:head>
-<h:body>
-	<p:growl>
-		<p:autoUpdate />
-	</p:growl>
-	<div>
+	<ui:define name="title">Iniciar Sesión</ui:define>
+	<ui:define name="content">
 		<h:form>
-			<p:menubar>
-				<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
-					action="/index?faces-redirect=true"></p:menuitem>
-				<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog">
-					<p:menuitem value="Sets OAI"
-						action="/sysparams/oai-sets?faces-redirect=true">
-					</p:menuitem>
-				</p:submenu>
-				<f:facet name="options">
-					<p:button value="Perfil" icon="pi pi-fw pi-angle-down"
-						styleClass="ui-button-info" />
-				</f:facet>
-			</p:menubar>
-		</h:form>
-
-		<div class="p-pt-2">
-			<h:form>
-				<p:card>
-					<f:facet name="title">
+			<p:card>
+				<f:facet name="title">
 			Inicio de sesión
 			</f:facet>
 
-					<div class="ui-fluid">
-						<div class="p-field">
-							<p:outputLabel for="email">Correo electrónico</p:outputLabel>
-							<p:inputText value="#{oaiSetBean.name}" id="email"
-								required="true" />
-						</div>
-						<div class="p-field">
-							<p:outputLabel for="password">Contraseña</p:outputLabel>
-							<p:inputText id="password" value="#{oaiSetBean.identifier}"
-								required="true" />
-						</div>
+				<div class="ui-fluid">
+					<div class="p-field">
+						<p:outputLabel for="email">Correo electrónico</p:outputLabel>
+						<p:inputText value="#{oaiSetBean.name}" id="email" required="true" />
 					</div>
-					<f:facet name="footer">
-						<p:commandButton icon="pi pi-sign-in" value="Iniciar sesión"
-							actionListener="#{oaiSetBean.createOneOaiSetActionListener()}" />
-					</f:facet>
-				</p:card>
-			</h:form>
-		</div>
-	</div>
-</h:body>
-</html>
+					<div class="p-field">
+						<p:outputLabel for="password">Contraseña</p:outputLabel>
+						<p:inputText id="password" value="#{oaiSetBean.identifier}"
+							required="true" />
+					</div>
+				</div>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-sign-in" value="Iniciar sesión"
+						actionListener="#{oaiSetBean.createOneOaiSetActionListener()}" />
+				</f:facet>
+			</p:card>
+		</h:form>
+	</ui:define>
+</ui:composition>

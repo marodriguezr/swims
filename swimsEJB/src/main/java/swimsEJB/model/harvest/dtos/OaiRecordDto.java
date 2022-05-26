@@ -12,7 +12,7 @@ import java.util.List;
  *
  */
 public class OaiRecordDto {
-	private String uid;
+	private String id;
 	private List<String> titles;
 	private List<String> creators;
 	private List<String> subjects;
@@ -30,7 +30,7 @@ public class OaiRecordDto {
 	private List<String> rights;
 
 	public OaiRecordDto() {
-		this.uid = "";
+		this.id = "";
 		this.titles = new ArrayList<String>();
 		this.creators = new ArrayList<String>();
 		this.subjects = new ArrayList<String>();
@@ -46,6 +46,29 @@ public class OaiRecordDto {
 		this.relations = new ArrayList<String>();
 		this.coverages = new ArrayList<String>();
 		this.rights = new ArrayList<String>();
+	}
+
+	public OaiRecordDto(String id, List<String> titles, List<String> creators, List<String> subjects,
+			List<String> descriptions, List<String> publishers, List<String> contributors, List<Date> dates,
+			List<String> types, List<String> formats, List<String> identifiers, List<String> sources,
+			List<String> languages, List<String> relations, List<String> coverages, List<String> rights) {
+		super();
+		this.id = id;
+		this.titles = titles;
+		this.creators = creators;
+		this.subjects = subjects;
+		this.descriptions = descriptions;
+		this.publishers = publishers;
+		this.contributors = contributors;
+		this.dates = dates;
+		this.types = types;
+		this.formats = formats;
+		this.identifiers = identifiers;
+		this.sources = sources;
+		this.languages = languages;
+		this.relations = relations;
+		this.coverages = coverages;
+		this.rights = rights;
 	}
 
 	public List<String> getTitles() {
@@ -168,12 +191,11 @@ public class OaiRecordDto {
 		this.rights = rights;
 	}
 
-	public String getUid() {
-		return uid;
+	public String getId() {
+		return id;
 	}
 
-	public void setUid(String uid) {
-		this.uid = uid;
+	public void setId(String id) {
+		this.id = id;
 	}
-
 }

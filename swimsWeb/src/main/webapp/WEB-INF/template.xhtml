@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title><ui:insert name="title">SWIMS</ui:insert></title>
+	<h:outputStylesheet name="/css/primeflex.min.css" />
+</h:head>
+<h:body>
+	<!-- onLoad -->
+	<ui:insert name="onLoad"></ui:insert>
+	
+	<!-- Notifications -->
+	<p:growl>
+		<p:autoUpdate />
+	</p:growl>
+
+	<!-- Navigation bar predefined by default but overrideable -->
+	<ui:insert name="navigationBar">
+		<div>
+			<h:form>
+				<p:menubar>
+					<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
+						action="/index?faces-redirect=true"></p:menuitem>
+					<p:menuitem icon="pi pi-fw pi-sign-in" value="Iniciar sesión"
+						action="sesion?faces-redirect=true"></p:menuitem>
+					<p:menuitem icon="pi pi-fw pi-filter"
+						value="Cosecha de registros OAI"
+						action="#{origenBean.loadPage()}"></p:menuitem>
+					<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog">
+						<p:menuitem value="Sets OAI"
+							action="/sysparams/oai-sets?faces-redirect=true">
+						</p:menuitem>
+					</p:submenu>
+					<f:facet name="options">
+						<p:button value="Perfil" icon="pi pi-fw pi-angle-down"
+							styleClass="ui-button-info" />
+					</f:facet>
+				</p:menubar>
+			</h:form>
+		</div>
+	</ui:insert>
+
+	<!-- content -->
+	<ui:insert name="contentContainer">
+		<div class="p-pt-2">
+			<ui:insert name="content" />
+		</div>
+	</ui:insert>
+
+	<ui:insert name="dialogs"></ui:insert>
+</h:body>
+</html>

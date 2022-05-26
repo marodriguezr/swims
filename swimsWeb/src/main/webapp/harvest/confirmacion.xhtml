@@ -1,0 +1,42 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Confirmación</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{oaiRecordBean.onConfirmationLoad()}"></f:viewAction>
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form>
+			<p:card>
+				<f:facet name="title">
+			Selección de trabajos de titulación
+			</f:facet>
+				<ui:include src="/harvest/steps.xhtml" />
+
+				<div class="ui-fluid p-pt-4">
+					<div class="p-field">
+						<p:outputLabel value="Nuevos registros"></p:outputLabel>
+						<p:inputText disabled="true"
+							value="#{oaiRecordBean.selectedOaiRecordDtos.size()}"></p:inputText>
+					</div>
+				</div>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-fw pi-angle-double-left"
+						value="Regresar" styleClass="ui-button-secondary"
+						action="/harvest/filtrado?faces-redirect=true" />
+					<p:commandButton styleClass="p-ml-2"
+						icon="pi pi-fw pi-angle-double-right" value="Avanzar" />
+
+				</f:facet>
+			</p:card>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,37 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head>
-	<title>Sets OAI</title>
-	<h:outputStylesheet name="/css/primeflex.min.css" />
-</h:head>
-<h:body>
-	<p:growl>
-		<p:autoUpdate />
-	</p:growl>
-	<div>
-		<h:form>
-			<p:menubar>
-				<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
-					action="/index?faces-redirect=true"></p:menuitem>
-				<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog">
-					<p:menuitem value="Sets OAI"
-						action="/sysparams/oai-sets?faces-redirect=true">
-					</p:menuitem>
-				</p:submenu>
-				<f:facet name="options">
-					<p:commandButton value="Perfil" icon="pi pi-fw pi-angle-down"
-						styleClass="ui-button-info" />
-				</f:facet>
-			</p:menubar>
-		</h:form>
-	</div>
-
-	<div class="p-pt-2">
+	<ui:define name="title">Sets OAI</ui:define>
+	<ui:define name="content">
 		<h:form>
 			<p:card>
 				<f:facet name="title">
@@ -59,16 +34,16 @@
 				</f:facet>
 			</p:card>
 		</h:form>
-	</div>
-
-	<p:dialog header="Ayuda" showEffect="fade" modal="true"
-		widgetVar="oaiSetsHelpDialog" responsive="true">
-		<p>
-			Refierase al sítio <a
-				href="http://repositorio.utn.edu.ec/oai/request?verb=ListSets">http://repositorio.utn.edu.ec/oai/request?verb=ListSets</a>
-			para conocer los identificadores y nombres de los sets puestos a
-			disposición por la Universidad Técnica del Norte.
-		</p>
-	</p:dialog>
-</h:body>
-</html>
+	</ui:define>
+	<ui:define name="dialogs">
+		<p:dialog header="Ayuda" showEffect="fade" modal="true"
+			widgetVar="oaiSetsHelpDialog" responsive="true">
+			<p>
+				Refierase al sítio <a
+					href="http://repositorio.utn.edu.ec/oai/request?verb=ListSets">http://repositorio.utn.edu.ec/oai/request?verb=ListSets</a>
+				para conocer los identificadores y nombres de los sets puestos a
+				disposición por la Universidad Técnica del Norte.
+			</p>
+		</p:dialog>
+	</ui:define>
+</ui:composition>
