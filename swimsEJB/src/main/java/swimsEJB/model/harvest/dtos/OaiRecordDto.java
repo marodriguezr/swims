@@ -1,5 +1,6 @@
 package swimsEJB.model.harvest.dtos;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
  */
 public class OaiRecordDto {
 	private String id;
+	private String url;
 	private List<String> titles;
 	private List<String> creators;
 	private List<String> subjects;
@@ -28,9 +30,14 @@ public class OaiRecordDto {
 	private List<String> relations;
 	private List<String> coverages;
 	private List<String> rights;
-
+	private String oaiSetId;
+	private Timestamp createdAt;
+	private Timestamp updateAt;
+	private boolean isActive;
+	
 	public OaiRecordDto() {
 		this.id = "";
+		this.url = "";
 		this.titles = new ArrayList<String>();
 		this.creators = new ArrayList<String>();
 		this.subjects = new ArrayList<String>();
@@ -46,6 +53,10 @@ public class OaiRecordDto {
 		this.relations = new ArrayList<String>();
 		this.coverages = new ArrayList<String>();
 		this.rights = new ArrayList<String>();
+		this.oaiSetId = "";
+		this.createdAt = new Timestamp(System.currentTimeMillis());
+		this.updateAt = new Timestamp(System.currentTimeMillis());
+		this.isActive = false;
 	}
 
 	public OaiRecordDto(String id, List<String> titles, List<String> creators, List<String> subjects,
@@ -197,5 +208,45 @@ public class OaiRecordDto {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getOaiSetId() {
+		return oaiSetId;
+	}
+
+	public void setOaiSetId(String oaiSetId) {
+		this.oaiSetId = oaiSetId;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Timestamp getUpdateAt() {
+		return updateAt;
+	}
+
+	public void setUpdateAt(Timestamp updateAt) {
+		this.updateAt = updateAt;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }

@@ -4,44 +4,38 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+
 /**
  * The persistent class for the users_groups database table.
  * 
  */
 @Entity
-@Table(name = "users_groups", schema = "auth")
-@NamedQuery(name = "UserGroup.findAll", query = "SELECT u FROM UserGroup u")
+@Table(name="users_groups",schema = "auth")
+@NamedQuery(name="UserGroup.findAll", query="SELECT u FROM UserGroup u")
 public class UserGroup implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(unique = true, nullable = false)
+	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name = "created_at", nullable = false)
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name = "created_by", nullable = false)
-	private Integer createdBy;
-
-	@Column(name = "is_active", nullable = false)
+	@Column(name="is_active", nullable=false)
 	private Boolean isActive;
 
-	@Column(name = "updated_at", nullable = false)
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	@Column(name = "updated_by", nullable = false)
-	private Integer updatedBy;
-
-	// bi-directional many-to-one association to Group
+	//bi-directional many-to-one association to Group
 	@ManyToOne
-	@JoinColumn(name = "group_id", nullable = false)
+	@JoinColumn(name="group_id", nullable=false)
 	private Group group;
 
-	// bi-directional many-to-one association to User
+	//bi-directional many-to-one association to User
 	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
+	@JoinColumn(name="user_id", nullable=false)
 	private User user;
 
 	public UserGroup() {
@@ -63,14 +57,6 @@ public class UserGroup implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public Integer getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public Boolean getIsActive() {
 		return this.isActive;
 	}
@@ -85,14 +71,6 @@ public class UserGroup implements Serializable {
 
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public Integer getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(Integer updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 	public Group getGroup() {

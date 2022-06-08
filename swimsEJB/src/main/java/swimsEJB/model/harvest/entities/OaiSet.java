@@ -3,6 +3,7 @@ package swimsEJB.model.harvest.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -22,9 +23,6 @@ public class OaiSet implements Serializable {
 	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="created_by", nullable=false)
-	private Integer createdBy;
-
 	@Column(name="is_active", nullable=false)
 	private Boolean isActive;
 
@@ -34,11 +32,11 @@ public class OaiSet implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	@Column(name="updated_by", nullable=false)
-	private Integer updatedBy;
+	//bi-directional many-to-one association to OaiRecord
+	@OneToMany(mappedBy="oaiSet")
+	private List<OaiRecord> oaiRecords;
 
 	public OaiSet() {
-		this.id = "hi";
 	}
 
 	public String getId() {
@@ -55,14 +53,6 @@ public class OaiSet implements Serializable {
 
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
-	}
-
-	public Integer getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
 	}
 
 	public Boolean getIsActive() {
@@ -89,12 +79,26 @@ public class OaiSet implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public Integer getUpdatedBy() {
-		return this.updatedBy;
+	public List<OaiRecord> getOaiRecords() {
+		return this.oaiRecords;
 	}
 
-	public void setUpdatedBy(Integer updatedBy) {
-		this.updatedBy = updatedBy;
+	public void setOaiRecords(List<OaiRecord> oaiRecords) {
+		this.oaiRecords = oaiRecords;
+	}
+
+	public OaiRecord addOaiRecord(OaiRecord oaiRecord) {
+		getOaiRecords().add(oaiRecord);
+		oaiRecord.setOaiSet(this);
+
+		return oaiRecord;
+	}
+
+	public OaiRecord removeOaiRecord(OaiRecord oaiRecord) {
+		getOaiRecords().remove(oaiRecord);
+		oaiRecord.setOaiSet(null);
+
+		return oaiRecord;
 	}
 
 }

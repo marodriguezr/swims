@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -39,6 +40,7 @@ public class FiltradoBean implements Serializable {
 	@PostConstruct
 	public void onLoad() {
 		this.dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		selectedOaiRecordDtos = new ArrayList<OaiRecordDto>();
 	}
 
 	public String onPageLoad() {
@@ -75,7 +77,7 @@ public class FiltradoBean implements Serializable {
 			return null;
 		}
 		try {
-			this.oaiRecordDtos = oaiRecordManager.parseStringToOaiRecordDtos2(oaiRecordManager.findManyOaiRecords2(
+			this.oaiRecordDtos = oaiRecordManager.parseStringsToOaiRecordDtos(oaiRecordManager.fetchOaiStrings(
 					this.origenBean.getOaiSetId(), this.fechaBean.getFrom(), this.fechaBean.getUntil()));
 			this.oaiRecordDtos = oaiRecordManager.removeDuplicateOaiRecordDtos(
 					oaiRecordManager.oaiRecordsToOaiRecordDtos(oaiRecordManager.findAllOaiRecords()),

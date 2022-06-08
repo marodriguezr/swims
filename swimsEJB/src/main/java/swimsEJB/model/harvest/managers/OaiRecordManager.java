@@ -5,9 +5,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.MessageFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -16,8 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -28,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvest.dtos.OaiRecordDto;
 import swimsEJB.model.harvest.entities.OaiRecord;
+import swimsEJB.model.harvest.entities.OaiSet;
 import swimsEJB.utilities.StringHelpers;
 
 /**
@@ -39,6 +39,8 @@ public class OaiRecordManager {
 
 	@EJB
 	private DaoManager daoManager;
+	@EJB
+	private OaiSetManager oaiSetManager;
 
 	/**
 	 * Default constructor.
@@ -52,26 +54,58 @@ public class OaiRecordManager {
 		return daoManager.findAll(OaiRecord.class);
 	}
 
+	public OaiRecord createOneOaiRecord(OaiRecord oaiRecord, OaiSet oaiSet) throws Exception {
+		oaiRecord.setOaiSet(oaiSet);
+		oaiRecord.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		oaiRecord.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		oaiRecord.setIsActive(true);
+
+		return (OaiRecord) daoManager.createOne(oaiRecord);
+	}
+
+	public List<OaiRecord> createManyOaiRecords(List<OaiRecord> oaiRecords, OaiSet oaiSet) throws Exception {
+		List<OaiRecord> oaiRecords2 = new ArrayList<>();
+		for (OaiRecord oaiRecord : oaiRecords) {
+			oaiRecords2.add(createOneOaiRecord(oaiRecord, oaiSet));
+		}
+		return oaiRecords2;
+	}
+
+	public OaiRecord oaiRecordDtoToOaiRecord(OaiRecordDto oaiRecordDto) throws Exception {
+		OaiRecord oaiRecord = new OaiRecord();
+		oaiRecord.setId(oaiRecordDto.getId());
+		oaiRecord.setUrl(oaiRecordDto.getUrl());
+		oaiRecord
+				.setTitle(oaiRecordDto.getTitles().isEmpty() ? "Registro sin título" : oaiRecordDto.getTitles().get(0));
+		oaiRecord.setCreator(
+				oaiRecordDto.getCreators().isEmpty() ? "Registro sin creador" : oaiRecordDto.getCreators().get(0));
+		oaiRecord.setSubject(
+				oaiRecordDto.getSubjects().isEmpty() ? "Registro sin tema" : oaiRecordDto.getSubjects().get(0));
+		oaiRecord.setDescription(oaiRecordDto.getDescriptions().isEmpty() ? "Registro sin descripción"
+				: oaiRecordDto.getDescriptions().get(0));
+		oaiRecord.setPublisher(oaiRecordDto.getPublishers().isEmpty() ? "Publisher non registered"
+				: oaiRecordDto.getPublishers().get(0));
+		oaiRecord.setContributor(oaiRecordDto.getContributors().isEmpty() ? "Registro sin director"
+				: oaiRecordDto.getContributors().get(0));
+		oaiRecord.setDate(oaiRecordDto.getDates().isEmpty() ? null : oaiRecordDto.getDates().get(0));
+		return oaiRecord;
+	}
+
 	public OaiRecordDto oaiRecordToOaiRecordDto(OaiRecord oaiRecord) {
 		OaiRecordDto oaiRecordDto;
 		oaiRecordDto = new OaiRecordDto();
 		oaiRecordDto.setId(oaiRecord.getId());
-		oaiRecordDto
-				.setTitles(oaiRecord.getOaiRecordTitles().stream().map(t -> t.getTitle()).collect(Collectors.toList()));
-		oaiRecordDto.setCreators(
-				oaiRecord.getOaiRecordCreators().stream().map(t -> t.getCreator()).collect(Collectors.toList()));
-		oaiRecordDto.setSubjects(
-				oaiRecord.getOaiRecordSubjects().stream().map(t -> t.getSubject()).collect(Collectors.toList()));
-		oaiRecordDto.setDescriptions(oaiRecord.getOaiRecordDescriptions().stream().map(t -> t.getDescription())
-				.collect(Collectors.toList()));
-		oaiRecordDto.setPublishers(
-				oaiRecord.getOaiRecordPublishers().stream().map(t -> t.getPublisher()).collect(Collectors.toList()));
-		oaiRecordDto.setContributors(oaiRecord.getOaiRecordContributors().stream().map(t -> t.getContributor())
-				.collect(Collectors.toList()));
-		oaiRecordDto
-				.setDates(oaiRecord.getOaiRecordDates().stream().map(t -> t.getDate()).collect(Collectors.toList()));
-		oaiRecordDto.setIdentifiers(
-				oaiRecord.getOaiRecordIdentifiers().stream().map(t -> t.getIdentifier()).collect(Collectors.toList()));
+		oaiRecordDto.getTitles().add(oaiRecord.getTitle());
+		oaiRecordDto.getCreators().add(oaiRecord.getCreator());
+		oaiRecordDto.getSubjects().add(oaiRecord.getSubject());
+		oaiRecordDto.getDescriptions().add(oaiRecord.getDescription());
+		oaiRecordDto.getPublishers().add(oaiRecord.getPublisher());
+		oaiRecordDto.getContributors().add(oaiRecord.getContributor());
+		oaiRecordDto.getDates().add(oaiRecord.getDate());
+		oaiRecordDto.setOaiSetId(oaiRecord.getOaiSet().getId());
+		oaiRecordDto.setCreatedAt(oaiRecord.getCreatedAt());
+		oaiRecordDto.setUpdateAt(oaiRecord.getUpdatedAt());
+		oaiRecordDto.setActive(oaiRecord.getIsActive());
 		return oaiRecordDto;
 	}
 
@@ -82,51 +116,25 @@ public class OaiRecordManager {
 		}
 		return oaiRecordDtos;
 	}
-	
-	public List<OaiRecordDto> removeDuplicateOaiRecordDtos(List<OaiRecordDto> oaiRecordDtos,List<OaiRecordDto> oaiRecordDtos2) {
+
+	public List<OaiRecordDto> removeDuplicateOaiRecordDtos(List<OaiRecordDto> oaiRecordDtos,
+			List<OaiRecordDto> oaiRecordDtos2) {
 		HashMap<String, OaiRecordDto> oaiRecordDtoHashMap = new HashMap<>();
 		for (OaiRecordDto oaiRecordDto : oaiRecordDtos) {
 			oaiRecordDtoHashMap.put(oaiRecordDto.getId(), oaiRecordDto);
 		}
-		
+
 		List<OaiRecordDto> oaiRecordDtos3 = new ArrayList<OaiRecordDto>();
 		for (OaiRecordDto oaiRecordDto : oaiRecordDtos2) {
-			if (oaiRecordDtoHashMap.containsKey(oaiRecordDto.getId())) continue;
+			if (oaiRecordDtoHashMap.containsKey(oaiRecordDto.getId()))
+				continue;
 			oaiRecordDtos3.add(oaiRecordDto);
 		}
-		
+
 		return oaiRecordDtos3;
 	}
 
-	/**
-	 * Method that fetches all the OAI records within the given parameters.
-	 * 
-	 * @param oaiSet Set of OAI Records that is meant to be harvested.
-	 * @param from
-	 * @param until
-	 * @return A XML string with many OAI Records
-	 * @throws Exception In case of being unable to perform the request.
-	 */
-	public String findManyOaiRecordsSingleRequest(String oaiSetIdentifier, LocalDate from, LocalDate until)
-			throws Exception {
-		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
-		String OAI_URI = MessageFormat.format(
-				"http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&metadataPrefix=oai_dc&from={1}&until={2}&set={0}",
-				oaiSetIdentifier, dateFormat.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
-				dateFormat.format(Date.from(until.atStartOfDay(ZoneId.systemDefault()).toInstant())));
-		HttpClient httpClient = HttpClient.newHttpClient();
-		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI)).build();
-		try {
-			HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
-			return response.body();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new Exception("Ha ocurrido un error en la adquisición de recursos externos.");
-		}
-	}
-
-	public List<String> findManyOaiRecords2(String oaiSetIdentifier, LocalDate from, LocalDate until) throws Exception {
+	public List<String> fetchOaiStrings(String oaiSetIdentifier, LocalDate from, LocalDate until) throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
 		String OAI_URI = MessageFormat.format(
 				"http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&metadataPrefix=oai_dc&from={1}&until={2}&set={0}",
@@ -167,215 +175,6 @@ public class OaiRecordManager {
 		return oaiRecords;
 	}
 
-	public ArrayList<OaiRecordDto> parseStringToOaiRecordDtos2(List<String> oaiRecords) throws Exception {
-		String LIST_RECORDS_OT = "<ListRecords>";
-		String LIST_RECORDS_CT = "</ListRecords>";
-		int indexOfLIST_RECORDS_OT;
-		int indexOfLIST_RECORDS_CT;
-
-		String OAI_DC_OT = "<oai_dc:dc";
-		String OAI_DC_CT = "</oai_dc:dc>";
-		int indexOfOAI_DC_OT;
-		int indexOfOAI_DC_CT;
-
-		String DC_TITLE_OT = "<dc:title>";
-		String DC_TITLE_CT = "</dc:title>";
-
-		String DC_CREATOR_OT = "<dc:creator>";
-		String DC_CREATOR_CT = "</dc:creator>";
-
-		String DC_SUBJECT_OT = "<dc:subject>";
-		String DC_SUBJECT_CT = "</dc:subject>";
-
-		String DC_DESCRIPTION_OT = "<dc:description>";
-		String DC_DESCRIPTION_CT = "</dc:description>";
-
-		String DC_PUBLISHER_OT = "<dc:publisher>";
-		String DC_PUBLISHER_CT = "</dc:publisher>";
-
-		String DC_CONTRIBUTOR_OT = "<dc:contributor>";
-		String DC_CONTRIBUTOR_CT = "</dc:contributor>";
-
-		String DC_DATE_OT = "<dc:date>";
-		String DC_DATE_CT = "</dc:date>";
-
-		String DC_TYPE_OT = "<dc:type>";
-		String DC_TYPE_CT = "</dc:type>";
-
-		String DC_FORMAT_OT = "<dc:format>";
-		String DC_FORMAT_CT = "</dc:format>";
-
-		String DC_IDENTIFIER_OT = "<dc:identifier>";
-		String DC_IDENTIFIER_CT = "</dc:identifier>";
-
-		String DC_SOURCE_OT = "<dc:source>";
-		String DC_SOURCE_CT = "</dc:source>";
-
-		String DC_LANGUAGE_OT = "<dc:language>";
-		String DC_LANGUAGE_CT = "</dc:language>";
-
-		String DC_RELATION_OT = "<dc:relation>";
-		String DC_RELATION_CT = "</dc:relation>";
-
-		String DC_COVERAGE_OT = "<dc:coverage>";
-		String DC_COVERAGE_CT = "</dc:coverage>";
-
-		String DC_RIGHTS_OT = "<dc:rights>";
-		String DC_RIGHTS_CT = "</dc:rights>";
-
-		ArrayList<OaiRecordDto> oaiRecordDtos = new ArrayList<OaiRecordDto>();
-		String oaiDc;
-		OaiRecordDto oaiRecordDto;
-		String listRecords;
-
-		for (String oaiRecord : oaiRecords) {
-			indexOfLIST_RECORDS_OT = oaiRecord.indexOf(LIST_RECORDS_OT);
-			indexOfLIST_RECORDS_CT = oaiRecord.indexOf(LIST_RECORDS_CT);
-			if (indexOfLIST_RECORDS_OT == -1 || indexOfLIST_RECORDS_CT == -1)
-				break;
-			listRecords = oaiRecord.substring(indexOfLIST_RECORDS_OT + LIST_RECORDS_OT.length(),
-					indexOfLIST_RECORDS_CT);
-			while (true) {
-				indexOfOAI_DC_OT = listRecords.indexOf(OAI_DC_OT);
-				indexOfOAI_DC_CT = listRecords.indexOf(OAI_DC_CT);
-				if (indexOfOAI_DC_OT == -1 || indexOfOAI_DC_CT == -1)
-					break;
-				oaiDc = listRecords.substring(indexOfOAI_DC_OT + OAI_DC_OT.length(), indexOfOAI_DC_CT);
-				listRecords = StringHelpers.removeSubstring(listRecords, 0, indexOfOAI_DC_CT + OAI_DC_CT.length());
-				oaiRecordDto = new OaiRecordDto();
-				oaiRecordDto.setTitles(extractStringBetweenManyXMLTags(oaiDc, DC_TITLE_OT, DC_TITLE_CT));
-				oaiRecordDto.setCreators(extractStringBetweenManyXMLTags(oaiDc, DC_CREATOR_OT, DC_CREATOR_CT));
-				oaiRecordDto.setSubjects(extractStringBetweenManyXMLTags(oaiDc, DC_SUBJECT_OT, DC_SUBJECT_CT));
-				oaiRecordDto
-						.setDescriptions(extractStringBetweenManyXMLTags(oaiDc, DC_DESCRIPTION_OT, DC_DESCRIPTION_CT));
-				oaiRecordDto.setPublishers(extractStringBetweenManyXMLTags(oaiDc, DC_PUBLISHER_OT, DC_PUBLISHER_CT));
-				oaiRecordDto
-						.setContributors(extractStringBetweenManyXMLTags(oaiDc, DC_CONTRIBUTOR_OT, DC_CONTRIBUTOR_CT));
-				try {
-					oaiRecordDto.setDates(extractDateBetweenManyXMLTags(oaiDc, DC_DATE_OT, DC_DATE_CT));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					throw new Exception("A ocurrido un error en la conversión de registros OAI.");
-				}
-				oaiRecordDto.setTypes(extractStringBetweenManyXMLTags(oaiDc, DC_TYPE_OT, DC_TYPE_CT));
-				oaiRecordDto.setFormats(extractStringBetweenManyXMLTags(oaiDc, DC_FORMAT_OT, DC_FORMAT_CT));
-				oaiRecordDto.setIdentifiers(extractStringBetweenManyXMLTags(oaiDc, DC_IDENTIFIER_OT, DC_IDENTIFIER_CT));
-				oaiRecordDto.setSources(extractStringBetweenManyXMLTags(oaiDc, DC_SOURCE_OT, DC_SOURCE_CT));
-				oaiRecordDto.setLanguages(extractStringBetweenManyXMLTags(oaiDc, DC_LANGUAGE_OT, DC_LANGUAGE_CT));
-				oaiRecordDto.setRelations(extractStringBetweenManyXMLTags(oaiDc, DC_RELATION_OT, DC_RELATION_CT));
-				oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc, DC_COVERAGE_OT, DC_COVERAGE_CT));
-				oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc, DC_RIGHTS_OT, DC_RIGHTS_CT));
-				for (String identifier : oaiRecordDto.getIdentifiers()) {
-					oaiRecordDto.setId(oaiRecordDto.getId() + identifier);
-				}
-				oaiRecordDto.setId(UUID.nameUUIDFromBytes(oaiRecordDto.getId().getBytes()).toString());
-				oaiRecordDtos.add(oaiRecordDto);
-			}
-		}
-		return oaiRecordDtos;
-	}
-
-	public ArrayList<OaiRecordDto> parseStringToOaiRecordDtosSingleRequest(String oaiRecord) throws Exception {
-		String LIST_RECORDS_OT = "<ListRecords>";
-		String LIST_RECORDS_CT = "</ListRecords>";
-
-		String OAI_DC_OT = "<oai_dc:dc";
-		String OAI_DC_CT = "</oai_dc:dc>";
-		int indexOfOAI_DC_OT;
-		int indexOfOAI_DC_CT;
-
-		String DC_TITLE_OT = "<dc:title>";
-		String DC_TITLE_CT = "</dc:title>";
-
-		String DC_CREATOR_OT = "<dc:creator>";
-		String DC_CREATOR_CT = "</dc:creator>";
-
-		String DC_SUBJECT_OT = "<dc:subject>";
-		String DC_SUBJECT_CT = "</dc:subject>";
-
-		String DC_DESCRIPTION_OT = "<dc:description>";
-		String DC_DESCRIPTION_CT = "</dc:description>";
-
-		String DC_PUBLISHER_OT = "<dc:publisher>";
-		String DC_PUBLISHER_CT = "</dc:publisher>";
-
-		String DC_CONTRIBUTOR_OT = "<dc:contributor>";
-		String DC_CONTRIBUTOR_CT = "</dc:contributor>";
-
-		String DC_DATE_OT = "<dc:date>";
-		String DC_DATE_CT = "</dc:date>";
-
-		String DC_TYPE_OT = "<dc:type>";
-		String DC_TYPE_CT = "</dc:type>";
-
-		String DC_FORMAT_OT = "<dc:format>";
-		String DC_FORMAT_CT = "</dc:format>";
-
-		String DC_IDENTIFIER_OT = "<dc:identifier>";
-		String DC_IDENTIFIER_CT = "</dc:identifier>";
-
-		String DC_SOURCE_OT = "<dc:source>";
-		String DC_SOURCE_CT = "</dc:source>";
-
-		String DC_LANGUAGE_OT = "<dc:language>";
-		String DC_LANGUAGE_CT = "</dc:language>";
-
-		String DC_RELATION_OT = "<dc:relation>";
-		String DC_RELATION_CT = "</dc:relation>";
-
-		String DC_COVERAGE_OT = "<dc:coverage>";
-		String DC_COVERAGE_CT = "</dc:coverage>";
-
-		String DC_RIGHTS_OT = "<dc:rights>";
-		String DC_RIGHTS_CT = "</dc:rights>";
-
-		String listRecords = oaiRecord.substring(oaiRecord.indexOf(LIST_RECORDS_OT) + LIST_RECORDS_OT.length(),
-				oaiRecord.indexOf(LIST_RECORDS_CT));
-		String oaiDc;
-		OaiRecordDto oaiRecordDto;
-		ArrayList<OaiRecordDto> oaiRecordDtos = new ArrayList<OaiRecordDto>();
-
-		while (true) {
-			indexOfOAI_DC_OT = listRecords.indexOf(OAI_DC_OT);
-			indexOfOAI_DC_CT = listRecords.indexOf(OAI_DC_CT);
-
-			if (indexOfOAI_DC_OT == -1 || indexOfOAI_DC_CT == -1)
-				break;
-			oaiDc = listRecords.substring(indexOfOAI_DC_OT + OAI_DC_OT.length(), indexOfOAI_DC_CT);
-			listRecords = StringHelpers.removeSubstring(listRecords, 0, indexOfOAI_DC_CT + OAI_DC_CT.length());
-			oaiRecordDto = new OaiRecordDto();
-
-			oaiRecordDto.setTitles(extractStringBetweenManyXMLTags(oaiDc, DC_TITLE_OT, DC_TITLE_CT));
-			oaiRecordDto.setCreators(extractStringBetweenManyXMLTags(oaiDc, DC_CREATOR_OT, DC_CREATOR_CT));
-			oaiRecordDto.setSubjects(extractStringBetweenManyXMLTags(oaiDc, DC_SUBJECT_OT, DC_SUBJECT_CT));
-			oaiRecordDto.setDescriptions(extractStringBetweenManyXMLTags(oaiDc, DC_DESCRIPTION_OT, DC_DESCRIPTION_CT));
-			oaiRecordDto.setPublishers(extractStringBetweenManyXMLTags(oaiDc, DC_PUBLISHER_OT, DC_PUBLISHER_CT));
-			oaiRecordDto.setContributors(extractStringBetweenManyXMLTags(oaiDc, DC_CONTRIBUTOR_OT, DC_CONTRIBUTOR_CT));
-			try {
-				oaiRecordDto.setDates(extractDateBetweenManyXMLTags(oaiDc, DC_DATE_OT, DC_DATE_CT));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				throw new Exception("A ocurrido un error en la conversión de registros OAI.");
-			}
-			oaiRecordDto.setTypes(extractStringBetweenManyXMLTags(oaiDc, DC_TYPE_OT, DC_TYPE_CT));
-			oaiRecordDto.setFormats(extractStringBetweenManyXMLTags(oaiDc, DC_FORMAT_OT, DC_FORMAT_CT));
-			oaiRecordDto.setIdentifiers(extractStringBetweenManyXMLTags(oaiDc, DC_IDENTIFIER_OT, DC_IDENTIFIER_CT));
-			oaiRecordDto.setSources(extractStringBetweenManyXMLTags(oaiDc, DC_SOURCE_OT, DC_SOURCE_CT));
-			oaiRecordDto.setLanguages(extractStringBetweenManyXMLTags(oaiDc, DC_LANGUAGE_OT, DC_LANGUAGE_CT));
-			oaiRecordDto.setRelations(extractStringBetweenManyXMLTags(oaiDc, DC_RELATION_OT, DC_RELATION_CT));
-			oaiRecordDto.setCoverages(extractStringBetweenManyXMLTags(oaiDc, DC_COVERAGE_OT, DC_COVERAGE_CT));
-			oaiRecordDto.setRights(extractStringBetweenManyXMLTags(oaiDc, DC_RIGHTS_OT, DC_RIGHTS_CT));
-			for (String identifier : oaiRecordDto.getIdentifiers()) {
-				oaiRecordDto.setId(oaiRecordDto.getId() + identifier);
-			}
-			oaiRecordDto.setId(UUID.nameUUIDFromBytes(oaiRecordDto.getId().getBytes()).toString());
-			oaiRecordDtos.add(oaiRecordDto);
-		}
-		return oaiRecordDtos;
-	}
-
 	public String getURLFromOaiRecordDto(OaiRecordDto oaiRecordDto) {
 		if (oaiRecordDto.getIdentifiers().size() == 0)
 			return "";
@@ -386,53 +185,65 @@ public class OaiRecordManager {
 		return "";
 	}
 
-	public ArrayList<String> extractStringBetweenManyXMLTags(String oaiDc, String openingTag, String closingTag) {
+	public String extractStringBetweenXMLTags(String string, String openingTag, String closingTag) {
 		int indexOfOT;
 		int indexOfCT;
 
+		indexOfOT = string.indexOf(openingTag);
+		indexOfCT = string.indexOf(closingTag);
+
+		if (indexOfOT == -1 || indexOfCT == -1)
+			return null;
+		return string.substring(indexOfOT + openingTag.length(), indexOfCT);
+	}
+
+	public ArrayList<String> extractStringsBetweenXMLTags(String oaiDc, String openingTag, String closingTag) {
 		ArrayList<String> list = new ArrayList<String>();
 
+		String string;
 		while (true) {
-			indexOfOT = oaiDc.indexOf(openingTag);
-			indexOfCT = oaiDc.indexOf(closingTag);
-
-			if (indexOfOT == -1 || indexOfCT == -1)
+			string = extractStringBetweenXMLTags(oaiDc, openingTag, closingTag);
+			if (string == null)
 				break;
-			list.add(oaiDc.substring(indexOfOT + openingTag.length(), indexOfCT));
-			oaiDc = StringHelpers.removeSubstring(oaiDc, 0, oaiDc.indexOf(closingTag) + closingTag.length());
+			list.add(string);
+			oaiDc = removeCharactersBetweenXMLTag(oaiDc, openingTag, closingTag);
 		}
 		return list;
 	}
 
-	public ArrayList<Date> extractDateBetweenManyXMLTags(String oaiDc, String openingTag, String closingTag)
-			throws ParseException {
+	public Date extractDateBetweenXMLTags(String string, String openingTag, String closingTag) {
+		int indexOfOT = string.indexOf(openingTag);
+		int indexOfCT = string.indexOf(closingTag);
+
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
 
-		int indexOfOT;
-		int indexOfCT;
+		if (indexOfOT == -1 || indexOfCT == -1)
+			return null;
+		try {
+			return df.parse(string.substring(indexOfOT + openingTag.length(), indexOfCT));
+		} catch (Exception e) {
+			try {
+				return df2.parse(string.substring(indexOfOT + openingTag.length(), indexOfCT));
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+		return null;
+	}
 
+	public ArrayList<Date> extractDatesBetweenXMLTags(String oaiDc, String openingTag, String closingTag) {
 		ArrayList<Date> list = new ArrayList<Date>();
 
+		Date date;
+
 		while (true) {
-			indexOfOT = oaiDc.indexOf(openingTag);
-			indexOfCT = oaiDc.indexOf(closingTag);
-
-			if (indexOfOT == -1 || indexOfCT == -1)
+			date = extractDateBetweenXMLTags(oaiDc, openingTag, closingTag);
+			if (date == null)
 				break;
-
-			try {
-				list.add(df.parse(oaiDc.substring(indexOfOT + openingTag.length(), indexOfCT)));
-			} catch (Exception e) {
-				try {
-					list.add(df2.parse(oaiDc.substring(indexOfOT + openingTag.length(), indexOfCT)));
-				} catch (Exception e2) {
-					// TODO: handle exception
-				}
-			}
-			oaiDc = StringHelpers.removeSubstring(oaiDc, 0, oaiDc.indexOf(closingTag) + closingTag.length());
+			list.add(date);
+			oaiDc = removeCharactersBetweenXMLTag(oaiDc, openingTag, closingTag);
 		}
-
 		return list;
 	}
 
@@ -482,4 +293,124 @@ public class OaiRecordManager {
 		return filteredOaiRecordDtos;
 	}
 
+	public String removeCharactersBetweenXMLTag(String string, String openingTag, String closingTag) {
+		return StringHelpers.removeSubstring(string, 0, string.indexOf(closingTag) + closingTag.length());
+	}
+
+	/**
+	 * According to OAI-PMH specification, this method expects a string containing
+	 * all the fields between the tags <record> and </record> </br>
+	 * The attributes oaiSetId, createdAt, updatedAt, isActive are not setted.
+	 * 
+	 * @param string
+	 * @return
+	 * @throws Exception
+	 */
+	public OaiRecordDto parseStringToOaiRecordDto(String string) {
+		OaiRecordDto oaiRecordDto = new OaiRecordDto();
+
+		String IDENTIFIER_OT = "<identifier>";
+		String IDENTIFIER_CT = "</identifier>";
+
+		String DC_TITLE_OT = "<dc:title>";
+		String DC_TITLE_CT = "</dc:title>";
+
+		String DC_CREATOR_OT = "<dc:creator>";
+		String DC_CREATOR_CT = "</dc:creator>";
+
+		String DC_SUBJECT_OT = "<dc:subject>";
+		String DC_SUBJECT_CT = "</dc:subject>";
+
+		String DC_DESCRIPTION_OT = "<dc:description>";
+		String DC_DESCRIPTION_CT = "</dc:description>";
+
+		String DC_PUBLISHER_OT = "<dc:publisher>";
+		String DC_PUBLISHER_CT = "</dc:publisher>";
+
+		String DC_CONTRIBUTOR_OT = "<dc:contributor>";
+		String DC_CONTRIBUTOR_CT = "</dc:contributor>";
+
+		String DC_DATE_OT = "<dc:date>";
+		String DC_DATE_CT = "</dc:date>";
+
+		String DC_TYPE_OT = "<dc:type>";
+		String DC_TYPE_CT = "</dc:type>";
+
+		String DC_FORMAT_OT = "<dc:format>";
+		String DC_FORMAT_CT = "</dc:format>";
+
+		String DC_IDENTIFIER_OT = "<dc:identifier>";
+		String DC_IDENTIFIER_CT = "</dc:identifier>";
+
+		String DC_SOURCE_OT = "<dc:source>";
+		String DC_SOURCE_CT = "</dc:source>";
+
+		String DC_LANGUAGE_OT = "<dc:language>";
+		String DC_LANGUAGE_CT = "</dc:language>";
+
+		String DC_RELATION_OT = "<dc:relation>";
+		String DC_RELATION_CT = "</dc:relation>";
+
+		String DC_COVERAGE_OT = "<dc:coverage>";
+		String DC_COVERAGE_CT = "</dc:coverage>";
+
+		String DC_RIGHTS_OT = "<dc:rights>";
+		String DC_RIGHTS_CT = "</dc:rights>";
+
+		oaiRecordDto.setId(extractStringBetweenXMLTags(string, IDENTIFIER_OT, IDENTIFIER_CT));
+		oaiRecordDto.setTitles(extractStringsBetweenXMLTags(string, DC_TITLE_OT, DC_TITLE_CT));
+		oaiRecordDto.setCreators(extractStringsBetweenXMLTags(string, DC_CREATOR_OT, DC_CREATOR_CT));
+		oaiRecordDto.setSubjects(extractStringsBetweenXMLTags(string, DC_SUBJECT_OT, DC_SUBJECT_CT));
+		oaiRecordDto.setDescriptions(extractStringsBetweenXMLTags(string, DC_DESCRIPTION_OT, DC_DESCRIPTION_CT));
+		oaiRecordDto.setPublishers(extractStringsBetweenXMLTags(string, DC_PUBLISHER_OT, DC_PUBLISHER_CT));
+		oaiRecordDto.setContributors(extractStringsBetweenXMLTags(string, DC_CONTRIBUTOR_OT, DC_CONTRIBUTOR_CT));
+		oaiRecordDto.setDates(extractDatesBetweenXMLTags(string, DC_DATE_OT, DC_DATE_CT));
+		oaiRecordDto.setTypes(extractStringsBetweenXMLTags(string, DC_TYPE_OT, DC_TYPE_CT));
+		oaiRecordDto.setFormats(extractStringsBetweenXMLTags(string, DC_FORMAT_OT, DC_FORMAT_CT));
+		oaiRecordDto.setIdentifiers(extractStringsBetweenXMLTags(string, DC_IDENTIFIER_OT, DC_IDENTIFIER_CT));
+		oaiRecordDto.setSources(extractStringsBetweenXMLTags(string, DC_SOURCE_OT, DC_SOURCE_CT));
+		oaiRecordDto.setLanguages(extractStringsBetweenXMLTags(string, DC_LANGUAGE_OT, DC_LANGUAGE_CT));
+		oaiRecordDto.setRelations(extractStringsBetweenXMLTags(string, DC_RELATION_OT, DC_RELATION_CT));
+		oaiRecordDto.setCoverages(extractStringsBetweenXMLTags(string, DC_COVERAGE_OT, DC_COVERAGE_CT));
+		oaiRecordDto.setRights(extractStringsBetweenXMLTags(string, DC_RIGHTS_OT, DC_RIGHTS_CT));
+		oaiRecordDto.setUrl(getURLFromOaiRecordDto(oaiRecordDto));
+
+		return oaiRecordDto;
+	}
+
+	/**
+	 * According to OAI-PMH specification, this method expects a string containing
+	 * all the fields between the tags <ListRecords> and </ListRecords> </br>
+	 * The attributes oaiSetId, createdAt, updatedAt, isActive are not setted.
+	 * 
+	 * @param string
+	 * @return
+	 * @throws Exception
+	 */
+	public List<OaiRecordDto> parseStringToOaiRecordDtos(String string) {
+		String RECORD_OT = "<record>";
+		String RECORD_CT = "</record>";
+
+		String record;
+		List<OaiRecordDto> oaiRecordDtos = new ArrayList<OaiRecordDto>();
+
+		while (true) {
+			record = extractStringBetweenXMLTags(string, RECORD_OT, RECORD_CT);
+			if (record == null)
+				break;
+			oaiRecordDtos.add(parseStringToOaiRecordDto(record));
+			string = removeCharactersBetweenXMLTag(string, RECORD_OT, RECORD_CT);
+		}
+		return oaiRecordDtos;
+	}
+
+	public List<OaiRecordDto> parseStringsToOaiRecordDtos(List<String> strings) {
+		List<OaiRecordDto> oaiRecordDtos = new ArrayList<OaiRecordDto>();
+
+		for (String string : strings) {
+			Stream.of(oaiRecordDtos, parseStringToOaiRecordDtos(string)).forEach(oaiRecordDtos::addAll);
+		}
+
+		return oaiRecordDtos;
+	}
 }

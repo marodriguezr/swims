@@ -29,7 +29,18 @@ public class UserManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UserDto createOneUser(String firstName, String lastName, String email, String password, int createdBy)
+	public UserDto UserToUserDto(User user) {
+		UserDto userDto = new UserDto();
+		userDto.setId(user.getId());
+		userDto.setActive(user.getIsActive());
+		userDto.setEmail(user.getEmail());
+		userDto.setFirstName(user.getFirstName());
+		userDto.setLastName(user.getLastName());
+		userDto.setSuperUser(user.getIsSuperUser());
+		return userDto;
+	}
+	
+	public UserDto createOneUser(String firstName, String lastName, String email, String password)
 			throws Exception {
 		User user = new User();
 		user.setFirstName(firstName);
@@ -40,11 +51,9 @@ public class UserManager {
 		user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		user.setIsActive(true);
-		user.setCreatedBy(createdBy);
-		user.setUpdatedBy(createdBy);
 
 		try {
-			return ((User) daoManager.createOne(user)).toUserDto();
+			return UserToUserDto(((User) daoManager.createOne(user)));
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -58,6 +67,6 @@ public class UserManager {
 			throw new Exception("Acceso no permitido.");
 		if (!BCrypt.checkpw(password, user.getPassword()))
 			return null;
-		return user.toUserDto();
+		return UserToUserDto(user);
 	}
 }

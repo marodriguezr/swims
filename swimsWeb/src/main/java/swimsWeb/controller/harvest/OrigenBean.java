@@ -31,6 +31,7 @@ public class OrigenBean implements Serializable {
 	}
 	
 	public String loadPage() {
+		this.oaiSets = oaiSetManager.findAllOaiSets();
 		return "/harvest/origen?faces-redirect=true";
 	}
 

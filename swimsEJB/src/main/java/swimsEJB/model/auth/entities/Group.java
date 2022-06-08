@@ -11,21 +11,17 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name = "groups", schema = "auth")
+@Table(name="groups",schema = "auth")
 @NamedQuery(name="Group.findAll", query="SELECT g FROM Group g")
 public class Group implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private Integer id;
 
 	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
-
-	@Column(name="created_by", nullable=false)
-	private Integer createdBy;
 
 	@Column(name="is_active", nullable=false)
 	private Boolean isActive;
@@ -35,9 +31,6 @@ public class Group implements Serializable {
 
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
-
-	@Column(name="updated_by", nullable=false)
-	private Integer updatedBy;
 
 	@Column(name="webapp_related_path", nullable=false, length=2147483647)
 	private String webappRelatedPath;
@@ -65,14 +58,6 @@ public class Group implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public Integer getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
-	}
-
 	public Boolean getIsActive() {
 		return this.isActive;
 	}
@@ -95,14 +80,6 @@ public class Group implements Serializable {
 
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public Integer getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(Integer updatedBy) {
-		this.updatedBy = updatedBy;
 	}
 
 	public String getWebappRelatedPath() {

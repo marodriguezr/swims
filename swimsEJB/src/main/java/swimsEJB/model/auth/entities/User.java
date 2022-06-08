@@ -2,59 +2,50 @@ package swimsEJB.model.auth.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
-
-import swimsEJB.model.auth.dtos.UserDto;
-
 import java.sql.Timestamp;
 import java.util.List;
+
 
 /**
  * The persistent class for the users database table.
  * 
  */
 @Entity
-@Table(name = "users", schema = "auth")
-@NamedQuery(name = "User.findAll", query = "SELECT u FROM User u")
+@Table(name="users",schema = "auth")
+@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(unique = true, nullable = false)
+	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name = "created_at", nullable = false)
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name = "created_by", nullable = false)
-	private Integer createdBy;
-
-	@Column(nullable = false, length = 2147483647)
+	@Column(nullable=false, length=2147483647)
 	private String email;
 
-	@Column(name = "first_name", nullable = false, length = 2147483647)
+	@Column(name="first_name", nullable=false, length=2147483647)
 	private String firstName;
 
-	@Column(name = "is_active", nullable = false)
+	@Column(name="is_active", nullable=false)
 	private Boolean isActive;
 
-	@Column(name = "is_super_user", nullable = false)
+	@Column(name="is_super_user", nullable=false)
 	private Boolean isSuperUser;
 
-	@Column(name = "last_name", nullable = false, length = 2147483647)
+	@Column(name="last_name", nullable=false, length=2147483647)
 	private String lastName;
 
-	@Column(nullable = false, length = 2147483647)
+	@Column(nullable=false, length=2147483647)
 	private String password;
 
-	@Column(name = "updated_at", nullable = false)
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	@Column(name = "updated_by", nullable = false)
-	private Integer updatedBy;
-
-	// bi-directional many-to-one association to UserGroup
-	@OneToMany(mappedBy = "user")
+	//bi-directional many-to-one association to UserGroup
+	@OneToMany(mappedBy="user")
 	private List<UserGroup> usersGroups;
 
 	public User() {
@@ -74,14 +65,6 @@ public class User implements Serializable {
 
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
-	}
-
-	public Integer getCreatedBy() {
-		return this.createdBy;
-	}
-
-	public void setCreatedBy(Integer createdBy) {
-		this.createdBy = createdBy;
 	}
 
 	public String getEmail() {
@@ -140,14 +123,6 @@ public class User implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public Integer getUpdatedBy() {
-		return this.updatedBy;
-	}
-
-	public void setUpdatedBy(Integer updatedBy) {
-		this.updatedBy = updatedBy;
-	}
-
 	public List<UserGroup> getUsersGroups() {
 		return this.usersGroups;
 	}
@@ -170,14 +145,4 @@ public class User implements Serializable {
 		return usersGroup;
 	}
 
-	public UserDto toUserDto() {
-		UserDto userDto = new UserDto();
-		userDto.setId(this.id);
-		userDto.setFirstName(this.firstName);
-		userDto.setLastName(this.lastName);
-		userDto.setEmail(this.email);
-		userDto.setSuperUser(this.isSuperUser);
-		userDto.setActive(this.isActive);
-		return userDto;
-	}
 }

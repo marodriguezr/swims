@@ -26,6 +26,7 @@ public class OaiSetManager {
 	public OaiSetManager() {
 		// TODO Auto-generated constructor stub
 	}
+	
 
 	public OaiSet createOneOaiSet(String identifier, String name, int createdBy) throws Exception {
 		OaiSet oaiSet;
@@ -36,8 +37,6 @@ public class OaiSetManager {
 		oaiSet.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		oaiSet.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		oaiSet.setIsActive(true);
-		oaiSet.setCreatedBy(createdBy);
-		oaiSet.setUpdatedBy(createdBy);
 
 		try {
 			oaiSet = (OaiSet) daoManager.createOne(oaiSet);
