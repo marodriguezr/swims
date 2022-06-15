@@ -9,20 +9,22 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import swimsEJB.model.harvest.managers.OaiRecordManager;
+import swimsEJB.model.harvest.managers.OaiSetManager;
 import swimsWeb.utilities.JSFMessages;
 
 @Named
 @RequestScoped
 public class ConfirmacionBean implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	@Inject
 	private OrigenBean origenBean;
-	@Inject
-	private FechaBean fechaBean;
 	@Inject
 	private FiltradoBean filtradoBean;
 	@EJB
 	private OaiRecordManager oaiRecordManager;
+	@EJB
+	private OaiSetManager oaiSetManager;
 
 	private int toAddOaiRecordsCount;
 
@@ -49,6 +51,21 @@ public class ConfirmacionBean implements Serializable {
 			return null;
 		}
 		return "/harvest/confirmacion?faces-redirect=true";
+	}
+
+	public String createManyOaiRecordsAction() {
+		try {
+			oaiRecordManager.createManyOaiRecords(
+					oaiRecordManager.oaiRecordDtosToOaiRecords(this.filtradoBean.getSelectedOaiRecordDtos()),
+					oaiSetManager.findOneOaiSetById(this.origenBean.getOaiSetId()));
+			JSFMessages.INFO("Registros creados de forma exitosa.");
+			return "/index?faces-redirec=true";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JSFMessages.ERROR("Incapaz de crear los registros.");
+			return null;
+		}
 	}
 
 	public int getToAddOaiRecordsCount() {

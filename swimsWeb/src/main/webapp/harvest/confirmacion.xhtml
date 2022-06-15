@@ -32,8 +32,10 @@
 					<p:commandButton icon="pi pi-fw pi-angle-double-left"
 						value="Regresar" styleClass="ui-button-secondary"
 						action="/harvest/filtrado?faces-redirect=true" />
-					<p:commandButton styleClass="p-ml-2"
-						icon="pi pi-fw pi-save" value="Confirmar y Registrar" />
+					<p:commandButton
+						action="#{confirmacionBean.createManyOaiRecordsAction()}"
+						styleClass="p-ml-2" icon="pi pi-fw pi-save"
+						value="Confirmar y Registrar" />
 
 				</f:facet>
 			</p:card>

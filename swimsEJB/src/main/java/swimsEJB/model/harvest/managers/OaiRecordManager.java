@@ -71,7 +71,7 @@ public class OaiRecordManager {
 		return oaiRecords2;
 	}
 
-	public OaiRecord oaiRecordDtoToOaiRecord(OaiRecordDto oaiRecordDto) throws Exception {
+	public OaiRecord oaiRecordDtoToOaiRecord(OaiRecordDto oaiRecordDto) {
 		OaiRecord oaiRecord = new OaiRecord();
 		oaiRecord.setId(oaiRecordDto.getId());
 		oaiRecord.setUrl(oaiRecordDto.getUrl());
@@ -89,6 +89,14 @@ public class OaiRecordManager {
 				: oaiRecordDto.getContributors().get(0));
 		oaiRecord.setDate(oaiRecordDto.getDates().isEmpty() ? null : oaiRecordDto.getDates().get(0));
 		return oaiRecord;
+	}
+
+	public List<OaiRecord> oaiRecordDtosToOaiRecords(List<OaiRecordDto> oaiRecordDtos) {
+		List<OaiRecord> oaiRecords = new ArrayList<OaiRecord>();
+		for (OaiRecordDto oaiRecordDto : oaiRecordDtos) {
+			oaiRecords.add(this.oaiRecordDtoToOaiRecord(oaiRecordDto));
+		}
+		return oaiRecords;
 	}
 
 	public OaiRecordDto oaiRecordToOaiRecordDto(OaiRecord oaiRecord) {
