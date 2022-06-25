@@ -5,13 +5,13 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the users_groups database table.
+ * The persistent class for the groups_permissions database table.
  * 
  */
 @Entity
-@Table(name="users_groups", schema = "auth")
-@NamedQuery(name="UserGroup.findAll", query="SELECT u FROM UserGroup u")
-public class UserGroup implements Serializable {
+@Table(name="groups_permissions", schema = "auth")
+@NamedQuery(name="GroupPermission.findAll", query="SELECT g FROM GroupPermission g")
+public class GroupPermission implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -24,12 +24,12 @@ public class UserGroup implements Serializable {
 	@JoinColumn(name="group_id", nullable=false)
 	private Group group;
 
-	//bi-directional many-to-one association to User
+	//bi-directional many-to-one association to Permission
 	@ManyToOne
-	@JoinColumn(name="user_id", nullable=false)
-	private User user;
+	@JoinColumn(name="permission_id", nullable=false)
+	private Permission permission;
 
-	public UserGroup() {
+	public GroupPermission() {
 	}
 
 	public Integer getId() {
@@ -48,12 +48,12 @@ public class UserGroup implements Serializable {
 		this.group = group;
 	}
 
-	public User getUser() {
-		return this.user;
+	public Permission getPermission() {
+		return this.permission;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setPermission(Permission permission) {
+		this.permission = permission;
 	}
 
 }

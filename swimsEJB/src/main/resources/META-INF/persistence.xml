@@ -2,10 +2,13 @@
 <persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 	<persistence-unit name="swimsDS" transaction-type="JTA">
 		<jta-data-source>java:/swimsDS</jta-data-source>
-		<class>swimsEJB.model.auth.entities.Group</class>
-		<class>swimsEJB.model.auth.entities.User</class>
-		<class>swimsEJB.model.auth.entities.UserGroup</class>
 		<class>swimsEJB.model.harvest.entities.OaiRecord</class>
 		<class>swimsEJB.model.harvest.entities.OaiSet</class>
+		<class>swimsEJB.model.auth.entities.Group</class>
+		<class>swimsEJB.model.auth.entities.GroupPermission</class>
+		<class>swimsEJB.model.auth.entities.Permission</class>
+		<class>swimsEJB.model.auth.entities.User</class>
+		<class>swimsEJB.model.auth.entities.UserGroup</class>
+		<class>swimsEJB.model.core.entities.Sysparam</class>
 	</persistence-unit>
 </persistence>

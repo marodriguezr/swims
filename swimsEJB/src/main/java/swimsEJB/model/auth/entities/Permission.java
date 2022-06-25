@@ -7,13 +7,13 @@ import java.util.List;
 
 
 /**
- * The persistent class for the groups database table.
+ * The persistent class for the permissions database table.
  * 
  */
 @Entity
-@Table(name="groups", schema = "auth")
-@NamedQuery(name="Group.findAll", query="SELECT g FROM Group g")
-public class Group implements Serializable {
+@Table(name="permissions", schema = "auth")
+@NamedQuery(name="Permission.findAll", query="SELECT p FROM Permission p")
+public class Permission implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -33,15 +33,14 @@ public class Group implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
+	@Column(name="webapp_related_path", nullable=false, length=2147483647)
+	private String webappRelatedPath;
+
 	//bi-directional many-to-one association to GroupPermission
-	@OneToMany(mappedBy="group")
+	@OneToMany(mappedBy="permission")
 	private List<GroupPermission> groupsPermissions;
 
-	//bi-directional many-to-one association to UserGroup
-	@OneToMany(mappedBy="group")
-	private List<UserGroup> usersGroups;
-
-	public Group() {
+	public Permission() {
 	}
 
 	public Integer getId() {
@@ -84,6 +83,14 @@ public class Group implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
+	public String getWebappRelatedPath() {
+		return this.webappRelatedPath;
+	}
+
+	public void setWebappRelatedPath(String webappRelatedPath) {
+		this.webappRelatedPath = webappRelatedPath;
+	}
+
 	public List<GroupPermission> getGroupsPermissions() {
 		return this.groupsPermissions;
 	}
@@ -94,38 +101,16 @@ public class Group implements Serializable {
 
 	public GroupPermission addGroupsPermission(GroupPermission groupsPermission) {
 		getGroupsPermissions().add(groupsPermission);
-		groupsPermission.setGroup(this);
+		groupsPermission.setPermission(this);
 
 		return groupsPermission;
 	}
 
 	public GroupPermission removeGroupsPermission(GroupPermission groupsPermission) {
 		getGroupsPermissions().remove(groupsPermission);
-		groupsPermission.setGroup(null);
+		groupsPermission.setPermission(null);
 
 		return groupsPermission;
-	}
-
-	public List<UserGroup> getUsersGroups() {
-		return this.usersGroups;
-	}
-
-	public void setUsersGroups(List<UserGroup> usersGroups) {
-		this.usersGroups = usersGroups;
-	}
-
-	public UserGroup addUsersGroup(UserGroup usersGroup) {
-		getUsersGroups().add(usersGroup);
-		usersGroup.setGroup(this);
-
-		return usersGroup;
-	}
-
-	public UserGroup removeUsersGroup(UserGroup usersGroup) {
-		getUsersGroups().remove(usersGroup);
-		usersGroup.setGroup(null);
-
-		return usersGroup;
 	}
 
 }

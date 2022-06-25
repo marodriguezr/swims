@@ -117,3 +117,6 @@
 
 # vscode
 .vscode/
+
+# envfile
+**.env

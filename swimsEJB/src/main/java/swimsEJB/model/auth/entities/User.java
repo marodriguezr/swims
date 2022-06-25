@@ -11,12 +11,13 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="users",schema = "auth")
+@Table(name="users", schema = "auth")
 @NamedQuery(name="User.findAll", query="SELECT u FROM User u")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
 	private Integer id;
 
@@ -31,9 +32,6 @@ public class User implements Serializable {
 
 	@Column(name="is_active", nullable=false)
 	private Boolean isActive;
-
-	@Column(name="is_super_user", nullable=false)
-	private Boolean isSuperUser;
 
 	@Column(name="last_name", nullable=false, length=2147483647)
 	private String lastName;
@@ -89,14 +87,6 @@ public class User implements Serializable {
 
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
-	}
-
-	public Boolean getIsSuperUser() {
-		return this.isSuperUser;
-	}
-
-	public void setIsSuperUser(Boolean isSuperUser) {
-		this.isSuperUser = isSuperUser;
 	}
 
 	public String getLastName() {

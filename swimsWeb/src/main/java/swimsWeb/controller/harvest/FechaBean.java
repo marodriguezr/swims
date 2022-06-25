@@ -19,7 +19,7 @@ public class FechaBean implements Serializable {
 	private OrigenBean origenBean;
 	private LocalDate from;
 	private LocalDate until;
-	
+
 	public FechaBean() {
 		// TODO Auto-generated constructor stub
 	}
@@ -27,14 +27,15 @@ public class FechaBean implements Serializable {
 	@PostConstruct
 	public void onLoad() {
 	}
-	
+
 	public String onPageLoad() {
 		if (this.origenBean.getOaiSetId() != null)
 			return null;
 		JSFMessages.WARN("Por favor, seleccione un set OAI");
 		return "/harvest/origen?faces-redirect=true";
+
 	}
-	
+
 	public String loadPage() {
 		if (this.origenBean.getOaiSetId() != null)
 			return "/harvest/fecha?faces-redirect=true";
