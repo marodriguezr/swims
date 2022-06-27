@@ -8,6 +8,7 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import swimsEJB.model.auth.entities.GroupPermission;
 import swimsEJB.model.auth.entities.Permission;
 import swimsEJB.model.core.managers.DaoManager;
 
@@ -20,6 +21,8 @@ public class PermissionManager {
 
 	@EJB
 	private DaoManager daoManager;
+	@EJB
+	private GroupPermissionManager groupPermissionManager;
 
 	/**
 	 * Default constructor.
@@ -43,15 +46,15 @@ public class PermissionManager {
 			throw new Exception("Ha ocurrido un error en la creación del Permiso.");
 		}
 	}
-	
+
 	public List<Permission> createManyPermissions(List<Permission> permissions) throws Exception {
 		List<Permission> permissions2 = new ArrayList<>();
 		for (Permission permission : permissions) {
-			permissions2.add(createOnePermission(permission.getName(),permission.getWebappRelatedPath()));
+			permissions2.add(createOnePermission(permission.getName(), permission.getWebappRelatedPath()));
 		}
 		return permissions2;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Permission> findAllPemiPermissions() {
 		return daoManager.findAll(Permission.class);
@@ -60,10 +63,12 @@ public class PermissionManager {
 	public Permission findOnePermissionById(int id) throws Exception {
 		return (Permission) daoManager.findOneById(Permission.class, id);
 	}
-	
-	public Permission updateOnePermissionById(int id, String name, String webAppRelatedPath, Boolean isActive) throws Exception {
+
+	public Permission updateOnePermissionById(int id, String name, String webAppRelatedPath, Boolean isActive)
+			throws Exception {
 		Permission permission = findOnePermissionById(id);
-		if (permission == null) throw new Exception("El Permiso especificado no existe.");
+		if (permission == null)
+			throw new Exception("El Permiso especificado no existe.");
 		permission.setName(name);
 		permission.setWebappRelatedPath(webAppRelatedPath);
 		permission.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
@@ -74,5 +79,23 @@ public class PermissionManager {
 			// TODO: handle exception
 			throw new Exception("Ha ocurrido un error en la actualización del Permiso.");
 		}
+	}
+
+	public List<Permission> findAllPermissionsByGroupId(int groupId) {
+		List<GroupPermission> groupPermissions = groupPermissionManager.findAllGroupPermissionsByGroupId(groupId);
+		List<Permission> permissions = new ArrayList<>();
+		for (GroupPermission groupPermission : groupPermissions) {
+			permissions.add(groupPermission.getPermission());
+		}
+		return permissions;
+	};
+	
+	public List<String> findAllWebappRelatedPathsByGroupId(int groupId) {
+		List<Permission> permissions = findAllPermissionsByGroupId(groupId);
+		List<String> webappRelatedPaths = new ArrayList<>();
+		for (Permission permission : permissions) {
+			webappRelatedPaths.add(permission.getWebappRelatedPath());
+		}
+		return webappRelatedPaths;
 	}
 }

@@ -29,7 +29,7 @@
 					<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
 						action="/index?faces-redirect=true"></p:menuitem>
 					<p:menuitem icon="pi pi-fw pi-sign-in" value="Iniciar sesión"
-						action="sesion?faces-redirect=true"></p:menuitem>
+						action="#{signInBean.loadPage()}"></p:menuitem>
 					<p:menuitem icon="pi pi-fw pi-filter"
 						value="Cosecha de registros OAI" action="#{origenBean.loadPage()}"></p:menuitem>
 					<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog">
@@ -38,10 +38,9 @@
 						</p:menuitem>
 					</p:submenu>
 					<f:facet name="options">
-						<p:submenu styleClass="ui-button-info"
-							icon="pi pi-fw pi-angle-down">
-							<p:menuitem value="Perfil"></p:menuitem>
-						</p:submenu>
+						<p:commandButton action="#{authBean.signOutAction()}"
+							value="Cerrar Sesión" icon="pi pi-fw pi-sign-out"
+							rendered="#{signInBean.signedUserDto ne null}"></p:commandButton>
 					</f:facet>
 				</p:menubar>
 			</h:form>

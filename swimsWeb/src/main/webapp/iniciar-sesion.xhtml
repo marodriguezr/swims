@@ -16,17 +16,17 @@
 				<div class="ui-fluid">
 					<div class="p-field">
 						<p:outputLabel for="email">Correo electrónico</p:outputLabel>
-						<p:inputText value="#{oaiSetBean.name}" id="email" required="true" />
+						<p:inputText value="#{signInBean.email}" id="email" required="true" />
 					</div>
 					<div class="p-field">
 						<p:outputLabel for="password">Contraseña</p:outputLabel>
-						<p:inputText id="password" value="#{oaiSetBean.identifier}"
+						<p:password id="password" value="#{signInBean.password}"
 							required="true" />
 					</div>
 				</div>
 				<f:facet name="footer">
-					<p:commandButton icon="pi pi-sign-in" value="Iniciar sesiónn"
-						actionListener="#{loginBean.createUserActionHandler()}" />
+					<p:commandButton icon="pi pi-sign-in" value="Iniciar sesión"
+						actionListener="#{signInBean.signInAction()}" />
 				</f:facet>
 			</p:card>
 		</h:form>

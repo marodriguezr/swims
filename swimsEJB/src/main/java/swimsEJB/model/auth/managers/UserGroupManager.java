@@ -1,5 +1,7 @@
 package swimsEJB.model.auth.managers;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -45,5 +47,11 @@ public class UserGroupManager {
 			// TODO: handle exception
 			throw new Exception("Ha ocurrido un error en la creación del UserGroup.");
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<UserGroup> findAllUserGroupsByUserId(int userId) {
+		List<UserGroup> userGroups = daoManager.findManyWhere(UserGroup.class, "o.user.id = " + userId, ""); 
+		return userGroups;
 	}
 }

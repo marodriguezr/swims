@@ -177,7 +177,13 @@ public class DaoManager {
 		String jpqlStatement;
 		jpqlStatement = "SELECT o FROM " + class1.getSimpleName() + " o WHERE " + whereClause;
 		query = em.createQuery(jpqlStatement);
-		return query.getSingleResult();
+		try {
+			return query.getSingleResult();	
+		} catch (Exception e) {
+			// TODO: handle exception
+			return null;
+		}
+		
 	}
 
 	/**
