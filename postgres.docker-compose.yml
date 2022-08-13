@@ -1,0 +1,16 @@
+volumes:
+  postgres_swims:
+
+services:
+  db:
+    container_name: postgres_swims
+    image: postgres:13
+    restart: always
+    volumes:
+      - postgres_swims:/var/lib/postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: swims
+      POSTGRES_DB: swims_db
+    ports:
+      - "5432:5432"
