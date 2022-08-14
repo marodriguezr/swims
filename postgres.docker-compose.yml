@@ -11,6 +11,6 @@ services:
     environment:
       POSTGRES_PASSWORD: admin
       POSTGRES_USER: swims
-      POSTGRES_DB: swims_db
+      POSTGRES_DB: swimsdb
     ports:
       - "5432:5432"
