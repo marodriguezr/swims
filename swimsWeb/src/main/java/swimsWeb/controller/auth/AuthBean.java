@@ -1,6 +1,5 @@
 package swimsWeb.controller.auth;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +21,6 @@ public class AuthBean implements Serializable {
 	private UserManager userManager;
 	@Inject
 	private SignInBean signInBean;
-	private FacesContext facesContext;
 
 	public AuthBean() {
 		// TODO Auto-generated constructor stub
@@ -32,23 +30,14 @@ public class AuthBean implements Serializable {
 	public void onLoad() {
 	}
 
-	public void onPageLoad() {
-		this.facesContext = FacesContext.getCurrentInstance();
-		try {
-			if (this.signInBean.getAccessibleWebappPaths().stream()
-					.anyMatch(facesContext.getViewRoot().getViewId()::contains))
-				return;
-		} catch (Exception e) {
-			try {
-				this.facesContext.getExternalContext()
-						.redirect(this.facesContext.getExternalContext().getRequestContextPath() + "/iniciar-sesion.xhtml");
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
+	public String onPageLoad() {
+//		Checks whether if the user is requesting any of its accessible paths
+		if (this.signInBean.getAccessibleWebappPaths().stream()
+				.anyMatch(FacesContext.getCurrentInstance().getViewRoot().getViewId()::contains))
+			return null;
+		return "/iniciar-sesion?faces-redirect=true";
 	}
-	
+
 	public String signOutAction() {
 		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 		return "/index?faces-redirect=true";

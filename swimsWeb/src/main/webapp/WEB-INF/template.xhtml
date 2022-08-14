@@ -13,9 +13,6 @@
 	<!-- onLoad -->
 	<ui:insert name="onLoad"></ui:insert>
 
-	<!-- onLoad2 -->
-	<ui:insert name="onLoad2"></ui:insert>
-
 	<!-- Notifications -->
 	<p:growl>
 		<p:autoUpdate />
@@ -28,8 +25,6 @@
 				<p:menubar>
 					<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
 						action="/index?faces-redirect=true"></p:menuitem>
-					<p:menuitem icon="pi pi-fw pi-sign-in" value="Iniciar sesión"
-						action="#{signInBean.loadPage()}"></p:menuitem>
 					<p:menuitem icon="pi pi-fw pi-filter"
 						value="Cosecha de registros OAI" action="#{origenBean.loadPage()}"></p:menuitem>
 					<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog">
@@ -38,9 +33,25 @@
 						</p:menuitem>
 					</p:submenu>
 					<f:facet name="options">
-						<p:commandButton action="#{authBean.signOutAction()}"
-							value="Cerrar Sesión" icon="pi pi-fw pi-sign-out"
-							rendered="#{signInBean.signedUserDto ne null}"></p:commandButton>
+						<div style="display: flex; align-items: center;">
+							<h:outputText value="#{signInBean.signedUserDto.firstName}"
+								rendered="#{signInBean.signedUserDto ne null}" styleClass="p-text-bold p-mr-2"/>
+							<p:commandButton id="dynaButton" type="button"
+								icon="pi pi-angle-down" />
+						</div>
+						<p:menu overlay="true" trigger="dynaButton" my="right top"
+							at="right bottom">
+							<p:submenu label="Sesión">
+								<p:menuitem action="#{authBean.signOutAction()}"
+									value="Cerrar Sesión" icon="pi pi-fw pi-sign-out"
+									rendered="#{signInBean.signedUserDto ne null}" />
+								<p:menuitem action="#{signInBean.loadPage()}"
+									value="Iniciar Sesión" icon="pi pi-fw pi-sign-in"
+									rendered="#{signInBean.signedUserDto eq null}" />
+							</p:submenu>
+							<p:submenu label="Otros">
+							</p:submenu>
+						</p:menu>
 					</f:facet>
 				</p:menubar>
 			</h:form>

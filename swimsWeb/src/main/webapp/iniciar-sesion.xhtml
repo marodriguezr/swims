@@ -6,6 +6,13 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">Iniciar Sesión</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{signInBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
 	<ui:define name="content">
 		<h:form>
 			<p:card>
@@ -16,7 +23,8 @@
 				<div class="ui-fluid">
 					<div class="p-field">
 						<p:outputLabel for="email">Correo electrónico</p:outputLabel>
-						<p:inputText value="#{signInBean.email}" id="email" required="true" />
+						<p:inputText value="#{signInBean.email}" id="email"
+							required="true" />
 					</div>
 					<div class="p-field">
 						<p:outputLabel for="password">Contraseña</p:outputLabel>
@@ -26,7 +34,7 @@
 				</div>
 				<f:facet name="footer">
 					<p:commandButton icon="pi pi-sign-in" value="Iniciar sesión"
-						actionListener="#{signInBean.signInAction()}" />
+						action="#{signInBean.signInAction()}" />
 				</f:facet>
 			</p:card>
 		</h:form>

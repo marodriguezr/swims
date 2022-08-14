@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -36,10 +37,22 @@ public class SignInBean implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
+	@PostConstruct
+	public void onLoad() {
+		this.accessibleWebappPaths = new ArrayList<>();
+	}
+
 	public String loadPage() {
 		this.email = "";
 		this.password = "";
 		return "/iniciar-sesion?faces-redirect=true";
+	}
+
+	public void onPageLoad() {
+		if (!this.email.isEmpty())
+			this.email = "";
+		if (!this.password.isEmpty())
+			this.password = "";
 	}
 
 	public String signInAction() {
@@ -57,7 +70,7 @@ public class SignInBean implements Serializable {
 		}
 		findAllAccesibleWebappPathsByUserIdActionListener();
 		JSFMessages.INFO("Sesión iniciada");
-		return null;
+		return "/index?faces-redirect=true";
 	}
 
 	public void findAllAccesibleWebappPathsByUserIdActionListener() {
