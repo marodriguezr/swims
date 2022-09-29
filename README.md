@@ -1,72 +1,27 @@
-# MVN, EAR, EJB, JSF Boilerplate.
+# Software Impact Measurement System
 
-## How to  
-This boilerplate is meant to be used with any distribution of wildfly that supports Jakarta EE 8.
-## How to create new modules
-1. Download the proper boilerplate code of the kind of module you want to add.  
-[EJB](https://github.com/migonos01454f/jejb-boilerplate)  
-[WAR](https://github.com/migonos01454f/jwar-boilerplate)  
-2. Change the module's artifactId according to your needs.
-3. Register the new module under the modules section of the pom.xml file.  
-Eg:  
-```xml
-<module>new-war-module</module>
-```
-4. Register the new module under the dependencyManagement/dependencies section of the pom.xml file.  
-Eg:  
-```xml
-<dependency>
-	<groupId>org.sonatype.mavenbook.multi</groupId>
-	<artifactId>new-war-module</artifactId>
-	<version>1.0</version>
-	<type>war</type>
-</dependency>
-```
-5. Register the new module under the dependencies section of the ear-module/pom.xml file.  
-Eg:  
-```xml
-<dependency>
-	<groupId>org.sonatype.mavenbook.multi</groupId>
-	<artifactId>new-war-module</artifactId>
-	<type>war</type>
-</dependency>
-```
-6. Register the new module under the configuration section of the maven-ear-plugin located in the ear-module/pom.xml file.
-Eg:  
-```xml
-<webModule>
-	<groupId>org.sonatype.mavenbook.multi</groupId>
-	<artifactId>new-war-module</artifactId>
-	<contextRoot>/new_jear_boilerplate</contextRoot>
-	<bundleFileName>new-war-module-1.0.war</bundleFileName>
-</webModule>
-```
+## How to run
 
-## Available commands  
-1. Package:  
-```bash
-mvn package
-```
-2. Deploy to wildfly server:
-	1. Start an instance of wildfly.
-	2. Change directory to ear-module
-	3. Execute:
-	```bash
-	mvn clean install && mvn wildfly:deploy
-	```
-3. Get help of wildfly plugin:
-	1. Under the ear-module directory execute:
-	```bash
-	mvn wildfly:help
-	```
-4. Redeploy to widlfly server:
-	1. Under the ear-module directory execute:  
-	```bash
-	mvn wildfly:redeploy
-	```
-	
-## Msade possible by 
-1. [Maven J2EE Archetype](https://pastebin.com/raw/TLTFh9aW)
-2. [How to build an EAR project with EJB and WAR using Maven?](https://stackoverflow.com/questions/32990664/how-to-build-an-ear-project-with-ejb-and-war-using-maven)
-3. [Apache Maven EAR Plugin Documentation](https://maven.apache.org/plugins/maven-ear-plugin/index.html)
+Having **Maven** and **Docker** installed locally.
 
+### Development environment
+
+1. Clone the repository.
+2. Run:
+   ```bash
+   docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+   ```
+3. Compile the code of the database schema available at `db-schema.dbml` on [dbdiagram](https://www.dbdiagram.io.d).
+4. Execute the compiled sql script on the database, you can use tools such as dbeaver.
+5. Package and deploy the aplication running:
+   ```bash
+   mvn clean package && docker cp ./swimsEAP/target/swims-1.0.ear swims_wildfly_dev:/app
+   ```
+
+## Command cheatsheet
+
+1. Deploy application to docker container
+
+   ```bash
+   mvn clean package && docker cp ./swimsEAP/target/swims-1.0.ear swims_wildfly_dev:/app
+   ```

@@ -1,0 +1,22 @@
+networks:
+  swims_network:
+
+services:
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: swims
+      POSTGRES_DB: swimsdb
+    ports:
+      - "5432:5432"
+    networks:
+      - swims_network
+
+  wildfly:
+    image: docker.io/bitnami/wildfly:26
+    ports:
+      - "8080:8080"
+    networks:
+      - swims_network
+    depends_on:
+      - postgres

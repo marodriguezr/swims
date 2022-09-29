@@ -1,0 +1,21 @@
+volumes:
+  swims_postgres_data_dev:
+  swims_wildfly_data_dev:
+    driver: local
+
+services:
+  postgres:
+    container_name: swims_postgres_dev
+    volumes:
+      - swims_postgres_data_dev:/var/lib/postgres
+    environment:
+      POSTGRES_PASSWORD: admin
+
+  wildfly:
+    container_name: swims_wildfly_dev
+    volumes:
+      - "swims_wildfly_data_dev:/bitnami/wildfly"
+      - ./docker/dev/wildfly/standalone.xml:/bitnami/wildfly/configuration/standalone.xml
+    environment:
+      - WILDFLY_PASSWORD=adminadmin
+      - WILDFLY_USERNAME=admin
