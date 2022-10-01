@@ -25,9 +25,12 @@
 				<p:menubar>
 					<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
 						action="/index?faces-redirect=true"></p:menuitem>
-					<p:menuitem icon="pi pi-fw pi-filter"
-						value="Cosecha de registros OAI" action="#{origenBean.loadPage()}"></p:menuitem>
-					<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog">
+					<p:menuitem
+						rendered="#{authBean.verifyRenderability(webappPathsBean.HARVEST_MODULE_WEBAPP_PATH)}"
+						icon="pi pi-fw pi-filter" value="Cosecha de registros OAI"
+						action="#{origenBean.loadPage()}"></p:menuitem>
+					<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog"
+						rendered="#{authBean.verifyRenderability(webappPathsBean.SYSPARAMS_MODULE_WEBAPP_PATH)}">
 						<p:menuitem value="Sets OAI"
 							action="/sysparams/oai-sets?faces-redirect=true">
 						</p:menuitem>
@@ -35,7 +38,8 @@
 					<f:facet name="options">
 						<div style="display: flex; align-items: center;">
 							<h:outputText value="#{signInBean.signedUserDto.firstName}"
-								rendered="#{signInBean.signedUserDto ne null}" styleClass="p-text-bold p-mr-2"/>
+								rendered="#{signInBean.signedUserDto ne null}"
+								styleClass="p-text-bold p-mr-2" />
 							<p:commandButton id="dynaButton" type="button"
 								icon="pi pi-angle-down" />
 						</div>

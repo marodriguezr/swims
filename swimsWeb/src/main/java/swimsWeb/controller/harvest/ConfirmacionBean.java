@@ -8,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvest.managers.OaiRecordManager;
 import swimsEJB.model.harvest.managers.OaiSetManager;
 import swimsWeb.utilities.JSFMessages;
@@ -25,6 +26,7 @@ public class ConfirmacionBean implements Serializable {
 	private OaiRecordManager oaiRecordManager;
 	@EJB
 	private OaiSetManager oaiSetManager;
+	
 
 	private int toAddOaiRecordsCount;
 

@@ -2,7 +2,7 @@
 
 ## How to run
 
-Having **Maven** and **Docker** installed locally.
+Having **Maven**, **Java** and **Docker** installed locally.
 
 ### Development environment
 
@@ -16,6 +16,10 @@ Having **Maven** and **Docker** installed locally.
 5. Package and deploy the aplication running:
    ```bash
    mvn clean package && docker cp ./swimsEAP/target/swims-1.0.ear swims_wildfly_dev:/app
+   ```
+   or compiling within a docker container
+   ```bash
+   docker run -it --rm --name swims_mvn_dev -v "$(pwd)":/usr/src/mymaven -v ~/.m2:/root/.m2 -w /usr/src/mymaven maven:3-openjdk-11 mvn clean install
    ```
 
 ## Command cheatsheet

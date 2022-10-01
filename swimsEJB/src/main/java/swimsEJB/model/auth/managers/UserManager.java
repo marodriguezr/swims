@@ -153,4 +153,16 @@ public class UserManager {
 		}
 		return new ArrayList<>(new HashSet<>(accessibleWebAppPaths));
 	}
+	
+	public boolean verifyAuthorizationByWebappPaths(List<String> accessibleWebappPaths, List<String> requiredWebappPaths) {
+		for (String requiredWebappPath : requiredWebappPaths) {
+			if (accessibleWebappPaths.stream().anyMatch(requiredWebappPath::contains)) return true;
+		}
+		return false;
+	}
+	
+	public boolean verifyAuthorizationByUserId(int userId, List<String> requiredWebappPaths) throws Exception {
+		List<String> accessibleWebappPaths = findAllAccesibleWebappPathsByUserId(userId);
+		return verifyAuthorizationByWebappPaths(accessibleWebappPaths, requiredWebappPaths);
+	}
 }

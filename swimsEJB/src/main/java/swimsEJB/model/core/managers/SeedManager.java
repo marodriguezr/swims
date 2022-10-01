@@ -12,6 +12,9 @@ import swimsEJB.model.auth.managers.PermissionManager;
 import swimsEJB.model.auth.managers.UserManager;
 import swimsEJB.model.core.entities.Sysparam;
 
+import static swimsEJB.constants.WebappPaths.HARVEST_MODULE_WEBAPP_PATH;
+import static swimsEJB.constants.WebappPaths.SYSPARAMS_MODULE_WEBAPP_PATH;
+
 /**
  * Session Bean implementation class CoreManager
  */
@@ -46,34 +49,38 @@ public class SeedManager {
 		Sysparam sysparam = sysparamManager.findOneByKey("IS_SYSTEM_SEEDED");
 		if (sysparam != null)
 			if (sysparam.getValue() == "true")
-			throw new Exception("System already seeded.");
+				throw new Exception("System already seeded.");
 		if (!userManager.findAllUsers().isEmpty())
 			throw new Exception("System already seeded.");
 
 		/**
 		* 
 		*/
-		UserDto userDto = userManager.createOneUser(firstName, lastName, email, password);
+		UserDto adminUser = userManager.createOneUser(firstName, lastName, email, password);
 
 		/**
 		 * Permissions
 		 */
-		Permission permission = permissionManager.createOnePermission("Generar registros OAI", "/harvest");
+		Permission harvestModulePermission = permissionManager.createOnePermission("Generar registros OAI",
+				HARVEST_MODULE_WEBAPP_PATH);
+		Permission sysParamsModulePermission = permissionManager.createOnePermission("Administrar parámetros del sistema",
+				SYSPARAMS_MODULE_WEBAPP_PATH);
 
 		/**
 		 * Groups
 		 */
-		Group group = groupManager.createOneGroup("Administrador");
+		Group adminGroup = groupManager.createOneGroup("Administrador");
 
 		/**
 		 * GroupPermissions
 		 */
-		groupManager.addPermissionById(group.getId(), permission.getId());
+		groupManager.addPermissionById(adminGroup.getId(), harvestModulePermission.getId());
+		groupManager.addPermissionById(adminGroup.getId(), sysParamsModulePermission.getId());
 
 		/**
 		 * UserGroups
 		 */
-		userManager.addGroupById(userDto.getId(), group.getId());
+		userManager.addGroupById(adminUser.getId(), adminGroup.getId());
 
 		/**
 		 * 
