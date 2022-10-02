@@ -25,15 +25,17 @@
 				<p:menubar>
 					<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
 						action="/index?faces-redirect=true"></p:menuitem>
-					<p:menuitem
-						rendered="#{authBean.verifyRenderability(webappPathsBean.HARVEST_MODULE_WEBAPP_PATH)}"
-						icon="pi pi-fw pi-filter" value="Cosecha de registros OAI"
-						action="#{origenBean.loadPage()}"></p:menuitem>
-					<p:submenu label="Parámetros del sistema" icon="pi pi-fw pi-cog"
-						rendered="#{authBean.verifyRenderability(webappPathsBean.SYSPARAMS_MODULE_WEBAPP_PATH)}">
-						<p:menuitem value="Sets OAI"
-							action="/sysparams/oai-sets?faces-redirect=true">
+					<p:submenu
+						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH)}"
+						label="Adquisición de datos" icon="pi pi-fw pi-cog">
+						<p:menuitem value="Administración de Sets OAI"
+							action="#{oaiSetsManagementBean.loadPage()}"
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH)}">
 						</p:menuitem>
+						<p:menuitem
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH)}"
+							icon="pi pi-fw pi-filter" value="Inclusión de Registros OAI"
+							action="#{setSelectionBean.loadPage()}"></p:menuitem>
 					</p:submenu>
 					<f:facet name="options">
 						<div style="display: flex; align-items: center;">

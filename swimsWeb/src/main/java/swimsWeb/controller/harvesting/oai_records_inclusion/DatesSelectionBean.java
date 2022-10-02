@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvest;
+package swimsWeb.controller.harvesting.oai_records_inclusion;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,17 +10,19 @@ import javax.inject.Named;
 
 import swimsWeb.utilities.JSFMessages;
 
+import static swimsEJB.constants.WebappPaths.*;
+
 @Named
 @SessionScoped
-public class FechaBean implements Serializable {
+public class DatesSelectionBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Inject
-	private OrigenBean origenBean;
+	private SetSelectionBean origenBean;
 	private LocalDate from;
 	private LocalDate until;
 
-	public FechaBean() {
+	public DatesSelectionBean() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -32,13 +34,13 @@ public class FechaBean implements Serializable {
 		if (this.origenBean.getOaiSetId() != null)
 			return null;
 		JSFMessages.WARN("Por favor, seleccione un set OAI");
-		return "/harvest/origen?faces-redirect=true";
+		return HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 
 	}
 
 	public String loadPage() {
 		if (this.origenBean.getOaiSetId() != null)
-			return "/harvest/fecha?faces-redirect=true";
+			return HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		JSFMessages.WARN("Por favor, seleccione un set OAI");
 		return null;
 	}

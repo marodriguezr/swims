@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvest;
+package swimsWeb.controller.harvesting.oai_records_inclusion;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,12 +8,14 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import swimsEJB.model.harvest.entities.OaiSet;
-import swimsEJB.model.harvest.managers.OaiSetManager;
+import swimsEJB.model.harvesting.entities.OaiSet;
+import swimsEJB.model.harvesting.managers.OaiSetManager;
+
+import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH;
 
 @Named
 @SessionScoped
-public class OrigenBean implements Serializable {
+public class SetSelectionBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String oaiSetId;
@@ -21,7 +23,7 @@ public class OrigenBean implements Serializable {
 	@EJB
 	private OaiSetManager oaiSetManager;
 
-	public OrigenBean() {
+	public SetSelectionBean() {
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -32,7 +34,7 @@ public class OrigenBean implements Serializable {
 	
 	public String loadPage() {
 		this.oaiSets = oaiSetManager.findAllOaiSets();
-		return "/harvest/origen?faces-redirect=true";
+		return HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public String getOaiSetId() {

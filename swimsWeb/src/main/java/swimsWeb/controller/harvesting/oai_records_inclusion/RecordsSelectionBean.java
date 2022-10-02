@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvest;
+package swimsWeb.controller.harvesting.oai_records_inclusion;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -13,19 +13,21 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import swimsEJB.model.harvest.dtos.OaiRecordDto;
-import swimsEJB.model.harvest.managers.OaiRecordManager;
+import swimsEJB.model.harvesting.dtos.OaiRecordDto;
+import swimsEJB.model.harvesting.managers.OaiRecordManager;
 import swimsWeb.utilities.JSFMessages;
+
+import static swimsEJB.constants.WebappPaths.*;
 
 @Named
 @SessionScoped
-public class FiltradoBean implements Serializable {
+public class RecordsSelectionBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Inject
-	private FechaBean fechaBean;
+	private DatesSelectionBean fechaBean;
 	@Inject
-	private OrigenBean origenBean;
+	private SetSelectionBean origenBean;
 	private List<OaiRecordDto> oaiRecordDtos;
 	private DateFormat dateFormat;
 	private OaiRecordDto selectedOaiRecordDto;
@@ -33,7 +35,7 @@ public class FiltradoBean implements Serializable {
 	@EJB
 	private OaiRecordManager oaiRecordManager;
 
-	public FiltradoBean() {
+	public RecordsSelectionBean() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -46,17 +48,17 @@ public class FiltradoBean implements Serializable {
 	public String onPageLoad() {
 		if (this.fechaBean.getFrom() == null || this.fechaBean.getUntil() == null) {
 			JSFMessages.WARN("Debe seleccionar fechas entre las cuales se extraerán los datos.");
-			return "/harvest/fecha?faces-redirect=true";
+			return HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
 		if (this.fechaBean.getUntil().compareTo(LocalDate.now()) > 0) {
 			JSFMessages.WARN(
 					"Debe seleccionar fechas apropiadas. Ni la fecha de inicio ni fin deben sobrepasar la fecha actual.");
-			return "/harvest/fecha?faces-redirect=true";
+			return HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
 		if (this.fechaBean.getFrom().compareTo(this.fechaBean.getUntil()) >= 0) {
 			JSFMessages
 					.WARN("Debe seleccionar fechas apropiadas. La fecha de inicio debe ser menor a la fecha de fin.");
-			return "/harvest/fecha?faces-redirect=true";
+			return HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
 		return null;
 	}
@@ -88,7 +90,7 @@ public class FiltradoBean implements Serializable {
 			JSFMessages.ERROR(e.getMessage());
 			return null;
 		}
-		return "/harvest/filtrado?faces-redirect=true";
+		return HARVESTING_OAI_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public void autoSelectOaiRecordDtos() {

@@ -1,4 +1,4 @@
-package swimsEJB.model.harvest.dtos;
+package swimsEJB.model.harvesting.dtos;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;

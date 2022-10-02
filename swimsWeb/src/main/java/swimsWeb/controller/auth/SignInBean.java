@@ -49,10 +49,14 @@ public class SignInBean implements Serializable {
 	}
 
 	public void onPageLoad() {
-		if (!this.email.isEmpty())
-			this.email = "";
-		if (!this.password.isEmpty())
-			this.password = "";
+		try {
+			if (!this.email.isEmpty())
+				this.email = "";
+			if (!this.password.isEmpty())
+				this.password = "";	
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	public String signInAction() {

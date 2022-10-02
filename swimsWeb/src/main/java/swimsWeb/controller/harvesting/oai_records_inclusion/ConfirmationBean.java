@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvest;
+package swimsWeb.controller.harvesting.oai_records_inclusion;
 
 import java.io.Serializable;
 
@@ -8,29 +8,29 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import swimsEJB.model.core.managers.DaoManager;
-import swimsEJB.model.harvest.managers.OaiRecordManager;
-import swimsEJB.model.harvest.managers.OaiSetManager;
+import swimsEJB.model.harvesting.managers.OaiRecordManager;
+import swimsEJB.model.harvesting.managers.OaiSetManager;
 import swimsWeb.utilities.JSFMessages;
+
+import static swimsEJB.constants.WebappPaths.*;
 
 @Named
 @RequestScoped
-public class ConfirmacionBean implements Serializable {
+public class ConfirmationBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Inject
-	private OrigenBean origenBean;
+	private SetSelectionBean origenBean;
 	@Inject
-	private FiltradoBean filtradoBean;
+	private RecordsSelectionBean filtradoBean;
 	@EJB
 	private OaiRecordManager oaiRecordManager;
 	@EJB
 	private OaiSetManager oaiSetManager;
-	
 
 	private int toAddOaiRecordsCount;
 
-	public ConfirmacionBean() {
+	public ConfirmationBean() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -42,7 +42,7 @@ public class ConfirmacionBean implements Serializable {
 	public String onPageLoad() {
 		if (filtradoBean.getSelectedOaiRecordDtos().isEmpty()) {
 			JSFMessages.WARN("Por favor, seleccione uno o mas registros antes de confirmar la adición de registros.");
-			return "/harvest/confirmacion?faces-redirect=true";
+			return HARVESTING_OAI_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
 		return null;
 	}
@@ -52,7 +52,7 @@ public class ConfirmacionBean implements Serializable {
 			JSFMessages.WARN("Por favor, seleccione uno o mas registros antes de avanzar.");
 			return null;
 		}
-		return "/harvest/confirmacion?faces-redirect=true";
+		return HARVESTING_OAI_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public String createManyOaiRecordsAction() {
@@ -61,7 +61,7 @@ public class ConfirmacionBean implements Serializable {
 					oaiRecordManager.oaiRecordDtosToOaiRecords(this.filtradoBean.getSelectedOaiRecordDtos()),
 					oaiSetManager.findOneOaiSetById(this.origenBean.getOaiSetId()));
 			JSFMessages.INFO("Registros creados de forma exitosa.");
-			return "/index?faces-redirec=true";
+			return INDEX_WEBAPP_PATH + "?faces-redirec=true";
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

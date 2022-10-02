@@ -9,7 +9,7 @@
 
 	<ui:define name="onLoad">
 		<f:metadata>
-			<f:viewAction action="#{fechaBean.onPageLoad()}" />
+			<f:viewAction action="#{datesSelectionBean.onPageLoad()}" />
 		</f:metadata>
 	</ui:define>
 
@@ -19,7 +19,7 @@
 				<f:facet name="title">
 			Carga de registros
 			</f:facet>
-				<ui:include src="/harvest/steps.xhtml" />
+				<ui:include src="#{webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
 
 				<div class="p-pt-4">
 					<div class="ui-fluid">
@@ -27,23 +27,23 @@
 							<p:outputLabel>Extraer desde</p:outputLabel>
 							<p:datePicker touchUI="true"
 								oninvalid="Debe ingresar una fecha válida."
-								value="#{fechaBean.from}" pattern="dd/MM/yyyy" />
+								value="#{datesSelectionBean.from}" pattern="dd/MM/yyyy" />
 
 							<p:outputLabel>Extraer hasta</p:outputLabel>
 							<p:datePicker touchUI="true"
 								oninvalid="Debe ingresar una fecha válida."
-								value="#{fechaBean.until}" pattern="dd/MM/yyyy" />
+								value="#{datesSelectionBean.until}" pattern="dd/MM/yyyy" />
 						</div>
 					</div>
 				</div>
 				<f:facet name="footer">
-					<p:commandButton action="/harvest/origen?faces-redirect=true"
+					<p:commandButton action="#{setSelectionBean.loadPage()}"
 						icon="pi pi-fw pi-angle-double-left" value="Regresar"
 						styleClass="ui-button-secondary" />
 
 					<p:commandButton styleClass="p-ml-2"
 						icon="pi pi-fw pi-angle-double-right" value="Avanzar"
-						action="#{filtradoBean.loadPage()}" />
+						action="#{recordsSelectionBean.loadPage()}" />
 
 				</f:facet>
 			</p:card>

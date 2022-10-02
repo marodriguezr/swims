@@ -33,7 +33,7 @@ public class AuthBean implements Serializable {
 
 	public String onPageLoad() {
 //		Checks whether if the user is requesting any of its accessible paths
-		if (userManager.verifyAuthorizationByWebappPaths(this.signInBean.getAccessibleWebappPaths(),
+		if (userManager.verifyAuthorizationByAllWebappPaths(this.signInBean.getAccessibleWebappPaths(),
 				Arrays.asList(new String[] { FacesContext.getCurrentInstance().getViewRoot().getViewId() }))) {
 			return null;
 		}
@@ -45,8 +45,13 @@ public class AuthBean implements Serializable {
 		return "/index?faces-redirect=true";
 	}
 
-	public boolean verifyRenderability(String requiredWebappPath) {
-		return userManager.verifyAuthorizationByWebappPaths(signInBean.getAccessibleWebappPaths(),
-				Arrays.asList(new String[] {requiredWebappPath}));
+	public boolean verifyRenderabilityByAllWebappPaths(String... requiredWebappPaths) {
+		return userManager.verifyAuthorizationByAllWebappPaths(signInBean.getAccessibleWebappPaths(),
+				Arrays.asList(requiredWebappPaths));
+	}
+	
+	public boolean verifyRenderabilityByOneWebappPath(String... requiredWebappPaths) {
+		return userManager.verifyAuthorizationByOneWebappPath(signInBean.getAccessibleWebappPaths(),
+				Arrays.asList(requiredWebappPaths));
 	}
 }

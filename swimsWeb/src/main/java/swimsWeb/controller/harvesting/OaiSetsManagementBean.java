@@ -1,7 +1,7 @@
 /**
  * 
  */
-package swimsWeb.controller.harvest;
+package swimsWeb.controller.harvesting;
 
 import java.io.Serializable;
 
@@ -10,8 +10,10 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import swimsEJB.model.harvest.managers.OaiSetManager;
+import swimsEJB.model.harvesting.managers.OaiSetManager;
 import swimsWeb.utilities.JSFMessages;
+
+import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH;
 
 @Named
 @SessionScoped
@@ -19,7 +21,7 @@ import swimsWeb.utilities.JSFMessages;
  * @author miguel
  *
  */
-public class OaiSetBean implements Serializable {
+public class OaiSetsManagementBean implements Serializable {
 
 	/**
 	 * 
@@ -35,21 +37,25 @@ public class OaiSetBean implements Serializable {
 	/**
 	 * 
 	 */
-	public OaiSetBean() {
+	public OaiSetsManagementBean() {
 		// TODO Auto-generated constructor stub
 	}
 
 	@PostConstruct
-	public void onInit() {
+	public void onLoad() {
 		this.name = "";
 		this.identifier = "";
+	}
+	
+	public String loadPage() {
+		return HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public void createOneOaiSetActionListener() {
 		try {
 			oaiSetManager.createOneOaiSet(identifier, name, 0);
 			JSFMessages.INFO("Set OAI creado de forma exitosa.");
-			onInit();
+			onLoad();
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

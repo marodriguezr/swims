@@ -1,4 +1,4 @@
-package swimsEJB.model.harvest.managers;
+package swimsEJB.model.harvesting.managers;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -25,9 +25,9 @@ import javax.ejb.Stateless;
 import org.apache.commons.lang3.StringUtils;
 
 import swimsEJB.model.core.managers.DaoManager;
-import swimsEJB.model.harvest.dtos.OaiRecordDto;
-import swimsEJB.model.harvest.entities.OaiRecord;
-import swimsEJB.model.harvest.entities.OaiSet;
+import swimsEJB.model.harvesting.dtos.OaiRecordDto;
+import swimsEJB.model.harvesting.entities.OaiRecord;
+import swimsEJB.model.harvesting.entities.OaiSet;
 import swimsEJB.utilities.StringHelpers;
 
 /**

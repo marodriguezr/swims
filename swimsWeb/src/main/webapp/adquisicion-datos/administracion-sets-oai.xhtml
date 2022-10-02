@@ -23,17 +23,17 @@
 				<div class="ui-fluid">
 					<div class="p-field">
 						<p:outputLabel for="name">Nombre</p:outputLabel>
-						<p:inputText value="#{oaiSetBean.name}" id="name" required="true" />
+						<p:inputText value="#{oaiSetsManagementBean.name}" id="name" required="true" />
 					</div>
 					<div class="p-field">
 						<p:outputLabel for="identifier">Identificador</p:outputLabel>
-						<p:inputText id="identifier" value="#{oaiSetBean.identifier}"
+						<p:inputText id="identifier" value="#{oaiSetsManagementBean.identifier}"
 							required="true" />
 					</div>
 				</div>
 				<f:facet name="footer">
 					<p:commandButton icon="pi pi-save" update="@form" value="Guardar"
-						actionListener="#{oaiSetBean.createOneOaiSetActionListener()}" />
+						actionListener="#{oaiSetsManagementBean.createOneOaiSetActionListener()}" />
 
 					<p:commandButton oncomplete="PF('oaiSetsHelpDialog').show()"
 						icon="pi pi-question" value="Ayuda"

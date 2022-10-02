@@ -1,4 +1,4 @@
-package swimsEJB.model.harvest.managers;
+package swimsEJB.model.harvesting.managers;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -8,7 +8,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import swimsEJB.model.core.managers.DaoManager;
-import swimsEJB.model.harvest.entities.OaiSet;
+import swimsEJB.model.harvesting.entities.OaiSet;
 
 /**
  * Session Bean implementation class OaiSetManager

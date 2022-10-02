@@ -154,7 +154,26 @@ public class UserManager {
 		return new ArrayList<>(new HashSet<>(accessibleWebAppPaths));
 	}
 	
-	public boolean verifyAuthorizationByWebappPaths(List<String> accessibleWebappPaths, List<String> requiredWebappPaths) {
+	/**
+	 * The following method validates that all the required web app paths are present in the accessible web app paths.
+	 * @param accessibleWebappPaths
+	 * @param requiredWebappPaths
+	 * @return
+	 */
+	public boolean verifyAuthorizationByAllWebappPaths(List<String> accessibleWebappPaths, List<String> requiredWebappPaths) {
+		for (String requiredWebappPath : requiredWebappPaths) {
+			if (!accessibleWebappPaths.stream().anyMatch(requiredWebappPath::contains)) return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * The following method validates that at least one of the required web app paths is present in the accessible web app paths.
+	 * @param accessibleWebappPaths
+	 * @param requiredWebappPaths
+	 * @return
+	 */
+	public boolean verifyAuthorizationByOneWebappPath(List<String> accessibleWebappPaths, List<String> requiredWebappPaths) {
 		for (String requiredWebappPath : requiredWebappPaths) {
 			if (accessibleWebappPaths.stream().anyMatch(requiredWebappPath::contains)) return true;
 		}
@@ -163,6 +182,6 @@ public class UserManager {
 	
 	public boolean verifyAuthorizationByUserId(int userId, List<String> requiredWebappPaths) throws Exception {
 		List<String> accessibleWebappPaths = findAllAccesibleWebappPathsByUserId(userId);
-		return verifyAuthorizationByWebappPaths(accessibleWebappPaths, requiredWebappPaths);
+		return verifyAuthorizationByAllWebappPaths(accessibleWebappPaths, requiredWebappPaths);
 	}
 }

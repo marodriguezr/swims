@@ -12,8 +12,8 @@ import swimsEJB.model.auth.managers.PermissionManager;
 import swimsEJB.model.auth.managers.UserManager;
 import swimsEJB.model.core.entities.Sysparam;
 
-import static swimsEJB.constants.WebappPaths.OAI_RECORDS_INCLUSION_WEBAPP_PATH;
-import static swimsEJB.constants.WebappPaths.OAI_SETS_MANAGEMENT_WEBAPP_PATH;
+import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH;
+import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH;
 
 /**
  * Session Bean implementation class CoreManager
@@ -57,30 +57,36 @@ public class SeedManager {
 		 * Permissions
 		 */
 		Permission oaiRecordsInclusionPermission = permissionManager.createOnePermission("Inclusión de Registros OAI",
-				OAI_RECORDS_INCLUSION_WEBAPP_PATH);
+				HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH);
 		Permission oaiSetsManagementPermission = permissionManager.createOnePermission("Administración de Sets OAI",
-				OAI_SETS_MANAGEMENT_WEBAPP_PATH);
+				HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH);
 		
 		/**
 		 * Groups
 		 */
 		Group adminGroup = groupManager.createOneGroup("Administrador");
+		Group oaiRecordsInclusionGroup = groupManager.createOneGroup("Inclusores de Registros OAI");
 
 		/**
 		 * GroupPermissions
 		 */
-		groupManager.addPermissionById(adminGroup.getId(), oaiRecordsInclusionPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), oaiSetsManagementPermission.getId());
+		
+		groupManager.addPermissionById(oaiRecordsInclusionGroup.getId(), oaiRecordsInclusionPermission.getId());
 
 		/**
 		 * Users
 		 */
 		UserDto adminUser = userManager.createOneUser(firstName, lastName, email, password);
-
+		
+		UserDto user2 = userManager.createOneUser("Inclusor", "Registros", "mail@mail2.com", "admin");
+		
 		/**
 		 * UserGroups
 		 */
 		userManager.addGroupById(adminUser.getId(), adminGroup.getId());
+		
+		userManager.addGroupById(user2.getId(), oaiRecordsInclusionGroup.getId());
 
 		/**
 		 * 

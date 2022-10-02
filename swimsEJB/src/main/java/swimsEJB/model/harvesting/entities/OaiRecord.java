@@ -1,4 +1,4 @@
-package swimsEJB.model.harvest.entities;
+package swimsEJB.model.harvesting.entities;
 
 import java.io.Serializable;
 import javax.persistence.*;
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * 
  */
 @Entity
-@Table(name="oai_records", schema = "harvest")
+@Table(name="oai_records", schema = "harvesting")
 @NamedQuery(name="OaiRecord.findAll", query="SELECT o FROM OaiRecord o")
 public class OaiRecord implements Serializable {
 	private static final long serialVersionUID = 1L;

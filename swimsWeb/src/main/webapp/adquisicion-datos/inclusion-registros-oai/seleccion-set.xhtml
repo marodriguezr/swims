@@ -19,14 +19,14 @@
 				<f:facet name="title">
 			Carga de registros
 			</f:facet>
-				<ui:include src="/harvest/steps.xhtml" />
+				<ui:include src="#{webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
 				<div class="p-pt-4">
 					<div class="ui-fluid">
 						<div class="p-field">
 							<p:outputLabel>Set OAI</p:outputLabel>
-							<p:selectOneMenu value="#{origenBean.oaiSetId}">
+							<p:selectOneMenu value="#{setSelectionBean.oaiSetId}">
 								<f:selectItem itemLabel="Seleccione un set OAI" />
-								<f:selectItems value="#{origenBean.oaiSets}" var="oaiSet"
+								<f:selectItems value="#{setSelectionBean.oaiSets}" var="oaiSet"
 									itemLabel="#{oaiSet.name}" itemValue="#{oaiSet.id}"></f:selectItems>
 							</p:selectOneMenu>
 						</div>
@@ -38,7 +38,7 @@
 
 					<p:commandButton styleClass="p-ml-2"
 						icon="pi pi-fw pi-angle-double-right" value="Avanzar"
-						action="#{fechaBean.loadPage()}" />
+						action="#{datesSelectionBean.loadPage()}" />
 				</f:facet>
 			</p:card>
 		</h:form>

@@ -9,7 +9,7 @@
 
 	<ui:define name="onLoad">
 		<f:metadata>
-			<f:viewAction action="#{confirmacionBean.onPageLoad()}"></f:viewAction>
+			<f:viewAction action="#{confirmationBean.onPageLoad()}"></f:viewAction>
 		</f:metadata>
 	</ui:define>
 
@@ -19,21 +19,21 @@
 				<f:facet name="title">
 			Confirmación.
 			</f:facet>
-				<ui:include src="/harvest/steps.xhtml" />
+				<ui:include src="#{webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
 
 				<div class="ui-fluid p-pt-4">
 					<div class="p-field">
 						<p:outputLabel value="Nuevos registros"></p:outputLabel>
 						<p:inputText disabled="true"
-							value="#{confirmacionBean.toAddOaiRecordsCount}"></p:inputText>
+							value="#{confirmationBean.toAddOaiRecordsCount}"></p:inputText>
 					</div>
 				</div>
 				<f:facet name="footer">
 					<p:commandButton icon="pi pi-fw pi-angle-double-left"
 						value="Regresar" styleClass="ui-button-secondary"
-						action="/harvest/filtrado?faces-redirect=true" />
+						action="#{recordsSelectionBean.loadPage()}" />
 					<p:commandButton
-						action="#{confirmacionBean.createManyOaiRecordsAction()}"
+						action="#{confirmationBean.createManyOaiRecordsAction()}"
 						styleClass="p-ml-2" icon="pi pi-fw pi-save"
 						value="Confirmar y Registrar" />
 

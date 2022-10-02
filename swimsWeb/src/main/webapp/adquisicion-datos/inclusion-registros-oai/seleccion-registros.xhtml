@@ -9,7 +9,7 @@
 
 	<ui:define name="onLoad">
 		<f:metadata>
-			<f:viewAction action="#{filtradoBean.onPageLoad()}" />
+			<f:viewAction action="#{recordsSelectionBean.onPageLoad()}" />
 		</f:metadata>
 	</ui:define>
 
@@ -19,30 +19,30 @@
 				<f:facet name="title">
 			Filtrado de registros
 			</f:facet>
-				<ui:include src="/harvest/steps.xhtml" />
+				<ui:include src="#{webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
 
 				<div class="p-pt-4 p-pb-2">
 					<p:commandButton update="@form"
-						actionListener="#{filtradoBean.autoSelectOaiRecordDtos()}"
+						actionListener="#{recordsSelectionBean.autoSelectOaiRecordDtos()}"
 						icon="pi pi-fw pi-check-square"
 						value="Seleccionar de forma automática"></p:commandButton>
 					<div class="p-pt-2">
 						<h:outputText styleClass="p-text-bold"
 							value="Conteo total de registros: " />
-						<h:outputText value="#{filtradoBean.oaiRecordDtos.size()}" />
+						<h:outputText value="#{recordsSelectionBean.oaiRecordDtos.size()}" />
 					</div>
 				</div>
 				<div class="ui-fluid">
-					<p:dataTable value="#{filtradoBean.oaiRecordDtos}"
+					<p:dataTable value="#{recordsSelectionBean.oaiRecordDtos}"
 						var="oaiRecordDto" reflow="true" rows="5" paginator="true"
 						id="availableOaiRecords" rowSelectMode="add"
 						rowKey="#{oaiRecordDto.id}"
-						selection="#{filtradoBean.selectedOaiRecordDtos}">
+						selection="#{recordsSelectionBean.selectedOaiRecordDtos}">
 						<p:column selectionMode="multiple" exportable="false"></p:column>
 
 						<p:column sortBy="#{oaiRecordDto.titles.get(0)}"
 							filterBy="#{oaiRecordDto.titles.get(0)}" headerText="Titulo">
-							<a href="#{filtradoBean.getURLFromOaiRecordDto(oaiRecordDto)}"><h:outputText
+							<a href="#{recordsSelectionBean.getURLFromOaiRecordDto(oaiRecordDto)}"><h:outputText
 									rendered="#{oaiRecordDto.titles.size() ge 1}"
 									value="#{oaiRecordDto.titles.get(0)}" /></a>
 							<h:outputText rendered="#{oaiRecordDto.titles.size() eq 0}"
@@ -76,11 +76,11 @@
 						</p:column>
 
 						<p:column
-							sortBy="#{filtradoBean.dateFormat.format(oaiRecordDto.dates.get(0))}"
-							filterBy="#{filtradoBean.dateFormat.format(oaiRecordDto.dates.get(0))}"
+							sortBy="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.dates.get(0))}"
+							filterBy="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.dates.get(0))}"
 							headerText="Fecha">
 							<h:outputText rendered="#{oaiRecordDto.dates.size() ge 1}"
-								value="#{filtradoBean.dateFormat.format(oaiRecordDto.dates.get(0))}" />
+								value="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.dates.get(0))}" />
 							<h:outputText rendered="#{oaiRecordDto.dates.size() eq 0}"
 								value="Registro sin fecha" />
 						</p:column>
@@ -89,15 +89,15 @@
 							<p:commandButton icon="pi pi-fw pi-plus"
 								oncomplete="PF('allRecordInfoDialog').show()"
 								update=":allRecordInfoForm"
-								actionListener="#{filtradoBean.setSelectedOaiRecordDto(oaiRecordDto)}"></p:commandButton>
+								actionListener="#{recordsSelectionBean.setSelectedOaiRecordDto(oaiRecordDto)}"></p:commandButton>
 						</p:column>
 					</p:dataTable>
 				</div>
 				<f:facet name="footer">
 					<p:commandButton icon="pi pi-fw pi-angle-double-left"
 						value="Regresar" styleClass="ui-button-secondary"
-						action="/harvest/fecha?faces-redirect=true" />
-					<p:commandButton action="#{confirmacionBean.loadPage()}"
+						action="#{datesSelectionBean.loadPage()}" />
+					<p:commandButton action="#{confirmationBean.loadPage()}"
 						styleClass="p-ml-2" icon="pi pi-fw pi-angle-double-right"
 						value="Avanzar" />
 
@@ -115,29 +115,29 @@
 
 					<div class="p-field">
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.titles.size() gt 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.titles.size() gt 1}"
 							header="Títulos" toggleable="true" collapsed="true">
 							<p:dataScroller
-								value="#{filtradoBean.selectedOaiRecordDto.titles}" var="title">
+								value="#{recordsSelectionBean.selectedOaiRecordDto.titles}" var="title">
 								<h:outputText value="#{title}" />
 								<br />
 								<br />
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.titles.size() eq 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.titles.size() eq 1}"
 							header="Título" toggleable="true" collapsed="false">
 							<h:outputText
-								value="#{filtradoBean.selectedOaiRecordDto.titles.get(0)}" />
+								value="#{recordsSelectionBean.selectedOaiRecordDto.titles.get(0)}" />
 						</p:panel>
 					</div>
 
 					<div class="p-field">
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.creators.size() gt 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.creators.size() gt 1}"
 							header="Autores" toggleable="true" collapsed="true">
 							<p:dataScroller
-								value="#{filtradoBean.selectedOaiRecordDto.creators}"
+								value="#{recordsSelectionBean.selectedOaiRecordDto.creators}"
 								var="iterable">
 								<h:outputText value="#{iterable}" />
 								<br />
@@ -145,19 +145,19 @@
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.creators.size() eq 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.creators.size() eq 1}"
 							header="Autor" toggleable="true" collapsed="false">
 							<h:outputText
-								value="#{filtradoBean.selectedOaiRecordDto.creators.get(0)}" />
+								value="#{recordsSelectionBean.selectedOaiRecordDto.creators.get(0)}" />
 						</p:panel>
 					</div>
 
 					<div class="p-field">
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.subjects.size() gt 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.subjects.size() gt 1}"
 							header="Palabras clave" toggleable="true" collapsed="true">
 							<p:dataScroller
-								value="#{filtradoBean.selectedOaiRecordDto.subjects}"
+								value="#{recordsSelectionBean.selectedOaiRecordDto.subjects}"
 								var="iterable">
 								<h:outputText value="#{iterable}" />
 								<br />
@@ -165,19 +165,19 @@
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.subjects.size() eq 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.subjects.size() eq 1}"
 							header="Palabra clave" toggleable="true" collapsed="false">
 							<h:outputText
-								value="#{filtradoBean.selectedOaiRecordDto.subjects.get(0)}" />
+								value="#{recordsSelectionBean.selectedOaiRecordDto.subjects.get(0)}" />
 						</p:panel>
 					</div>
 
 					<div class="p-field">
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.descriptions.size() gt 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.descriptions.size() gt 1}"
 							header="Descripciones" toggleable="true" collapsed="true">
 							<p:dataScroller
-								value="#{filtradoBean.selectedOaiRecordDto.descriptions}"
+								value="#{recordsSelectionBean.selectedOaiRecordDto.descriptions}"
 								var="iterable">
 								<h:outputText value="#{iterable}" />
 								<br />
@@ -185,19 +185,19 @@
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.descriptions.size() eq 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.descriptions.size() eq 1}"
 							header="Descripcion" toggleable="true" collapsed="false">
 							<h:outputText
-								value="#{filtradoBean.selectedOaiRecordDto.descriptions.get(0)}" />
+								value="#{recordsSelectionBean.selectedOaiRecordDto.descriptions.get(0)}" />
 						</p:panel>
 					</div>
 
 					<div class="p-field">
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.contributors.size() gt 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.contributors.size() gt 1}"
 							header="Directores" toggleable="true" collapsed="true">
 							<p:dataScroller
-								value="#{filtradoBean.selectedOaiRecordDto.contributors}"
+								value="#{recordsSelectionBean.selectedOaiRecordDto.contributors}"
 								var="iterable">
 								<h:outputText value="#{iterable}" />
 								<br />
@@ -205,40 +205,40 @@
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.contributors.size() eq 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.contributors.size() eq 1}"
 							header="Director" toggleable="true" collapsed="false">
 							<h:outputText
-								value="#{filtradoBean.selectedOaiRecordDto.contributors.get(0)}" />
+								value="#{recordsSelectionBean.selectedOaiRecordDto.contributors.get(0)}" />
 						</p:panel>
 					</div>
 
 					<div class="p-field">
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.dates.size() gt 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.dates.size() gt 1}"
 							header="Fechas" toggleable="true" collapsed="true">
 							<p:dataScroller
-								value="#{filtradoBean.selectedOaiRecordDto.dates}"
+								value="#{recordsSelectionBean.selectedOaiRecordDto.dates}"
 								var="iterable">
 								<h:outputText
-									value="#{filtradoBean.dateFormat.format(iterable)}" />
+									value="#{recordsSelectionBean.dateFormat.format(iterable)}" />
 								<br />
 								<br />
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.dates.size() eq 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.dates.size() eq 1}"
 							header="Fecha" toggleable="true" collapsed="false">
 							<h:outputText
-								value="#{filtradoBean.dateFormat.format(filtradoBean.selectedOaiRecordDto.dates.get(0))}" />
+								value="#{recordsSelectionBean.dateFormat.format(recordsSelectionBean.selectedOaiRecordDto.dates.get(0))}" />
 						</p:panel>
 					</div>
 
 					<div class="p-field">
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.identifiers.size() gt 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.identifiers.size() gt 1}"
 							header="Identificadores" toggleable="true" collapsed="true">
 							<p:dataScroller
-								value="#{filtradoBean.selectedOaiRecordDto.identifiers}"
+								value="#{recordsSelectionBean.selectedOaiRecordDto.identifiers}"
 								var="iterable">
 								<h:outputText value="#{iterable}" />
 								<br />
@@ -246,10 +246,10 @@
 							</p:dataScroller>
 						</p:panel>
 						<p:panel
-							rendered="#{filtradoBean.selectedOaiRecordDto.identifiers.size() eq 1}"
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.identifiers.size() eq 1}"
 							header="Identificador" toggleable="true" collapsed="false">
 							<h:outputText
-								value="#{filtradoBean.selectedOaiRecordDto.identifiers.get(0)}" />
+								value="#{recordsSelectionBean.selectedOaiRecordDto.identifiers.get(0)}" />
 						</p:panel>
 					</div>
 				</div>
