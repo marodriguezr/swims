@@ -6,6 +6,13 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">Sets OAI</ui:define>
+	
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{authBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+	
 	<ui:define name="content">
 		<h:form>
 			<p:card>
