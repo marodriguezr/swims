@@ -1,0 +1,203 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Administración de permisos</ui:define>
+
+	<ui:define name="content">
+
+		<h:form id="form">
+
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Nuevo" icon="pi pi-plus"
+						update=":dialogs:manage-permissions-content"
+						oncomplete="PF('managePermissionDialog').show()"
+						styleClass="ui-button-success" style="margin-right: .5rem">
+						<p:resetInput target=":dialogs:manage-permissions-content" />
+					</p:commandButton>
+					<p:commandButton id="inactivate-permissions-button"
+						value="#{permissionManagementBean.inactivateButtonMessage}"
+						icon="pi pi-times"
+						actionListener="#{permissionManagementBean.inactivateSelectedPermissions()}"
+						styleClass="ui-button-danger"
+						disabled="#{!permissionManagementBean.hasSelectedPermissions()}"
+						update="@form">
+						<p:confirm header="Confirmación"
+							message="¿Está seguro de inactivar los Permisos seleccionados? \n Los grupos que dependan de estos permisos perderán el acceso a las rutas asociadas."
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Refrescar" icon="pi pi-refresh"
+						styleClass="ui-button-help"
+						actionListener="#{permissionManagementBean.onLoad()}"
+						update="@form">
+					</p:commandButton>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable id="dt-permissions" widgetVar="dtPermissions"
+				var="permission" value="#{permissionManagementBean.permissions}"
+				reflow="true"
+				selection="#{permissionManagementBean.selectedPermissions}"
+				rowKey="#{permission.id}" paginator="true" rows="10"
+				rowSelectMode="add" paginatorPosition="bottom">
+
+				<f:facet name="header">
+					<div
+						style="display: flex; justify-content: space-between; align-items: center;">
+						<span style="font-weight: bold">PERMISOS</span> <span
+							class="ui-input-icon-left"
+							style="display: flex; align-items: center;"> <i
+							class="pi pi-search"></i> <p:inputText id="globalFilter"
+								onkeyup="PF('dtPermissions').filter()" placeholder="Buscar" />
+						</span>
+
+					</div>
+				</f:facet>
+
+				<p:ajax event="rowSelect"
+					update=":form:inactivate-permissions-button" />
+				<p:ajax event="rowUnselect"
+					update=":form:inactivate-permissions-button" />
+				<p:ajax event="rowSelectCheckbox"
+					update=":form:inactivate-permissions-button" />
+				<p:ajax event="rowUnselectCheckbox"
+					update=":form:inactivate-permissions-button" />
+				<p:ajax event="toggleSelect"
+					update=":form:inactivate-permissions-button" />
+
+				<p:column selectionMode="multiple" exportable="false"></p:column>
+
+				<p:column headerText="Nombre" sortBy="#{permission.name}"
+					filterBy="#{permission.name}">
+					<h:outputText value="#{permission.name}" />
+				</p:column>
+
+				<p:column headerText="Ruta Web"
+					sortBy="#{permission.webappRelatedPath}"
+					filterBy="#{permission.webappRelatedPath}">
+					<h:outputText value="#{permission.webappRelatedPath}" />
+				</p:column>
+
+				<p:column headerText="Estado" sortBy="#{permission.isActive}">
+					<h:outputText rendered="#{permission.isActive eq true}"
+						value="Activo" />
+					<h:outputText rendered="#{permission.isActive eq false}"
+						value="Inactivo" />
+				</p:column>
+
+				<p:column headerText="Fecha de creación"
+					sortBy="#{permission.createdAt}" filterBy="#{permission.createdAt}">
+					<h:outputText value="#{permission.createdAt}">
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Fecha de actualización"
+					sortBy="#{permission.updatedAt}" filterBy="#{permission.updatedAt}">
+					<h:outputText value="#{permission.updatedAt}" />
+				</p:column>
+
+				<p:column exportable="false">
+					<p:commandButton icon="pi pi-pencil"
+						update=":dialogs:manage-permissions-content"
+						oncomplete="PF('managePermissionDialog').show()"
+						styleClass="p-mr-2 rounded-button ui-button-success"
+						process="@this">
+						<f:setPropertyActionListener value="#{permission}"
+							target="#{permissionManagementBean.selectedPermission}" />
+						<p:resetInput target=":dialogs:manage-permissions-content" />
+					</p:commandButton>
+					<p:commandButton class="ui-button-warning rounded-button"
+						icon="pi pi-trash" process="@this"
+						oncomplete="PF('deleteProductDialog').show()">
+						<f:setPropertyActionListener value="#{permission}"
+							target="#{permissionManagementBean.selectedPermission}" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="dialogs">
+			<p:dialog header="Detalles del Permiso" showEffect="fade"
+				modal="true" widgetVar="managePermissionDialog" responsive="true">
+				<p:outputPanel id="manage-permissions-content" class="ui-fluid">
+					<p:outputPanel
+						rendered="#{not empty permissionManagementBean.selectedPermission}">
+
+						<div class="field">
+							<p:outputLabel for="name">Nombre</p:outputLabel>
+							<p:inputText id="name"
+								value="#{permissionManagementBean.selectedPermission.name}"
+								required="true" />
+						</div>
+
+						<div class="field">
+							<p:outputLabel for="description">Description</p:outputLabel>
+							<p:inputTextarea id="description"
+								value="#{crudView.selectedProduct.description}" />
+						</div>
+						<div class="field">
+							<p:outputLabel for="category">Category</p:outputLabel>
+							<p:selectOneRadio id="category"
+								value="#{crudView.selectedProduct.category}" layout="responsive"
+								columns="2">
+								<f:selectItem itemLabel="Accessories" itemValue="Accessories" />
+								<f:selectItem itemLabel="Clothing" itemValue="Clothing" />
+								<f:selectItem itemLabel="Electronics" itemValue="Electronics" />
+								<f:selectItem itemLabel="Fitness" itemValue="Fitness" />
+							</p:selectOneRadio>
+						</div>
+						<div class="formgrid grid">
+							<div class="field col">
+								<p:outputLabel for="price">Price</p:outputLabel>
+								<p:inputNumber id="price"
+									value="#{crudView.selectedProduct.price}" symbol=" USD"
+									symbolPosition="s" decimalSeparator="." thousandSeparator="," />
+							</div>
+							<div class="field col">
+								<p:outputLabel for="quantity">Quantity</p:outputLabel>
+								<p:spinner id="quantity" min="0"
+									value="#{crudView.selectedProduct.quantity}" />
+							</div>
+						</div>
+					</p:outputPanel>
+				</p:outputPanel>
+
+				<f:facet name="footer">
+					<p:commandButton value="Save" icon="pi pi-check"
+						actionListener="#{crudView.saveProduct}"
+						update="manage-permissions-content"
+						process="manage-permissions-content @this" />
+					<p:commandButton value="Cancel" icon="pi pi-times"
+						onclick="PF('managePermissionDialog').hide()"
+						class="ui-button-secondary" type="button" />
+				</f:facet>
+			</p:dialog>
+
+			<p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade"
+				width="300" message="Delete the product?" header="Confirm"
+				severity="warn">
+				<p:commandButton value="Yes" icon="pi pi-check"
+					actionListener="#{crudView.deleteProduct}" process="@this"
+					oncomplete="PF('deleteProductDialog').hide()" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('deleteProductDialog').hide()" />
+			</p:confirmDialog>
+
+			<p:confirmDialog global="true" showEffect="fade" width="300">
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button-secondary"
+					icon="pi pi-times" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

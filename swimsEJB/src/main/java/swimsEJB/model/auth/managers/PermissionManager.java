@@ -56,7 +56,7 @@ public class PermissionManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Permission> findAllPemiPermissions() {
+	public List<Permission> findAllPermissions() {
 		return daoManager.findAll(Permission.class);
 	}
 
