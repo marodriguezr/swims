@@ -3,6 +3,7 @@ package swimsEJB.model.auth.managers;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -57,7 +58,7 @@ public class PermissionManager {
 
 	@SuppressWarnings("unchecked")
 	public List<Permission> findAllPermissions() {
-		return daoManager.findAll(Permission.class);
+		return daoManager.findAll(Permission.class, "updatedAt", false);
 	}
 
 	public Permission findOnePermissionById(int id) throws Exception {
@@ -90,8 +91,23 @@ public class PermissionManager {
 		return permissions;
 	};
 	
+	public List<Permission> findAllActivePermissionsByGroupId(int groupId) {
+		List<Permission> permissions = findAllPermissionsByGroupId(groupId);
+		permissions = permissions.stream().filter(permission -> permission.getIsActive()).collect(Collectors.toList());
+		return permissions;
+	};
+	
 	public List<String> findAllWebappRelatedPathsByGroupId(int groupId) {
 		List<Permission> permissions = findAllPermissionsByGroupId(groupId);
+		List<String> webappRelatedPaths = new ArrayList<>();
+		for (Permission permission : permissions) {
+			webappRelatedPaths.add(permission.getWebappRelatedPath());
+		}
+		return webappRelatedPaths;
+	}
+	
+	public List<String> findAllActiveWebappRelatedPathsByGroupId(int groupId) {
+		List<Permission> permissions = findAllActivePermissionsByGroupId(groupId);
 		List<String> webappRelatedPaths = new ArrayList<>();
 		for (Permission permission : permissions) {
 			webappRelatedPaths.add(permission.getWebappRelatedPath());

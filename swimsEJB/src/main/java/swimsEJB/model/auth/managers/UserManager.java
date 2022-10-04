@@ -142,46 +142,53 @@ public class UserManager {
 	public List<String> findAllAccesibleWebappPathsByUserId(int id) throws Exception {
 		User user = (User) daoManager.findOneById(User.class, id);
 		if (user == null)
-			throw new Exception("El Usuario especificado no está registrado.");
-		List<Group> groups = groupManager.findAllGroupsByUserId(user.getId());
+			throw new Exception("El Usuario no está registrado.");
+		if (!user.getIsActive())
+			throw new Exception("El Usuario se encuentra inactivo.");
+		List<Group> groups = groupManager.findAllActiveGroupsByUserId(user.getId());
 		List<String> accessibleWebAppPaths = new ArrayList<>();
 		for (Group group : groups) {
 			accessibleWebAppPaths = Stream
 					.concat(accessibleWebAppPaths.stream(),
-							permissionManager.findAllWebappRelatedPathsByGroupId(group.getId()).stream())
+							permissionManager.findAllActiveWebappRelatedPathsByGroupId(group.getId()).stream())
 					.collect(Collectors.toList());
 		}
 		return new ArrayList<>(new HashSet<>(accessibleWebAppPaths));
 	}
-	
+
 	/**
-	 * The following method validates that all the required web app paths are present in the accessible web app paths.
+	 * The following method validates that all the required web app paths are
+	 * present in the accessible web app paths.
+	 * 
 	 * @param accessibleWebappPaths
 	 * @param requiredWebappPaths
 	 * @return
+	 * @throws Exception
 	 */
-	public boolean verifyAuthorizationByAllWebappPaths(List<String> accessibleWebappPaths, List<String> requiredWebappPaths) {
+	public boolean verifyAuthorizationByAllWebappPaths(int userId, List<String> requiredWebappPaths) throws Exception {
+		List<String> accessibleWebappPaths = findAllAccesibleWebappPathsByUserId(userId);
 		for (String requiredWebappPath : requiredWebappPaths) {
-			if (!accessibleWebappPaths.stream().anyMatch(requiredWebappPath::contains)) return false;
+			if (!accessibleWebappPaths.stream().anyMatch(requiredWebappPath::contains))
+				return false;
 		}
 		return true;
 	}
-	
+
 	/**
-	 * The following method validates that at least one of the required web app paths is present in the accessible web app paths.
+	 * The following method validates that at least one of the required web app
+	 * paths is present in the accessible web app paths.
+	 * 
 	 * @param accessibleWebappPaths
 	 * @param requiredWebappPaths
 	 * @return
+	 * @throws Exception 
 	 */
-	public boolean verifyAuthorizationByOneWebappPath(List<String> accessibleWebappPaths, List<String> requiredWebappPaths) {
+	public boolean verifyAuthorizationByOneWebappPath(int userId, List<String> requiredWebappPaths) throws Exception {
+		List<String> accessibleWebappPaths = findAllAccesibleWebappPathsByUserId(userId);
 		for (String requiredWebappPath : requiredWebappPaths) {
-			if (accessibleWebappPaths.stream().anyMatch(requiredWebappPath::contains)) return true;
+			if (accessibleWebappPaths.stream().anyMatch(requiredWebappPath::contains))
+				return true;
 		}
 		return false;
-	}
-	
-	public boolean verifyAuthorizationByUserId(int userId, List<String> requiredWebappPaths) throws Exception {
-		List<String> accessibleWebappPaths = findAllAccesibleWebappPathsByUserId(userId);
-		return verifyAuthorizationByAllWebappPaths(accessibleWebappPaths, requiredWebappPaths);
 	}
 }

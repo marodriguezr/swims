@@ -48,6 +48,7 @@ public class OaiSetsManagementBean implements Serializable {
 	}
 	
 	public String loadPage() {
+		System.out.println(1);
 		return HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
 	}
 

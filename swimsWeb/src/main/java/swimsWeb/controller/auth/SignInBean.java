@@ -1,8 +1,6 @@
 package swimsWeb.controller.auth;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -31,7 +29,6 @@ public class SignInBean implements Serializable {
 	private String email;
 	private String password;
 	private UserDto signedUserDto;
-	private List<String> accessibleWebappPaths;
 
 	public SignInBean() {
 		// TODO Auto-generated constructor stub
@@ -39,7 +36,6 @@ public class SignInBean implements Serializable {
 
 	@PostConstruct
 	public void onLoad() {
-		this.accessibleWebappPaths = new ArrayList<>();
 	}
 
 	public String loadPage() {
@@ -53,7 +49,7 @@ public class SignInBean implements Serializable {
 			if (!this.email.isEmpty())
 				this.email = "";
 			if (!this.password.isEmpty())
-				this.password = "";	
+				this.password = "";
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -72,18 +68,8 @@ public class SignInBean implements Serializable {
 			JSFMessages.WARN(e.getMessage());
 			return null;
 		}
-		findAllAccesibleWebappPathsByUserIdActionListener();
 		JSFMessages.INFO("Sesión iniciada");
 		return "/index?faces-redirect=true";
-	}
-
-	public void findAllAccesibleWebappPathsByUserIdActionListener() {
-		try {
-			this.accessibleWebappPaths = userManager.findAllAccesibleWebappPathsByUserId(this.signedUserDto.getId());
-		} catch (Exception e) {
-			// TODO: handle exception
-			this.accessibleWebappPaths = new ArrayList<>();
-		}
 	}
 
 	public String getEmail() {
@@ -100,14 +86,6 @@ public class SignInBean implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public List<String> getAccessibleWebappPaths() {
-		return accessibleWebappPaths;
-	}
-
-	public void setAccessibleWebappPaths(List<String> accessibleWebappPaths) {
-		this.accessibleWebappPaths = accessibleWebappPaths;
 	}
 
 	public UserDto getSignedUserDto() {

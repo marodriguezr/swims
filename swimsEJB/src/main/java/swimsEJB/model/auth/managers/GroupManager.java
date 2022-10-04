@@ -3,6 +3,7 @@ package swimsEJB.model.auth.managers;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -61,6 +62,12 @@ public class GroupManager {
 		}
 		return groups;
 	};
+	
+	public List<Group> findAllActiveGroupsByUserId(int userId) {
+		List<Group> groups = findAllGroupsByUserId(userId);		
+		groups = groups.stream().filter(group -> group.getIsActive()).collect(Collectors.toList());
+		return groups;
+	}
 
 	public Group findOneGroupById(int id) throws Exception {
 		return (Group) daoManager.findOneById(Group.class, id);

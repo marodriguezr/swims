@@ -2,6 +2,7 @@ package swimsWeb.controller.auth;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -37,7 +38,12 @@ public class PermissionManagementBean implements Serializable {
 	}
 
 	public void openNew() {
-		this.selectedPermission = new Permission();
+		Permission newPermission = new Permission();
+		newPermission.setName("");
+		newPermission.setWebappRelatedPath("");
+		newPermission.setIsActive(true);
+
+		this.selectedPermission = newPermission;
 	}
 
 	public boolean hasSelectedPermissions() {
@@ -63,12 +69,57 @@ public class PermissionManagementBean implements Serializable {
 		selectedPermissions = new ArrayList<>();
 	}
 
+	public void inactivateSelectedPermission() {
+		this.selectedPermissions = Arrays.asList(new Permission[] { selectedPermission });
+		inactivateSelectedPermissions();
+	}
+
+	public void activateSelectedPermission(Permission permission) {
+		try {
+			permissionManager.updateOnePermissionById(permission.getId(), permission.getName(),
+					permission.getWebappRelatedPath(), true);
+			JSFMessages.INFO("Permiso activado de forma exitosa.");
+			permissions = permissionManager.findAllPermissions();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSFMessages.ERROR(e.getMessage());
+
+		}
+	}
+
 	public String getInactivateButtonMessage() {
 		if (hasSelectedPermissions()) {
 			int size = this.selectedPermissions.size();
 			return size > 1 ? "inactivar " + size + " permisos" : "inactivar 1 permiso";
 		}
 		return "Inactivar";
+	}
+
+	public void savePermission() {
+		if (selectedPermission.getId() == null) {
+			try {
+				permissionManager.createOnePermission(selectedPermission.getName(),
+						selectedPermission.getWebappRelatedPath());
+				this.permissions = permissionManager.findAllPermissions();
+				JSFMessages.INFO("Permiso creado de forma exitosa.");
+				return;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				JSFMessages.ERROR(e.getMessage());
+			}
+		}
+		try {
+			permissionManager.updateOnePermissionById(selectedPermission.getId(), selectedPermission.getName(),
+					selectedPermission.getWebappRelatedPath(), selectedPermission.getIsActive());
+			this.permissions = permissionManager.findAllPermissions();
+			JSFMessages.INFO("Permiso actualizado de forma exitosa.");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSFMessages.ERROR(e.getMessage());
+		}
 	}
 
 	public List<Permission> getPermissions() {

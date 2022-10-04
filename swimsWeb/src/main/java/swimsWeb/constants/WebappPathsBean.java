@@ -44,4 +44,8 @@ public class WebappPathsBean implements Serializable {
 	public String getHARVESTING_WEBAPP_PATH() {
 		return HARVESTING_WEBAPP_PATH;
 	}
+	
+	public String getINDEX_WEBAPP_PATH() {
+		return INDEX_WEBAPP_PATH;
+	}
 }

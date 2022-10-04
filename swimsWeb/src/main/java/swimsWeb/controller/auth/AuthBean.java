@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import swimsEJB.model.auth.managers.UserManager;
+import swimsWeb.utilities.JSFMessages;
 
 @Named
 @SessionScoped
@@ -33,9 +34,15 @@ public class AuthBean implements Serializable {
 
 	public String onPageLoad() {
 //		Checks whether if the user is requesting any of its accessible paths
-		if (userManager.verifyAuthorizationByAllWebappPaths(this.signInBean.getAccessibleWebappPaths(),
-				Arrays.asList(new String[] { FacesContext.getCurrentInstance().getViewRoot().getViewId() }))) {
-			return null;
+		try {
+			if (userManager.verifyAuthorizationByAllWebappPaths(this.signInBean.getSignedUserDto().getId(),
+					Arrays.asList(new String[] { FacesContext.getCurrentInstance().getViewRoot().getViewId() }))) {
+				return null;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSFMessages.ERROR(e.getMessage());
 		}
 		return "/iniciar-sesion?faces-redirect=true";
 	}
@@ -46,12 +53,28 @@ public class AuthBean implements Serializable {
 	}
 
 	public boolean verifyRenderabilityByAllWebappPaths(String... requiredWebappPaths) {
-		return userManager.verifyAuthorizationByAllWebappPaths(signInBean.getAccessibleWebappPaths(),
-				Arrays.asList(requiredWebappPaths));
+		if (signInBean.getSignedUserDto() == null)
+			return false;
+		try {
+			return userManager.verifyAuthorizationByAllWebappPaths(signInBean.getSignedUserDto().getId(),
+					Arrays.asList(requiredWebappPaths));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
-	
+
 	public boolean verifyRenderabilityByOneWebappPath(String... requiredWebappPaths) {
-		return userManager.verifyAuthorizationByOneWebappPath(signInBean.getAccessibleWebappPaths(),
-				Arrays.asList(requiredWebappPaths));
+		if (signInBean.getSignedUserDto() == null)
+			return false;
+		try {
+			return userManager.verifyAuthorizationByOneWebappPath(signInBean.getSignedUserDto().getId(),
+					Arrays.asList(requiredWebappPaths));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
