@@ -74,7 +74,7 @@ public class PermissionManagementBean implements Serializable {
 		inactivateSelectedPermissions();
 	}
 
-	public void activateSelectedPermission(Permission permission) {
+	public void activatePermission(Permission permission) {
 		try {
 			permissionManager.updateOnePermissionById(permission.getId(), permission.getName(),
 					permission.getWebappRelatedPath(), true);
@@ -85,6 +85,18 @@ public class PermissionManagementBean implements Serializable {
 			e.printStackTrace();
 			JSFMessages.ERROR(e.getMessage());
 
+		}
+	}
+	
+	public void deleteSelectedPermission() {
+		try {
+			permissionManager.deleteOnePermissionById(selectedPermission.getId());
+			JSFMessages.INFO("Permiso eliminado de forma exitosa.");
+			permissions = permissionManager.findAllPermissions();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			JSFMessages.ERROR(e.getMessage());
 		}
 	}
 

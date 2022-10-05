@@ -81,6 +81,17 @@ public class PermissionManager {
 			throw new Exception("Ha ocurrido un error en la actualización del Permiso.");
 		}
 	}
+	
+	public Permission deleteOnePermissionById(int permissionId) throws Exception {
+		try {
+			Permission deletedPermission = (Permission) daoManager.deleteOneById(Permission.class, permissionId);
+			return deletedPermission;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new Exception("Ha ocurrido un error en el proceso de eliminado del Permiso.");
+		}
+	}
 
 	public List<Permission> findAllPermissionsByGroupId(int groupId) {
 		List<GroupPermission> groupPermissions = groupPermissionManager.findAllGroupPermissionsByGroupId(groupId);

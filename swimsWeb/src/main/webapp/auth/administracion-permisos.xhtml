@@ -14,6 +14,7 @@
 			<p:toolbar>
 				<p:toolbarGroup>
 					<p:commandButton value="Nuevo" icon="pi pi-plus"
+						styleClass="ui-button-success"
 						actionListener="#{permissionManagementBean.openNew()}"
 						update=":dialogs:manage-permissions-content"
 						oncomplete="PF('managePermissionDialog').show()"
@@ -22,7 +23,7 @@
 					</p:commandButton>
 					<p:commandButton id="inactivate-permissions-button"
 						value="#{permissionManagementBean.inactivateButtonMessage}"
-						icon="pi pi-times" styleClass="ui-button-danger"
+						icon="pi pi-times" styleClass="ui-button-info"
 						actionListener="#{permissionManagementBean.inactivateSelectedPermissions()}"
 						disabled="#{!permissionManagementBean.hasSelectedPermissions()}"
 						update="@form">
@@ -33,7 +34,7 @@
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
 					<p:commandButton value="Refrescar" icon="pi pi-refresh"
-						styleClass="ui-button-help"
+						styleClass="ui-button-secondary"
 						actionListener="#{permissionManagementBean.onLoad()}"
 						update="@form">
 					</p:commandButton>
@@ -103,27 +104,33 @@
 				</p:column>
 
 				<p:column exportable="false">
-					<p:commandButton icon="pi pi-pencil"
+					<p:commandButton icon="pi pi-pencil" alt="Modificar"
 						update=":dialogs:manage-permissions-content"
 						oncomplete="PF('managePermissionDialog').show()"
-						styleClass="p-mr-2 rounded-button ui-button-secondary"
-						process="@this">
+						styleClass="p-mr-2 rounded-button ui-button-help" process="@this">
 						<f:setPropertyActionListener value="#{permission}"
 							target="#{permissionManagementBean.selectedPermission}" />
 						<p:resetInput target=":dialogs:manage-permissions-content" />
 					</p:commandButton>
-					<p:commandButton icon="pi pi-check" update=":form:dt-permissions"
+					<p:commandButton icon="pi pi-check" alt="Activar"
+						update=":form:dt-permissions"
 						styleClass="p-mr-2 rounded-button ui-button-success"
-						actionListener="#{permissionManagementBean.activateSelectedPermission(permission)}"
+						actionListener="#{permissionManagementBean.activatePermission(permission)}"
 						process="@this">
 					</p:commandButton>
-					<p:commandButton styleClass="ui-button-warning rounded-button"
+					<p:commandButton alt="Inactivar"
+						styleClass="ui-button-warning rounded-button p-mr-2"
 						icon="pi pi-times" process="@this"
 						oncomplete="PF('inactivatePermissionDialog').show()">
 						<f:setPropertyActionListener value="#{permission}"
 							target="#{permissionManagementBean.selectedPermission}" />
 					</p:commandButton>
-
+					<p:commandButton alt="Eliminar"
+						styleClass="ui-button-danger rounded-button" icon="pi pi-trash"
+						process="@this" oncomplete="PF('deletePermissionDialog').show()">
+						<f:setPropertyActionListener value="#{permission}"
+							target="#{permissionManagementBean.selectedPermission}" />
+					</p:commandButton>
 				</p:column>
 
 			</p:dataTable>
@@ -183,6 +190,18 @@
 				<p:commandButton value="No" type="button"
 					styleClass="ui-button-secondary" icon="pi pi-times"
 					onclick="PF('inactivatePermissionDialog').hide()" />
+			</p:confirmDialog>
+
+			<p:confirmDialog widgetVar="deletePermissionDialog" showEffect="fade"
+				width="300" message="¿Está seguro de eliminar este permiso?"
+				header="Confirmación" severity="warn">
+				<p:commandButton value="Si" icon="pi pi-check"
+					actionListener="#{permissionManagementBean.deleteSelectedPermission()}"
+					update=":form:dt-permissions" process="@this"
+					oncomplete="PF('deletePermissionDialog').hide()" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('deletePermissionDialog').hide()" />
 			</p:confirmDialog>
 
 			<p:confirmDialog global="true" showEffect="fade" width="300">
