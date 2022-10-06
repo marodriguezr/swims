@@ -1,7 +1,7 @@
 volumes:
   swims_postgres_data:
-  caddy_data:
-  caddy_config:
+  swims_caddy_data:
+  swims_caddy_config:
 
 services:
   swims_postgres:
@@ -19,8 +19,9 @@ services:
     container_name: swims-wildfly
     restart: always
     environment:
-      - WILDFLY_PASSWORD=${WILDFLY_PASSWORD:?err}
-      - WILDFLY_USERNAME=${WILDFLY_USERNAME:?err}
+      WILDFLY_PASSWORD: ${WILDFLY_PASSWORD:?err}
+      WILDFLY_USERNAME: ${WILDFLY_USERNAME:?err}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
 
   caddy:
     build:
@@ -30,8 +31,8 @@ services:
     container_name: swims-caddy
     restart: unless-stopped
     volumes:
-      - caddy_data:/data
-      - caddy_config:/config
+      - swims_caddy_data:/data
+      - swims_caddy_config:/config
     ports:
       - 80:80
       - 443:443

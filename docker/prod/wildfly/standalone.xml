@@ -140,7 +140,7 @@
                     <driver>postgresql-42.5.0.jar</driver>
                     <security>
                         <user-name>swims</user-name>
-                        <password>admin</password>
+                        <password>${env.POSTGRES_PASSWORD}</password>
                     </security>
                     <validation>
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>

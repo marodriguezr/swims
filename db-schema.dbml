@@ -1,4 +1,4 @@
-rvest.oai_sets {
+table harvesting.oai_sets {
   id varchar [pk]
   name varchar [not null]
   created_at timestamp [not null, default: `now()`]
@@ -6,7 +6,7 @@ rvest.oai_sets {
   is_active boolean [not null, default: true]
 }
 
-table harvest.oai_records {
+table harvesting.oai_records {
   id varchar [pk]
   url varchar [not null, unique]
   title varchar [not null]
@@ -16,7 +16,7 @@ table harvest.oai_records {
   publisher varchar [not null]
   contributor varchar [not null]
   date date
-  oai_set_id varchar [not null, ref: > harvest.oai_sets.id]
+  oai_set_id varchar [not null, ref: > harvesting.oai_sets.id]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
   is_active boolean [not null, default: true]

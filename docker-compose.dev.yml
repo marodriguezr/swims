@@ -17,7 +17,7 @@ services:
     volumes:
       - ./docker/dev/wildfly/standalone.xml:/bitnami/wildfly/configuration/standalone.xml:ro
     environment:
-      - WILDFLY_PASSWORD=adminadmin
-      - WILDFLY_USERNAME=admin
+      WILDFLY_PASSWORD: adminadmin
+      WILDFLY_USERNAME: admin
     ports:
       - "8080:8080"
