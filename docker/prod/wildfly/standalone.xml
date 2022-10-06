@@ -135,7 +135,7 @@
                     </security>
                 </datasource>
                 <datasource jndi-name="java:/swimsDS" pool-name="swimsDS">
-                    <connection-url>jdbc:postgresql://swims-postgres-dev:5432/swimsdb</connection-url>
+                    <connection-url>jdbc:postgresql://swims-postgres:5432/swimsdb</connection-url>
                     <driver-class>org.postgresql.Driver</driver-class>
                     <driver>postgresql-42.5.0.jar</driver>
                     <security>

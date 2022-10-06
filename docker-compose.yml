@@ -7,14 +7,10 @@ services:
     environment:
       POSTGRES_USER: swims
       POSTGRES_DB: swimsdb
-    ports:
-      - "5432:5432"
     networks:
       - swims_network
 
   swims_wildfly:
-    ports:
-      - "8080:8080"
     networks:
       - swims_network
     depends_on:

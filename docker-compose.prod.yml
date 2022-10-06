@@ -1,0 +1,42 @@
+volumes:
+  swims_postgres_data:
+  caddy_data:
+  caddy_config:
+
+services:
+  swims_postgres:
+    container_name: swims-postgres
+    volumes:
+      - swims_postgres_data:/var/lib/postgres
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
+
+  swims_wildfly:
+    build:
+      context: .
+      dockerfile: docker/prod/wildfly/Dockerfile
+    image: swims-wildfly
+    container_name: swims-wildfly
+    restart: always
+    environment:
+      - WILDFLY_PASSWORD=${WILDFLY_PASSWORD:?err}
+      - WILDFLY_USERNAME=${WILDFLY_USERNAME:?err}
+
+  caddy:
+    build:
+      context: .
+      dockerfile: docker/prod/caddy/Dockerfile
+    image: swims-caddy
+    container_name: swims-caddy
+    restart: unless-stopped
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+    ports:
+      - 80:80
+      - 443:443
+      - "443:443/udp"
+    networks:
+      - swims_network
+    depends_on:
+      - swims_wildfly
