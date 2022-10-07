@@ -34,6 +34,10 @@ public class AuthBean implements Serializable {
 
 	public String onPageLoad() {
 //		Checks whether if the user is requesting any of its accessible paths
+		if (signInBean.getSignedUserDto() == null) {
+			JSFMessages.ERROR("Acceso no permitido");
+			return "/iniciar-sesion?faces-redirect=true";
+		}
 		try {
 			if (userManager.verifyAuthorizationByAllWebappPaths(this.signInBean.getSignedUserDto().getId(),
 					Arrays.asList(new String[] { FacesContext.getCurrentInstance().getViewRoot().getViewId() }))) {

@@ -6,6 +6,12 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">Administración de permisos</ui:define>
+	
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{authBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
 
 	<ui:define name="content">
 

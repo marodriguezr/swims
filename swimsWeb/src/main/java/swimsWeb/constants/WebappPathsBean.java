@@ -48,4 +48,12 @@ public class WebappPathsBean implements Serializable {
 	public String getINDEX_WEBAPP_PATH() {
 		return INDEX_WEBAPP_PATH;
 	}
+	
+	public String getAUTH_WEBAPP_PATH() {
+		return AUTH_WEBAPP_PATH;
+	}
+	
+	public String getAUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH() {
+		return AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH;
+	}
 }

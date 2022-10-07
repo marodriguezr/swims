@@ -12,8 +12,7 @@ import swimsEJB.model.auth.managers.PermissionManager;
 import swimsEJB.model.auth.managers.UserManager;
 import swimsEJB.model.core.entities.Sysparam;
 
-import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH;
-import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH;
+import static swimsEJB.constants.WebappPaths.*;
 
 /**
  * Session Bean implementation class CoreManager
@@ -56,11 +55,20 @@ public class SeedManager {
 		/**
 		 * Permissions
 		 */
+		/**
+		 * HARVESTING
+		 */
 		Permission oaiRecordsInclusionPermission = permissionManager.createOnePermission("Inclusión de Registros OAI",
 				HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH);
 		Permission oaiSetsManagementPermission = permissionManager.createOnePermission("Administración de Sets OAI",
 				HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH);
-		
+
+		/**
+		 * AUTH
+		 */
+		Permission permissionManagementPermission = permissionManager.createOnePermission("Administración de Permisos",
+				AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH);
+
 		/**
 		 * Groups
 		 */
@@ -71,7 +79,8 @@ public class SeedManager {
 		 * GroupPermissions
 		 */
 		groupManager.addPermissionById(adminGroup.getId(), oaiSetsManagementPermission.getId());
-		
+		groupManager.addPermissionById(adminGroup.getId(), permissionManagementPermission.getId());
+
 		groupManager.addPermissionById(oaiRecordsInclusionGroup.getId(), oaiRecordsInclusionPermission.getId());
 
 		/**
@@ -79,14 +88,15 @@ public class SeedManager {
 		 */
 		UserDto adminUser = userManager.createOneUser(firstName, lastName, email, password);
 		
-		UserDto user2 = userManager.createOneUser("Inclusor", "Registros", "mail@mail2.com", "admin");
-		
 		/**
 		 * UserGroups
 		 */
-		userManager.addGroupById(adminUser.getId(), adminGroup.getId());
-		
-		userManager.addGroupById(user2.getId(), oaiRecordsInclusionGroup.getId());
+		groupManager.addUserById(adminGroup.getId(), adminUser.getId());
+
+		/**
+		 * temp
+		 */
+		groupManager.addUserById(oaiRecordsInclusionGroup.getId(), adminUser.getId());
 
 		/**
 		 * 

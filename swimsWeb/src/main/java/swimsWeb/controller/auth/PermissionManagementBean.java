@@ -14,6 +14,8 @@ import swimsEJB.model.auth.entities.Permission;
 import swimsEJB.model.auth.managers.PermissionManager;
 import swimsWeb.utilities.JSFMessages;
 
+import static swimsEJB.constants.WebappPaths.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH;
+
 @Named
 @SessionScoped
 public class PermissionManagementBean implements Serializable {
@@ -35,6 +37,10 @@ public class PermissionManagementBean implements Serializable {
 	public void onLoad() {
 		this.permissions = permissionManager.findAllPermissions();
 		this.selectedPermissions = new ArrayList<>();
+	}
+	
+	public String loadPage() {
+		return AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public void openNew() {

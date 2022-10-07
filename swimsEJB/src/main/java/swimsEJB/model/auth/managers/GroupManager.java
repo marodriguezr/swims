@@ -93,4 +93,9 @@ public class GroupManager {
 		GroupPermission groupPermission = groupPermissionManager.createOneGroupPermission(groupId, permissionId);
 		return groupPermission.getGroup();
 	}
+	
+	public Group addUserById(int groupId, int userId) throws Exception {
+		UserGroup userGroup = userGroupManager.createOneUserGroup(userId, groupId);
+		return userGroup.getGroup();
+	}
 }

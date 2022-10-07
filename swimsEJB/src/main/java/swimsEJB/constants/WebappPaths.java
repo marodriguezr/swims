@@ -37,4 +37,14 @@ public final class WebappPaths {
 	public static final String HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH = HARVESTING_WEBAPP_PATH
 			+ "/administracion-sets-oai";
 
+	
+	
+	/**
+	 * 3. AUTH MODULE
+	 */
+	public static final String AUTH_WEBAPP_PATH = "/auth";
+	/**
+	 * 3.1. PERMISSION MANAGEMENT
+	 */
+	public static final String AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH = AUTH_WEBAPP_PATH + "/administracion-permisos";
 }

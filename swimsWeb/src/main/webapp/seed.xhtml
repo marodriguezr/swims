@@ -15,7 +15,7 @@
 
 	<ui:define name="content">
 		<h:form>
-			<p:card>
+			<p:card rendered="#{!seedBean.isSystemSeeded}">
 				<f:facet name="title">
 				Parámetros de Inicialización del Sistema
 				</f:facet>
@@ -58,7 +58,17 @@
 				</div>
 				<f:facet name="footer">
 					<p:commandButton icon="pi pi-save" value="Registrar"
-						action="#{seedBean.seedAction()}" />
+						actionListener="#{seedBean.seedActionListener()}" update="@form" />
+				</f:facet>
+			</p:card>
+			<p:card rendered="#{seedBean.isSystemSeeded}">
+				<f:facet name="title">
+				Sistema Inicializado de Forma Exitosa
+				</f:facet>
+				<img src="resources/assets/success.gif" alt="Éxito"/>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-check" value="Continuar"
+						action="/index?faces-redirect=true}" />
 				</f:facet>
 			</p:card>
 		</h:form>

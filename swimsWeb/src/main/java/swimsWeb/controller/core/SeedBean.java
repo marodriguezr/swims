@@ -10,6 +10,8 @@ import javax.inject.Named;
 import swimsEJB.model.core.managers.SeedManager;
 import swimsWeb.utilities.JSFMessages;
 
+import static swimsEJB.constants.WebappPaths.INDEX_WEBAPP_PATH;
+
 @Named
 @RequestScoped
 public class SeedBean implements Serializable {
@@ -18,12 +20,14 @@ public class SeedBean implements Serializable {
 
 	@EJB
 	private SeedManager seedManager;
-	
+
 	private String firstName;
 	private String lastName;
 	private String email;
 	private String password;
 	private String passwordConfirmation;
+
+	private Boolean isSystemSeeded;
 
 	public SeedBean() {
 		// TODO Auto-generated constructor stub
@@ -36,41 +40,49 @@ public class SeedBean implements Serializable {
 		email = "";
 		password = "";
 		passwordConfirmation = "";
-	}
-
-	public String onPageLoad() {
 		try {
-			if (seedManager.isSystemSeeded())
-				return "/index?faces-redirect=true";
+			isSystemSeeded = seedManager.isSystemSeeded();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			JSFMessages.INFO(e.getMessage());
+			isSystemSeeded = false;
+			JSFMessages.INFO(
+					"No se ha encontrado el esquema de base de datos. Por favor configure la base de datos antes de continuar.");
 		}
+	}
+
+	public String onPageLoad() {
+		if (this.isSystemSeeded)
+			return INDEX_WEBAPP_PATH + "?faces-redirect=true";
 		return null;
 	}
 
 	public void loadPage() {
 	}
 
-	public String seedAction() {
+	public void seedActionListener() {
 		try {
 			if (!password.equals(passwordConfirmation)) {
 				JSFMessages.WARN("Las contraseñas no coinciden.");
-				return null;
+
 			}
 			if (password.isEmpty()) {
 				JSFMessages.WARN("Por favor ingrese una constraseña apropiada");
-				return null;
 			}
 			seedManager.seed(this.firstName, this.lastName, this.email, this.password);
-			JSFMessages.INFO("System susccesfully seeded.");
-			return "/index?faces-redirect=true";
+			this.isSystemSeeded = seedManager.isSystemSeeded();
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.WARN(e.getMessage());
-			return null;
 		}
+	}
+
+	public Boolean getIsSystemSeeded() {
+		return isSystemSeeded;
+	}
+
+	public void setIsSystemSeeded(Boolean isSystemSeeded) {
+		this.isSystemSeeded = isSystemSeeded;
 	}
 
 	public String getFirstName() {
@@ -112,6 +124,5 @@ public class SeedBean implements Serializable {
 	public void setPasswordConfirmation(String passwordConfirmation) {
 		this.passwordConfirmation = passwordConfirmation;
 	}
-	
-	
+
 }
