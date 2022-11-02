@@ -49,6 +49,7 @@ public class UserManager {
 		userDto.setEmail(user.getEmail());
 		userDto.setFirstName(user.getFirstName());
 		userDto.setLastName(user.getLastName());
+		userDto.setRoot(user.getIsRoot());
 		return userDto;
 	}
 
@@ -69,7 +70,8 @@ public class UserManager {
 		return userDtos;
 	}
 
-	public UserDto createOneUser(String firstName, String lastName, String email, String password) throws Exception {
+	public UserDto createOneUser(String firstName, String lastName, String email, String password, boolean isRoot)
+			throws Exception {
 		User user = new User();
 
 		user.setFirstName(firstName);
@@ -79,6 +81,7 @@ public class UserManager {
 		user.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		user.setIsActive(true);
+		user.setIsRoot(isRoot);
 
 		try {
 			return UserToUserDto(((User) daoManager.createOne(user)));
@@ -87,6 +90,10 @@ public class UserManager {
 			e.printStackTrace();
 			throw new Exception("Ha ocurrido un error en la creación del Usuario.");
 		}
+	}
+
+	public UserDto createOneUser(String firstName, String lastName, String email, String password) throws Exception {
+		return createOneUser(firstName, lastName, email, password, false);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -181,7 +188,7 @@ public class UserManager {
 	 * @param accessibleWebappPaths
 	 * @param requiredWebappPaths
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public boolean verifyAuthorizationByOneWebappPath(int userId, List<String> requiredWebappPaths) throws Exception {
 		List<String> accessibleWebappPaths = findAllAccesibleWebappPathsByUserId(userId);

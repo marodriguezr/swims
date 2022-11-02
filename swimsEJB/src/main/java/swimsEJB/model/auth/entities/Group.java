@@ -27,6 +27,9 @@ public class Group implements Serializable {
 	@Column(name="is_active", nullable=false)
 	private Boolean isActive;
 
+	@Column(name="is_root", nullable=false)
+	private Boolean isRoot;
+
 	@Column(nullable=false, length=2147483647)
 	private String name;
 
@@ -66,6 +69,14 @@ public class Group implements Serializable {
 
 	public void setIsActive(Boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public Boolean getIsRoot() {
+		return this.isRoot;
+	}
+
+	public void setIsRoot(Boolean isRoot) {
+		this.isRoot = isRoot;
 	}
 
 	public String getName() {

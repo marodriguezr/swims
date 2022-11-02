@@ -1,6 +1,6 @@
-rvesting.oai_sets {
+table harvesting.oai_sets {
   id varchar [pk]
-  name varchar [not null]
+  name varchar [not null, unique]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
   is_active boolean [not null, default: true]
@@ -28,6 +28,7 @@ table auth.users {
   last_name varchar [not null]
   email varchar [not null, unique]
   password varchar [not null]
+  is_root boolean [not null, default: false]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
   is_active boolean [not null, default: true]
@@ -46,6 +47,7 @@ table auth.users_groups {
 table auth.groups {
   id int [pk, increment]
   name varchar [not null, unique]
+  is_root boolean [not null, default: false]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
   is_active boolean [not null, default: true]

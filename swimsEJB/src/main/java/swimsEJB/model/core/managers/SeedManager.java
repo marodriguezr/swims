@@ -72,7 +72,7 @@ public class SeedManager {
 		/**
 		 * Groups
 		 */
-		Group adminGroup = groupManager.createOneGroup("Administrador");
+		Group adminGroup = groupManager.createOneGroup("Administrador", true);
 		Group oaiRecordsInclusionGroup = groupManager.createOneGroup("Inclusores de Registros OAI");
 
 		/**
@@ -86,7 +86,7 @@ public class SeedManager {
 		/**
 		 * Users
 		 */
-		UserDto adminUser = userManager.createOneUser(firstName, lastName, email, password);
+		UserDto adminUser = userManager.createOneUser(firstName, lastName, email, password, true);
 		
 		/**
 		 * UserGroups

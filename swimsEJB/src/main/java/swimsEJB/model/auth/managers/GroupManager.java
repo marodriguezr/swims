@@ -35,18 +35,23 @@ public class GroupManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Group createOneGroup(String name) throws Exception {
+	public Group createOneGroup(String name, boolean isRoot) throws Exception {
 		Group group = new Group();
 		group.setName(name);
 		group.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		group.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		group.setIsActive(true);
+		group.setIsRoot(isRoot);
 		try {
 			return (Group) daoManager.createOne(group);
 		} catch (Exception e) {
 			// TODO: handle exception
 			throw new Exception("Ha ocurrido un error en la creación del Grupo.");
 		}
+	}
+	
+	public Group createOneGroup(String name) throws Exception {
+		return createOneGroup(name, false);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -5,8 +5,8 @@ public class UserDto {
 	private String firstName;
 	private String lastName;
 	private String email;
-	private boolean isSuperUser;
 	private boolean isActive;
+	private boolean isRoot;
 
 	public UserDto() {
 		super();
@@ -44,14 +44,6 @@ public class UserDto {
 		this.email = email;
 	}
 
-	public boolean isSuperUser() {
-		return isSuperUser;
-	}
-
-	public void setSuperUser(boolean isSuperUser) {
-		this.isSuperUser = isSuperUser;
-	}
-
 	public boolean isActive() {
 		return isActive;
 	}
@@ -60,4 +52,11 @@ public class UserDto {
 		this.isActive = isActive;
 	}
 
+	public boolean isRoot() {
+		return isRoot;
+	}
+
+	public void setRoot(boolean isRoot) {
+		this.isRoot = isRoot;
+	}
 }
