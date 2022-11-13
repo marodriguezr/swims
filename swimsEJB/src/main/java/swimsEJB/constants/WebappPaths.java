@@ -47,4 +47,8 @@ public final class WebappPaths {
 	 * 3.1. PERMISSION MANAGEMENT
 	 */
 	public static final String AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH = AUTH_WEBAPP_PATH + "/administracion-permisos";
+	/**
+	 * 3.2 USER MANAGEMENT
+	 */
+	public static final String AUTH_USER_MANAGEMENT_WEBAPP_PATH = AUTH_WEBAPP_PATH + "/administracion-usuarios";
 }

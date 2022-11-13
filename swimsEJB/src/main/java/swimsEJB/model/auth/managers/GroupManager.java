@@ -49,7 +49,7 @@ public class GroupManager {
 			throw new Exception("Ha ocurrido un error en la creación del Grupo.");
 		}
 	}
-	
+
 	public Group createOneGroup(String name) throws Exception {
 		return createOneGroup(name, false);
 	}
@@ -59,17 +59,32 @@ public class GroupManager {
 		return daoManager.findAll(Group.class);
 	}
 
+	public List<Group> findAllActiveGroups() {
+		List<Group> foundGroups = findAllGroups();
+		foundGroups.removeIf(arg0 -> !arg0.getIsActive());
+		return foundGroups;
+	}
+
+	public List<Group> findAllActiveGroups(boolean userIsRoot) {
+		List<Group> foundGroups = findAllActiveGroups();
+		if (userIsRoot)
+			return foundGroups;
+		
+		foundGroups.removeIf(arg0 -> arg0.getIsRoot());
+		return foundGroups;
+	}
+
 	public List<Group> findAllGroupsByUserId(int userId) {
 		List<UserGroup> userGroups = userGroupManager.findAllUserGroupsByUserId(userId);
-		List<Group> groups = new ArrayList<>();		
+		List<Group> groups = new ArrayList<>();
 		for (UserGroup userGroup : userGroups) {
 			groups.add(userGroup.getGroup());
 		}
 		return groups;
 	};
-	
+
 	public List<Group> findAllActiveGroupsByUserId(int userId) {
-		List<Group> groups = findAllGroupsByUserId(userId);		
+		List<Group> groups = findAllGroupsByUserId(userId);
 		groups = groups.stream().filter(group -> group.getIsActive()).collect(Collectors.toList());
 		return groups;
 	}
@@ -98,9 +113,19 @@ public class GroupManager {
 		GroupPermission groupPermission = groupPermissionManager.createOneGroupPermission(groupId, permissionId);
 		return groupPermission.getGroup();
 	}
-	
+
 	public Group addUserById(int groupId, int userId) throws Exception {
 		UserGroup userGroup = userGroupManager.createOneUserGroup(userId, groupId);
 		return userGroup.getGroup();
+	}
+
+	public List<Integer> findRootGroupUserIds() {
+		Group rootGroup = (Group) daoManager.findOneWhere(Group.class, "o.isRoot = true");
+		if (rootGroup == null) {
+			return new ArrayList<>();
+		}
+		List<Integer> rootGroupUserIds = rootGroup.getUsersGroups().stream().map(arg0 -> arg0.getUser())
+				.collect(Collectors.toList()).stream().map(arg0 -> arg0.getId()).collect(Collectors.toList());
+		return rootGroupUserIds;
 	}
 }

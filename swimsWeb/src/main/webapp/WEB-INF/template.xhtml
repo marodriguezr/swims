@@ -42,9 +42,13 @@
 					<p:submenu
 						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}"
 						label="Autenticación y Autorización" icon="pi pi-fw pi-cog">
-						<p:menuitem value="Administración Permisos"
+						<p:menuitem value="Administración de Permisos"
 							action="#{permissionManagementBean.loadPage()}"
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}">
+						</p:menuitem>
+						<p:menuitem value="Administración de Usuarios"
+							action="#{userManagementBean.loadPage()}"
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_USER_MANAGEMENT_WEBAPP_PATH)}">
 						</p:menuitem>
 					</p:submenu>
 					<f:facet name="options">

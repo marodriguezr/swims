@@ -68,6 +68,8 @@ public class SeedManager {
 		 */
 		Permission permissionManagementPermission = permissionManager.createOnePermission("Administración de Permisos",
 				AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH);
+		Permission userManagementPermission = permissionManager.createOnePermission("Administración de Usuario", AUTH_USER_MANAGEMENT_WEBAPP_PATH);
+		
 
 		/**
 		 * Groups
@@ -80,6 +82,7 @@ public class SeedManager {
 		 */
 		groupManager.addPermissionById(adminGroup.getId(), oaiSetsManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), permissionManagementPermission.getId());
+		groupManager.addPermissionById(adminGroup.getId(), userManagementPermission.getId());
 
 		groupManager.addPermissionById(oaiRecordsInclusionGroup.getId(), oaiRecordsInclusionPermission.getId());
 

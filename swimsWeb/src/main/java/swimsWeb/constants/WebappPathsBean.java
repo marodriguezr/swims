@@ -56,4 +56,8 @@ public class WebappPathsBean implements Serializable {
 	public String getAUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH() {
 		return AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH;
 	}
+	
+	public String getAUTH_USER_MANAGEMENT_WEBAPP_PATH() {
+		return AUTH_USER_MANAGEMENT_WEBAPP_PATH;
+	}
 }

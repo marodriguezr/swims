@@ -96,27 +96,78 @@ public class UserManager {
 		return createOneUser(firstName, lastName, email, password, false);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<UserDto> findAllUsers() {
-		return UsersToUserDtos(daoManager.findAll(User.class));
+	public UserDto createOneUserWithGroupIds(String firstName, String lastName, String email, String password,
+			List<Integer> groupIds) throws Exception {
+		UserDto createdUserDto = createOneUser(firstName, lastName, email, password);
+		for (Integer integer : groupIds) {
+			addGroupById(createdUserDto.getId(), integer);
+		}
+		return createdUserDto;
 	}
 
-	public UserDto findOneUserById(String id) throws Exception {
+	public List<UserDto> findAllUsersInAdminGroup() {
+		Group rootGroup = (Group) daoManager.findOneWhere(Group.class, "o.isRoot = true");
+		if (rootGroup == null)
+			return new ArrayList<>();
+		List<UserDto> foundUserDtos = new ArrayList<>();
+
+		UserDto foundUserDto;
+		for (UserGroup userGroup : rootGroup.getUsersGroups()) {
+			try {
+				foundUserDto = this.findOneUserById(userGroup.getUser().getId());
+			} catch (Exception e) {
+				// TODO: handle exception
+				continue;
+			}
+			foundUserDtos.add(foundUserDto);
+		}
+
+		return foundUserDtos;
+	}
+
+	public List<UserDto> findAllUsers() {
+		List<UserDto> foundUserDtos = findAllUsers(true);
+		List<Integer> rootGroupUserIds = groupManager.findRootGroupUserIds();
+		for (UserDto userDto : foundUserDtos) {
+			if (rootGroupUserIds.contains(userDto.getId()))
+				foundUserDtos.remove(userDto);
+		}
+		return foundUserDtos;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<UserDto> findAllUsers(boolean isRoot) {
+		if (isRoot) {
+			List<UserDto> foundUserDtos = UsersToUserDtos(daoManager.findAll(User.class));
+			foundUserDtos.removeIf(arg0 -> arg0.isRoot());
+			return foundUserDtos;
+		}
+		return findAllUsers();
+	}
+
+	public List<UserDto> findAllUsers(boolean isRoot, int userId) {
+		List<UserDto> foundUserDtos = findAllUsers(isRoot);
+		foundUserDtos.removeIf(arg0 -> arg0.getId() == userId);
+		return foundUserDtos;
+	}
+
+	public UserDto findOneUserById(int id) throws Exception {
 		User user = (User) daoManager.findOneById(User.class, id);
 		if (user == null)
 			return null;
 		return UserToUserDto(user);
 	}
 
-	public UserDto updateOneUserById(String id, String firstName, String lastName, String email, String password,
-			Boolean isActive) throws Exception {
+	public UserDto updateOneUserById(int id, String firstName, String lastName, String email, Boolean isActive,
+			String password) throws Exception {
 		User user = (User) daoManager.findOneById(User.class, id);
 		if (user == null)
 			throw new Exception("El Usuario específicado no está registrado.");
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setEmail(email);
-		user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(10)));
+		if (!password.isEmpty())
+			user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(10)));
 		user.setIsActive(isActive);
 		try {
 			return UserToUserDto((User) daoManager.updateOne(user));
@@ -126,10 +177,21 @@ public class UserManager {
 		}
 	}
 
-	public UserDto updateSelfUserById(String id, String firstName, String lastName, String email, String password)
+	public UserDto updateOneUserById(int id, String firstName, String lastName, String email, Boolean isActive)
+			throws Exception {
+		return updateOneUserById(id, firstName, lastName, email, isActive, "");
+	}
+
+	public UserDto deleteOneUserById(int id) throws Exception {
+		UserDto foundUserDto = findOneUserById(id);
+		daoManager.deleteOneById(getClass(), foundUserDto.getId());
+		return foundUserDto;
+	}
+
+	public UserDto updateSelfUserById(int id, String firstName, String lastName, String email, String password)
 			throws Exception {
 		UserDto userDto = signIn(email, password);
-		return updateOneUserById(id, firstName, lastName, email, password, userDto.isActive());
+		return updateOneUserById(id, firstName, lastName, email, userDto.isActive(), password);
 	}
 
 	public UserDto signIn(String email, String password) throws Exception {
