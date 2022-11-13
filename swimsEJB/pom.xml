@@ -63,6 +63,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 						</manifest>
+						<!-- https://docs.jboss.org/author/display/AS7/Class%20Loading%20in%20AS7.html -->
 						<manifestEntries>
 							<Dependencies>org.apache.httpcomponents</Dependencies>
 						</manifestEntries>
