@@ -23,15 +23,12 @@ services:
       - swims_network
 
   swims_limesurvey:
-    build:
-      context: docker-limesurvey/5.0/apache/
-      dockerfile: Dockerfile
-    image: swims-limesurvey
+    image: docker.io/martialblog/limesurvey:5-apache
     environment:
       DB_NAME: limesurvey_swimsdb
       DB_USERNAME: limesurvey_swims
-      # PUBLIC_URL: https://localhost/limesurvey
-      # BASE_URL: https://localhost/limesurvey
+      PUBLIC_URL: /encuesta
+      BASE_URL: /encuesta
     networks:
       - swims_network
     depends_on:

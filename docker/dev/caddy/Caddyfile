@@ -1,12 +1,12 @@
 localhost {
-    redir /swims /swims/
+    redir /encuesta /encuesta/
     
-    route /swims/* {
-        reverse_proxy swims-wildfly-dev:8080
+    route /encuesta/* {
+        reverse_proxy swims-limesurvey-dev:8080
     }
 
     route * {
-        reverse_proxy swims-limesurvey-dev:8080
+        reverse_proxy swims-wildfly-dev:8080
     }
 }
 

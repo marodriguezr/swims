@@ -24,7 +24,7 @@ services:
     container_name: swims-limesurvey-dev
     volumes:
       - swims_limesurvey_surveys_dev:/var/www/html/upload/surveys
-      # - ./docker/dev/limesurvey/000-default.conf:/etc/apache2/sites-available/000-default.conf:ro
+      - ./docker/dev/limesurvey/000-default.conf:/etc/apache2/sites-available/000-default.conf:ro
     environment:
       DB_HOST: swims-limesurvey-mysql-dev
       DB_PASSWORD: admin
