@@ -1,27 +1,52 @@
 volumes:
   swims_postgres_data:
+  swims_limesurvey_surveys:
   swims_caddy_data:
   swims_caddy_config:
 
 services:
   swims_postgres:
     container_name: swims-postgres
+    restart: unless-stopped
     volumes:
       - swims_postgres_data:/var/lib/postgres
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
 
+  swims_limesurvey_mysql:
+    container_name: swims-limesurvey-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_PASSWORD: ${LIMESURVEY_MYSQL_PASSWORD:?err}
+      MYSQL_ROOT_PASSWORD: ${LIMESURVEY_MYSQL_ROOT_PASSWORD:?err}
+
+  swims_limesurvey:
+    build:
+      context: .
+      dockerfile: docker/prod/limesurvey/Dockerfile
+    image: swims-limesurvey
+    container_name: swims-limesurvey
+    restart: unless-stopped
+    volumes:
+      - swims_limesurvey_surveys:/var/www/html/upload/surveys
+    environment:
+      DB_HOST: swims-limesurvey-mysql
+      DB_PASSWORD: ${LIMESURVEY_MYSQL_PASSWORD:?err}
+      ADMIN_PASSWORD: ${LIMESURVEY_ADMIN_PASSWORD:?err}
+      ADMIN_USER: ${LIMESURVEY_ADMIN_USER:?err}
   swims_wildfly:
     build:
       context: .
       dockerfile: docker/prod/wildfly/Dockerfile
     image: swims-wildfly
     container_name: swims-wildfly
-    restart: always
+    restart: unless-stopped
     environment:
       WILDFLY_PASSWORD: ${WILDFLY_PASSWORD:?err}
       WILDFLY_USERNAME: ${WILDFLY_USERNAME:?err}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
+      LIMESURVEY_ADMIN_PASSWORD: ${LIMESURVEY_ADMIN_PASSWORD:?err}
+      LIMESURVEY_ADMIN_USER: ${LIMESURVEY_ADMIN_USER:?err}
 
   caddy:
     build:

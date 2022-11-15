@@ -1,7 +1,7 @@
 localhost {
-    redir /encuesta /encuesta/
+    redir /limesurvey /limesurvey/
     
-    route /encuesta/* {
+    route /limesurvey/* {
         reverse_proxy swims-limesurvey-dev:8080
     }
 

@@ -21,6 +21,7 @@ services:
       MYSQL_ROOT_PASSWORD: admin
 
   swims_limesurvey:
+    image: docker.io/martialblog/limesurvey:5-apache
     container_name: swims-limesurvey-dev
     volumes:
       - swims_limesurvey_surveys_dev:/var/www/html/upload/surveys
@@ -28,7 +29,7 @@ services:
     environment:
       DB_HOST: swims-limesurvey-mysql-dev
       DB_PASSWORD: admin
-      ADMIN_PASSWORD: admin
+      ADMIN_PASSWORD: adminer
 
   swims_wildfly:
     image: docker.io/bitnami/wildfly:26
@@ -38,6 +39,8 @@ services:
     environment:
       WILDFLY_PASSWORD: adminadmin
       WILDFLY_USERNAME: admin
+      LIMESURVEY_ADMIN_PASSWORD: adminer
+      LIMESURVEY_ADMIN_USER: admin
 
   caddy:
     image: caddy:2-alpine
