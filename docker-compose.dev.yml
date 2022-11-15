@@ -1,5 +1,8 @@
 volumes:
   swims_postgres_data_dev:
+  swims_limesurvey_surveys_dev:
+  swims_caddy_data_dev:
+  swims_caddy_config_dev:
 
 services:
   swims_postgres:
@@ -11,6 +14,22 @@ services:
     ports:
       - "5432:5432"
 
+  swims_limesurvey_mysql:
+    container_name: swims-limesurvey-mysql-dev
+    environment:
+      MYSQL_PASSWORD: admin
+      MYSQL_ROOT_PASSWORD: admin
+
+  swims_limesurvey:
+    container_name: swims-limesurvey-dev
+    volumes:
+      - swims_limesurvey_surveys_dev:/var/www/html/upload/surveys
+      # - ./docker/dev/limesurvey/000-default.conf:/etc/apache2/sites-available/000-default.conf:ro
+    environment:
+      DB_HOST: swims-limesurvey-mysql-dev
+      DB_PASSWORD: admin
+      ADMIN_PASSWORD: admin
+
   swims_wildfly:
     image: docker.io/bitnami/wildfly:26
     container_name: swims-wildfly-dev
@@ -19,5 +38,15 @@ services:
     environment:
       WILDFLY_PASSWORD: adminadmin
       WILDFLY_USERNAME: admin
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: swims-caddy-dev
+    volumes:
+      - swims_caddy_data_dev:/data
+      - swims_caddy_config_dev:/config
+      - ./docker/dev/caddy/Caddyfile:/etc/caddy/Caddyfile
     ports:
-      - "8080:8080"
+      - 80:80
+      - 443:443
+      - "443:443/udp"

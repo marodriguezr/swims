@@ -1,3 +1,10 @@
 localhost {
-    reverse_proxy swims-wildfly:8080
+    route /limesurvey/* {
+        uri strip_prefix /limesurvey
+	    reverse_proxy swims-limesurvey:8080
+    }
+
+    route /* {
+        reverse_proxy swims-wildfly:8080
+    }
 }

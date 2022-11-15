@@ -1,0 +1,15 @@
+localhost {
+    redir /swims /swims/
+    
+    route /swims/* {
+        reverse_proxy swims-wildfly-dev:8080
+    }
+
+    route * {
+        reverse_proxy swims-limesurvey-dev:8080
+    }
+}
+
+    
+
+

@@ -9,6 +9,8 @@
 
 	<ui:define name="content">
 		<h:outputText value="SWIMS"></h:outputText>
-		<p:commandButton value="Test" actionListener="#{testBean.test()}"></p:commandButton>
+		<h:form>
+			<p:commandButton value="Test" actionListener="#{testBean.test()}"></p:commandButton>
+		</h:form>
 	</ui:define>ui:define>
 </ui:composition>

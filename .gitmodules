@@ -1,0 +1,3 @@
+[submodule "docker-limesurvey"]
+	path = docker-limesurvey
+	url = https://github.com/martialblog/docker-limesurvey.git

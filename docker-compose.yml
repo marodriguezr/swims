@@ -1,6 +1,10 @@
 networks:
   swims_network:
 
+volumes:
+  swims_caddy_data:
+  swims_caddy_config:
+
 services:
   swims_postgres:
     image: postgres:13
@@ -10,8 +14,38 @@ services:
     networks:
       - swims_network
 
+  swims_limesurvey_mysql:
+    image: docker.io/mysql:5.7
+    environment:
+      MYSQL_USER: limesurvey_swims
+      MYSQL_DATABASE: limesurvey_swimsdb
+    networks:
+      - swims_network
+
+  swims_limesurvey:
+    build:
+      context: docker-limesurvey/5.0/apache/
+      dockerfile: Dockerfile
+    image: swims-limesurvey
+    environment:
+      DB_NAME: limesurvey_swimsdb
+      DB_USERNAME: limesurvey_swims
+      # PUBLIC_URL: https://localhost/limesurvey
+      # BASE_URL: https://localhost/limesurvey
+    networks:
+      - swims_network
+    depends_on:
+      - swims_limesurvey_mysql
+
   swims_wildfly:
     networks:
       - swims_network
     depends_on:
       - swims_postgres
+      - swims_limesurvey
+
+  caddy:
+    networks:
+      - swims_network
+    depends_on:
+      - swims_wildfly

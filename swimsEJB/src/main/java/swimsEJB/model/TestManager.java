@@ -1,6 +1,5 @@
 package swimsEJB.model;
 
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -33,36 +32,41 @@ public class TestManager {
 	}
 
 	public static String parse(String jsonLine) {
-//		JsonElement jelement = new JsonParser().parse(jsonLine);
 		JsonObject jobject = JsonParser.parseString(jsonLine).getAsJsonObject();
 		String result = jobject.get("result").getAsString();
 		return result;
 	}
-	
+
 	public void test() throws UnsupportedEncodingException {
-//		DefaultHttpClient client = new DefaultHttpClient();
 		HttpClient client = HttpClientBuilder.create().build();
-        
-	      HttpPost post = new HttpPost("https://PATH_OF_YOUR_SERVER/index.php/admin/remotecontrol");
-	      post.setHeader("Content-type", "application/json");
-	      post.setEntity( new StringEntity("{\"method\": \"get_session_key\", \"params\": [\"YOUR_USERNAME\", \"YOUR_PASSWORD\" ], \"id\": 1}"));
-	      try {
-	        HttpResponse response = client.execute(post);
-	        if(response.getStatusLine().getStatusCode() == 200){
-	            HttpEntity entity = response.getEntity();
-	            String sessionKey = parse(EntityUtils.toString(entity));
-	            post.setEntity( new StringEntity("{\"method\": \"list_groups\", \"params\": [ \""+sessionKey+"\", \"ID_SURVEY\" ], \"id\": 1}"));
-	            response = client.execute(post);
-	            if(response.getStatusLine().getStatusCode() == 200){
-	                entity = response.getEntity();
-	                System.out.println(EntityUtils.toString(entity));
-	                }
-	           }
-	       
-	       
-	      } catch (IOException e) {
-	        e.printStackTrace();
-	      }
+		final String limesurveyHost = System.getenv().getOrDefault("LIMESURVEY_HOST",
+				"http://swims-limesurvey-dev:8080/index.php/admin/remotecontrol");
+		HttpPost post = new HttpPost(limesurveyHost);
+		post.setHeader("Content-type", "application/json");
+		post.setEntity(new StringEntity(
+				"{\"method\": \"get_session_key\", \"params\": [\"admin\", \"foobar\" ], \"id\": 1}"));
+		try {
+			HttpResponse response = client.execute(post);
+			if (response.getStatusLine().getStatusCode() == 200) {
+				HttpEntity entity = response.getEntity();
+				String stringifiedEntity = EntityUtils.toString(entity);
+				System.out.println(stringifiedEntity);
+//				JsonObject jobject = JsonParser.parseString(stringifiedEntity).getAsJsonObject();
+//				String result = jobject.get("result").getAsString();
+				String sessionKey = parse(stringifiedEntity);
+				System.out.println(sessionKey);
+//				post.setEntity(new StringEntity("{\"method\": \"list_groups\", \"params\": [ \"" + sessionKey
+//						+ "\", \"ID_SURVEY\" ], \"id\": 1}"));
+//				response = client.execute(post);
+//				if (response.getStatusLine().getStatusCode() == 200) {
+//					entity = response.getEntity();
+//					System.out.println(EntityUtils.toString(entity));
+//				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
