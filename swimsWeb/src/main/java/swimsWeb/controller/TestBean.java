@@ -1,11 +1,14 @@
 package swimsWeb.controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 //import java.util.List;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 import swimsEJB.model.TestManager;
@@ -30,9 +33,19 @@ public class TestBean implements Serializable {
 //		for (Integer integer : found) {
 //			System.out.println(integer);
 //		}
+//		try {
+//			testManager.test();
+//		} catch (UnsupportedEncodingException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
+		System.out.println(System.getenv().getOrDefault("LIMESURVEY_ADMIN_PASSWORD", "didnt work D:"));
+		System.out.println(System.getenv("LIMESURVEY_BASE_URL"));
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
 		try {
-			testManager.test();
-		} catch (UnsupportedEncodingException e) {
+			externalContext.redirect(System.getenv("LIMESURVEY_BASE_URL").toString() + "/index.php/admin/authentication/sa/login");
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
