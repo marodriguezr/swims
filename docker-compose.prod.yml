@@ -34,6 +34,7 @@ services:
       DB_PASSWORD: ${LIMESURVEY_MYSQL_PASSWORD:?err}
       ADMIN_PASSWORD: ${LIMESURVEY_ADMIN_PASSWORD:?err}
       ADMIN_USER: ${LIMESURVEY_ADMIN_USER:?err}
+
   swims_wildfly:
     build:
       context: .
@@ -47,6 +48,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
       LIMESURVEY_ADMIN_PASSWORD: ${LIMESURVEY_ADMIN_PASSWORD:?err}
       LIMESURVEY_ADMIN_USER: ${LIMESURVEY_ADMIN_USER:?err}
+      LIMESURVEY_HOST: swims-limesurvey
 
   caddy:
     build:

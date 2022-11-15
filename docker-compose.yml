@@ -33,6 +33,8 @@ services:
       - swims_limesurvey_mysql
 
   swims_wildfly:
+    environment:
+      LIMESURVEY_BASE_URL: /limesurvey
     networks:
       - swims_network
     depends_on:
