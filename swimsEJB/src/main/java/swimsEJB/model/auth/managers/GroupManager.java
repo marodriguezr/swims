@@ -128,4 +128,9 @@ public class GroupManager {
 				.collect(Collectors.toList()).stream().map(arg0 -> arg0.getId()).collect(Collectors.toList());
 		return rootGroupUserIds;
 	}
+	
+	public List<Integer> findAllGroupIdsByUserId(int userId) {
+		List<UserGroup> userGroups = userGroupManager.findAllUserGroupsByUserId(userId);
+		return userGroups.stream().map(arg0 -> arg0.getGroup().getId()).collect(Collectors.toList());
+	}
 }

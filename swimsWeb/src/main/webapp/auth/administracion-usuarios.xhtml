@@ -91,9 +91,9 @@
 					<h:outputText value="#{user.email}" />
 				</p:column>
 
-				<p:column headerText="Estado" sortBy="#{user.isActive}">
-					<h:outputText rendered="#{user.isActive eq true}" value="Activo" />
-					<h:outputText rendered="#{user.isActive eq false}" value="Inactivo" />
+				<p:column headerText="Estado" sortBy="#{user.active}">
+					<h:outputText rendered="#{user.active eq true}" value="Activo" />
+					<h:outputText rendered="#{user.active eq false}" value="Inactivo" />
 				</p:column>
 
 
@@ -104,7 +104,7 @@
 						oncomplete="PF('manageUserDialog').show()"
 						styleClass="p-mr-2 rounded-button ui-button-help" process="@this">
 						<f:setPropertyActionListener value="#{user}"
-							target="#{userManagementBean.selectedUserDto}" />
+							target="#{userManagementBean.selectedUserDtoWithGroups}" />
 						<p:resetInput target=":dialogs:manage-users-content" />
 					</p:commandButton>
 					<p:commandButton icon="pi pi-check" alt="Activar"
@@ -165,8 +165,7 @@
 								promptLabel="Ingrese su contraseña" weakLabel="Débil"
 								goodLabel="Buena" strongLabel="Fuerte" feedback="true"
 								inline="true" toggleMask="true" redisplay="true"
-								value="#{userManagementBean.password}" required="true"
-								id="password"></p:password>
+								value="#{userManagementBean.password}" id="password"></p:password>
 						</div>
 						<div class="p-field">
 							<p:outputLabel for="passwordConfirmation">Confirmación contraseña</p:outputLabel>
@@ -175,7 +174,7 @@
 								goodLabel="Buena" strongLabel="Fuerte" feedback="true"
 								inline="true" toggleMask="true" redisplay="true"
 								value="#{userManagementBean.passwordConfirmation}"
-								required="true" id="passwordConfirmation"></p:password>
+								id="passwordConfirmation"></p:password>
 						</div>
 
 						<div class="field">

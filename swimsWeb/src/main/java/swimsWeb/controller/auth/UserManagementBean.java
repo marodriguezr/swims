@@ -161,7 +161,8 @@ public class UserManagementBean implements Serializable {
 		}
 		try {
 			userManager.updateOneUserById(selectedUserDto.getId(), selectedUserDto.getFirstName(),
-					selectedUserDto.getLastName(), selectedUserDto.getEmail(), selectedUserDto.isActive(), password);
+					selectedUserDto.getLastName(), selectedUserDto.getEmail(), selectedUserDto.isActive(), password,
+					selectedGroupIds);
 			this.findAllUserDtos();
 			JSFMessages.INFO("Usuario actualizado de forma exitosa.");
 		} catch (Exception e) {
@@ -169,6 +170,11 @@ public class UserManagementBean implements Serializable {
 			e.printStackTrace();
 			JSFMessages.ERROR(e.getMessage());
 		}
+	}
+
+	public void setSelectedUserDtoWithGroups(UserDto selectedUserDto) {
+		this.selectedGroupIds = groupManager.findAllGroupIdsByUserId(selectedUserDto.getId());
+		this.selectedUserDto = selectedUserDto;
 	}
 
 	public List<UserDto> getUserDtos() {

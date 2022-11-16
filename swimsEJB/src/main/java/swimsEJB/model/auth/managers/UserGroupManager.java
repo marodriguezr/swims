@@ -34,10 +34,12 @@ public class UserGroupManager {
 
 	public UserGroup createOneUserGroup(int userId, int groupId) throws Exception {
 		User user = (User) daoManager.findOneById(User.class, userId);
-		if (user == null) throw new Exception("El usuario especificado no está registrado.");
+		if (user == null)
+			throw new Exception("El usuario especificado no está registrado.");
 		Group group = groupManager.findOneGroupById(groupId);
-		if (group == null) throw new Exception("El grupo especificado no está registrado.");
-		
+		if (group == null)
+			throw new Exception("El grupo especificado no está registrado.");
+
 		UserGroup userGroup = new UserGroup();
 		userGroup.setUser(user);
 		userGroup.setGroup(group);
@@ -48,10 +50,38 @@ public class UserGroupManager {
 			throw new Exception("Ha ocurrido un error en la creación del UserGroup.");
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<UserGroup> findAllUserGroupsByUserId(int userId) {
-		List<UserGroup> userGroups = daoManager.findManyWhere(UserGroup.class, "o.user.id = " + userId, ""); 
+		List<UserGroup> userGroups = daoManager.findManyWhere(UserGroup.class, "o.user.id = " + userId, "");
 		return userGroups;
 	}
+
+	public UserGroup updateOneUserGroup(int userGroupId, int userId, int groupId) throws Exception {
+		UserGroup userGroup = (UserGroup) daoManager.findOneById(UserGroup.class, userGroupId);
+		if (userGroup == null)
+			throw new Exception("El UserGroup especificado no está registrado.");
+		User user = (User) daoManager.findOneById(User.class, userId);
+		if (user == null)
+			throw new Exception("El usuario especificado no está registrado.");
+		Group group = groupManager.findOneGroupById(groupId);
+		if (group == null)
+			throw new Exception("El grupo especificado no está registrado.");
+
+		userGroup.setGroup(group);
+		userGroup.setUser(user);
+
+		UserGroup updatedUserGroup = (UserGroup) daoManager.updateOne(userGroup);
+
+		return updatedUserGroup;
+	}
+
+	public UserGroup deleteOseUserGroupById(int userGroupId) throws Exception {
+		UserGroup userGroup = (UserGroup) daoManager.findOneById(UserGroup.class, userGroupId);
+		if (userGroup == null)
+			throw new Exception("El UserGroup especificado no está registrado.");
+		daoManager.deleteOneById(UserGroup.class, userGroup.getId());
+		return userGroup;
+	}
+
 }
