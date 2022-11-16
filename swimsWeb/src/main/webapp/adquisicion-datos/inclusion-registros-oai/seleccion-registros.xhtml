@@ -19,7 +19,8 @@
 				<f:facet name="title">
 			Filtrado de registros
 			</f:facet>
-				<ui:include src="#{webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
+				<ui:include
+					src="#{webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
 
 				<div class="p-pt-4 p-pb-2">
 					<p:commandButton update="@form"
@@ -42,7 +43,8 @@
 
 						<p:column sortBy="#{oaiRecordDto.titles.get(0)}"
 							filterBy="#{oaiRecordDto.titles.get(0)}" headerText="Titulo">
-							<a href="#{recordsSelectionBean.getURLFromOaiRecordDto(oaiRecordDto)}"><h:outputText
+							<a
+								href="#{recordsSelectionBean.getURLFromOaiRecordDto(oaiRecordDto)}"><h:outputText
 									rendered="#{oaiRecordDto.titles.size() ge 1}"
 									value="#{oaiRecordDto.titles.get(0)}" /></a>
 							<h:outputText rendered="#{oaiRecordDto.titles.size() eq 0}"
@@ -61,7 +63,7 @@
 							filterBy="#{oaiRecordDto.contributors.get(0)}"
 							headerText="Director">
 							<h:outputText rendered="#{oaiRecordDto.contributors.size() ge 1}"
-								value="#{oaiRecordDto.creators.get(0)}}" />
+								value="#{oaiRecordDto.creators.get(0)}" />
 							<h:outputText rendered="#{oaiRecordDto.contributors.size() eq 0}"
 								value="Registro sin director" />
 						</p:column>
@@ -76,13 +78,12 @@
 						</p:column>
 
 						<p:column
-							sortBy="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.dates.get(0))}"
-							filterBy="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.dates.get(0))}"
-							headerText="Fecha">
-							<h:outputText rendered="#{oaiRecordDto.dates.size() ge 1}"
-								value="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.dates.get(0))}" />
-							<h:outputText rendered="#{oaiRecordDto.dates.size() eq 0}"
-								value="Registro sin fecha" />
+							sortBy="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.inferredIssueDate)}"
+							filterBy="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.inferredIssueDate)}"
+							headerText="Fecha de publicación">
+							<h:outputText
+								rendered="#{oaiRecordDto.inferredIssueDate ne null}"
+								value="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.inferredIssueDate)}" />
 						</p:column>
 
 						<p:column>
@@ -118,7 +119,8 @@
 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.titles.size() gt 1}"
 							header="Títulos" toggleable="true" collapsed="true">
 							<p:dataScroller
-								value="#{recordsSelectionBean.selectedOaiRecordDto.titles}" var="title">
+								value="#{recordsSelectionBean.selectedOaiRecordDto.titles}"
+								var="title">
 								<h:outputText value="#{title}" />
 								<br />
 								<br />
@@ -209,6 +211,15 @@
 							header="Director" toggleable="true" collapsed="false">
 							<h:outputText
 								value="#{recordsSelectionBean.selectedOaiRecordDto.contributors.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.inferredIssueDate ne null}"
+							header="Fecha de publicación" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{recordsSelectionBean.dateFormat.format(recordsSelectionBean.selectedOaiRecordDto.inferredIssueDate)}" />
 						</p:panel>
 					</div>
 

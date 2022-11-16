@@ -28,7 +28,7 @@ public class OaiSetManager {
 	}
 	
 
-	public OaiSet createOneOaiSet(String identifier, String name, int createdBy) throws Exception {
+	public OaiSet createOneOaiSet(String identifier, String name) throws Exception {
 		OaiSet oaiSet;
 		oaiSet = new OaiSet();
 

@@ -1,4 +1,4 @@
-table harvesting.oai_sets {
+schema = "harvesting"table harvesting.oai_sets {
   id varchar [pk]
   name varchar [not null, unique]
   created_at timestamp [not null, default: `now()`]
@@ -15,7 +15,7 @@ table harvesting.oai_records {
   description text [not null]
   publisher varchar [not null]
   contributor varchar [not null]
-  date date
+  inferred_issue_date date [not null]
   oai_set_id varchar [not null, ref: > harvesting.oai_sets.id]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]

@@ -22,6 +22,8 @@ public class OaiRecordDto {
 	private List<String> publishers;
 	private List<String> contributors;
 	private List<Date> dates;
+	private Date inferredIssueDate;
+	private Date inferredCreationDate;
 	private List<String> types;
 	private List<String> formats;
 	private List<String> identifiers;
@@ -34,7 +36,7 @@ public class OaiRecordDto {
 	private Timestamp createdAt;
 	private Timestamp updateAt;
 	private boolean isActive;
-	
+
 	public OaiRecordDto() {
 		this.id = "";
 		this.url = "";
@@ -45,6 +47,8 @@ public class OaiRecordDto {
 		this.publishers = new ArrayList<String>();
 		this.contributors = new ArrayList<String>();
 		this.dates = new ArrayList<Date>();
+		this.inferredIssueDate = new Date();
+		this.inferredCreationDate = new Date();
 		this.types = new ArrayList<String>();
 		this.formats = new ArrayList<String>();
 		this.identifiers = new ArrayList<String>();
@@ -62,7 +66,8 @@ public class OaiRecordDto {
 	public OaiRecordDto(String id, List<String> titles, List<String> creators, List<String> subjects,
 			List<String> descriptions, List<String> publishers, List<String> contributors, List<Date> dates,
 			List<String> types, List<String> formats, List<String> identifiers, List<String> sources,
-			List<String> languages, List<String> relations, List<String> coverages, List<String> rights) {
+			List<String> languages, List<String> relations, List<String> coverages, List<String> rights, Date inferredIssueDate,
+			Date inferredCreationDate) {
 		super();
 		this.id = id;
 		this.titles = titles;
@@ -72,6 +77,8 @@ public class OaiRecordDto {
 		this.publishers = publishers;
 		this.contributors = contributors;
 		this.dates = dates;
+		this.inferredCreationDate = inferredIssueDate;
+		this.inferredCreationDate = inferredCreationDate;
 		this.types = types;
 		this.formats = formats;
 		this.identifiers = identifiers;
@@ -249,4 +256,21 @@ public class OaiRecordDto {
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
+	public Date getInferredIssueDate() {
+		return inferredIssueDate;
+	}
+
+	public void setInferredIssueDate(Date inferredIssueDate) {
+		this.inferredIssueDate = inferredIssueDate;
+	}
+
+	public Date getInferredCreationDate() {
+		return inferredCreationDate;
+	}
+
+	public void setInferredCreationDate(Date inferredCreationDate) {
+		this.inferredCreationDate = inferredCreationDate;
+	}
+
 }

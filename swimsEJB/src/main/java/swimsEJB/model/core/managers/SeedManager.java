@@ -11,6 +11,7 @@ import swimsEJB.model.auth.managers.GroupManager;
 import swimsEJB.model.auth.managers.PermissionManager;
 import swimsEJB.model.auth.managers.UserManager;
 import swimsEJB.model.core.entities.Sysparam;
+import swimsEJB.model.harvesting.managers.OaiSetManager;
 
 import static swimsEJB.constants.WebappPaths.*;
 
@@ -29,6 +30,8 @@ public class SeedManager {
 	private GroupManager groupManager;
 	@EJB
 	private SysparamManager sysparamManager;
+	@EJB
+	private OaiSetManager oaiSetManager;
 
 	/**
 	 * Default constructor.
@@ -95,6 +98,14 @@ public class SeedManager {
 		 * UserGroups
 		 */
 		groupManager.addUserById(adminGroup.getId(), adminUser.getId());
+		
+		/**
+		 * HARVESTING
+		 */
+		/**
+		 * CISIC OAI SET
+		 */
+		oaiSetManager.createOneOaiSet("col_123456789_40", "CISIC");
 
 		/**
 		 * temp

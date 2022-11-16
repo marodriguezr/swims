@@ -10,5 +10,7 @@
 		<class>swimsEJB.model.auth.entities.User</class>
 		<class>swimsEJB.model.auth.entities.UserGroup</class>
 		<class>swimsEJB.model.core.entities.Sysparam</class>
+		<class>swimsEJB.model.harvesting.entities.OaiRecord</class>
+		<class>swimsEJB.model.harvesting.entities.OaiSet</class>
 	</persistence-unit>
 </persistence>

@@ -17,37 +17,46 @@ public class OaiRecord implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(unique=true, nullable=false, length=2147483647)
 	private String id;
 
+	@Column(nullable=false, length=2147483647)
 	private String contributor;
 
-	@Column(name="created_at")
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
+	@Column(nullable=false, length=2147483647)
 	private String creator;
 
-	@Temporal(TemporalType.DATE)
-	private Date date;
-
+	@Column(nullable=false, length=2147483647)
 	private String description;
 
-	@Column(name="is_active")
+	@Temporal(TemporalType.DATE)
+	@Column(name="inferred_issue_date", nullable=false)
+	private Date inferredIssueDate;
+
+	@Column(name="is_active", nullable=false)
 	private Boolean isActive;
 
+	@Column(nullable=false, length=2147483647)
 	private String publisher;
 
+	@Column(nullable=false, length=2147483647)
 	private String subject;
 
+	@Column(nullable=false, length=2147483647)
 	private String title;
 
-	@Column(name="updated_at")
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
+	@Column(nullable=false, length=2147483647)
 	private String url;
 
 	//bi-directional many-to-one association to OaiSet
 	@ManyToOne
-	@JoinColumn(name="oai_set_id")
+	@JoinColumn(name="oai_set_id", nullable=false)
 	private OaiSet oaiSet;
 
 	public OaiRecord() {
@@ -85,20 +94,20 @@ public class OaiRecord implements Serializable {
 		this.creator = creator;
 	}
 
-	public Date getDate() {
-		return this.date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
 	public String getDescription() {
 		return this.description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Date getInferredIssueDate() {
+		return this.inferredIssueDate;
+	}
+
+	public void setInferredIssueDate(Date inferredIssueDate) {
+		this.inferredIssueDate = inferredIssueDate;
 	}
 
 	public Boolean getIsActive() {

@@ -28,6 +28,7 @@ import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvesting.dtos.OaiRecordDto;
 import swimsEJB.model.harvesting.entities.OaiRecord;
 import swimsEJB.model.harvesting.entities.OaiSet;
+import swimsEJB.utilities.DateUtilities;
 import swimsEJB.utilities.StringHelpers;
 
 /**
@@ -87,7 +88,10 @@ public class OaiRecordManager {
 				: oaiRecordDto.getPublishers().get(0));
 		oaiRecord.setContributor(oaiRecordDto.getContributors().isEmpty() ? "Registro sin director"
 				: oaiRecordDto.getContributors().get(0));
-		oaiRecord.setDate(oaiRecordDto.getDates().isEmpty() ? null : oaiRecordDto.getDates().get(0));
+		oaiRecord.setInferredIssueDate(oaiRecordDto.getInferredIssueDate() == null
+				? oaiRecordDto.getDates().isEmpty() ? null : oaiRecordDto.getDates().get(0)
+				: oaiRecordDto.getInferredIssueDate());
+
 		return oaiRecord;
 	}
 
@@ -109,7 +113,8 @@ public class OaiRecordManager {
 		oaiRecordDto.getDescriptions().add(oaiRecord.getDescription());
 		oaiRecordDto.getPublishers().add(oaiRecord.getPublisher());
 		oaiRecordDto.getContributors().add(oaiRecord.getContributor());
-		oaiRecordDto.getDates().add(oaiRecord.getDate());
+		oaiRecordDto.getDates().add(oaiRecord.getInferredIssueDate());
+		oaiRecordDto.setInferredIssueDate(oaiRecord.getInferredIssueDate());
 		oaiRecordDto.setOaiSetId(oaiRecord.getOaiSet().getId());
 		oaiRecordDto.setCreatedAt(oaiRecord.getCreatedAt());
 		oaiRecordDto.setUpdateAt(oaiRecord.getUpdatedAt());
@@ -223,8 +228,8 @@ public class OaiRecordManager {
 		int indexOfOT = string.indexOf(openingTag);
 		int indexOfCT = string.indexOf(closingTag);
 
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"); // issue date
+		DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd"); // creation date
 
 		if (indexOfOT == -1 || indexOfCT == -1)
 			return null;
@@ -373,6 +378,14 @@ public class OaiRecordManager {
 		oaiRecordDto.setPublishers(extractStringsBetweenXMLTags(string, DC_PUBLISHER_OT, DC_PUBLISHER_CT));
 		oaiRecordDto.setContributors(extractStringsBetweenXMLTags(string, DC_CONTRIBUTOR_OT, DC_CONTRIBUTOR_CT));
 		oaiRecordDto.setDates(extractDatesBetweenXMLTags(string, DC_DATE_OT, DC_DATE_CT));
+		/**
+		 * Inferred issue date can be null
+		 */
+		oaiRecordDto.setInferredIssueDate(DateUtilities.findMaxDateOfList(oaiRecordDto.getDates()));
+		/**
+		 * Inferred creation date can be null
+		 */
+		oaiRecordDto.setInferredCreationDate(DateUtilities.findMinDateOfList(oaiRecordDto.getDates()));
 		oaiRecordDto.setTypes(extractStringsBetweenXMLTags(string, DC_TYPE_OT, DC_TYPE_CT));
 		oaiRecordDto.setFormats(extractStringsBetweenXMLTags(string, DC_FORMAT_OT, DC_FORMAT_CT));
 		oaiRecordDto.setIdentifiers(extractStringsBetweenXMLTags(string, DC_IDENTIFIER_OT, DC_IDENTIFIER_CT));
