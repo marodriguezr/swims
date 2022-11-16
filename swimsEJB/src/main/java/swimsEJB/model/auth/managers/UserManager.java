@@ -191,14 +191,14 @@ public class UserManager {
 		return userGroupManager.findAllUserGroupsByUserId(userId);
 	}
 
-	public UserDto updateOneUserById(int id, String firstName, String lastName, String email, Boolean isActive,
-			String password) throws Exception {
+	public UserDto updateOneUserById(int id, String firstName, String lastName, Boolean isActive, String password)
+			throws Exception {
 		User user = (User) daoManager.findOneById(User.class, id);
 		if (user == null)
 			throw new Exception("El Usuario específicado no está registrado.");
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
-		user.setEmail(email);
+
 		if (!password.isEmpty())
 			user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(10)));
 		user.setIsActive(isActive);
@@ -210,32 +210,26 @@ public class UserManager {
 		}
 	}
 
-	public UserDto updateOneUserById(int id, String firstName, String lastName, String email, Boolean isActive,
-			String password, List<Integer> groupIds) throws Exception {
+	public UserDto updateOneUserById(int id, String firstName, String lastName, Boolean isActive, String password,
+			List<Integer> groupIds) throws Exception {
 		updateUserGroups(id, groupIds);
-		return updateOneUserById(id, firstName, lastName, email, isActive, password);
+		return updateOneUserById(id, firstName, lastName, isActive, password);
 	}
 
-	public UserDto updateOneUserById(int id, String firstName, String lastName, String email, Boolean isActive)
-			throws Exception {
-		return updateOneUserById(id, firstName, lastName, email, isActive, "");
+	public UserDto updateOneUserById(int id, String firstName, String lastName, Boolean isActive) throws Exception {
+		return updateOneUserById(id, firstName, lastName, isActive, "");
 	}
 
 	public UserDto deleteOneUserById(int id) throws Exception {
 		UserDto foundUserDto = findOneUserById(id);
-		if (foundUserDto == null) throw new Exception("El usuario especificado no está registrado.");
+		if (foundUserDto == null)
+			throw new Exception("El usuario especificado no está registrado.");
 		List<UserGroup> userGroups = userGroupManager.findAllUserGroupsByUserId(id);
 		for (UserGroup userGroup : userGroups) {
 			userGroupManager.deleteOseUserGroupById(userGroup.getId());
 		}
 		daoManager.deleteOneById(User.class, foundUserDto.getId());
 		return foundUserDto;
-	}
-
-	public UserDto updateSelfUserById(int id, String firstName, String lastName, String email, String password)
-			throws Exception {
-		UserDto userDto = signIn(email, password);
-		return updateOneUserById(id, firstName, lastName, email, userDto.isActive(), password);
 	}
 
 	public UserDto signIn(String email, String password) throws Exception {
@@ -305,5 +299,23 @@ public class UserManager {
 				return true;
 		}
 		return false;
+	}
+
+	public UserDto updateSelfPassword(UserDto signedUser, String currentPassword, String newPassword) throws Exception {
+		if (signedUser == null)
+			throw new Exception("Acceso no permitido.");
+		signIn(signedUser.getEmail(), currentPassword);
+
+		User user = (User) daoManager.findOneById(User.class, signedUser.getId());
+		if (user == null)
+			throw new Exception("El Usuario específicado no está registrado.");
+		if (!newPassword.isEmpty())
+			user.setPassword(BCrypt.hashpw(newPassword, BCrypt.gensalt(10)));
+		try {
+			return UserToUserDto((User) daoManager.updateOne(user));
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new Exception("Ha ocurrido un error en la actualización del Usuario.");
+		}
 	}
 }

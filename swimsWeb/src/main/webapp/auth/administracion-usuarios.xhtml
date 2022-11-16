@@ -156,7 +156,12 @@
 							<p:outputLabel for="email">Correo electrónico</p:outputLabel>
 							<p:inputText id="email"
 								value="#{userManagementBean.selectedUserDto.email}"
-								required="true" />
+								required="true"
+								rendered="#{userManagementBean.selectedUserDto.id eq -1}" />
+							<p:inputText disabled="true"
+								value="#{userManagementBean.selectedUserDto.email}"
+								required="true"
+								rendered="#{userManagementBean.selectedUserDto.id ne -1}" />
 						</div>
 
 						<div class="p-field">
@@ -166,6 +171,8 @@
 								goodLabel="Buena" strongLabel="Fuerte" feedback="true"
 								inline="true" toggleMask="true" redisplay="true"
 								value="#{userManagementBean.password}" id="password"></p:password>
+							<h:outputText styleClass="p-text-light"
+								value="De no ser provista una nueva contraseña, la contraseña anterior será mantenida." />
 						</div>
 						<div class="p-field">
 							<p:outputLabel for="passwordConfirmation">Confirmación contraseña</p:outputLabel>

@@ -1,0 +1,54 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Actualizar contraseña</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{updatePasswordBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form>
+			<p:card>
+				<f:facet name="title">
+			Actualizar contraseña
+			</f:facet>
+
+				<div class="ui-fluid">
+					<div class="p-field">
+						<p:outputLabel for="currentPassword">Contraseña actual</p:outputLabel>
+						<p:password style="width: 100%;" id="currentPassword"
+							toggleMask="true" value="#{updatePasswordBean.currentPassword}"
+							required="true" />
+					</div>
+					<div class="p-field">
+						<p:outputLabel for="newPassword">Contraseña nueva</p:outputLabel>
+						<p:password style="width: 100%;" weakLabel="Débil"
+							goodLabel="Buena" strongLabel="Fuerte" feedback="true"
+							inline="true" toggleMask="true" redisplay="true"
+							value="#{updatePasswordBean.newPassword}" required="true"
+							id="newPassword"></p:password>
+					</div>
+					<div class="p-field">
+						<p:outputLabel for="newPasswordConfirmation">Confirmación contraseña nueva</p:outputLabel>
+						<p:password style="width: 100%;" weakLabel="Débil"
+							goodLabel="Buena" strongLabel="Fuerte" feedback="true"
+							inline="true" toggleMask="true" redisplay="true"
+							value="#{updatePasswordBean.newPasswordConfirmation}"
+							required="true" id="newPasswordConfirmation"></p:password>
+					</div>
+				</div>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-save" update="@form" value="Guardar"
+						action="#{updatePasswordBean.updatePasswordActionListener()}" />
+				</f:facet>
+			</p:card>
+		</h:form>
+	</ui:define>
+</ui:composition>

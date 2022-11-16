@@ -3,11 +3,15 @@ package swimsEJB.constants;
 public final class WebappPaths {
 	private WebappPaths() {
 	}
-	
+
 	/**
 	 * 0. INDEX
 	 */
 	public static final String INDEX_WEBAPP_PATH = "/index";
+	/**
+	 * 0.1 SIGN IN
+	 */
+	public static final String SIGN_IN_WEBAPP_PATH = "/iniciar-sesion";
 
 	/**
 	 * 1. HARVESTING MODULE
@@ -37,8 +41,6 @@ public final class WebappPaths {
 	public static final String HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH = HARVESTING_WEBAPP_PATH
 			+ "/administracion-sets-oai";
 
-	
-	
 	/**
 	 * 3. AUTH MODULE
 	 */
@@ -51,4 +53,8 @@ public final class WebappPaths {
 	 * 3.2 USER MANAGEMENT
 	 */
 	public static final String AUTH_USER_MANAGEMENT_WEBAPP_PATH = AUTH_WEBAPP_PATH + "/administracion-usuarios";
+	/**
+	 * 3.3 UPDATE PASSWORD
+	 */
+	public static final String AUTH_UPDATE_PASSWORD_WEBAPP_PATH = AUTH_WEBAPP_PATH + "/actualizar-contrasena";
 }

@@ -49,7 +49,8 @@ public class UserManagementBean implements Serializable {
 	public void onLoad() {
 		this.findAllUserDtos();
 		this.selectedUserDtos = new ArrayList<>();
-		this.groups = signInBean != null ? groupManager.findAllActiveGroups() : new ArrayList<>();
+		this.groups = signInBean != null ? groupManager.findAllActiveGroups(signInBean.getSignedUserDto().isRoot())
+				: new ArrayList<>();
 		this.selectedGroupIds = new ArrayList<>();
 	}
 
@@ -83,8 +84,7 @@ public class UserManagementBean implements Serializable {
 	public void inactivateSelectedUserDtos() {
 		for (UserDto userDto : selectedUserDtos) {
 			try {
-				userManager.updateOneUserById(userDto.getId(), userDto.getFirstName(), userDto.getLastName(),
-						userDto.getEmail(), false);
+				userManager.updateOneUserById(userDto.getId(), userDto.getFirstName(), userDto.getLastName(), false);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -105,8 +105,7 @@ public class UserManagementBean implements Serializable {
 
 	public void activateUserDto(UserDto userDto) {
 		try {
-			userManager.updateOneUserById(userDto.getId(), userDto.getFirstName(), userDto.getLastName(),
-					userDto.getEmail(), true);
+			userManager.updateOneUserById(userDto.getId(), userDto.getFirstName(), userDto.getLastName(), true);
 			JSFMessages.INFO("Usuario activado de forma exitosa.");
 			this.findAllUserDtos();
 		} catch (Exception e) {
@@ -161,8 +160,7 @@ public class UserManagementBean implements Serializable {
 		}
 		try {
 			userManager.updateOneUserById(selectedUserDto.getId(), selectedUserDto.getFirstName(),
-					selectedUserDto.getLastName(), selectedUserDto.getEmail(), selectedUserDto.isActive(), password,
-					selectedGroupIds);
+					selectedUserDto.getLastName(), selectedUserDto.isActive(), password, selectedGroupIds);
 			this.findAllUserDtos();
 			JSFMessages.INFO("Usuario actualizado de forma exitosa.");
 		} catch (Exception e) {
@@ -175,6 +173,8 @@ public class UserManagementBean implements Serializable {
 	public void setSelectedUserDtoWithGroups(UserDto selectedUserDto) {
 		this.selectedGroupIds = groupManager.findAllGroupIdsByUserId(selectedUserDto.getId());
 		this.selectedUserDto = selectedUserDto;
+		password = "";
+		passwordConfirmation = "";
 	}
 
 	public List<UserDto> getUserDtos() {

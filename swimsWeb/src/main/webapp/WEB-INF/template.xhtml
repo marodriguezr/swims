@@ -61,6 +61,13 @@
 						</div>
 						<p:menu overlay="true" trigger="dynaButton" my="right top"
 							at="right bottom">
+							<p:submenu label="Cuenta"
+								rendered="#{signInBean.signedUserDto ne null}">
+								<p:menuitem value="Actualizar contraseña"
+									action="#{updatePasswordBean.loadPage()}"
+									icon="pi pi-fw pi-shield" />
+							</p:submenu>
+
 							<p:submenu label="Sesión">
 								<p:menuitem action="#{authBean.signOutAction()}"
 									value="Cerrar Sesión" icon="pi pi-fw pi-sign-out"
