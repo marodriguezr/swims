@@ -223,7 +223,12 @@ public class UserManager {
 
 	public UserDto deleteOneUserById(int id) throws Exception {
 		UserDto foundUserDto = findOneUserById(id);
-		daoManager.deleteOneById(getClass(), foundUserDto.getId());
+		if (foundUserDto == null) throw new Exception("El usuario especificado no está registrado.");
+		List<UserGroup> userGroups = userGroupManager.findAllUserGroupsByUserId(id);
+		for (UserGroup userGroup : userGroups) {
+			userGroupManager.deleteOseUserGroupById(userGroup.getId());
+		}
+		daoManager.deleteOneById(User.class, foundUserDto.getId());
 		return foundUserDto;
 	}
 
