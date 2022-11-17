@@ -56,66 +56,83 @@ public class SeedManager {
 			throw new Exception("System already seeded.");
 
 		/**
-		 * Permissions
+		 * 1. PERMISSIONS
 		 */
 		/**
-		 * HARVESTING
+		 * 1.1. HARVESTING
 		 */
 		Permission oaiRecordsInclusionPermission = permissionManager.createOnePermission("Inclusión de Registros OAI",
 				HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH);
 		Permission oaiSetsManagementPermission = permissionManager.createOnePermission("Administración de Sets OAI",
 				HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH);
-
+		Permission thesisRecordInclussionPermission = permissionManager.createOnePermission(
+				"Asignación de registros de tesis", HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH);
+		Permission thesisRecordDataExtractionPermission = permissionManager.createOnePermission(
+				"Extracción de datos de tesis", HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH);
 		/**
-		 * AUTH
+		 * 1.2. AUTH
 		 */
 		Permission permissionManagementPermission = permissionManager.createOnePermission("Administración de Permisos",
 				AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH);
-		Permission userManagementPermission = permissionManager.createOnePermission("Administración de Usuario", AUTH_USER_MANAGEMENT_WEBAPP_PATH);
-		
+		Permission userManagementPermission = permissionManager.createOnePermission("Administración de Usuario",
+				AUTH_USER_MANAGEMENT_WEBAPP_PATH);
 
 		/**
-		 * Groups
+		 * 2. GROUPS
 		 */
-		Group adminGroup = groupManager.createOneGroup("Administrador", true);
-		Group oaiRecordsInclusionGroup = groupManager.createOneGroup("Inclusores de Registros OAI");
+		Group adminGroup = groupManager.createOneGroup("Administradores", true);
+		Group thesisRecordManagementGroup = groupManager.createOneGroup("Gestores de Registros de Tesis");
+		Group thesisDataExtracionGroup = groupManager.createOneGroup("Extractores de Datos de Tesis");
 
 		/**
-		 * GroupPermissions
+		 * 3. GroupPermissions
+		 */
+		/**
+		 * 3.1. Admin Group
 		 */
 		groupManager.addPermissionById(adminGroup.getId(), oaiSetsManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), permissionManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), userManagementPermission.getId());
 
-		groupManager.addPermissionById(oaiRecordsInclusionGroup.getId(), oaiRecordsInclusionPermission.getId());
+		/**
+		 * 3.2. Thesis Record Management Group
+		 */
+		groupManager.addPermissionById(thesisRecordManagementGroup.getId(), oaiRecordsInclusionPermission.getId());
+		groupManager.addPermissionById(thesisRecordManagementGroup.getId(), thesisRecordInclussionPermission.getId());
 
 		/**
-		 * Users
+		 * 3.3. Thesis Data Extraction Group
+		 */
+		groupManager.addPermissionById(thesisDataExtracionGroup.getId(), thesisRecordDataExtractionPermission.getId());
+
+		/**
+		 * 4. Users
 		 */
 		UserDto adminUser = userManager.createOneUser(firstName, lastName, email, password, true);
-		
-		/**
-		 * UserGroups
-		 */
-		groupManager.addUserById(adminGroup.getId(), adminUser.getId());
-		
-		/**
-		 * HARVESTING
-		 */
-		/**
-		 * CISIC OAI SET
-		 */
-		oaiSetManager.createOneOaiSet("col_123456789_40", "CISIC");
 
 		/**
-		 * temp
+		 * 5. UserGroups
 		 */
-		groupManager.addUserById(oaiRecordsInclusionGroup.getId(), adminUser.getId());
+		groupManager.addUserById(adminGroup.getId(), adminUser.getId());
+
+		/**
+		 * 6. Others
+		 */
+		/**
+		 * 6.1. CISIC OAI SET
+		 */
+		oaiSetManager.createOneOaiSet("col_123456789_40", "CISIC");
 
 		/**
 		 * 
 		 */
 		sysparamManager.createOneSysparam("IS_SYSTEM_SEEDED", "true");
+
+		/**
+		 * temp
+		 */
+		groupManager.addUserById(thesisRecordManagementGroup.getId(), adminUser.getId());
+		groupManager.addUserById(thesisDataExtracionGroup.getId(), adminUser.getId());
 	}
 
 }

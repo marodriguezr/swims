@@ -57,6 +57,12 @@ public class UserGroupManager {
 		return userGroups;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<UserGroup> findAllUserGroupsByGroupId(int groupId) {
+		List<UserGroup> userGroups = daoManager.findManyWhere(UserGroup.class, "o.group.id = " + groupId, "");
+		return userGroups;
+	}
+
 	public UserGroup updateOneUserGroup(int userGroupId, int userId, int groupId) throws Exception {
 		UserGroup userGroup = (UserGroup) daoManager.findOneById(UserGroup.class, userGroupId);
 		if (userGroup == null)

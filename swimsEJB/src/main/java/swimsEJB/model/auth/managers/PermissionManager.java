@@ -81,7 +81,7 @@ public class PermissionManager {
 			throw new Exception("Ha ocurrido un error en la actualización del Permiso.");
 		}
 	}
-	
+
 	public Permission deleteOnePermissionById(int permissionId) throws Exception {
 		try {
 			Permission deletedPermission = (Permission) daoManager.deleteOneById(Permission.class, permissionId);
@@ -101,13 +101,13 @@ public class PermissionManager {
 		}
 		return permissions;
 	};
-	
+
 	public List<Permission> findAllActivePermissionsByGroupId(int groupId) {
 		List<Permission> permissions = findAllPermissionsByGroupId(groupId);
 		permissions = permissions.stream().filter(permission -> permission.getIsActive()).collect(Collectors.toList());
 		return permissions;
 	};
-	
+
 	public List<String> findAllWebappRelatedPathsByGroupId(int groupId) {
 		List<Permission> permissions = findAllPermissionsByGroupId(groupId);
 		List<String> webappRelatedPaths = new ArrayList<>();
@@ -116,7 +116,7 @@ public class PermissionManager {
 		}
 		return webappRelatedPaths;
 	}
-	
+
 	public List<String> findAllActiveWebappRelatedPathsByGroupId(int groupId) {
 		List<Permission> permissions = findAllActivePermissionsByGroupId(groupId);
 		List<String> webappRelatedPaths = new ArrayList<>();
@@ -124,5 +124,11 @@ public class PermissionManager {
 			webappRelatedPaths.add(permission.getWebappRelatedPath());
 		}
 		return webappRelatedPaths;
+	}
+
+	public Permission findOnePermissionByRelatedWebappPath(String webAppPath) {
+		Permission permission = (Permission) daoManager.findOneWhere(Permission.class,
+				"o.webappRelatedPath = '" + webAppPath + "'");
+		return permission;
 	}
 }

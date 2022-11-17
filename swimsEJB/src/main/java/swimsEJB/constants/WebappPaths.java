@@ -42,6 +42,23 @@ public final class WebappPaths {
 			+ "/administracion-sets-oai";
 
 	/**
+	 * 1.3. THESIS RECORD ASSIGNMENT
+	 */
+	public static final String HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH = HARVESTING_WEBAPP_PATH
+			+ "/asignacion-registro-tesis";
+	/**
+	 * 1.3.1 USER SELECTION
+	 */
+	public static final String HARVESTING_THESIS_RECORD_ASSIGNMENT_USER_SELECTION_WEBAPP_PATH = HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH
+			+ "/seleccion-usuario";
+
+	/**
+	 * 1.4 THESIS RECORD DATA EXTRACTION AND DATA RECORDING
+	 */
+	public static final String HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH = HARVESTING_WEBAPP_PATH
+			+ "/extraccion";
+
+	/**
 	 * 3. AUTH MODULE
 	 */
 	public static final String AUTH_WEBAPP_PATH = "/auth";

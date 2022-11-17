@@ -38,15 +38,21 @@
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH)}"
 							icon="pi pi-fw pi-plus" value="Inclusión de Registros OAI"
 							action="#{setSelectionBean.loadPage()}"></p:menuitem>
+						<p:menuitem
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH)}"
+							icon="pi pi-fw pi-inbox" value="Asignación de Registros de Tesis"
+							action="#{userSelectionBean.loadPage()}"></p:menuitem>
 					</p:submenu>
 					<p:submenu
 						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}"
 						label="Autenticación y Autorización" icon="pi pi-fw pi-cog">
 						<p:menuitem value="Administración de Permisos"
+							icon="pi pi-fw pi-id-card"
 							action="#{permissionManagementBean.loadPage()}"
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}">
 						</p:menuitem>
-						<p:menuitem value="Administración de Usuarios"
+						<p:menuitem icon="pi pi-fw pi-users"
+							value="Administración de Usuarios"
 							action="#{userManagementBean.loadPage()}"
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_USER_MANAGEMENT_WEBAPP_PATH)}">
 						</p:menuitem>

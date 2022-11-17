@@ -58,4 +58,12 @@ public class GroupPermissionManager {
 				"o.group.id = " + groupId, null);
 		return groupPermissions;
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<GroupPermission> findGroupPermissionsByPermissionId(int permissionId) {
+		List<GroupPermission> groupPermissions = daoManager.findManyWhere(GroupPermission.class,
+				"o.permission.id = " + permissionId, "");
+
+		return groupPermissions;
+	}
 }

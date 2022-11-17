@@ -60,4 +60,8 @@ public class WebappPathsBean implements Serializable {
 	public String getAUTH_USER_MANAGEMENT_WEBAPP_PATH() {
 		return AUTH_USER_MANAGEMENT_WEBAPP_PATH;
 	}
+	
+	public String getHARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH() {
+		return HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH;
+	}
 }

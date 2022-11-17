@@ -318,4 +318,38 @@ public class UserManager {
 			throw new Exception("Ha ocurrido un error en la actualización del Usuario.");
 		}
 	}
+
+	public List<Integer> findAllUserIdsByWebappRelatedPath(String... webappRelatedPaths) throws Exception {
+		List<Integer> groupIds = new ArrayList<>();
+		if (webappRelatedPaths.length == 1) {
+			groupIds = groupManager.findAllGroupIdsByRelatedWebappPath(webappRelatedPaths[0]);
+		}
+		if (webappRelatedPaths.length > 1) {
+			for (String webappRelatedPath : webappRelatedPaths) {
+				groupIds = Stream
+						.concat(groupIds.stream(),
+								groupManager.findAllGroupIdsByRelatedWebappPath(webappRelatedPath).stream())
+						.collect(Collectors.toList());
+			}
+			groupIds = new ArrayList<>(new HashSet<>(groupIds));
+		}
+		List<UserGroup> userGroups = new ArrayList<>();
+		for (int groupId : groupIds) {
+			userGroups = Stream
+					.concat(userGroups.stream(), userGroupManager.findAllUserGroupsByGroupId(groupId).stream())
+					.collect(Collectors.toList());
+		}
+
+		return new ArrayList<>(
+				new HashSet<>(userGroups.stream().map(arg0 -> arg0.getUser().getId()).collect(Collectors.toList())));
+	}
+
+	public List<UserDto> findAllUserDtosByWebappRelatedPath(String... webappRelatedPaths) throws Exception {
+		List<Integer> userIds = findAllUserIdsByWebappRelatedPath(webappRelatedPaths);
+		List<UserDto> userDtos = new ArrayList<>();
+		for (Integer userId : userIds) {
+			userDtos.add(findOneUserById(userId));
+		}
+		return userDtos;
+	}
 }

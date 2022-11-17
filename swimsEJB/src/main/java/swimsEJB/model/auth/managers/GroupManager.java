@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 
 import swimsEJB.model.auth.entities.Group;
 import swimsEJB.model.auth.entities.GroupPermission;
+import swimsEJB.model.auth.entities.Permission;
 import swimsEJB.model.auth.entities.UserGroup;
 import swimsEJB.model.core.managers.DaoManager;
 
@@ -27,6 +28,8 @@ public class GroupManager {
 	private GroupPermissionManager groupPermissionManager;
 	@EJB
 	private UserGroupManager userGroupManager;
+	@EJB
+	private PermissionManager permissionManager;
 
 	/**
 	 * Default constructor.
@@ -69,7 +72,7 @@ public class GroupManager {
 		List<Group> foundGroups = findAllActiveGroups();
 		if (userIsRoot)
 			return foundGroups;
-		
+
 		foundGroups.removeIf(arg0 -> arg0.getIsRoot());
 		return foundGroups;
 	}
@@ -128,9 +131,19 @@ public class GroupManager {
 				.collect(Collectors.toList()).stream().map(arg0 -> arg0.getId()).collect(Collectors.toList());
 		return rootGroupUserIds;
 	}
-	
+
 	public List<Integer> findAllGroupIdsByUserId(int userId) {
 		List<UserGroup> userGroups = userGroupManager.findAllUserGroupsByUserId(userId);
 		return userGroups.stream().map(arg0 -> arg0.getGroup().getId()).collect(Collectors.toList());
+	}
+
+	public List<Integer> findAllGroupIdsByRelatedWebappPath(String webAppPath) throws Exception {
+		Permission foundPermission = permissionManager.findOnePermissionByRelatedWebappPath(webAppPath);
+		if (foundPermission == null)
+			throw new Exception("La Ruta Web especificada no está registrada.");
+
+		List<GroupPermission> groupPermissions = groupPermissionManager
+				.findGroupPermissionsByPermissionId(foundPermission.getId());
+		return groupPermissions.stream().map(arg0 -> arg0.getGroup().getId()).collect(Collectors.toList());
 	}
 }
