@@ -1,7 +1,7 @@
 package swimsEJB.model.auth.dtos;
 
 public class UserDto {
-	private int id;
+	private Integer id;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -59,4 +59,10 @@ public class UserDto {
 	public void setRoot(boolean isRoot) {
 		this.isRoot = isRoot;
 	}
+
+	@Override
+	public boolean equals(Object object) {
+		return (object instanceof UserDto) && (this.id != null) ? id.equals(((UserDto) object).id) : (object == this);
+	}
+
 }

@@ -21,6 +21,8 @@ import java.util.stream.Stream;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -48,6 +50,20 @@ public class OaiRecordManager {
 	 */
 	public OaiRecordManager() {
 		// TODO Auto-generated constructor stub
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<OaiRecord> findAllUnassignedOaiRecords() {
+		EntityManager entityManager = daoManager.getEntityManager();
+		Query query = entityManager.createNativeQuery("select" + "	or2.id," + "	or2.url," + "	or2.title,"
+				+ "	or2.creator," + "	or2.subject," + "	or2.description," + "	or2.publisher,"
+				+ "	or2.contributor," + "	or2.inferred_issue_date," + "	or2.oai_set_id," + "	or2.created_at,"
+				+ "	or2.updated_at," + "	or2.is_active" + " from" + "	harvesting.oai_records or2" + " where"
+				+ "	not exists (" + "	select" + "	from" + "	harvesting.thesis_assignments ta" + "	where"
+				+ " or2.id = ta.thesis_record_id)");
+
+		List<OaiRecord> oaiRecords = query.getResultList();
+		return oaiRecords;
 	}
 
 	@SuppressWarnings("unchecked")

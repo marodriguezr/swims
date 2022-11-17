@@ -25,42 +25,50 @@
 				<div class="p-pt-4">
 					<div class="ui-fluid">
 						<div class="field">
-							<p:outputLabel for="@next" value="Usuario" />
-							<p:selectOneMenu id="user" var="c" filter="true"
-								filterMatchMode="contains"
+
+							<p:selectOneListbox id="user" var="c" filter="true"
+								filterMatchMode="contains" converter="#{userDtoConverter}"
 								value="#{userSelectionBean.selectedUserDto}">
-								<f:selectItem itemLabel="Seleccione un usuario" itemValue="" />
 								<f:selectItems value="#{userSelectionBean.userDtos}"
 									var="userDto"
 									itemLabel="#{userDto.firstName} #{userDto.lastName}"
 									itemValue="#{userDto}" />
 
-								<p:column>
-									<f:facet name="header">
-										<h:outputText value="No. Tesis asignadas" />
-									</f:facet>
-									<h:outputText value="20" />
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4" value="No. Tesis asignadas" />
+									</div>
+									<h:outputText
+										value="#{userSelectionBean.findUndispatchedThesisAssignmentsCountByUserId(c.id)}" />
 								</p:column>
-								<p:column>
-									<f:facet name="header">
-										<h:outputText value="Nombre/s" />
-									</f:facet>
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4" value="Nombre/s" />
+									</div>
 									<h:outputText value="#{c.firstName}" />
 								</p:column>
-								<p:column>
-									<f:facet name="header">
-										<h:outputText value="Apellido/s" />
-									</f:facet>
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4" value="Apellido/s" />
+									</div>
 									<h:outputText value="#{c.lastName}" />
 								</p:column>
-								<p:column>
-									<f:facet name="header">
-										<h:outputText value="Email" />
-									</f:facet>
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4" value="Email" />
+									</div>
 									<h:outputText value="#{c.email}" />
 								</p:column>
 
-							</p:selectOneMenu>
+							</p:selectOneListbox>
 
 						</div>
 					</div>
@@ -70,7 +78,8 @@
 						value="Regresar" styleClass="ui-button-secondary" disabled="true" />
 
 					<p:commandButton styleClass="p-ml-2"
-						icon="pi pi-fw pi-angle-double-right" value="Avanzar" />
+						icon="pi pi-fw pi-angle-double-right" value="Avanzar"
+						action="#{thesisSelectionBean.loadPage()}" />
 				</f:facet>
 			</p:card>
 		</h:form>
