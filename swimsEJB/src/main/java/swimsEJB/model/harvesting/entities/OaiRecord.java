@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -58,6 +59,10 @@ public class OaiRecord implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="oai_set_id", nullable=false)
 	private OaiSet oaiSet;
+
+	//bi-directional many-to-one association to ThesisAssignment
+	@OneToMany(mappedBy="oaiRecord")
+	private List<ThesisAssignment> thesisAssignments;
 
 	public OaiRecord() {
 	}
@@ -164,6 +169,28 @@ public class OaiRecord implements Serializable {
 
 	public void setOaiSet(OaiSet oaiSet) {
 		this.oaiSet = oaiSet;
+	}
+
+	public List<ThesisAssignment> getThesisAssignments() {
+		return this.thesisAssignments;
+	}
+
+	public void setThesisAssignments(List<ThesisAssignment> thesisAssignments) {
+		this.thesisAssignments = thesisAssignments;
+	}
+
+	public ThesisAssignment addThesisAssignment(ThesisAssignment thesisAssignment) {
+		getThesisAssignments().add(thesisAssignment);
+		thesisAssignment.setOaiRecord(this);
+
+		return thesisAssignment;
+	}
+
+	public ThesisAssignment removeThesisAssignment(ThesisAssignment thesisAssignment) {
+		getThesisAssignments().remove(thesisAssignment);
+		thesisAssignment.setOaiRecord(null);
+
+		return thesisAssignment;
 	}
 
 }

@@ -10,5 +10,7 @@
 		<class>swimsEJB.model.core.entities.Sysparam</class>
 		<class>swimsEJB.model.harvesting.entities.OaiRecord</class>
 		<class>swimsEJB.model.harvesting.entities.OaiSet</class>
+		<class>swimsEJB.model.harvesting.entities.ThesisAssignmentLimesurveyToken</class>
+		<class>swimsEJB.model.harvesting.entities.ThesisAssignment</class>
 	</persistence-unit>
 </persistence>
