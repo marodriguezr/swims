@@ -53,16 +53,26 @@ public class OaiRecordManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<OaiRecord> findAllUnassignedOaiRecords() {
+	public List<String> findAllUnassignedOaiRecordIds() {
 		EntityManager entityManager = daoManager.getEntityManager();
-		Query query = entityManager.createNativeQuery("select" + "	or2.id," + "	or2.url," + "	or2.title,"
-				+ "	or2.creator," + "	or2.subject," + "	or2.description," + "	or2.publisher,"
-				+ "	or2.contributor," + "	or2.inferred_issue_date," + "	or2.oai_set_id," + "	or2.created_at,"
-				+ "	or2.updated_at," + "	or2.is_active" + " from" + "	harvesting.oai_records or2" + " where"
-				+ "	not exists (" + "	select" + "	from" + "	harvesting.thesis_assignments ta" + "	where"
-				+ " or2.id = ta.thesis_record_id)");
+		Query query = entityManager.createNativeQuery("select" + " or2.id " + " from" + "	harvesting.oai_records or2"
+				+ " where" + "	not exists (" + "	select" + "	from" + "	harvesting.thesis_assignments ta"
+				+ "	where" + " or2.id = ta.thesis_record_id)");
 
-		List<OaiRecord> oaiRecords = query.getResultList();
+		List<String> unassignedOaiRecordIds = query.getResultList();
+		return unassignedOaiRecordIds;
+	}
+
+	public OaiRecord findOneOaiRecordById(String oaiRecordId) throws Exception {
+		return (OaiRecord) daoManager.findOneById(OaiRecord.class, oaiRecordId);
+	}
+
+	public List<OaiRecord> findAllUnassignedOaiRecords() throws Exception {
+		List<String> foundAllUnassignedOaiRecordIds = findAllUnassignedOaiRecordIds();
+		List<OaiRecord> oaiRecords = new ArrayList<>();
+		for (String id : foundAllUnassignedOaiRecordIds) {
+			oaiRecords.add(findOneOaiRecordById(id));
+		}
 		return oaiRecords;
 	}
 
@@ -161,6 +171,22 @@ public class OaiRecordManager {
 		}
 
 		return oaiRecordDtos3;
+	}
+
+	public String fetchOaiStringByOaiRecordId(String oaiRecordId) throws Exception {
+		String OAI_URI = "http://repositorio.utn.edu.ec/oai/request?verb=GetRecord&identifier="
+				+ oaiRecordId + "&metadataPrefix=oai_dc";
+		HttpClient httpClient = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI)).build();
+		HttpResponse<String> response;
+		try {
+			response = httpClient.send(request, BodyHandlers.ofString());
+			return response.body();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new Exception("Ha ocurrido un error en la adquisicón de recursos externos.");
+		}
 	}
 
 	public List<String> fetchOaiStrings(String oaiSetIdentifier, LocalDate from, LocalDate until) throws Exception {
@@ -449,5 +475,9 @@ public class OaiRecordManager {
 		}
 
 		return oaiRecordDtos;
+	}
+
+	public OaiRecordDto findOneExternalOaiRecordDtoById(String id) throws Exception {
+		return parseStringToOaiRecordDto(fetchOaiStringByOaiRecordId(id));
 	}
 }

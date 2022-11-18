@@ -1,6 +1,7 @@
 package swimsWeb.controller.harvesting.thesis_record_assignment;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -8,6 +9,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import swimsEJB.model.harvesting.dtos.OaiRecordDto;
 import swimsEJB.model.harvesting.entities.OaiRecord;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
 import swimsWeb.utilities.JSFMessages;
@@ -26,13 +28,21 @@ public class ThesisSelectionBean implements Serializable {
 	@EJB
 	private OaiRecordManager oaiRecordManager;
 	List<OaiRecord> oaiRecords;
+	List<OaiRecord> selectedOaiRecords;
+	private OaiRecordDto selectedOaiRecordDto;
 
 	public ThesisSelectionBean() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public void setDefaultValues() {
-		this.oaiRecords = oaiRecordManager.findAllUnassignedOaiRecords();
+		try {
+			this.oaiRecords = oaiRecordManager.findAllUnassignedOaiRecords();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			this.oaiRecords = new ArrayList<>();
+		}
 	}
 
 	public String loadPage() {
@@ -48,9 +58,18 @@ public class ThesisSelectionBean implements Serializable {
 			JSFMessages.WARN("Por favor seleccione un usuario antes de continuar.");
 			return HARVESTING_THESIS_RECORD_ASSIGNMENT_USER_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
-
-//		setDefaultValues();
+		setDefaultValues();
 		return null;
+	}
+
+	public void setSelectedOaiRecordDtoWithExternalData(OaiRecord oaiRecord) {
+		try {
+			this.selectedOaiRecordDto = oaiRecordManager.findOneExternalOaiRecordDtoById(oaiRecord.getId());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			this.selectedOaiRecordDto = oaiRecordManager.oaiRecordToOaiRecordDto(oaiRecord);
+		}
 	}
 
 	public List<OaiRecord> getOaiRecords() {
@@ -59,6 +78,22 @@ public class ThesisSelectionBean implements Serializable {
 
 	public void setOaiRecords(List<OaiRecord> oaiRecords) {
 		this.oaiRecords = oaiRecords;
+	}
+
+	public List<OaiRecord> getSelectedOaiRecords() {
+		return selectedOaiRecords;
+	}
+
+	public void setSelectedOaiRecords(List<OaiRecord> selectedOaiRecords) {
+		this.selectedOaiRecords = selectedOaiRecords;
+	}
+
+	public OaiRecordDto getSelectedOaiRecordDto() {
+		return selectedOaiRecordDto;
+	}
+
+	public void setSelectedOaiRecordDto(OaiRecordDto selectedOaiRecordDto) {
+		this.selectedOaiRecordDto = selectedOaiRecordDto;
 	}
 
 }

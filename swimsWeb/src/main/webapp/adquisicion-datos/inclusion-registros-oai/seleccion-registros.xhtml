@@ -223,26 +223,26 @@
 						</p:panel>
 					</div>
 
-					<div class="p-field">
-						<p:panel
-							rendered="#{recordsSelectionBean.selectedOaiRecordDto.dates.size() gt 1}"
-							header="Fechas" toggleable="true" collapsed="true">
-							<p:dataScroller
-								value="#{recordsSelectionBean.selectedOaiRecordDto.dates}"
-								var="iterable">
-								<h:outputText
-									value="#{recordsSelectionBean.dateFormat.format(iterable)}" />
-								<br />
-								<br />
-							</p:dataScroller>
-						</p:panel>
-						<p:panel
-							rendered="#{recordsSelectionBean.selectedOaiRecordDto.dates.size() eq 1}"
-							header="Fecha" toggleable="true" collapsed="false">
-							<h:outputText
-								value="#{recordsSelectionBean.dateFormat.format(recordsSelectionBean.selectedOaiRecordDto.dates.get(0))}" />
-						</p:panel>
-					</div>
+<!-- 					<div class="p-field"> -->
+<!-- 						<p:panel -->
+<!-- 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.dates.size() gt 1}" -->
+<!-- 							header="Fechas" toggleable="true" collapsed="true"> -->
+<!-- 							<p:dataScroller -->
+<!-- 								value="#{recordsSelectionBean.selectedOaiRecordDto.dates}" -->
+<!-- 								var="iterable"> -->
+<!-- 								<h:outputText -->
+<!-- 									value="#{recordsSelectionBean.dateFormat.format(iterable)}" /> -->
+<!-- 								<br /> -->
+<!-- 								<br /> -->
+<!-- 							</p:dataScroller> -->
+<!-- 						</p:panel> -->
+<!-- 						<p:panel -->
+<!-- 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.dates.size() eq 1}" -->
+<!-- 							header="Fecha" toggleable="true" collapsed="false"> -->
+<!-- 							<h:outputText -->
+<!-- 								value="#{recordsSelectionBean.dateFormat.format(recordsSelectionBean.selectedOaiRecordDto.dates.get(0))}" /> -->
+<!-- 						</p:panel> -->
+<!-- 					</div> -->
 
 					<div class="p-field">
 						<p:panel
