@@ -39,9 +39,11 @@
 						id="availableOaiRecords" rowSelectMode="add"
 						rowKey="#{oaiRecordDto.id}"
 						selection="#{recordsSelectionBean.selectedOaiRecordDtos}">
-						<p:column selectionMode="multiple" exportable="false"></p:column>
+						<p:column filterMatchMode="contains" selectionMode="multiple"
+							exportable="false"></p:column>
 
-						<p:column sortBy="#{oaiRecordDto.titles.get(0)}"
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecordDto.titles.get(0)}"
 							filterBy="#{oaiRecordDto.titles.get(0)}" headerText="Titulo">
 							<a
 								href="#{recordsSelectionBean.getURLFromOaiRecordDto(oaiRecordDto)}"><h:outputText
@@ -51,7 +53,8 @@
 								value="Registro sin título" />
 						</p:column>
 
-						<p:column sortBy="#{oaiRecordDto.creators.get(0)}"
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecordDto.creators.get(0)}"
 							filterBy="#{oaiRecordDto.creators.get(0)}" headerText="Autor">
 							<h:outputText rendered="#{oaiRecordDto.creators.size() ge 1}"
 								value="#{oaiRecordDto.creators.get(0)}" />
@@ -59,16 +62,18 @@
 								value="Registro sin autor" />
 						</p:column>
 
-						<p:column sortBy="#{oaiRecordDto.contributors.get(0)}"
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecordDto.contributors.get(0)}"
 							filterBy="#{oaiRecordDto.contributors.get(0)}"
 							headerText="Director">
 							<h:outputText rendered="#{oaiRecordDto.contributors.size() ge 1}"
-								value="#{oaiRecordDto.creators.get(0)}" />
+								value="#{oaiRecordDto.contributors.get(0)}" />
 							<h:outputText rendered="#{oaiRecordDto.contributors.size() eq 0}"
 								value="Registro sin director" />
 						</p:column>
 
-						<p:column sortBy="#{oaiRecordDto.descriptions.get(0)}"
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecordDto.descriptions.get(0)}"
 							filterBy="#{oaiRecordDto.descriptions.get(0)}"
 							headerText="Descripción">
 							<h:outputText rendered="#{oaiRecordDto.descriptions.size() ge 1}"
@@ -77,8 +82,8 @@
 								value="Registro sin descripción" />
 						</p:column>
 
-						<p:column
-							sortBy="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.inferredIssueDate)}"
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecordDto.inferredIssueDate}"
 							filterBy="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.inferredIssueDate)}"
 							headerText="Fecha de publicación">
 							<h:outputText
@@ -222,27 +227,6 @@
 								value="#{recordsSelectionBean.dateFormat.format(recordsSelectionBean.selectedOaiRecordDto.inferredIssueDate)}" />
 						</p:panel>
 					</div>
-
-<!-- 					<div class="p-field"> -->
-<!-- 						<p:panel -->
-<!-- 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.dates.size() gt 1}" -->
-<!-- 							header="Fechas" toggleable="true" collapsed="true"> -->
-<!-- 							<p:dataScroller -->
-<!-- 								value="#{recordsSelectionBean.selectedOaiRecordDto.dates}" -->
-<!-- 								var="iterable"> -->
-<!-- 								<h:outputText -->
-<!-- 									value="#{recordsSelectionBean.dateFormat.format(iterable)}" /> -->
-<!-- 								<br /> -->
-<!-- 								<br /> -->
-<!-- 							</p:dataScroller> -->
-<!-- 						</p:panel> -->
-<!-- 						<p:panel -->
-<!-- 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.dates.size() eq 1}" -->
-<!-- 							header="Fecha" toggleable="true" collapsed="false"> -->
-<!-- 							<h:outputText -->
-<!-- 								value="#{recordsSelectionBean.dateFormat.format(recordsSelectionBean.selectedOaiRecordDto.dates.get(0))}" /> -->
-<!-- 						</p:panel> -->
-<!-- 					</div> -->
 
 					<div class="p-field">
 						<p:panel

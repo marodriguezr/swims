@@ -35,31 +35,34 @@
 						id="availableOaiRecords" rowSelectMode="add"
 						rowKey="#{oaiRecord.id}"
 						selection="#{thesisSelectionBean.selectedOaiRecords}">
-						<p:column selectionMode="multiple" exportable="false"></p:column>
+						<p:column filterMatchMode="contains" selectionMode="multiple"
+							exportable="false"></p:column>
 
-						<p:column sortBy="#{oaiRecord.title}"
+						<p:column filterMatchMode="contains" sortBy="#{oaiRecord.title}"
 							filterBy="#{oaiRecord.title}" headerText="Titulo">
 							<a href="#{oaiRecord.url}"><h:outputText
 									value="#{oaiRecord.title}" /></a>
 						</p:column>
 
-						<p:column sortBy="#{oaiRecord.creator}"
+						<p:column filterMatchMode="contains" sortBy="#{oaiRecord.creator}"
 							filterBy="#{oaiRecord.creator}" headerText="Autor">
 							<h:outputText value="#{oaiRecord.creator}" />
 						</p:column>
 
-						<p:column sortBy="#{oaiRecord.contributor}"
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecord.contributor}"
 							filterBy="#{oaiRecord.contributor}" headerText="Director">
-							<h:outputText value="#{oaiRecord.creator}" />
+							<h:outputText value="#{oaiRecord.contributor}" />
 						</p:column>
 
-						<p:column sortBy="#{oaiRecord.description}"
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecord.description}"
 							filterBy="#{oaiRecord.description}" headerText="Descripción">
 							<h:outputText value="#{oaiRecord.description}" />
 						</p:column>
 
-						<p:column
-							sortBy="#{recordsSelectionBean.dateFormat.format(oaiRecord.inferredIssueDate)}"
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecord.inferredIssueDate}"
 							filterBy="#{recordsSelectionBean.dateFormat.format(oaiRecord.inferredIssueDate)}"
 							headerText="Fecha de publicación">
 							<h:outputText rendered="#{oaiRecord.inferredIssueDate ne null}"
