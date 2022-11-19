@@ -39,8 +39,7 @@ services:
     environment:
       WILDFLY_PASSWORD: adminadmin
       WILDFLY_USERNAME: admin
-      LIMESURVEY_ADMIN_PASSWORD: adminer
-      LIMESURVEY_ADMIN_USER: admin
+      LIMESURVEY_FIRST_ADMIN_PASSWORD: adminer
       LIMESURVEY_HOST: swims-limesurvey-dev
 
   caddy:

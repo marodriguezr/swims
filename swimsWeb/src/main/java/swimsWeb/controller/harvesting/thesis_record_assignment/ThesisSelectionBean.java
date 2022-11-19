@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -60,6 +61,11 @@ public class ThesisSelectionBean implements Serializable {
 		}
 		setDefaultValues();
 		return null;
+	}
+	
+	@PostConstruct
+	public void onLoad() {
+		this.selectedOaiRecords = new ArrayList<>();
 	}
 
 	public void setSelectedOaiRecordDtoWithExternalData(OaiRecord oaiRecord) {

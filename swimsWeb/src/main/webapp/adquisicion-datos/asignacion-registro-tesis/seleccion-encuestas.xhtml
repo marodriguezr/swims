@@ -5,12 +5,15 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Inicio</ui:define>
+	<ui:define name="title">Selección de encuestas</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{surveysSelectionBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
 
 	<ui:define name="content">
-		<h:outputText value="SWIMS"></h:outputText>
-		<h:form>
-			<p:commandButton value="Test" actionListener="#{testBean.test2()}"></p:commandButton>
-		</h:form>
-	</ui:define>ui:define>
+		<h:outputText value="Selección de encuestas"></h:outputText>
+	</ui:define>
 </ui:composition>
