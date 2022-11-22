@@ -1,5 +1,7 @@
 package swimsWeb.controller.auth;
 
+import static swimsWeb.constants.WebappPaths.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,8 +15,6 @@ import javax.inject.Named;
 import swimsEJB.model.auth.entities.Permission;
 import swimsEJB.model.auth.managers.PermissionManager;
 import swimsWeb.utilities.JSFMessages;
-
-import static swimsEJB.constants.WebappPaths.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH;
 
 @Named
 @SessionScoped

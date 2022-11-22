@@ -1,5 +1,8 @@
 package swimsWeb.controller.harvesting.thesis_record_assignment;
 
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_ASSIGNMENT_THESIS_SELECTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_ASSIGNMENT_USER_SELECTION_WEBAPP_PATH;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +16,9 @@ import javax.inject.Named;
 import swimsEJB.model.harvesting.dtos.OaiRecordDto;
 import swimsEJB.model.harvesting.entities.OaiRecord;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
-import swimsWeb.utilities.JSFMessages;
-
-import static swimsEJB.constants.WebappPaths.HARVESTING_THESIS_RECORD_ASSIGNMENT_THESIS_SELECTION_WEBAPP_PATH;
-import static swimsEJB.constants.WebappPaths.HARVESTING_THESIS_RECORD_ASSIGNMENT_USER_SELECTION_WEBAPP_PATH;;
+import swimsWeb.dtos.LimesurveySurveyDto;
+import swimsWeb.services.LimesurveyService;
+import swimsWeb.utilities.JSFMessages;;
 
 @Named
 @SessionScoped
@@ -31,6 +33,7 @@ public class ThesisSelectionBean implements Serializable {
 	List<OaiRecord> oaiRecords;
 	List<OaiRecord> selectedOaiRecords;
 	private OaiRecordDto selectedOaiRecordDto;
+	private List<LimesurveySurveyDto> limesurveySurveyDtos;
 
 	public ThesisSelectionBean() {
 		// TODO Auto-generated constructor stub
@@ -38,7 +41,14 @@ public class ThesisSelectionBean implements Serializable {
 
 	public void setDefaultValues() {
 		try {
-			this.oaiRecords = oaiRecordManager.findAllUnassignedOaiRecords();
+			this.limesurveySurveyDtos = LimesurveyService.listAllActiveSurveys();
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			this.limesurveySurveyDtos = new ArrayList<>();
+		}
+		try {
+			this.oaiRecords = oaiRecordManager.findAllUnassignedOaiRecords(this.limesurveySurveyDtos.size());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,7 +72,7 @@ public class ThesisSelectionBean implements Serializable {
 		setDefaultValues();
 		return null;
 	}
-	
+
 	@PostConstruct
 	public void onLoad() {
 		this.selectedOaiRecords = new ArrayList<>();
@@ -102,4 +112,11 @@ public class ThesisSelectionBean implements Serializable {
 		this.selectedOaiRecordDto = selectedOaiRecordDto;
 	}
 
+	public List<LimesurveySurveyDto> getLimesurveySurveyDtos() {
+		return limesurveySurveyDtos;
+	}
+
+	public void setLimesurveySurveyDtos(List<LimesurveySurveyDto> limesurveySurveyDtos) {
+		this.limesurveySurveyDtos = limesurveySurveyDtos;
+	}
 }

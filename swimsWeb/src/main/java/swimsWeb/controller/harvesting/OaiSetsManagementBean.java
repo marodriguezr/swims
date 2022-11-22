@@ -3,6 +3,8 @@
  */
 package swimsWeb.controller.harvesting;
 
+import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH;
+
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -12,8 +14,6 @@ import javax.inject.Named;
 
 import swimsEJB.model.harvesting.managers.OaiSetManager;
 import swimsWeb.utilities.JSFMessages;
-
-import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH;
 
 @Named
 @SessionScoped

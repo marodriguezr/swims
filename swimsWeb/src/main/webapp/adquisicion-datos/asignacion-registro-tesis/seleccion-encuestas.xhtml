@@ -14,6 +14,51 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<h:outputText value="Selección de encuestas"></h:outputText>
+		<h:form>
+			<p:card>
+				<f:facet name="title">
+			Selección de Encuestas
+			</f:facet>
+				<ui:include
+					src="#{webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH}/steps.xhtml" />
+
+				<div class="p-mt-4">
+					<p:commandButton icon="pi pi-fw pi-angle-double-left"
+						value="Regresar" styleClass="ui-button-secondary"
+						action="#{thesisSelectionBean.loadPage()}" />
+					<p:commandButton
+						action="#{thesisAssignmentConfirmationBean.loadPage()}"
+						styleClass="p-ml-2" icon="pi pi-fw pi-angle-double-right"
+						value="Avanzar" />
+				</div>
+
+				<div class="ui-fluid p-mt-4">
+					<ui:repeat var="compound"
+						value="#{surveysSelectionBean.compoundThesisSurveyAssignments}">
+						<div class="p-mb-4">
+							<p:outputLabel for="@next" value="#{compound.oaiRecord.title}"></p:outputLabel>
+							<p:selectManyMenu value="#{compound.assignedLimesurveySurveyIds}"
+								filter="true" filterMatchMode="contains" showCheckbox="true">
+								<f:selectItems
+									value="#{thesisSelectionBean.limesurveySurveyDtos}"
+									var="limesurveySurvey"
+									itemLabel="#{limesurveySurvey.surveylsTitle}"
+									itemValue="#{limesurveySurvey.sid}"></f:selectItems>
+							</p:selectManyMenu>
+						</div>
+					</ui:repeat>
+				</div>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-fw pi-angle-double-left"
+						value="Regresar" styleClass="ui-button-secondary"
+						action="#{thesisSelectionBean.loadPage()}" />
+					<p:commandButton
+						action="#{thesisAssignmentConfirmationBean.loadPage()}"
+						styleClass="p-ml-2" icon="pi pi-fw pi-angle-double-right"
+						value="Avanzar" />
+
+				</f:facet>
+			</p:card>
+		</h:form>
 	</ui:define>
 </ui:composition>

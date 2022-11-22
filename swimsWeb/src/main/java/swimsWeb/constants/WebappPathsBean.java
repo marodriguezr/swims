@@ -1,11 +1,11 @@
 package swimsWeb.constants;
 
+import static swimsWeb.constants.WebappPaths.*;
+
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-
-import static swimsEJB.constants.WebappPaths.*;
 
 @Named
 @RequestScoped

@@ -47,6 +47,16 @@
 									<div class="p-d-flex p-ai-center p-jc-center">
 										<h:outputText
 											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4"
+											value="No. Encuestas pendientes" />
+									</div>
+									<h:outputText
+										value="#{userSelectionBean.findUndispatchedSurveysCountByUserId(c.id)}" />
+								</p:column>
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
 											styleClass="p-text-bold p-pb-4" value="Nombre/s" />
 									</div>
 									<h:outputText value="#{c.firstName}" />

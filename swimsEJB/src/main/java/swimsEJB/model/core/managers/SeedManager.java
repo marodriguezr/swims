@@ -1,5 +1,7 @@
 package swimsEJB.model.core.managers;
 
+import java.util.HashMap;
+
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -12,8 +14,6 @@ import swimsEJB.model.auth.managers.PermissionManager;
 import swimsEJB.model.auth.managers.UserManager;
 import swimsEJB.model.core.entities.Sysparam;
 import swimsEJB.model.harvesting.managers.OaiSetManager;
-
-import static swimsEJB.constants.WebappPaths.*;
 
 /**
  * Session Bean implementation class CoreManager
@@ -47,13 +47,32 @@ public class SeedManager {
 		return sysparam.getValue().equals("true");
 	}
 
-	public void seed(String firstName, String lastName, String email, String password) throws Exception {
+	public void verifyWebappPathsMapCorrectness(HashMap<String, String> webappPaths) throws Exception {
+		if (!webappPaths.containsKey("HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH non existent.");
+		;
+		if (!webappPaths.containsKey("HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH"))
+			throw new Exception("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("AUTH_USER_MANAGEMENT_WEBAPP_PATH"))
+			throw new Exception("AUTH_USER_MANAGEMENT_WEBAPP_PATH non existent.");
+	}
+
+	public void seed(String firstName, String lastName, String email, String password,
+			HashMap<String, String> webappPaths) throws Exception {
 		Sysparam sysparam = sysparamManager.findOneByKey("IS_SYSTEM_SEEDED");
 		if (sysparam != null)
 			if (sysparam.getValue() == "true")
 				throw new Exception("System already seeded.");
 		if (!userManager.findAllUsers().isEmpty())
 			throw new Exception("System already seeded.");
+
+		verifyWebappPathsMapCorrectness(webappPaths);
 
 		/**
 		 * 1. PERMISSIONS
@@ -62,20 +81,21 @@ public class SeedManager {
 		 * 1.1. HARVESTING
 		 */
 		Permission oaiRecordsInclusionPermission = permissionManager.createOnePermission("Inclusión de Registros OAI",
-				HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH);
+				webappPaths.get("HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH"));
 		Permission oaiSetsManagementPermission = permissionManager.createOnePermission("Administración de Sets OAI",
-				HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH);
+				webappPaths.get("HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH"));
 		Permission thesisRecordInclussionPermission = permissionManager.createOnePermission(
-				"Asignación de registros de tesis", HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH);
+				"Asignación de registros de tesis", webappPaths.get("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH"));
 		Permission thesisRecordDataExtractionPermission = permissionManager.createOnePermission(
-				"Extracción de datos de tesis", HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH);
+				"Extracción de datos de tesis",
+				webappPaths.get("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH"));
 		/**
 		 * 1.2. AUTH
 		 */
 		Permission permissionManagementPermission = permissionManager.createOnePermission("Administración de Permisos",
-				AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH);
+				webappPaths.get("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH"));
 		Permission userManagementPermission = permissionManager.createOnePermission("Administración de Usuario",
-				AUTH_USER_MANAGEMENT_WEBAPP_PATH);
+				webappPaths.get("AUTH_USER_MANAGEMENT_WEBAPP_PATH"));
 
 		/**
 		 * 2. GROUPS

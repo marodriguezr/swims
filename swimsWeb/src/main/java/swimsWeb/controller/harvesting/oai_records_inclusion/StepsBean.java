@@ -1,16 +1,16 @@
 package swimsWeb.controller.harvesting.oai_records_inclusion;
 
+import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH;
+
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-
-import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH;
-import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH;
-import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH;
-import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH;
 
 @Named
 @ViewScoped

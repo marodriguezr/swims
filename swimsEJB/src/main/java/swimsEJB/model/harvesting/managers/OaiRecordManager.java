@@ -67,15 +67,6 @@ public class OaiRecordManager {
 		return (OaiRecord) daoManager.findOneById(OaiRecord.class, oaiRecordId);
 	}
 
-	public List<OaiRecord> findAllUnassignedOaiRecords() throws Exception {
-		List<String> foundAllUnassignedOaiRecordIds = findAllUnassignedOaiRecordIds();
-		List<OaiRecord> oaiRecords = new ArrayList<>();
-		for (String id : foundAllUnassignedOaiRecordIds) {
-			oaiRecords.add(findOneOaiRecordById(id));
-		}
-		return oaiRecords;
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<OaiRecord> findAllOaiRecords() {
 		return daoManager.findAll(OaiRecord.class);
@@ -174,8 +165,8 @@ public class OaiRecordManager {
 	}
 
 	public String fetchOaiStringByOaiRecordId(String oaiRecordId) throws Exception {
-		String OAI_URI = "http://repositorio.utn.edu.ec/oai/request?verb=GetRecord&identifier="
-				+ oaiRecordId + "&metadataPrefix=oai_dc";
+		String OAI_URI = "http://repositorio.utn.edu.ec/oai/request?verb=GetRecord&identifier=" + oaiRecordId
+				+ "&metadataPrefix=oai_dc";
 		HttpClient httpClient = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI)).build();
 		HttpResponse<String> response;
@@ -480,4 +471,21 @@ public class OaiRecordManager {
 	public OaiRecordDto findOneExternalOaiRecordDtoById(String id) throws Exception {
 		return parseStringToOaiRecordDto(fetchOaiStringByOaiRecordId(id));
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<OaiRecord> findAllUnassignedOaiRecords(int availableSurveyCount) throws Exception {
+		EntityManager entityManager = daoManager.getEntityManager();
+		Query query = entityManager.createNativeQuery(
+				"select or2.id from harvesting.oai_records or2 where not exists (select from harvesting.thesis_assignments ta where or2.id = ta.thesis_record_id group by ta.thesis_record_id having count(ta.limesurvey_survey_id) >= "
+						+ availableSurveyCount + ")");
+		List<Object> objects = query.getResultList();
+
+		List<OaiRecord> oaiRecords = new ArrayList<>();
+		for (Object object : objects) {
+			oaiRecords.add(this.findOneOaiRecordById(object.toString()));
+		}
+
+		return oaiRecords;
+	}
+	
 }

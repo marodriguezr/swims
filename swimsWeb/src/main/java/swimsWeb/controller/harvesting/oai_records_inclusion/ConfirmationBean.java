@@ -1,5 +1,7 @@
 package swimsWeb.controller.harvesting.oai_records_inclusion;
 
+import static swimsWeb.constants.WebappPaths.*;
+
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -11,8 +13,6 @@ import javax.inject.Named;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
 import swimsEJB.model.harvesting.managers.OaiSetManager;
 import swimsWeb.utilities.JSFMessages;
-
-import static swimsEJB.constants.WebappPaths.*;
 
 @Named
 @RequestScoped

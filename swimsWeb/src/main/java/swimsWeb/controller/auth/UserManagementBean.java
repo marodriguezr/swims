@@ -1,6 +1,6 @@
 package swimsWeb.controller.auth;
 
-import static swimsEJB.constants.WebappPaths.AUTH_USER_MANAGEMENT_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.AUTH_USER_MANAGEMENT_WEBAPP_PATH;
 
 import java.io.Serializable;
 import java.util.ArrayList;

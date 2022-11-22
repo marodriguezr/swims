@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvesting.thesis_record_assignment;
+package swimsWeb.converters;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;

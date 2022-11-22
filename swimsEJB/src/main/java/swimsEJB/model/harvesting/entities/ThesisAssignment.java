@@ -3,7 +3,6 @@ package swimsEJB.model.harvesting.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 
 /**
@@ -30,15 +29,17 @@ public class ThesisAssignment implements Serializable {
 	@Column(name="is_dispatched", nullable=false)
 	private Boolean isDispatched;
 
+	@Column(name="limesurvey_survey_id", nullable=false)
+	private Integer limesurveySurveyId;
+
+	@Column(name="limesurvey_survey_token", nullable=false, length=2147483647)
+	private String limesurveySurveyToken;
+
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
 	@Column(name="user_id", nullable=false)
 	private Integer userId;
-
-	//bi-directional many-to-one association to ThesisAssignmentLimesurveyToken
-	@OneToMany(mappedBy="thesisAssignment")
-	private List<ThesisAssignmentLimesurveyToken> thesisAssignmentLimesurveyTokens;
 
 	//bi-directional many-to-one association to OaiRecord
 	@ManyToOne
@@ -80,6 +81,22 @@ public class ThesisAssignment implements Serializable {
 		this.isDispatched = isDispatched;
 	}
 
+	public Integer getLimesurveySurveyId() {
+		return this.limesurveySurveyId;
+	}
+
+	public void setLimesurveySurveyId(Integer limesurveySurveyId) {
+		this.limesurveySurveyId = limesurveySurveyId;
+	}
+
+	public String getLimesurveySurveyToken() {
+		return this.limesurveySurveyToken;
+	}
+
+	public void setLimesurveySurveyToken(String limesurveySurveyToken) {
+		this.limesurveySurveyToken = limesurveySurveyToken;
+	}
+
 	public Timestamp getUpdatedAt() {
 		return this.updatedAt;
 	}
@@ -94,28 +111,6 @@ public class ThesisAssignment implements Serializable {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-
-	public List<ThesisAssignmentLimesurveyToken> getThesisAssignmentLimesurveyTokens() {
-		return this.thesisAssignmentLimesurveyTokens;
-	}
-
-	public void setThesisAssignmentLimesurveyTokens(List<ThesisAssignmentLimesurveyToken> thesisAssignmentLimesurveyTokens) {
-		this.thesisAssignmentLimesurveyTokens = thesisAssignmentLimesurveyTokens;
-	}
-
-	public ThesisAssignmentLimesurveyToken addThesisAssignmentLimesurveyToken(ThesisAssignmentLimesurveyToken thesisAssignmentLimesurveyToken) {
-		getThesisAssignmentLimesurveyTokens().add(thesisAssignmentLimesurveyToken);
-		thesisAssignmentLimesurveyToken.setThesisAssignment(this);
-
-		return thesisAssignmentLimesurveyToken;
-	}
-
-	public ThesisAssignmentLimesurveyToken removeThesisAssignmentLimesurveyToken(ThesisAssignmentLimesurveyToken thesisAssignmentLimesurveyToken) {
-		getThesisAssignmentLimesurveyTokens().remove(thesisAssignmentLimesurveyToken);
-		thesisAssignmentLimesurveyToken.setThesisAssignment(null);
-
-		return thesisAssignmentLimesurveyToken;
 	}
 
 	public OaiRecord getOaiRecord() {

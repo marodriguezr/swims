@@ -1,5 +1,7 @@
 package swimsWeb.controller.harvesting.oai_records_inclusion;
 
+import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,8 +12,6 @@ import javax.inject.Named;
 
 import swimsEJB.model.harvesting.entities.OaiSet;
 import swimsEJB.model.harvesting.managers.OaiSetManager;
-
-import static swimsEJB.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH;
 
 @Named
 @SessionScoped

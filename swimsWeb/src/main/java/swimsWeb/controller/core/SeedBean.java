@@ -1,5 +1,7 @@
 package swimsWeb.controller.core;
 
+import static swimsWeb.constants.WebappPaths.INDEX_WEBAPP_PATH;
+
 import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
@@ -8,9 +10,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 import swimsEJB.model.core.managers.SeedManager;
+import swimsWeb.constants.WebappPaths;
 import swimsWeb.utilities.JSFMessages;
-
-import static swimsEJB.constants.WebappPaths.INDEX_WEBAPP_PATH;
 
 @Named
 @RequestScoped
@@ -69,7 +70,8 @@ public class SeedBean implements Serializable {
 			if (password.isEmpty()) {
 				JSFMessages.WARN("Por favor ingrese una constraseña apropiada");
 			}
-			seedManager.seed(this.firstName, this.lastName, this.email, this.password);
+			seedManager.seed(this.firstName, this.lastName, this.email, this.password,
+					WebappPaths.getAllWebappPathsAsMap());
 			this.isSystemSeeded = seedManager.isSystemSeeded();
 		} catch (Exception e) {
 			// TODO: handle exception

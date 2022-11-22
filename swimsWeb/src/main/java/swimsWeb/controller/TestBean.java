@@ -65,4 +65,12 @@ public class TestBean implements Serializable {
 		}
 	}
 
+	public void test3() {
+		try {
+			System.out.println(LimesurveyService.addParticipant(372243, "miguelrodrii@outlook.com"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

@@ -1,5 +1,7 @@
 package swimsWeb.controller.harvesting.oai_records_inclusion;
 
+import static swimsWeb.constants.WebappPaths.*;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,8 +18,6 @@ import javax.inject.Named;
 import swimsEJB.model.harvesting.dtos.OaiRecordDto;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
 import swimsWeb.utilities.JSFMessages;
-
-import static swimsEJB.constants.WebappPaths.*;
 
 @Named
 @SessionScoped

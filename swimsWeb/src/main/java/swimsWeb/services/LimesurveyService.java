@@ -3,7 +3,9 @@ package swimsWeb.services;
 import static swimsEJB.constants.SystemEnvironmentVariables.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -41,7 +43,10 @@ public class LimesurveyService {
 		HttpResponse response = httpClient.execute(post);
 		if (response.getStatusLine().getStatusCode() == 200) {
 			String stringifiedResponse = EntityUtils.toString(response.getEntity());
-			return JsonParser.parseString(stringifiedResponse).getAsJsonObject();
+			JsonObject jsonObject = JsonParser.parseString(stringifiedResponse).getAsJsonObject();
+			if (!jsonObject.get("error").isJsonNull())
+				throw new Exception("Request failed, error: " + jsonObject.get("error").getAsString());
+			return jsonObject;
 		}
 		throw new Exception("Request failed, Status code: " + response.getStatusLine().getStatusCode());
 	}
@@ -75,6 +80,37 @@ public class LimesurveyService {
 			// TODO: handle exception
 			e.printStackTrace();
 			throw new Exception("Ha ocurrido un error en la adquisición de todas las encuestas.");
+		}
+	}
+
+	public static List<LimesurveySurveyDto> listAllActiveSurveys() throws Exception {
+		return listAllSurveys().stream().filter(arg0 -> arg0.isActive()).collect(Collectors.toList());
+	}
+
+	/**
+	 * 
+	 * @param limesurveySurveyId
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @return Access token that the user is meant to use to access the survey.
+	 */
+	public static String addParticipant(int limesurveySurveyId, String email) throws Exception {
+		HashMap<String, String> map = new HashMap<>();
+		map.put("email", email);
+
+		List<HashMap<String, String>> hashMaps = new ArrayList<>();
+		hashMaps.add(map);
+		try {
+			JsonObject response = executeHttpPostRequest("add_participants", getSessionKey(), limesurveySurveyId,
+					hashMaps);
+			JsonArray jsonArray = response.get("result").getAsJsonArray();
+			return jsonArray.get(0).getAsJsonObject().get("token").getAsString();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			System.err.println(e.getMessage());
+			throw new Exception("Ha ocurrido un error en la adición del participante " + email);
 		}
 	}
 }

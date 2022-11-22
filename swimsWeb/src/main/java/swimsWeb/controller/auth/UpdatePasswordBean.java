@@ -1,5 +1,8 @@
 package swimsWeb.controller.auth;
 
+import static swimsWeb.constants.WebappPaths.AUTH_UPDATE_PASSWORD_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.SIGN_IN_WEBAPP_PATH;
+
 import java.io.Serializable;
 
 import javax.ejb.EJB;
@@ -9,9 +12,6 @@ import javax.inject.Named;
 
 import swimsEJB.model.auth.managers.UserManager;
 import swimsWeb.utilities.JSFMessages;
-
-import static swimsEJB.constants.WebappPaths.AUTH_UPDATE_PASSWORD_WEBAPP_PATH;
-import static swimsEJB.constants.WebappPaths.SIGN_IN_WEBAPP_PATH;
 
 @Named
 @SessionScoped

@@ -1,5 +1,8 @@
 package swimsWeb.controller.harvesting.thesis_record_assignment;
 
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_ASSIGNMENT_USER_SELECTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +15,6 @@ import javax.inject.Named;
 import swimsEJB.model.auth.dtos.UserDto;
 import swimsEJB.model.auth.managers.UserManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
-
-import static swimsEJB.constants.WebappPaths.HARVESTING_THESIS_RECORD_ASSIGNMENT_USER_SELECTION_WEBAPP_PATH;
-import static swimsEJB.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH;
 
 @Named
 @SessionScoped
@@ -76,6 +76,10 @@ public class UserSelectionBean implements Serializable {
 		return thesisAssignmentManager.countUndispatchedThesisAssignmentsByUserId(userId);
 	}
 
+	public int findUndispatchedSurveysCountByUserId(int userId) {
+		return thesisAssignmentManager.countUndispatchedSurveysByUserId(userId);
+	}
+	
 	public UserDto getSelectedUserDto() {
 		return selectedUserDto;
 	}
