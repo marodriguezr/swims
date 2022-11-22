@@ -97,6 +97,12 @@ public class RecordsSelectionBean implements Serializable {
 		this.selectedOaiRecordDtos = oaiRecordManager.filterOaiRecordDtosByKeyWords(
 				new String[] { "desarrollo de", "implementación de", "desarrollar", "implementar" }, oaiRecordDtos);
 	}
+	
+	public void clean() {
+		this.selectedOaiRecordDto = null;
+		this.selectedOaiRecordDtos = new ArrayList<>();
+		fechaBean.clean();
+	}
 
 	public String getURLFromOaiRecordDto(OaiRecordDto oaiRecordDto) {
 		return oaiRecordManager.getURLFromOaiRecordDto(oaiRecordDto);

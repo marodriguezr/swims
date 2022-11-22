@@ -36,6 +36,10 @@ public class SetSelectionBean implements Serializable {
 		this.oaiSets = oaiSetManager.findAllOaiSets();
 		return HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 	}
+	
+	public void clean() {
+		this.oaiSetId = null;
+	}
 
 	public String getOaiSetId() {
 		return oaiSetId;

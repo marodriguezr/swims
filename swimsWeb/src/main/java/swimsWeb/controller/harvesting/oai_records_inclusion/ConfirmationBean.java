@@ -54,6 +54,10 @@ public class ConfirmationBean implements Serializable {
 		}
 		return HARVESTING_OAI_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH + "?faces-redirect=true";
 	}
+	
+	public void clean() {
+		this.filtradoBean.clean();
+	}
 
 	public String createManyOaiRecordsAction() {
 		try {
@@ -61,6 +65,7 @@ public class ConfirmationBean implements Serializable {
 					oaiRecordManager.oaiRecordDtosToOaiRecords(this.filtradoBean.getSelectedOaiRecordDtos()),
 					oaiSetManager.findOneOaiSetById(this.origenBean.getOaiSetId()));
 			JSFMessages.INFO("Registros creados de forma exitosa.");
+			this.clean();
 			return INDEX_WEBAPP_PATH + "?faces-redirec=true";
 		} catch (Exception e) {
 			// TODO: handle exception

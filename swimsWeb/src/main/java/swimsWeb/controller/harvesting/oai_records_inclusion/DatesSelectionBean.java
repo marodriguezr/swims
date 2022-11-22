@@ -45,6 +45,12 @@ public class DatesSelectionBean implements Serializable {
 		return null;
 	}
 
+	public void clean() {
+		this.from = null;
+		this.until = null;
+		origenBean.clean();
+	}
+
 	public LocalDate getFrom() {
 		return from;
 	}
