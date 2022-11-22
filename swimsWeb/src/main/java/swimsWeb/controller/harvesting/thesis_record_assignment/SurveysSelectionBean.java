@@ -14,8 +14,10 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 import swimsEJB.model.harvesting.dtos.OaiRecordAssignedLimesurveySurveyIdsDto;
 import swimsEJB.model.harvesting.entities.OaiRecord;
+import swimsEJB.model.harvesting.managers.LimesurveySurveyAssignmentManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsWeb.utilities.JSFMessages;
 
@@ -29,6 +31,8 @@ public class SurveysSelectionBean implements Serializable {
 	private List<OaiRecordAssignedLimesurveySurveyIdsDto> compoundThesisSurveyAssignments;
 	@EJB
 	private ThesisAssignmentManager thesisAssignmentManager;
+	@EJB
+	private LimesurveySurveyAssignmentManager limesurveySurveyAssignmentManager;
 
 	public SurveysSelectionBean() {
 		// TODO Auto-generated constructor stub
@@ -67,17 +71,26 @@ public class SurveysSelectionBean implements Serializable {
 		JSFMessages.WARN("Por favor seleccione uno o varios registros de tesis antes de continuar.");
 		return HARVESTING_THESIS_RECORD_ASSIGNMENT_THESIS_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 	}
-	
+
 	@PostConstruct
 	public void onLoad() {
 		this.compoundThesisSurveyAssignments = new ArrayList<>();
+	}
+
+	public List<LimesurveySurveyDto> filterAvaliableLimesurveySurveyDtos(List<LimesurveySurveyDto> limesurveySurveyDtos,
+			String oaiRecordId) {
+		List<Integer> alreadyPresentSurveyIds = limesurveySurveyAssignmentManager
+				.findLimesurveySurveyIdsByOaiRecordId(oaiRecordId);
+		return limesurveySurveyDtos.stream().filter(arg0 -> !alreadyPresentSurveyIds.contains(arg0.getSid()))
+				.collect(Collectors.toList());
 	}
 
 	public List<OaiRecordAssignedLimesurveySurveyIdsDto> getCompoundThesisSurveyAssignments() {
 		return compoundThesisSurveyAssignments;
 	}
 
-	public void setCompoundThesisSurveyAssignments(List<OaiRecordAssignedLimesurveySurveyIdsDto> compoundThesisSurveyAssignments) {
+	public void setCompoundThesisSurveyAssignments(
+			List<OaiRecordAssignedLimesurveySurveyIdsDto> compoundThesisSurveyAssignments) {
 		this.compoundThesisSurveyAssignments = compoundThesisSurveyAssignments;
 	}
 

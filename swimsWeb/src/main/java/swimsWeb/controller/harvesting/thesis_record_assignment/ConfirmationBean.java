@@ -73,16 +73,18 @@ public class ConfirmationBean implements Serializable {
 
 	public String createManyThesisAssignementsAction() {
 		try {
-			thesisAssignmentManager.createManyThesisAssignemnts(
-					surveysSelectionBean.getCompoundThesisSurveyAssignments(),
-					userSelectionBean.getSelectedUserDto().getId());
+//			thesisAssignmentManager.createManyThesisAssignemnts(
+//					surveysSelectionBean.getCompoundThesisSurveyAssignments(),
+//					userSelectionBean.getSelectedUserDto().getId());
 			JSFMessages.INFO("Tesis y encuestas asignadas de forma exitosa.");
 			return INDEX_WEBAPP_PATH + "?faces-redirect=true";
 		} catch (Exception e) {
 			// TODO: handle exception
-			JSFMessages.ERROR(e.getMessage());
+			JSFMessages.ERROR(
+					"Las asignaciones que está intentando crear ya han sido creadas por otra persona, por favor reinicie el proceso para ver datos actualizados. "
+							+ e.getMessage());
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 }

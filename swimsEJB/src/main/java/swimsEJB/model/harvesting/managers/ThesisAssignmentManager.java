@@ -32,6 +32,8 @@ public class ThesisAssignmentManager {
 	private UserManager userManager;
 	@EJB
 	private OaiRecordManager oaiRecordManager;
+	@EJB
+	private LimesurveySurveyAssignmentManager limesurveySurveyAssignmentManager;
 
 	/**
 	 * Default constructor.
@@ -80,24 +82,15 @@ public class ThesisAssignmentManager {
 	 * @param oaiRecordId
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List<Integer> filterLimesurveySurveysByAssignedLimesurveySurveyIds(List<Integer> availableLimesurveySurveys,
 			String oaiRecordId) {
-		EntityManager entityManager = daoManager.getEntityManager();
-		Query query = entityManager.createNativeQuery(
-				"select ta.limesurvey_survey_id from harvesting.thesis_assignments ta where ta.thesis_record_id = '"
-						+ oaiRecordId + "'");
-		List<Object> objects = query.getResultList();
-		List<Integer> alreadyPresentlimesurveySurveyIds = new ArrayList<>();
-		for (Object object : objects) {
-			alreadyPresentlimesurveySurveyIds.add(Integer.parseInt(object.toString()));
-		}
+		List<Integer> alreadyPresentlimesurveySurveyIds = limesurveySurveyAssignmentManager
+				.findLimesurveySurveyIdsByOaiRecordId(oaiRecordId);
 		return availableLimesurveySurveys.stream().filter(arg0 -> !alreadyPresentlimesurveySurveyIds.contains(arg0))
 				.collect(Collectors.toList());
 	}
 
-	public ThesisAssignment createOneThesisAssignment(int userId, String oaiRecordId, int limesurveySurveyId,
-			String accessToken) throws Exception {
+	public ThesisAssignment createOneThesisAssignment(int userId, String oaiRecordId) throws Exception {
 		User user = userManager.findOneUserById2(userId);
 		if (user == null)
 			throw new Exception("El usuario especificado no está registrado.");
@@ -113,6 +106,11 @@ public class ThesisAssignmentManager {
 		thesisAssignment.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
 		return (ThesisAssignment) daoManager.createOne(thesisAssignment);
+	}
+
+	public ThesisAssignment findOneThesisAssignmentByOaiRecordIdAndUserId(String oaiRecordId, int userId) {
+		return (ThesisAssignment) daoManager.findOneWhere(ThesisAssignment.class,
+				"o.oaiRecord.id = '" + oaiRecordId + "' AND userId = " + userId);
 	}
 
 	/**
@@ -133,9 +131,16 @@ public class ThesisAssignmentManager {
 		List<ThesisAssignment> thesisAssignments = new ArrayList<>();
 		for (OaiRecordAssignedLimesurveySurveyIdsDto oaiRecordAssignedLimesurveySurveyIds : assignedLimesurveySurveyIds) {
 			for (int limesurveySurveyId : oaiRecordAssignedLimesurveySurveyIds.getAssignedLimesurveySurveyIds()) {
-				thesisAssignments.add(createOneThesisAssignment(user.getId(),
-						oaiRecordAssignedLimesurveySurveyIds.getOaiRecord().getId(), limesurveySurveyId,
-						LimesurveyService.addParticipant(limesurveySurveyId, user.getEmail())));
+
+				ThesisAssignment thesisAssignment = findOneThesisAssignmentByOaiRecordIdAndUserId(
+						oaiRecordAssignedLimesurveySurveyIds.getOaiRecord().getId(), userId);
+				thesisAssignment = thesisAssignment == null
+						? createOneThesisAssignment(user.getId(),
+								oaiRecordAssignedLimesurveySurveyIds.getOaiRecord().getId())
+						: thesisAssignment;
+				limesurveySurveyAssignmentManager.createOneLimesurveySurveyAssignment(limesurveySurveyId,
+						LimesurveyService.addParticipant(limesurveySurveyId, user.getEmail()), thesisAssignment);
+				thesisAssignments.add(thesisAssignment);
 			}
 		}
 		return thesisAssignments;

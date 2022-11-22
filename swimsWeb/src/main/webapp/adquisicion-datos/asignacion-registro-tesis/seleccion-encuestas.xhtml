@@ -22,16 +22,6 @@
 				<ui:include
 					src="#{webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH}/steps.xhtml" />
 
-				<div class="p-mt-4">
-					<p:commandButton icon="pi pi-fw pi-angle-double-left"
-						value="Regresar" styleClass="ui-button-secondary"
-						action="#{thesisSelectionBean.loadPage()}" />
-					<p:commandButton
-						action="#{thesisAssignmentConfirmationBean.loadPage()}"
-						styleClass="p-ml-2" icon="pi pi-fw pi-angle-double-right"
-						value="Avanzar" />
-				</div>
-
 				<div class="ui-fluid p-mt-4">
 					<ui:repeat var="compound"
 						value="#{surveysSelectionBean.compoundThesisSurveyAssignments}">
@@ -40,7 +30,7 @@
 							<p:selectManyMenu value="#{compound.assignedLimesurveySurveyIds}"
 								filter="true" filterMatchMode="contains" showCheckbox="true">
 								<f:selectItems
-									value="#{thesisSelectionBean.limesurveySurveyDtos}"
+									value="#{surveysSelectionBean.filterAvaliableLimesurveySurveyDtos(thesisSelectionBean.limesurveySurveyDtos, compound.oaiRecord.id)}"
 									var="limesurveySurvey"
 									itemLabel="#{limesurveySurvey.surveylsTitle}"
 									itemValue="#{limesurveySurvey.sid}"></f:selectItems>
