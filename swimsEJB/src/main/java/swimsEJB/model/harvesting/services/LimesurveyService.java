@@ -1,4 +1,4 @@
-package swimsWeb.services;
+package swimsEJB.model.harvesting.services;
 
 import static swimsEJB.constants.SystemEnvironmentVariables.*;
 
@@ -19,7 +19,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import swimsWeb.dtos.LimesurveySurveyDto;
+import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 
 public class LimesurveyService {
 	private static HttpClient httpClient = HttpClientBuilder.create().build();

@@ -14,9 +14,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import swimsEJB.model.harvesting.dtos.OaiRecordAssignedLimesurveySurveyIdsDto;
 import swimsEJB.model.harvesting.entities.OaiRecord;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
-import swimsWeb.dtos.OaiRecordSurveyAssignments;
 import swimsWeb.utilities.JSFMessages;
 
 @Named
@@ -26,7 +26,7 @@ public class SurveysSelectionBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Inject
 	private ThesisSelectionBean thesisSelectionBean;
-	private List<OaiRecordSurveyAssignments> compoundThesisSurveyAssignments;
+	private List<OaiRecordAssignedLimesurveySurveyIdsDto> compoundThesisSurveyAssignments;
 	@EJB
 	private ThesisAssignmentManager thesisAssignmentManager;
 
@@ -39,7 +39,7 @@ public class SurveysSelectionBean implements Serializable {
 			this.compoundThesisSurveyAssignments = new ArrayList<>();
 			for (OaiRecord oaiRecord : thesisSelectionBean.getSelectedOaiRecords()) {
 				this.compoundThesisSurveyAssignments
-						.add(new OaiRecordSurveyAssignments(oaiRecord,
+						.add(new OaiRecordAssignedLimesurveySurveyIdsDto(oaiRecord,
 								thesisAssignmentManager.filterLimesurveySurveysByAssignedLimesurveySurveyIds(
 										thesisSelectionBean.getLimesurveySurveyDtos().stream()
 												.map(arg0 -> arg0.getSid()).collect(Collectors.toList()),
@@ -73,11 +73,11 @@ public class SurveysSelectionBean implements Serializable {
 		this.compoundThesisSurveyAssignments = new ArrayList<>();
 	}
 
-	public List<OaiRecordSurveyAssignments> getCompoundThesisSurveyAssignments() {
+	public List<OaiRecordAssignedLimesurveySurveyIdsDto> getCompoundThesisSurveyAssignments() {
 		return compoundThesisSurveyAssignments;
 	}
 
-	public void setCompoundThesisSurveyAssignments(List<OaiRecordSurveyAssignments> compoundThesisSurveyAssignments) {
+	public void setCompoundThesisSurveyAssignments(List<OaiRecordAssignedLimesurveySurveyIdsDto> compoundThesisSurveyAssignments) {
 		this.compoundThesisSurveyAssignments = compoundThesisSurveyAssignments;
 	}
 

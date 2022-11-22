@@ -1,4 +1,4 @@
-package swimsWeb.dtos;
+package swimsEJB.model.harvesting.dtos;
 
 public class LimesurveySurveyDto {
 	private Integer sid;

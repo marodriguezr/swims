@@ -11,7 +11,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="oai_sets", schema = "harvesting")
+@Table(name="oai_sets", schema="harvesting")
 @NamedQuery(name="OaiSet.findAll", query="SELECT o FROM OaiSet o")
 public class OaiSet implements Serializable {
 	private static final long serialVersionUID = 1L;

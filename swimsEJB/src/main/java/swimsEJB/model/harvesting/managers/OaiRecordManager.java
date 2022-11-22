@@ -27,6 +27,7 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.StringUtils;
 
 import swimsEJB.model.core.managers.DaoManager;
+import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 import swimsEJB.model.harvesting.dtos.OaiRecordDto;
 import swimsEJB.model.harvesting.entities.OaiRecord;
 import swimsEJB.model.harvesting.entities.OaiSet;
@@ -473,19 +474,23 @@ public class OaiRecordManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<OaiRecord> findAllUnassignedOaiRecords(int availableSurveyCount) throws Exception {
+	public List<OaiRecord> findAllUnassignedOaiRecordsByLimesurveySurveyDtos(List<LimesurveySurveyDto> availableLimesurveySurveyDtos) throws Exception {
 		EntityManager entityManager = daoManager.getEntityManager();
-		Query query = entityManager.createNativeQuery(
-				"select or2.id from harvesting.oai_records or2 where not exists (select from harvesting.thesis_assignments ta where or2.id = ta.thesis_record_id group by ta.thesis_record_id having count(ta.limesurvey_survey_id) >= "
-						+ availableSurveyCount + ")");
+		String queryString = "select or2.id from harvesting.oai_records or2 except ";
+		for (int i = 0; i < availableLimesurveySurveyDtos.size(); i++) {
+			queryString += "select ta.oai_record_id from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
+					+ "where ta.id = lsa.thesis_assignment_id and lsa.limesurvey_survey_id = "
+					+ availableLimesurveySurveyDtos.get(i).getSid();
+			if (i != (availableLimesurveySurveyDtos.size() - 1))
+				queryString += " intersect ";
+		}
+		Query query = entityManager.createNativeQuery(queryString);
 		List<Object> objects = query.getResultList();
-
 		List<OaiRecord> oaiRecords = new ArrayList<>();
 		for (Object object : objects) {
 			oaiRecords.add(this.findOneOaiRecordById(object.toString()));
 		}
-
 		return oaiRecords;
 	}
-	
+
 }

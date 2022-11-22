@@ -36,7 +36,7 @@
 							<ui:repeat var="compound"
 								value="#{surveysSelectionBean.compoundThesisSurveyAssignments}">
 								<li>#{compound.oaiRecord.title}</li>
-							
+
 								<ul>
 									<ui:repeat var="iterable"
 										value="#{thesisAssignmentConfirmationBean.getLimesurveySurveyTitlesByLimesurveySurveyIds(compound.assignedLimesurveySurveyIds)}">
@@ -54,7 +54,7 @@
 						value="Regresar" styleClass="ui-button-secondary"
 						action="#{surveysSelectionBean.loadPage()}" />
 					<p:commandButton
-						action="#{confirmationBean.createManyOaiRecordsAction()}"
+						action="#{thesisAssignmentConfirmationBean.createManyThesisAssignementsAction()}"
 						styleClass="p-ml-2" icon="pi pi-fw pi-save"
 						value="Confirmar y Registrar" />
 

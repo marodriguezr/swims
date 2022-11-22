@@ -12,7 +12,7 @@ import java.util.List;
  * 
  */
 @Entity
-@Table(name="oai_records", schema = "harvesting")
+@Table(name="oai_records", schema="harvesting")
 @NamedQuery(name="OaiRecord.findAll", query="SELECT o FROM OaiRecord o")
 public class OaiRecord implements Serializable {
 	private static final long serialVersionUID = 1L;

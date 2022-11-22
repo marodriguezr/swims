@@ -149,6 +149,11 @@ public class UserManager {
 			return null;
 		return UserToUserDto(user);
 	}
+	
+	public User findOneUserById2(int id) throws Exception {
+		User user = (User) daoManager.findOneById(User.class, id);
+		return user;
+	}
 
 	public List<UserGroup> updateUserGroups(int userId, List<Integer> groupIds) throws Exception {
 		List<UserGroup> foundUserGroups = userGroupManager.findAllUserGroupsByUserId(userId);

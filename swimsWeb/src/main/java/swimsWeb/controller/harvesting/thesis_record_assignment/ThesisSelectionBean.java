@@ -13,11 +13,11 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 import swimsEJB.model.harvesting.dtos.OaiRecordDto;
 import swimsEJB.model.harvesting.entities.OaiRecord;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
-import swimsWeb.dtos.LimesurveySurveyDto;
-import swimsWeb.services.LimesurveyService;
+import swimsEJB.model.harvesting.services.LimesurveyService;
 import swimsWeb.utilities.JSFMessages;;
 
 @Named
@@ -48,7 +48,8 @@ public class ThesisSelectionBean implements Serializable {
 			this.limesurveySurveyDtos = new ArrayList<>();
 		}
 		try {
-			this.oaiRecords = oaiRecordManager.findAllUnassignedOaiRecords(this.limesurveySurveyDtos.size());
+			this.oaiRecords = oaiRecordManager
+					.findAllUnassignedOaiRecordsByLimesurveySurveyDtos(this.limesurveySurveyDtos);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

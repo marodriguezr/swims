@@ -1,10 +1,10 @@
-package swimsWeb.dtos;
+package swimsEJB.model.harvesting.dtos;
 
 import java.util.List;
 
 import swimsEJB.model.harvesting.entities.OaiRecord;
 
-public class OaiRecordSurveyAssignments {
+public class OaiRecordAssignedLimesurveySurveyIdsDto {
 	private OaiRecord oaiRecord;
 	private List<Integer> assignedLimesurveySurveyIds;
 	public OaiRecord getOaiRecord() {
@@ -20,7 +20,7 @@ public class OaiRecordSurveyAssignments {
 		this.assignedLimesurveySurveyIds = assignedLimesurveySurveyIds;
 	}
 	
-	public OaiRecordSurveyAssignments(OaiRecord oaiRecord, List<Integer> assignedLimesurveySurveyIds) {
+	public OaiRecordAssignedLimesurveySurveyIdsDto(OaiRecord oaiRecord, List<Integer> assignedLimesurveySurveyIds) {
 		super();
 		this.oaiRecord = oaiRecord;
 		this.assignedLimesurveySurveyIds = assignedLimesurveySurveyIds;

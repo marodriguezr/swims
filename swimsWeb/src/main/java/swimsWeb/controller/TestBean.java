@@ -12,8 +12,8 @@ import javax.inject.Named;
 
 import swimsEJB.model.TestManager;
 import swimsEJB.model.auth.managers.GroupManager;
-import swimsWeb.dtos.LimesurveySurveyDto;
-import swimsWeb.services.LimesurveyService;
+import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
+import swimsEJB.model.harvesting.services.LimesurveyService;
 
 @Named
 @RequestScoped
