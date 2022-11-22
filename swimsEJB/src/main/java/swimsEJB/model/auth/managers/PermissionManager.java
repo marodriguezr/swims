@@ -65,13 +65,12 @@ public class PermissionManager {
 		return (Permission) daoManager.findOneById(Permission.class, id);
 	}
 
-	public Permission updateOnePermissionById(int id, String name, String webAppRelatedPath, Boolean isActive)
+	public Permission updateOnePermissionById(int id, String name, Boolean isActive)
 			throws Exception {
 		Permission permission = findOnePermissionById(id);
 		if (permission == null)
 			throw new Exception("El Permiso especificado no existe.");
 		permission.setName(name);
-		permission.setWebappRelatedPath(webAppRelatedPath);
 		permission.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		permission.setIsActive(isActive);
 		try {

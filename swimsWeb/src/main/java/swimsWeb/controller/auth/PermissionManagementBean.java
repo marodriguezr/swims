@@ -38,13 +38,14 @@ public class PermissionManagementBean implements Serializable {
 		this.permissions = permissionManager.findAllPermissions();
 		this.selectedPermissions = new ArrayList<>();
 	}
-	
+
 	public String loadPage() {
 		return AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public void openNew() {
 		Permission newPermission = new Permission();
+		newPermission.setId(null);
 		newPermission.setName("");
 		newPermission.setWebappRelatedPath("");
 		newPermission.setIsActive(true);
@@ -59,8 +60,7 @@ public class PermissionManagementBean implements Serializable {
 	public void inactivateSelectedPermissions() {
 		for (Permission permission : selectedPermissions) {
 			try {
-				permissionManager.updateOnePermissionById(permission.getId(), permission.getName(),
-						permission.getWebappRelatedPath(), false);
+				permissionManager.updateOnePermissionById(permission.getId(), permission.getName(), false);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -82,8 +82,7 @@ public class PermissionManagementBean implements Serializable {
 
 	public void activatePermission(Permission permission) {
 		try {
-			permissionManager.updateOnePermissionById(permission.getId(), permission.getName(),
-					permission.getWebappRelatedPath(), true);
+			permissionManager.updateOnePermissionById(permission.getId(), permission.getName(), true);
 			JSFMessages.INFO("Permiso activado de forma exitosa.");
 			permissions = permissionManager.findAllPermissions();
 		} catch (Exception e) {
@@ -93,7 +92,7 @@ public class PermissionManagementBean implements Serializable {
 
 		}
 	}
-	
+
 	public void deleteSelectedPermission() {
 		try {
 			permissionManager.deleteOnePermissionById(selectedPermission.getId());
@@ -130,7 +129,7 @@ public class PermissionManagementBean implements Serializable {
 		}
 		try {
 			permissionManager.updateOnePermissionById(selectedPermission.getId(), selectedPermission.getName(),
-					selectedPermission.getWebappRelatedPath(), selectedPermission.getIsActive());
+					selectedPermission.getIsActive());
 			this.permissions = permissionManager.findAllPermissions();
 			JSFMessages.INFO("Permiso actualizado de forma exitosa.");
 		} catch (Exception e) {

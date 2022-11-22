@@ -120,12 +120,7 @@
 						<f:setPropertyActionListener value="#{user}"
 							target="#{userManagementBean.selectedUserDto}" />
 					</p:commandButton>
-					<p:commandButton alt="Eliminar"
-						styleClass="ui-button-danger rounded-button" icon="pi pi-trash"
-						process="@this" oncomplete="PF('deleteUserDialog').show()">
-						<f:setPropertyActionListener value="#{user}"
-							target="#{userManagementBean.selectedUserDto}" />
-					</p:commandButton>
+
 				</p:column>
 
 			</p:dataTable>

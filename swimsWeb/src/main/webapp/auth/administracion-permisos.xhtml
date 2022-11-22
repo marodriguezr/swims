@@ -6,7 +6,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">Administración de permisos</ui:define>
-	
+
 	<ui:define name="onLoad">
 		<f:metadata>
 			<f:viewAction action="#{authBean.onPageLoad()}" />
@@ -131,12 +131,6 @@
 						<f:setPropertyActionListener value="#{permission}"
 							target="#{permissionManagementBean.selectedPermission}" />
 					</p:commandButton>
-					<p:commandButton alt="Eliminar"
-						styleClass="ui-button-danger rounded-button" icon="pi pi-trash"
-						process="@this" oncomplete="PF('deletePermissionDialog').show()">
-						<f:setPropertyActionListener value="#{permission}"
-							target="#{permissionManagementBean.selectedPermission}" />
-					</p:commandButton>
 				</p:column>
 
 			</p:dataTable>
@@ -160,7 +154,12 @@
 							<p:outputLabel for="webappRelatedPath">Ruta Web</p:outputLabel>
 							<p:inputText id="webappRelatedPath"
 								value="#{permissionManagementBean.selectedPermission.webappRelatedPath}"
-								required="true" />
+								required="true"
+								rendered="#{permissionManagementBean.selectedPermission.id eq null}" />
+							<p:inputText
+								value="#{permissionManagementBean.selectedPermission.webappRelatedPath}"
+								required="true" disabled="true"
+								rendered="#{permissionManagementBean.selectedPermission.id ne null}" />
 						</div>
 
 						<div class="field" style="display: flex; flex-direction: column;">
@@ -196,18 +195,6 @@
 				<p:commandButton value="No" type="button"
 					styleClass="ui-button-secondary" icon="pi pi-times"
 					onclick="PF('inactivatePermissionDialog').hide()" />
-			</p:confirmDialog>
-
-			<p:confirmDialog widgetVar="deletePermissionDialog" showEffect="fade"
-				width="300" message="¿Está seguro de eliminar este permiso?"
-				header="Confirmación" severity="warn">
-				<p:commandButton value="Si" icon="pi pi-check"
-					actionListener="#{permissionManagementBean.deleteSelectedPermission()}"
-					update=":form:dt-permissions" process="@this"
-					oncomplete="PF('deletePermissionDialog').hide()" />
-				<p:commandButton value="No" type="button"
-					styleClass="ui-button-secondary" icon="pi pi-times"
-					onclick="PF('deletePermissionDialog').hide()" />
 			</p:confirmDialog>
 
 			<p:confirmDialog global="true" showEffect="fade" width="300">

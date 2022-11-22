@@ -22,13 +22,13 @@
 				<ui:include
 					src="#{webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH}/steps.xhtml" />
 
-				<div class="ui-fluid p-mt-4">
+				<div class="ui-fluid p-mt-6">
 					<ui:repeat var="compound"
 						value="#{surveysSelectionBean.compoundThesisSurveyAssignments}">
 						<div class="p-mb-4">
 							<p:outputLabel for="@next" value="#{compound.oaiRecord.title}"></p:outputLabel>
 							<p:selectManyMenu value="#{compound.assignedLimesurveySurveyIds}"
-								filter="true" filterMatchMode="contains" showCheckbox="true">
+								showCheckbox="true">
 								<f:selectItems
 									value="#{surveysSelectionBean.filterAvaliableLimesurveySurveyDtos(thesisSelectionBean.limesurveySurveyDtos, compound.oaiRecord.id)}"
 									var="limesurveySurvey"
