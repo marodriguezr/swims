@@ -73,11 +73,11 @@ public class ConfirmationBean implements Serializable {
 
 	public String createManyThesisAssignementsAction() {
 		try {
-//			thesisAssignmentManager.createManyThesisAssignemnts(
-//					surveysSelectionBean.getCompoundThesisSurveyAssignments(),
-//					userSelectionBean.getSelectedUserDto().getId());
+			thesisAssignmentManager.createManyThesisAssignemnts(
+					surveysSelectionBean.getCompoundThesisSurveyAssignments(),
+					userSelectionBean.getSelectedUserDto().getId());
 			JSFMessages.INFO("Tesis y encuestas asignadas de forma exitosa.");
-			return INDEX_WEBAPP_PATH + "?faces-redirect=true";
+			return INDEX_WEBAPP_PATH + "?faces-redirec=true";
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.ERROR(
