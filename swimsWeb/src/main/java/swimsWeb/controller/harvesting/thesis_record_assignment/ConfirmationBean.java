@@ -71,12 +71,17 @@ public class ConfirmationBean implements Serializable {
 				.stream().map(arg0 -> arg0.getSurveylsTitle()).collect(Collectors.toList());
 	}
 
+	public void clean() {
+		this.surveysSelectionBean.clean();
+	}
+
 	public String createManyThesisAssignementsAction() {
 		try {
 			thesisAssignmentManager.createManyThesisAssignemnts(
 					surveysSelectionBean.getCompoundThesisSurveyAssignments(),
 					userSelectionBean.getSelectedUserDto().getId());
 			JSFMessages.INFO("Tesis y encuestas asignadas de forma exitosa.");
+			clean();
 			return INDEX_WEBAPP_PATH + "?faces-redirec=true";
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -87,4 +92,5 @@ public class ConfirmationBean implements Serializable {
 			return null;
 		}
 	}
+
 }

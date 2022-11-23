@@ -76,6 +76,11 @@ public class SurveysSelectionBean implements Serializable {
 	public void onLoad() {
 		this.compoundThesisSurveyAssignments = new ArrayList<>();
 	}
+	
+	public void clean() {
+		this.compoundThesisSurveyAssignments = new ArrayList<>();
+		thesisSelectionBean.clean();
+	}
 
 	public List<LimesurveySurveyDto> filterAvaliableLimesurveySurveyDtos(List<LimesurveySurveyDto> limesurveySurveyDtos,
 			String oaiRecordId) {

@@ -35,7 +35,7 @@ public class UserSelectionBean implements Serializable {
 
 	@PostConstruct
 	public void onLoad() {
-		this.setDefaultValues();
+		this.userDtos = new ArrayList<>();
 	}
 
 	public String loadPage() {
@@ -45,6 +45,10 @@ public class UserSelectionBean implements Serializable {
 	public String onPageLoad() {
 		this.setDefaultValues();
 		return null;
+	}
+	
+	public void clean() {
+		this.selectedUserDto = null;
 	}
 
 	public void setDefaultValues() {

@@ -78,6 +78,11 @@ public class ThesisSelectionBean implements Serializable {
 	public void onLoad() {
 		this.selectedOaiRecords = new ArrayList<>();
 	}
+	
+	public void clean() {
+		this.selectedOaiRecords = new ArrayList<>();
+		userSelectionBean.clean();
+	}
 
 	public void setSelectedOaiRecordDtoWithExternalData(OaiRecord oaiRecord) {
 		try {
