@@ -85,16 +85,16 @@ public class SeedManager {
 		Permission oaiSetsManagementPermission = permissionManager.createOnePermission("Administración de Sets OAI",
 				webappPaths.get("HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH"));
 		Permission thesisRecordInclussionPermission = permissionManager.createOnePermission(
-				"Asignación de registros de tesis", webappPaths.get("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH"));
+				"Asignación de Tesis y Encuestas", webappPaths.get("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH"));
 		Permission thesisRecordDataExtractionPermission = permissionManager.createOnePermission(
-				"Extracción de datos de tesis",
+				"Extracción de Datos de Tesis",
 				webappPaths.get("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH"));
 		/**
 		 * 1.2. AUTH
 		 */
 		Permission permissionManagementPermission = permissionManager.createOnePermission("Administración de Permisos",
 				webappPaths.get("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH"));
-		Permission userManagementPermission = permissionManager.createOnePermission("Administración de Usuario",
+		Permission userManagementPermission = permissionManager.createOnePermission("Administración de Usuarios",
 				webappPaths.get("AUTH_USER_MANAGEMENT_WEBAPP_PATH"));
 
 		/**

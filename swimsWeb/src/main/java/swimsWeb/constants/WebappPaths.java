@@ -47,7 +47,7 @@ public final class WebappPaths {
 	 * 1.3. THESIS RECORD ASSIGNMENT
 	 */
 	public static final String HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH = HARVESTING_WEBAPP_PATH
-			+ "/asignacion-registro-tesis";
+			+ "/asignacion";
 	/**
 	 * 1.3.1. USER SELECTION
 	 */
