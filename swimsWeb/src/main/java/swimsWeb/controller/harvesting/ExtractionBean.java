@@ -18,6 +18,7 @@ import swimsEJB.model.harvesting.managers.LimesurveySurveyAssignmentManager;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsEJB.model.harvesting.services.LimesurveyService;
+import swimsWeb.controller.auth.SignInBean;
 import swimsWeb.controller.harvesting.thesis_record_assignment.ThesisSelectionBean;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH;
@@ -36,6 +37,8 @@ public class ExtractionBean implements Serializable {
 	private OaiRecordManager oaiRecordManager;
 	@Inject
 	private ThesisSelectionBean thesisSelectionBean;
+	@Inject
+	private SignInBean signInBean;
 	private List<ResponsiveOption> responsiveOptions;
 
 	public ExtractionBean() {
@@ -48,10 +51,11 @@ public class ExtractionBean implements Serializable {
 
 	public String onPageLoad() {
 		try {
-			this.thesisAssignments = thesisAssignmentManager.findAllUndispatchedThesisAssignments();
+			this.thesisAssignments = thesisAssignmentManager
+					.findAllUndispatchedThesisAssignmentsByUserId(signInBean.getSignedUserDto().getId());
 			for (ThesisAssignment thesisAssignment : thesisAssignments) {
 				thesisAssignment.setLimesurveySurveyAssignments(limesurveySurveyAssignmentManager
-						.findAllLimesurveySurveyAssignmentsByThesisAssignementId(thesisAssignment.getId()));
+						.findAllUndispatchedLimesurveySurveyAssignmentsByThesisAssignementId(thesisAssignment.getId()));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

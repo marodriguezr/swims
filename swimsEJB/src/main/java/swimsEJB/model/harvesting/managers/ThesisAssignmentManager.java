@@ -168,4 +168,23 @@ public class ThesisAssignmentManager {
 
 		return thesisAssignments;
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<ThesisAssignment> findAllUndispatchedThesisAssignmentsByUserId(int userId) throws Exception {
+		EntityManager entityManager = daoManager.getEntityManager();
+		Query query = entityManager.createNativeQuery("select distinct (ta.id) "
+				+ "from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
+				+ "where ta.id = lsa.thesis_assignment_id and lsa.is_dispatched = false and ta.user_id = " + userId);
+		List<Object> objects = query.getResultList();
+
+		List<ThesisAssignment> thesisAssignments = new ArrayList<>();
+		for (Object object : objects) {
+			ThesisAssignment foundThesisAssignment = this
+					.findOneThesisAssignemntById(Integer.parseInt(object.toString()));
+			if (foundThesisAssignment != null)
+				thesisAssignments.add(foundThesisAssignment);
+		}
+
+		return thesisAssignments;
+	}
 }
