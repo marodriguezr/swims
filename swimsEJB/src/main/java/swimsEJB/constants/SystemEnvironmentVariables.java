@@ -18,4 +18,8 @@ public final class SystemEnvironmentVariables {
 			: false;
 	public static final Boolean LIMESURVEY_REMOTECONTROL_USES_SSL = System.getenv("LIMESURVEY_REMOTECONTROL_USES_SSL")
 			.equals("true") ? true : false;
+
+	public static final String LIMESURVEY_REMOTECONTROL_PROTOCOL = LIMESURVEY_REMOTECONTROL_USES_SSL ? "https://"
+			: "http://";
+	public static final String LIMESURVEY_PROTOCOL = LIMESURVEY_USES_SSL ? "https://" : "http://";
 }

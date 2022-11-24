@@ -45,7 +45,7 @@
 						<p:column filterMatchMode="contains"
 							sortBy="#{oaiRecordDto.titles.get(0)}"
 							filterBy="#{oaiRecordDto.titles.get(0)}" headerText="Titulo">
-							<a
+							<a target="_blank"
 								href="#{recordsSelectionBean.getURLFromOaiRecordDto(oaiRecordDto)}"><h:outputText
 									rendered="#{oaiRecordDto.titles.size() ge 1}"
 									value="#{oaiRecordDto.titles.get(0)}" /></a>

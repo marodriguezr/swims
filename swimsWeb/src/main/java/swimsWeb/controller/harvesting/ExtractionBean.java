@@ -85,7 +85,6 @@ public class ExtractionBean implements Serializable {
 	}
 
 	public LimesurveySurveyDto findLimesurveySurveyById(int sid) {
-		System.out.println(sid);
 		return thesisSelectionBean.getLimesurveySurveyDtos().stream().filter(arg0 -> arg0.getSid() == sid).findFirst()
 				.orElse(null);
 	}
@@ -96,9 +95,5 @@ public class ExtractionBean implements Serializable {
 
 	public void setResponsiveOptions(List<ResponsiveOption> responsiveOptions) {
 		this.responsiveOptions = responsiveOptions;
-	}
-	
-	public String getWhiteSpace() {
-		return " ";
 	}
 }

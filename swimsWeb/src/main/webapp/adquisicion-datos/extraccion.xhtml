@@ -34,20 +34,19 @@
 							value="#{thesisAssignment.limesurveySurveyAssignments}"
 							var="limesurveySurveyAssignment" numVisible="3">
 
-							<div class="p-pl-1 p-pr-1 p-mb-1">
-								<div class="p-p-2 p-d-flex p-flex-column"
+							<div class="p-pl-1 p-pr-1 p-mb-1 p-mt-1">
+								<div class="p-p-2 p-shadow-1"
 									style="border-style: solid; border-width: 1px; border-radius: 5px; border-color: gray;">
-									<h4>#{extractionBean.findLimesurveySurveyById(limesurveySurveyAssignment.limesurveySurveyId).surveylsTitle}</h4>
-									<div class="p-d-flex p-flex-wrap gap-on-access-token">
-										<h:outputText styleClass="p-text-bold"
-											style="font-size: 0.9rem;" value="Token de acceso:" />
-										<h:outputText
-											value="#{limesurveySurveyAssignment.limesurveySurveyToken}" />
+									<div class="p-d-flex p-jc-center">
+										<h4 class="p-text-center">#{extractionBean.findLimesurveySurveyById(limesurveySurveyAssignment.limesurveySurveyId).surveylsTitle}</h4>
 									</div>
-									<div class="p-mt-5 p-d-flex p-jc-center p-flex-wrap">
-										<p:commandButton alt="Responder" type="button"
-											icon="pi pi-external-link" styleClass="rounded-button p-mr-2"
-											title="Responder" />
+									<div class="p-d-flex p-jc-center">
+										<a target="_blank"
+											href="#{webappPathsBean.LIMESURVEY_PROTOCOL}#{webappPathsBean.LIMESURVEY_PUBLIC_HOST}:#{webappPathsBean.LIMESURVEY_PUBLIC_PORT}#{webappPathsBean.LIMESURVEY_BASE_URL}/index.php/#{limesurveySurveyAssignment.limesurveySurveyId}?newtest=Y&amp;token=#{limesurveySurveyAssignment.limesurveySurveyToken}"><h:outputText />
+											<p:commandButton alt="Responder" type="button"
+												icon="pi pi-external-link"
+												styleClass="rounded-button p-mr-2" title="Responder" /></a>
+
 										<p:commandButton alt="Marcar como completado"
 											title="Marcar como completado" type="button"
 											icon="pi pi-check"
