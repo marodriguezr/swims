@@ -145,4 +145,27 @@ public class ThesisAssignmentManager {
 		}
 		return thesisAssignments;
 	}
+
+	public ThesisAssignment findOneThesisAssignemntById(int thesisAssignementId) throws Exception {
+		return (ThesisAssignment) daoManager.findOneById(ThesisAssignment.class, thesisAssignementId);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<ThesisAssignment> findAllUndispatchedThesisAssignments() throws Exception {
+		EntityManager entityManager = daoManager.getEntityManager();
+		Query query = entityManager.createNativeQuery("select distinct (ta.id) "
+				+ "from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
+				+ "where ta.id = lsa.thesis_assignment_id and lsa.is_dispatched = false");
+		List<Object> objects = query.getResultList();
+
+		List<ThesisAssignment> thesisAssignments = new ArrayList<>();
+		for (Object object : objects) {
+			ThesisAssignment foundThesisAssignment = this
+					.findOneThesisAssignemntById(Integer.parseInt(object.toString()));
+			if (foundThesisAssignment != null)
+				thesisAssignments.add(foundThesisAssignment);
+		}
+
+		return thesisAssignments;
+	}
 }

@@ -56,4 +56,21 @@ public class LimesurveySurveyAssignmentManager {
 		limesurveySurveyAssignment.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		return (LimesurveySurveyAssignment) daoManager.createOne(limesurveySurveyAssignment);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<LimesurveySurveyAssignment> findAllLimesurveySurveyAssignmentsByThesisAssignementId(
+			int thesisAssignementId) {
+		List<LimesurveySurveyAssignment> limesurveySurveyAssignments = daoManager.findManyWhere(
+				LimesurveySurveyAssignment.class, "o.thesisAssignment.id = " + thesisAssignementId, null);
+		return limesurveySurveyAssignments;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<LimesurveySurveyAssignment> findAllUndispatchedLimesurveySurveyAssignmentsByThesisAssignementId(
+			int thesisAssignementId) {
+		List<LimesurveySurveyAssignment> limesurveySurveyAssignments = daoManager.findManyWhere(
+				LimesurveySurveyAssignment.class,
+				"o.thesisAssignment.id = " + thesisAssignementId + " and o.isDispatched = false", null);
+		return limesurveySurveyAssignments;
+	}
 }

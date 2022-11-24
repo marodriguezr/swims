@@ -9,7 +9,17 @@
 	<title><ui:insert name="title">SWIMS</ui:insert></title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<h:outputStylesheet name="/css/primeflex.min.css" />
-	<link rel="stylesheet" href="/resources/css/styles.css" />
+	<style>
+.gap-on-access-token {
+	gap: 0px;
+}
+
+@media screen and (min-width: 1024px) {
+	.gap-on-access-token {
+		gap: 5px;
+	}
+}
+</style>
 </h:head>
 <h:body>
 	<!-- onLoad -->
@@ -43,6 +53,10 @@
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH)}"
 							icon="pi pi-fw pi-inbox" value="Asignación de Registros de Tesis"
 							action="#{userSelectionBean.loadPage()}"></p:menuitem>
+						<p:menuitem
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH)}"
+							icon="pi pi-fw pi-file-edit" value="Extracción de Datos"
+							action="#{extractionBean.loadPage()}"></p:menuitem>
 					</p:submenu>
 					<p:submenu
 						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}"

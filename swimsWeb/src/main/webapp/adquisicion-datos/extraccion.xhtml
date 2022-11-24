@@ -1,0 +1,65 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Inicio</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{authBean.onPageLoad()}" />
+			<f:viewAction action="#{extractionBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
+
+
+	<ui:define name="content">
+		<h:form>
+			<p:card>
+				<f:facet name="title">
+						Extracción de datos
+					</f:facet>
+				<p>Por favor conteste las encuestas asignadas.</p>
+				<p:repeat var="thesisAssignment"
+					value="#{extractionBean.thesisAssignments}">
+					<p:card class="p-mb-2">
+						<f:facet name="subtitle">
+							<h3>#{thesisAssignment.oaiRecord.title}</h3>
+						</f:facet>
+						<p:carousel numScroll="1"
+							responsiveOptions="#{extractionBean.responsiveOptions}"
+							value="#{thesisAssignment.limesurveySurveyAssignments}"
+							var="limesurveySurveyAssignment" numVisible="3">
+
+							<div class="p-pl-1 p-pr-1 p-mb-1">
+								<div class="p-p-2 p-d-flex p-flex-column"
+									style="border-style: solid; border-width: 1px; border-radius: 5px; border-color: gray;">
+									<h4>#{extractionBean.findLimesurveySurveyById(limesurveySurveyAssignment.limesurveySurveyId).surveylsTitle}</h4>
+									<div class="p-d-flex p-flex-wrap gap-on-access-token">
+										<h:outputText styleClass="p-text-bold"
+											style="font-size: 0.9rem;" value="Token de acceso:" />
+										<h:outputText
+											value="#{limesurveySurveyAssignment.limesurveySurveyToken}" />
+									</div>
+									<div class="p-mt-5 p-d-flex p-jc-center p-flex-wrap">
+										<p:commandButton alt="Responder" type="button"
+											icon="pi pi-external-link" styleClass="rounded-button p-mr-2"
+											title="Responder" />
+										<p:commandButton alt="Marcar como completado"
+											title="Marcar como completado" type="button"
+											icon="pi pi-check"
+											styleClass="ui-button-success rounded-button" />
+									</div>
+								</div>
+							</div>
+
+						</p:carousel>
+					</p:card>
+				</p:repeat>
+			</p:card>
+		</h:form>
+	</ui:define>
+</ui:composition>

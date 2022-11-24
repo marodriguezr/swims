@@ -77,6 +77,7 @@ public class ThesisSelectionBean implements Serializable {
 	@PostConstruct
 	public void onLoad() {
 		this.selectedOaiRecords = new ArrayList<>();
+		this.limesurveySurveyDtos = new ArrayList<>();
 	}
 	
 	public void clean() {
