@@ -3,6 +3,7 @@ package swimsEJB.model.harvesting.services;
 import static swimsEJB.constants.SystemEnvironmentVariables.*;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,11 +39,13 @@ public class LimesurveyService {
 	public static JsonObject executeHttpPostRequest(String method, Object... params) throws Exception {
 		HttpPost post = getHttpPost();
 		String stringifiedParams = gson.toJson(params);
+		System.out.println(stringifiedParams);
 		post.setEntity(
 				new StringEntity("{\"method\": \"" + method + "\", \"params\": " + stringifiedParams + ", \"id\": 1}"));
 		HttpResponse response = httpClient.execute(post);
 		if (response.getStatusLine().getStatusCode() == 200) {
 			String stringifiedResponse = EntityUtils.toString(response.getEntity());
+			System.out.println(stringifiedResponse);
 			JsonObject jsonObject = JsonParser.parseString(stringifiedResponse).getAsJsonObject();
 			if (!jsonObject.get("error").isJsonNull())
 				throw new Exception("Request failed, error: " + jsonObject.get("error").getAsString());
@@ -112,5 +115,22 @@ public class LimesurveyService {
 			System.err.println(e.getMessage());
 			throw new Exception("Ha ocurrido un error en la adición del participante " + email);
 		}
+	}
+
+	public static void exportResponse(int limesurveySurveyId, String token) throws Exception {
+		JsonObject response = executeHttpPostRequest("export_responses_by_token", getSessionKey(), limesurveySurveyId,
+				"json", token, null, "complete", "code", "long");
+		if (response.get("result").isJsonObject()) {
+			throw new Exception("La encuesta no ha sido respondida aún.");
+		}
+		byte[] decodedBytes = Base64.getDecoder().decode(response.get("result").getAsString());
+		String decodedString = new String(decodedBytes);
+		System.out.println(decodedString);
+		JsonArray jsonArray = JsonParser.parseString(decodedString).getAsJsonObject().get("responses").getAsJsonArray();
+		if (jsonArray.isEmpty())
+			throw new Exception("La encuesta no ha sido respondida aún.");
+		;
+
+		System.out.println(jsonArray.toString());
 	}
 }

@@ -46,15 +46,13 @@
 											<p:commandButton alt="Responder" type="button"
 												icon="pi pi-external-link"
 												styleClass="rounded-button p-mr-2" title="Responder" /></a>
-
-										<p:commandButton alt="Marcar como completado"
-											title="Marcar como completado" type="button"
+										<p:commandButton title="Marcar como completado"
 											icon="pi pi-check"
-											styleClass="ui-button-success rounded-button" />
+											styleClass="ui-button-success rounded-button"
+											actionListener="#{extractionBean.extractLimesurveySurveyDataActionListener(limesurveySurveyAssignment.limesurveySurveyId, limesurveySurveyAssignment.limesurveySurveyToken)}"></p:commandButton>
 									</div>
 								</div>
 							</div>
-
 						</p:carousel>
 					</p:card>
 				</p:repeat>

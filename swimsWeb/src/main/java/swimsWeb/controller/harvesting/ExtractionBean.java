@@ -20,6 +20,7 @@ import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsEJB.model.harvesting.services.LimesurveyService;
 import swimsWeb.controller.auth.SignInBean;
 import swimsWeb.controller.harvesting.thesis_record_assignment.ThesisSelectionBean;
+import swimsWeb.utilities.JSFMessages;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH;
 
@@ -80,17 +81,27 @@ public class ExtractionBean implements Serializable {
 		responsiveOptions.add(new ResponsiveOption("560px", 1, 1));
 	}
 
+	public void extractLimesurveySurveyDataActionListener(int limesurveySurveyId, String token) {
+		try {
+			LimesurveyService.exportResponse(limesurveySurveyId, token);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSFMessages.WARN(e.getMessage());
+		}
+	}
+
+	public LimesurveySurveyDto findLimesurveySurveyById(int sid) {
+		return thesisSelectionBean.getLimesurveySurveyDtos().stream().filter(arg0 -> arg0.getSid() == sid).findFirst()
+				.orElse(null);
+	}
+
 	public List<ThesisAssignment> getThesisAssignments() {
 		return thesisAssignments;
 	}
 
 	public void setThesisAssignments(List<ThesisAssignment> thesisAssignments) {
 		this.thesisAssignments = thesisAssignments;
-	}
-
-	public LimesurveySurveyDto findLimesurveySurveyById(int sid) {
-		return thesisSelectionBean.getLimesurveySurveyDtos().stream().filter(arg0 -> arg0.getSid() == sid).findFirst()
-				.orElse(null);
 	}
 
 	public List<ResponsiveOption> getResponsiveOptions() {
@@ -100,4 +111,5 @@ public class ExtractionBean implements Serializable {
 	public void setResponsiveOptions(List<ResponsiveOption> responsiveOptions) {
 		this.responsiveOptions = responsiveOptions;
 	}
+
 }
