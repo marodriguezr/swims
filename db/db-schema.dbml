@@ -22,6 +22,31 @@ table harvesting.oai_records {
   is_active boolean [not null, default: true]
 }
 
+table harvesting.study_variable_types {
+  id int [pk, increment]
+  long_name varchar [not null, unique]
+  short_name varchar [not null, unique]
+}
+
+table harvesting.study_variables {
+  id int [pk, increment]
+  long_name varchar [not null, unique]
+  short_name varchar [not null, unique]
+  is_quantitative_continuous boolean [not null]
+  is_quantitative_discrete boolean [not null]
+  is_qualitative boolean [not null]
+  is_likert boolean [not null]
+  is_boolean boolean [not null]
+  study_variable_type_id int [not null, ref: > harvesting.study_variable_types.id]
+}
+
+table limesurvey_survey_question_study_variable_associations {
+  id int [pk, increment]
+  limesurvey_survey_id int [not null]
+  limesurvey_survey_question_id varchar [not null, unique]
+  study_variable_id int [not null, unique, ref: - harvesting.study_variables.id]
+}
+
 table harvesting.thesis_assignments {
   id int [pk, increment]
   user_id int [not null, ref: > auth.users.id]
@@ -48,6 +73,12 @@ table harvesting.limesurvey_survey_assignments {
   }
 }
 
+table harvesting.limesurvey_survey_responses {
+  id bigint [pk, increment]
+  limesurvey_survey_question_id varchar [not null]
+  limesurvey_survey_answer_id varchar [not null]
+  limesurvey_survey_assignment_id int [not null, ref: > harvesting.limesurvey_survey_assignments.id]
+}
 
 table auth.users {
   id int [pk, increment]
