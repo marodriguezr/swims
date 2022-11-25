@@ -1,10 +1,6 @@
 networks:
   swims_network:
 
-volumes:
-  swims_caddy_data:
-  swims_caddy_config:
-
 services:
   swims_postgres:
     image: postgres:13
@@ -14,25 +10,20 @@ services:
     networks:
       - swims_network
 
-  swims_limesurvey_mysql:
-    image: docker.io/mysql:5.7
-    environment:
-      MYSQL_USER: limesurvey_swims
-      MYSQL_DATABASE: limesurvey_swimsdb
-    networks:
-      - swims_network
-
   swims_limesurvey:
     environment:
-      DB_NAME: limesurvey_swimsdb
-      DB_USERNAME: limesurvey_swims
+      DB_TYPE: pgsql
+      DB_TABLE_PREFIX: limesurvey_
+      DB_NAME: swimsdb
+      DB_USERNAME: swims
+      DB_PORT: 5432
       BASE_URL: /limesurvey
       ADMIN_USER: swims
       LISTEN_PORT: 8080
     networks:
       - swims_network
     depends_on:
-      - swims_limesurvey_mysql
+      - swims_postgres
 
   swims_wildfly:
     environment:
@@ -44,7 +35,6 @@ services:
       LIMESURVEY_PUBLIC_PORT: 443
       LIMESURVEY_USES_SSL: true
       LIMESURVEY_REMOTECONTROL_USES_SSL: false
-
     networks:
       - swims_network
     depends_on:

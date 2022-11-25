@@ -13,13 +13,6 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
 
-  swims_limesurvey_mysql:
-    container_name: swims-limesurvey-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_PASSWORD: ${LIMESURVEY_MYSQL_PASSWORD:?err}
-      MYSQL_ROOT_PASSWORD: ${LIMESURVEY_MYSQL_ROOT_PASSWORD:?err}
-
   swims_limesurvey:
     build:
       context: .
@@ -30,8 +23,8 @@ services:
     volumes:
       - swims_limesurvey_surveys:/var/www/html/upload/surveys
     environment:
-      DB_HOST: swims-limesurvey-mysql
-      DB_PASSWORD: ${LIMESURVEY_MYSQL_PASSWORD:?err}
+      DB_HOST: swims-postgres
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?err}
       ADMIN_PASSWORD: ${LIMESURVEY_ADMIN_PASSWORD:?err}
 
   swims_wildfly:
