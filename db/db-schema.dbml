@@ -40,7 +40,7 @@ table harvesting.study_variables {
   study_variable_type_id int [not null, ref: > harvesting.study_variable_types.id]
 }
 
-table limesurvey_survey_question_study_variable_associations {
+table harvesting.limesurvey_survey_question_study_variable_associations {
   id int [pk, increment]
   limesurvey_survey_id int [not null]
   limesurvey_survey_question_id varchar [not null, unique]
@@ -62,7 +62,7 @@ table harvesting.thesis_assignments {
 table harvesting.limesurvey_survey_assignments {
   id int [pk, increment]
   thesis_assignment_id int [not null, ref: > harvesting.thesis_assignments.id]
-  limesurvey_survey_id int [not null]
+  limesurvey_survey_id int [not null, ref: > harvesting.limesurvey_survey_question_study_variable_associations.limesurvey_survey_id]
   limesurvey_survey_token varchar [not null]
   is_dispatched boolean [not null, default: false]
   created_at timestamp [not null, default: `now()`]
@@ -75,7 +75,7 @@ table harvesting.limesurvey_survey_assignments {
 
 table harvesting.limesurvey_survey_responses {
   id bigint [pk, increment]
-  limesurvey_survey_question_id varchar [not null]
+  limesurvey_survey_question_id varchar [not null, ref: > harvesting.limesurvey_survey_question_study_variable_associations.limesurvey_survey_question_id]
   limesurvey_survey_answer_id varchar [not null]
   limesurvey_survey_assignment_id int [not null, ref: > harvesting.limesurvey_survey_assignments.id]
 }
@@ -94,8 +94,8 @@ table auth.users {
 
 table auth.users_groups {
   id int [pk, increment]
-  user_id int [not null, ref: > auth.users.id]
   group_id int [not null, ref: > auth.groups.id]
+  user_id int [not null, ref: > auth.users.id]
   
   Indexes {
     (user_id, group_id) [unique]
