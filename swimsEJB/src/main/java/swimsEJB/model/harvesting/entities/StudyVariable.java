@@ -24,20 +24,17 @@ public class StudyVariable implements Serializable {
 	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="is_boolean", nullable=false)
-	private Boolean isBoolean;
+	@Column(name="is_categorical_nominal", nullable=false)
+	private Boolean isCategoricalNominal;
 
-	@Column(name="is_likert", nullable=false)
-	private Boolean isLikert;
+	@Column(name="is_categorical_ordinal", nullable=false)
+	private Boolean isCategoricalOrdinal;
 
-	@Column(name="is_qualitative", nullable=false)
-	private Boolean isQualitative;
+	@Column(name="is_numeric_continuous", nullable=false)
+	private Boolean isNumericContinuous;
 
-	@Column(name="is_quantitative_continuous", nullable=false)
-	private Boolean isQuantitativeContinuous;
-
-	@Column(name="is_quantitative_discrete", nullable=false)
-	private Boolean isQuantitativeDiscrete;
+	@Column(name="is_numeric_discrete", nullable=false)
+	private Boolean isNumericDiscrete;
 
 	@Column(name="long_name", nullable=false, length=2147483647)
 	private String longName;
@@ -48,14 +45,14 @@ public class StudyVariable implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	//bi-directional many-to-one association to LimesurveyQuestion
-	@OneToMany(mappedBy="studyVariable")
-	private List<LimesurveyQuestion> limesurveyQuestions;
-
 	//bi-directional many-to-one association to StudyVariableClass
 	@ManyToOne
 	@JoinColumn(name="study_variable_class_id", nullable=false)
 	private StudyVariableClass studyVariableClass;
+
+	//bi-directional many-to-one association to Question
+	@OneToMany(mappedBy="studyVariable")
+	private List<Question> questions;
 
 	public StudyVariable() {
 	}
@@ -76,44 +73,36 @@ public class StudyVariable implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public Boolean getIsBoolean() {
-		return this.isBoolean;
+	public Boolean getIsCategoricalNominal() {
+		return this.isCategoricalNominal;
 	}
 
-	public void setIsBoolean(Boolean isBoolean) {
-		this.isBoolean = isBoolean;
+	public void setIsCategoricalNominal(Boolean isCategoricalNominal) {
+		this.isCategoricalNominal = isCategoricalNominal;
 	}
 
-	public Boolean getIsLikert() {
-		return this.isLikert;
+	public Boolean getIsCategoricalOrdinal() {
+		return this.isCategoricalOrdinal;
 	}
 
-	public void setIsLikert(Boolean isLikert) {
-		this.isLikert = isLikert;
+	public void setIsCategoricalOrdinal(Boolean isCategoricalOrdinal) {
+		this.isCategoricalOrdinal = isCategoricalOrdinal;
 	}
 
-	public Boolean getIsQualitative() {
-		return this.isQualitative;
+	public Boolean getIsNumericContinuous() {
+		return this.isNumericContinuous;
 	}
 
-	public void setIsQualitative(Boolean isQualitative) {
-		this.isQualitative = isQualitative;
+	public void setIsNumericContinuous(Boolean isNumericContinuous) {
+		this.isNumericContinuous = isNumericContinuous;
 	}
 
-	public Boolean getIsQuantitativeContinuous() {
-		return this.isQuantitativeContinuous;
+	public Boolean getIsNumericDiscrete() {
+		return this.isNumericDiscrete;
 	}
 
-	public void setIsQuantitativeContinuous(Boolean isQuantitativeContinuous) {
-		this.isQuantitativeContinuous = isQuantitativeContinuous;
-	}
-
-	public Boolean getIsQuantitativeDiscrete() {
-		return this.isQuantitativeDiscrete;
-	}
-
-	public void setIsQuantitativeDiscrete(Boolean isQuantitativeDiscrete) {
-		this.isQuantitativeDiscrete = isQuantitativeDiscrete;
+	public void setIsNumericDiscrete(Boolean isNumericDiscrete) {
+		this.isNumericDiscrete = isNumericDiscrete;
 	}
 
 	public String getLongName() {
@@ -140,34 +129,34 @@ public class StudyVariable implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public List<LimesurveyQuestion> getLimesurveyQuestions() {
-		return this.limesurveyQuestions;
-	}
-
-	public void setLimesurveyQuestions(List<LimesurveyQuestion> limesurveyQuestions) {
-		this.limesurveyQuestions = limesurveyQuestions;
-	}
-
-	public LimesurveyQuestion addLimesurveyQuestion(LimesurveyQuestion limesurveyQuestion) {
-		getLimesurveyQuestions().add(limesurveyQuestion);
-		limesurveyQuestion.setStudyVariable(this);
-
-		return limesurveyQuestion;
-	}
-
-	public LimesurveyQuestion removeLimesurveyQuestion(LimesurveyQuestion limesurveyQuestion) {
-		getLimesurveyQuestions().remove(limesurveyQuestion);
-		limesurveyQuestion.setStudyVariable(null);
-
-		return limesurveyQuestion;
-	}
-
 	public StudyVariableClass getStudyVariableClass() {
 		return this.studyVariableClass;
 	}
 
 	public void setStudyVariableClass(StudyVariableClass studyVariableClass) {
 		this.studyVariableClass = studyVariableClass;
+	}
+
+	public List<Question> getQuestions() {
+		return this.questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
+	}
+
+	public Question addQuestion(Question question) {
+		getQuestions().add(question);
+		question.setStudyVariable(this);
+
+		return question;
+	}
+
+	public Question removeQuestion(Question question) {
+		getQuestions().remove(question);
+		question.setStudyVariable(null);
+
+		return question;
 	}
 
 }

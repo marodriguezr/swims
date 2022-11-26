@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import swimsEJB.model.core.managers.DaoManager;
-import swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment;
+import swimsEJB.model.harvesting.entities.SurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
 
 /**
@@ -19,7 +19,7 @@ import swimsEJB.model.harvesting.entities.ThesisAssignment;
  */
 @Stateless
 @LocalBean
-public class LimesurveySurveyAssignmentManager {
+public class SurveyAssignmentManager {
 
 	@EJB
 	private DaoManager daoManager;
@@ -27,7 +27,7 @@ public class LimesurveySurveyAssignmentManager {
 	/**
 	 * Default constructor.
 	 */
-	public LimesurveySurveyAssignmentManager() {
+	public SurveyAssignmentManager() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -45,32 +45,32 @@ public class LimesurveySurveyAssignmentManager {
 		return alreadyPresentlimesurveySurveyIds;
 	}
 
-	public LimesurveySurveyAssignment createOneLimesurveySurveyAssignment(int limesurveySurveyId,
+	public SurveyAssignment createOneSurveyAssignment(int limesurveySurveyId,
 			String limesurveySurveyAccessToken, ThesisAssignment thesisAssignment) throws Exception {
-		LimesurveySurveyAssignment limesurveySurveyAssignment = new LimesurveySurveyAssignment();
-		limesurveySurveyAssignment.setLimesurveySurveyId(limesurveySurveyId);
-		limesurveySurveyAssignment.setLimesurveySurveyToken(limesurveySurveyAccessToken);
-		limesurveySurveyAssignment.setThesisAssignment(thesisAssignment);
-		limesurveySurveyAssignment.setIsDispatched(false);
-		limesurveySurveyAssignment.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		limesurveySurveyAssignment.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		return (LimesurveySurveyAssignment) daoManager.createOne(limesurveySurveyAssignment);
+		SurveyAssignment SurveyAssignment = new SurveyAssignment();
+		SurveyAssignment.setLimesurveySurveyId(limesurveySurveyId);
+		SurveyAssignment.setLimesurveySurveyToken(limesurveySurveyAccessToken);
+		SurveyAssignment.setThesisAssignment(thesisAssignment);
+		SurveyAssignment.setIsDispatched(false);
+		SurveyAssignment.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		SurveyAssignment.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		return (SurveyAssignment) daoManager.createOne(SurveyAssignment);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<LimesurveySurveyAssignment> findAllLimesurveySurveyAssignmentsByThesisAssignementId(
+	public List<SurveyAssignment> findAllSurveyAssignmentsByThesisAssignementId(
 			int thesisAssignementId) {
-		List<LimesurveySurveyAssignment> limesurveySurveyAssignments = daoManager.findManyWhere(
-				LimesurveySurveyAssignment.class, "o.thesisAssignment.id = " + thesisAssignementId, null);
-		return limesurveySurveyAssignments;
+		List<SurveyAssignment> SurveyAssignments = daoManager.findManyWhere(
+				SurveyAssignment.class, "o.thesisAssignment.id = " + thesisAssignementId, null);
+		return SurveyAssignments;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<LimesurveySurveyAssignment> findAllUndispatchedLimesurveySurveyAssignmentsByThesisAssignementId(
+	public List<SurveyAssignment> findAllUndispatchedSurveyAssignmentsByThesisAssignementId(
 			int thesisAssignementId) {
-		List<LimesurveySurveyAssignment> limesurveySurveyAssignments = daoManager.findManyWhere(
-				LimesurveySurveyAssignment.class,
+		List<SurveyAssignment> SurveyAssignments = daoManager.findManyWhere(
+				SurveyAssignment.class,
 				"o.thesisAssignment.id = " + thesisAssignementId + " and o.isDispatched = false", null);
-		return limesurveySurveyAssignments;
+		return SurveyAssignments;
 	}
 }

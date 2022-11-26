@@ -7,13 +7,13 @@ import java.util.List;
 
 
 /**
- * The persistent class for the limesurvey_questions database table.
+ * The persistent class for the questions database table.
  * 
  */
 @Entity
-@Table(name="limesurvey_questions", schema="harvesting")
-@NamedQuery(name="LimesurveyQuestion.findAll", query="SELECT l FROM LimesurveyQuestion l")
-public class LimesurveyQuestion implements Serializable {
+@Table(name="questions", schema="harvesting")
+@NamedQuery(name="Question.findAll", query="SELECT q FROM Question q")
+public class Question implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -38,11 +38,11 @@ public class LimesurveyQuestion implements Serializable {
 	@JoinColumn(name="study_variable_id", nullable=false)
 	private StudyVariable studyVariable;
 
-	//bi-directional many-to-one association to LimesurveyResponse
-	@OneToMany(mappedBy="limesurveyQuestion")
-	private List<LimesurveyResponse> limesurveyResponses;
+	//bi-directional many-to-one association to Response
+	@OneToMany(mappedBy="question")
+	private List<Response> responses;
 
-	public LimesurveyQuestion() {
+	public Question() {
 	}
 
 	public Integer getId() {
@@ -93,26 +93,26 @@ public class LimesurveyQuestion implements Serializable {
 		this.studyVariable = studyVariable;
 	}
 
-	public List<LimesurveyResponse> getLimesurveyResponses() {
-		return this.limesurveyResponses;
+	public List<Response> getResponses() {
+		return this.responses;
 	}
 
-	public void setLimesurveyResponses(List<LimesurveyResponse> limesurveyResponses) {
-		this.limesurveyResponses = limesurveyResponses;
+	public void setResponses(List<Response> responses) {
+		this.responses = responses;
 	}
 
-	public LimesurveyResponse addLimesurveyRespons(LimesurveyResponse limesurveyRespons) {
-		getLimesurveyResponses().add(limesurveyRespons);
-		limesurveyRespons.setLimesurveyQuestion(this);
+	public Response addRespons(Response respons) {
+		getResponses().add(respons);
+		respons.setQuestion(this);
 
-		return limesurveyRespons;
+		return respons;
 	}
 
-	public LimesurveyResponse removeLimesurveyRespons(LimesurveyResponse limesurveyRespons) {
-		getLimesurveyResponses().remove(limesurveyRespons);
-		limesurveyRespons.setLimesurveyQuestion(null);
+	public Response removeRespons(Response respons) {
+		getResponses().remove(respons);
+		respons.setQuestion(null);
 
-		return limesurveyRespons;
+		return respons;
 	}
 
 }

@@ -203,64 +203,96 @@ public class SeedManager {
 				.createOneStudyVariableClass("Factores de Éxito", "factoresExito");
 		StudyVariableClass failureFactorsStudyVariableClass = studyVariableClassManager
 				.createOneStudyVariableClass("Factores de Fracaso", "factoresFracaso");
+		StudyVariableClass devToolsStudyVariableClass = studyVariableClassManager
+				.createOneStudyVariableClass("Herramientas de Desarrollo", "heramientasDesarrollo");
 		/**
 		 * 0.2. Study Variables
 		 */
-//		String longName, String shortName, Boolean isQuantitativeContinuous,
-//		Boolean isQuantitativeDiscrete, boolean isQualitative, boolean isLikert, boolean isBoolean,
-//		StudyVariableClass studyVariableClass
+//		String longName, String shortName, Boolean isNumericContinuous,
+//		Boolean isNumericDiscrete, boolean isCategoricalNominal, boolean isCategoricalOrdinal
 		/**
 		 * 0.2.1. Social Impact Indicators
 		 */
 		StudyVariable employeeNumberStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Número de empleados de la empresa beneficiaria", "numeroEmpleados", false, true, false, false, false,
+				"Número de empleados de la empresa beneficiaria", "numeroEmpleados", false, true, false, false,
 				socialImpactIndicatorsStudyVariableClass);
 		StudyVariable companySizeStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Tamaño de la empresa beneficiaria", "tamanoEmpresa", false, false, true, false, false,
+				"Tamaño de la empresa beneficiaria", "tamanoEmpresa", false, false, true, false,
 				socialImpactIndicatorsStudyVariableClass);
 		StudyVariable propiedadCapitalStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Propiedad del capital", "propiedadCapital", false, false, true, false, false,
+				"Propiedad del capital", "propiedadCapital", false, false, true, false,
 				socialImpactIndicatorsStudyVariableClass);
 		StudyVariable economyFieldStudyVariable = studyVariableManager.createOneStudyVariable("Sector de la economía",
-				"sectorEconomia", false, false, true, false, false, socialImpactIndicatorsStudyVariableClass);
+				"sectorEconomia", false, false, true, false, socialImpactIndicatorsStudyVariableClass);
 		StudyVariable ambitoActuacionStudyVariable = studyVariableManager.createOneStudyVariable("Ámbito de actuación",
-				"ambitoActuacion", false, false, true, false, false, socialImpactIndicatorsStudyVariableClass);
+				"ambitoActuacion", false, false, true, false, socialImpactIndicatorsStudyVariableClass);
 		StudyVariable conceptoEntregaStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Concepto de Entrega del Producto", "conceptoEntrega", false, false, true, false, false,
+				"Concepto de Entrega del Producto", "conceptoEntrega", false, false, true, false,
 				socialImpactIndicatorsStudyVariableClass);
 		/**
 		 * 0.2.2. Economic Impact Indicators
 		 */
 		StudyVariable projectBudgetStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Presupuesto del Proyecto de Tesis", "presupuesto", true, false, false, false, false,
+				"Presupuesto del Proyecto de Tesis", "presupuesto", true, false, false, false,
 				economicImpactIndicatorsStudyVariableClass);
 		StudyVariable netYearlyIncomeStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Ingreso bruto anual de la empresa", "ingresoBrutoEmpresa", true, false, false, false, false,
+				"Ingreso bruto anual de la empresa", "ingresoBrutoEmpresa", true, false, false, false,
 				economicImpactIndicatorsStudyVariableClass);
 		/**
 		 * 0.2.3. Natural Environment Impact Indicators
 		 */
 		StudyVariable naturalEnvironmentRelatedStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Relación con áreas del medio ambiente", "rlcnMedioambiente", false, false, true, false, true,
+				"Relación con áreas del medio ambiente", "rlcnMedioambiente", false, false, true, false,
 				economicImpactIndicatorsStudyVariableClass);
 		/*
 		 * 0.2.4. Success factors
 		 */
 		StudyVariable requirementsClarityStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Requisitos claros y bien definidos", "claridadRequisitos", false, false, false, true, false,
+				"Requisitos claros y bien definidos", "claridadRequisitos", false, false, false, true,
 				successFactorsStudyVariableClass);
 		StudyVariable objetivesClarityStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Objetivos y metas claras", "claridadObjetivos", false, false, false, true, false,
+				"Objetivos y metas claras", "claridadObjetivos", false, false, false, true,
 				successFactorsStudyVariableClass);
 		StudyVariable cronogramaRealistaStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Cronograma realista", "cronogramaRealista", false, false, false, true, false,
+				"Cronograma realista", "cronogramaRealista", false, false, false, true,
 				successFactorsStudyVariableClass);
 		StudyVariable directivesSupportStudyVariable = studyVariableManager.createOneStudyVariable(
 				"Soporte de directivos de la empresa beneficiaria", "soporteDirectivos", false, false, false, true,
-				false, successFactorsStudyVariableClass);
-		StudyVariable userInvolvementStudyVariable = studyVariableManager.createOneStudyVariable(
-				"Involucramiento del usuario o del cliente", "involucramientoUsrio", false, false, false, true, false,
 				successFactorsStudyVariableClass);
+		StudyVariable userInvolvementStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Involucramiento del usuario o del cliente", "involucramientoUsrio", false, false, false, true,
+				successFactorsStudyVariableClass);
+		StudyVariable effectiveComunicationStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Comunicación efectiva entre interesados y desarrollador", "comunicacionEfectiva", false, false, false,
+				true, successFactorsStudyVariableClass);
+		StudyVariable toolingFamiliarityStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Familiaridad con las herramientas de desarrollo", "familiaridadHerramnt", false, false, false, true,
+				successFactorsStudyVariableClass);
+		StudyVariable claridadAlcanceStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Alcance del proyecto bien definido", "claridadAlcance", false, false, false, true,
+				successFactorsStudyVariableClass);
+		StudyVariable qualityAssuranceStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Aseguramiento de la calidad", "aseguramientoCalidad", false, false, false, true,
+				successFactorsStudyVariableClass);
+		StudyVariable provisionCapacitacionStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Provisión de tutorías o capacitaciones a los beneficiarios", "provisionCapacitacion", false, false,
+				true, false, successFactorsStudyVariableClass);
+		StudyVariable customerSatisfactionStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Satisfacción del cliente", "aseguramtoSatsfacsn", false, false, false, true,
+				successFactorsStudyVariableClass);
+
+		/**
+		 * Development tools
+		 */
+		StudyVariable programmingLanguageStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Lenguaje de Programación", "lenguajeProgramacion", false, false, true, false,
+				devToolsStudyVariableClass);
+		StudyVariable frameworkStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Framework", "framework", false, false, true, false,
+				devToolsStudyVariableClass);
+		StudyVariable libraryStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Librerías", "libreria", false, false, true, false,
+				devToolsStudyVariableClass);
 
 		InputStream inputStream;
 		Encoder encoder = Base64.getEncoder();
@@ -287,5 +319,9 @@ public class SeedManager {
 		inputStream = ResourceUtilities.getResourceInputStream("success-failure-factors_limesurvey_survey.lss");
 		int successFailureFactorsSurveyId = LimesurveyService.importSurvey(limesurveySessionKey,
 				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
+		
+		/**
+		 * 2. Limesurvey question
+		 */
 	}
 }

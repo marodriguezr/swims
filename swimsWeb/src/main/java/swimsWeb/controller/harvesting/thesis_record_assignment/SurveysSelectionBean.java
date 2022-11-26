@@ -17,7 +17,7 @@ import javax.inject.Named;
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 import swimsEJB.model.harvesting.dtos.OaiRecordAssignedLimesurveySurveyIdsDto;
 import swimsEJB.model.harvesting.entities.OaiRecord;
-import swimsEJB.model.harvesting.managers.LimesurveySurveyAssignmentManager;
+import swimsEJB.model.harvesting.managers.SurveyAssignmentManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsWeb.utilities.JSFMessages;
 
@@ -32,7 +32,7 @@ public class SurveysSelectionBean implements Serializable {
 	@EJB
 	private ThesisAssignmentManager thesisAssignmentManager;
 	@EJB
-	private LimesurveySurveyAssignmentManager limesurveySurveyAssignmentManager;
+	private SurveyAssignmentManager limesurveySurveyAssignmentManager;
 
 	public SurveysSelectionBean() {
 		// TODO Auto-generated constructor stub

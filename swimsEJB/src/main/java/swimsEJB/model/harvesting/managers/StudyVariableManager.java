@@ -27,17 +27,16 @@ public class StudyVariableManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	public StudyVariable createOneStudyVariable(String longName, String shortName, Boolean isQuantitativeContinuous,
-			Boolean isQuantitativeDiscrete, boolean isQualitative, boolean isLikert, boolean isBoolean,
+	public StudyVariable createOneStudyVariable(String longName, String shortName, Boolean isNumericContinuous,
+			Boolean isNumericDiscrete, boolean isCategoricalNominal, boolean isCategoricalOrdinal,
 			StudyVariableClass studyVariableClass) throws Exception {
 		StudyVariable studyVariable = new StudyVariable();
 		studyVariable.setLongName(longName);
 		studyVariable.setShortName(shortName);
-		studyVariable.setIsQuantitativeContinuous(isQuantitativeContinuous);
-		studyVariable.setIsQuantitativeDiscrete(isQuantitativeDiscrete);
-		studyVariable.setIsQualitative(isQualitative);
-		studyVariable.setIsLikert(isLikert);
-		studyVariable.setIsBoolean(isBoolean);
+		studyVariable.setIsNumericContinuous(isNumericContinuous);
+		studyVariable.setIsNumericDiscrete(isNumericDiscrete);
+		studyVariable.setIsCategoricalNominal(isCategoricalNominal);
+		studyVariable.setIsCategoricalOrdinal(isCategoricalOrdinal);
 		studyVariable.setStudyVariableClass(studyVariableClass);
 		studyVariable.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		studyVariable.setUpdatedAt(new Timestamp(System.currentTimeMillis()));

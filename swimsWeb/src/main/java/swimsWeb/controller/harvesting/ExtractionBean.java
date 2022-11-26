@@ -14,7 +14,7 @@ import org.primefaces.model.ResponsiveOption;
 
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
-import swimsEJB.model.harvesting.managers.LimesurveySurveyAssignmentManager;
+import swimsEJB.model.harvesting.managers.SurveyAssignmentManager;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsEJB.model.harvesting.services.LimesurveyService;
@@ -33,7 +33,7 @@ public class ExtractionBean implements Serializable {
 	@EJB
 	private ThesisAssignmentManager thesisAssignmentManager;
 	@EJB
-	private LimesurveySurveyAssignmentManager limesurveySurveyAssignmentManager;
+	private SurveyAssignmentManager limesurveySurveyAssignmentManager;
 	@EJB
 	private OaiRecordManager oaiRecordManager;
 	@Inject
@@ -55,8 +55,8 @@ public class ExtractionBean implements Serializable {
 			this.thesisAssignments = thesisAssignmentManager
 					.findAllUndispatchedThesisAssignmentsByUserId(signInBean.getSignedUserDto().getId());
 			for (ThesisAssignment thesisAssignment : thesisAssignments) {
-				thesisAssignment.setLimesurveySurveyAssignments(limesurveySurveyAssignmentManager
-						.findAllUndispatchedLimesurveySurveyAssignmentsByThesisAssignementId(thesisAssignment.getId()));
+				thesisAssignment.setSurveyAssignments(limesurveySurveyAssignmentManager
+						.findAllUndispatchedSurveyAssignmentsByThesisAssignementId(thesisAssignment.getId()));
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

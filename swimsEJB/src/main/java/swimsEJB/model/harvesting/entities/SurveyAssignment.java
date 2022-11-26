@@ -7,13 +7,13 @@ import java.util.List;
 
 
 /**
- * The persistent class for the limesurvey_survey_assignments database table.
+ * The persistent class for the survey_assignments database table.
  * 
  */
 @Entity
-@Table(name="limesurvey_survey_assignments", schema="harvesting")
-@NamedQuery(name="LimesurveySurveyAssignment.findAll", query="SELECT l FROM LimesurveySurveyAssignment l")
-public class LimesurveySurveyAssignment implements Serializable {
+@Table(name="survey_assignments", schema="harvesting")
+@NamedQuery(name="SurveyAssignment.findAll", query="SELECT s FROM SurveyAssignment s")
+public class SurveyAssignment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -36,16 +36,16 @@ public class LimesurveySurveyAssignment implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
+	//bi-directional many-to-one association to Response
+	@OneToMany(mappedBy="surveyAssignment")
+	private List<Response> responses;
+
 	//bi-directional many-to-one association to ThesisAssignment
 	@ManyToOne
 	@JoinColumn(name="thesis_assignment_id", nullable=false)
 	private ThesisAssignment thesisAssignment;
 
-	//bi-directional many-to-one association to LimesurveyResponse
-	@OneToMany(mappedBy="limesurveySurveyAssignment")
-	private List<LimesurveyResponse> limesurveyResponses;
-
-	public LimesurveySurveyAssignment() {
+	public SurveyAssignment() {
 	}
 
 	public Integer getId() {
@@ -96,34 +96,34 @@ public class LimesurveySurveyAssignment implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
+	public List<Response> getResponses() {
+		return this.responses;
+	}
+
+	public void setResponses(List<Response> responses) {
+		this.responses = responses;
+	}
+
+	public Response addRespons(Response respons) {
+		getResponses().add(respons);
+		respons.setSurveyAssignment(this);
+
+		return respons;
+	}
+
+	public Response removeRespons(Response respons) {
+		getResponses().remove(respons);
+		respons.setSurveyAssignment(null);
+
+		return respons;
+	}
+
 	public ThesisAssignment getThesisAssignment() {
 		return this.thesisAssignment;
 	}
 
 	public void setThesisAssignment(ThesisAssignment thesisAssignment) {
 		this.thesisAssignment = thesisAssignment;
-	}
-
-	public List<LimesurveyResponse> getLimesurveyResponses() {
-		return this.limesurveyResponses;
-	}
-
-	public void setLimesurveyResponses(List<LimesurveyResponse> limesurveyResponses) {
-		this.limesurveyResponses = limesurveyResponses;
-	}
-
-	public LimesurveyResponse addLimesurveyRespons(LimesurveyResponse limesurveyRespons) {
-		getLimesurveyResponses().add(limesurveyRespons);
-		limesurveyRespons.setLimesurveySurveyAssignment(this);
-
-		return limesurveyRespons;
-	}
-
-	public LimesurveyResponse removeLimesurveyRespons(LimesurveyResponse limesurveyRespons) {
-		getLimesurveyResponses().remove(limesurveyRespons);
-		limesurveyRespons.setLimesurveySurveyAssignment(null);
-
-		return limesurveyRespons;
 	}
 
 }

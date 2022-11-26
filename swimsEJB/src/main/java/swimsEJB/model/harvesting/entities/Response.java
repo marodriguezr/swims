@@ -6,13 +6,13 @@ import java.sql.Timestamp;
 
 
 /**
- * The persistent class for the limesurvey_responses database table.
+ * The persistent class for the responses database table.
  * 
  */
 @Entity
-@Table(name="limesurvey_responses", schema="harvesting")
-@NamedQuery(name="LimesurveyResponse.findAll", query="SELECT l FROM LimesurveyResponse l")
-public class LimesurveyResponse implements Serializable {
+@Table(name="responses", schema="harvesting")
+@NamedQuery(name="Response.findAll", query="SELECT r FROM Response r")
+public class Response implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -29,17 +29,17 @@ public class LimesurveyResponse implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	//bi-directional many-to-one association to LimesurveyQuestion
+	//bi-directional many-to-one association to Question
 	@ManyToOne
 	@JoinColumn(name="limesurvey_question_title", referencedColumnName="limesurvey_question_title", nullable=false)
-	private LimesurveyQuestion limesurveyQuestion;
+	private Question question;
 
-	//bi-directional many-to-one association to LimesurveySurveyAssignment
+	//bi-directional many-to-one association to SurveyAssignment
 	@ManyToOne
 	@JoinColumn(name="limesurvey_survey_assignment_id", nullable=false)
-	private LimesurveySurveyAssignment limesurveySurveyAssignment;
+	private SurveyAssignment surveyAssignment;
 
-	public LimesurveyResponse() {
+	public Response() {
 	}
 
 	public Long getId() {
@@ -74,20 +74,20 @@ public class LimesurveyResponse implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public LimesurveyQuestion getLimesurveyQuestion() {
-		return this.limesurveyQuestion;
+	public Question getQuestion() {
+		return this.question;
 	}
 
-	public void setLimesurveyQuestion(LimesurveyQuestion limesurveyQuestion) {
-		this.limesurveyQuestion = limesurveyQuestion;
+	public void setQuestion(Question question) {
+		this.question = question;
 	}
 
-	public LimesurveySurveyAssignment getLimesurveySurveyAssignment() {
-		return this.limesurveySurveyAssignment;
+	public SurveyAssignment getSurveyAssignment() {
+		return this.surveyAssignment;
 	}
 
-	public void setLimesurveySurveyAssignment(LimesurveySurveyAssignment limesurveySurveyAssignment) {
-		this.limesurveySurveyAssignment = limesurveySurveyAssignment;
+	public void setSurveyAssignment(SurveyAssignment surveyAssignment) {
+		this.surveyAssignment = surveyAssignment;
 	}
 
 }

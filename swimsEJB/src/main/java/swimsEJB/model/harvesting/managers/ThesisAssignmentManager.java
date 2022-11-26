@@ -33,7 +33,7 @@ public class ThesisAssignmentManager {
 	@EJB
 	private OaiRecordManager oaiRecordManager;
 	@EJB
-	private LimesurveySurveyAssignmentManager limesurveySurveyAssignmentManager;
+	private SurveyAssignmentManager limesurveySurveyAssignmentManager;
 
 	/**
 	 * Default constructor.
@@ -138,7 +138,7 @@ public class ThesisAssignmentManager {
 						? createOneThesisAssignment(user.getId(),
 								oaiRecordAssignedLimesurveySurveyIds.getOaiRecord().getId())
 						: thesisAssignment;
-				limesurveySurveyAssignmentManager.createOneLimesurveySurveyAssignment(limesurveySurveyId,
+				limesurveySurveyAssignmentManager.createOneSurveyAssignment(limesurveySurveyId,
 						LimesurveyService.addParticipant(limesurveySurveyId, user.getEmail()), thesisAssignment);
 				thesisAssignments.add(thesisAssignment);
 			}
