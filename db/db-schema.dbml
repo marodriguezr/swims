@@ -22,10 +22,12 @@ table harvesting.oai_records {
   is_active boolean [not null, default: true]
 }
 
-table harvesting.study_variable_types {
+table harvesting.study_variable_classes {
   id int [pk, increment]
   long_name varchar [not null, unique]
   short_name varchar [not null, unique]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
 }
 
 table harvesting.study_variables {
@@ -37,14 +39,9 @@ table harvesting.study_variables {
   is_qualitative boolean [not null]
   is_likert boolean [not null]
   is_boolean boolean [not null]
-  study_variable_type_id int [not null, ref: > harvesting.study_variable_types.id]
-}
-
-table harvesting.limesurvey_survey_question_study_variable_associations {
-  id int [pk, increment]
-  limesurvey_survey_id int [not null]
-  limesurvey_survey_question_code varchar [not null, unique]
-  study_variable_id int [not null, unique, ref: - harvesting.study_variables.id]
+  study_variable_class_id int [not null, ref: > harvesting.study_variable_classes.id]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
 }
 
 table harvesting.thesis_assignments {
@@ -73,11 +70,26 @@ table harvesting.limesurvey_survey_assignments {
   }
 }
 
-table harvesting.limesurvey_survey_responses {
+table harvesting.limesurvey_questions {
+  id int [pk, increment]
+  limesurvey_survey_id int [not null]
+  // represents the field "code" that appears in the user interface
+  // when creating new questions or subquestions.
+  // In the limesurvey db tables is named "tile"
+  limesurvey_question_title varchar(20) [not null, unique]
+  limesurvey_question_id int [not null, unique]
+  study_variable_id int [not null, ref: > harvesting.study_variables.id]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+}
+
+table harvesting.limesurvey_responses {
   id bigint [pk, increment]
-  limesurvey_survey_question_code varchar [not null]
-  limesurvey_survey_answer_code varchar [not null]
+  limesurvey_question_title varchar(20) [not null, ref: > harvesting.limesurvey_questions.limesurvey_question_title]
+  limesurvey_answer_code varchar(5) [not null]
   limesurvey_survey_assignment_id int [not null, ref: > harvesting.limesurvey_survey_assignments.id]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
 }
 
 table auth.users {
@@ -94,8 +106,8 @@ table auth.users {
 
 table auth.users_groups {
   id int [pk, increment]
-  group_id int [not null, ref: > auth.groups.id]
   user_id int [not null, ref: > auth.users.id]
+  group_id int [not null, ref: > auth.groups.id]
   
   Indexes {
     (user_id, group_id) [unique]
