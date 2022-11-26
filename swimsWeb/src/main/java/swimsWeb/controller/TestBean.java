@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import swimsEJB.model.TestManager;
 import swimsEJB.model.auth.managers.GroupManager;
+import swimsEJB.model.core.managers.SeedManager;
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 import swimsEJB.model.harvesting.services.LimesurveyService;
 
@@ -24,6 +25,8 @@ public class TestBean implements Serializable {
 	private GroupManager groupManager;
 	@EJB
 	private TestManager testManager;
+	@EJB
+	private SeedManager seedManager;
 
 	public TestBean() {
 		// TODO Auto-generated constructor stub
@@ -67,7 +70,7 @@ public class TestBean implements Serializable {
 
 	public void test3() {
 		try {
-			System.out.println(LimesurveyService.addParticipant(372243, "miguelrodrii@outlook.com"));
+			seedManager.seed2();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

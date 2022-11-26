@@ -8,9 +8,13 @@
 		<class>swimsEJB.model.auth.entities.User</class>
 		<class>swimsEJB.model.auth.entities.UserGroup</class>
 		<class>swimsEJB.model.core.entities.Sysparam</class>
+		<class>swimsEJB.model.harvesting.entities.LimesurveyQuestion</class>
+		<class>swimsEJB.model.harvesting.entities.LimesurveyResponse</class>
 		<class>swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment</class>
 		<class>swimsEJB.model.harvesting.entities.OaiRecord</class>
 		<class>swimsEJB.model.harvesting.entities.OaiSet</class>
+		<class>swimsEJB.model.harvesting.entities.StudyVariableClass</class>
+		<class>swimsEJB.model.harvesting.entities.StudyVariable</class>
 		<class>swimsEJB.model.harvesting.entities.ThesisAssignment</class>
 	</persistence-unit>
 </persistence>

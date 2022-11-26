@@ -55,15 +55,8 @@ public class LimesurveyService {
 	}
 
 	public static String getSessionKey() throws Exception {
-		try {
-			return executeHttpPostRequest("get_session_key", LIMESURVEY_ADMIN_USER, LIMESURVEY_FIRST_ADMIN_PASSWORD)
-					.get("result").getAsString();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			throw new Exception(
-					"Ha ocurrido un error en la interconexión con Limesurvey. Es probable que el nombre de usuario o la contraseña sean incorrectos.");
-		}
+		return executeHttpPostRequest("get_session_key", LIMESURVEY_ADMIN_USER, LIMESURVEY_FIRST_ADMIN_PASSWORD)
+				.get("result").getAsString();
 	}
 
 	public static List<LimesurveySurveyDto> listAllSurveys() throws Exception {
@@ -132,5 +125,11 @@ public class LimesurveyService {
 		;
 
 		System.out.println(jsonArray.toString());
+	}
+
+	public static int importSurvey(String sessionKey, String base64EncodedSurvey) throws Exception {
+		JsonObject response = executeHttpPostRequest("import_survey", sessionKey == null ? getSessionKey() : sessionKey,
+				base64EncodedSurvey, "lss");
+		return response.get("result").getAsInt();
 	}
 }

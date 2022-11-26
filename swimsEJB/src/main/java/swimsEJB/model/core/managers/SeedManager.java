@@ -1,5 +1,9 @@
 package swimsEJB.model.core.managers;
 
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.HashMap;
 
 import javax.ejb.EJB;
@@ -13,7 +17,13 @@ import swimsEJB.model.auth.managers.GroupManager;
 import swimsEJB.model.auth.managers.PermissionManager;
 import swimsEJB.model.auth.managers.UserManager;
 import swimsEJB.model.core.entities.Sysparam;
+import swimsEJB.model.harvesting.entities.StudyVariable;
+import swimsEJB.model.harvesting.entities.StudyVariableClass;
 import swimsEJB.model.harvesting.managers.OaiSetManager;
+import swimsEJB.model.harvesting.managers.StudyVariableClassManager;
+import swimsEJB.model.harvesting.managers.StudyVariableManager;
+import swimsEJB.model.harvesting.services.LimesurveyService;
+import swimsEJB.utilities.ResourceUtilities;
 
 /**
  * Session Bean implementation class CoreManager
@@ -32,6 +42,10 @@ public class SeedManager {
 	private SysparamManager sysparamManager;
 	@EJB
 	private OaiSetManager oaiSetManager;
+	@EJB
+	private StudyVariableClassManager studyVariableClassManager;
+	@EJB
+	private StudyVariableManager studyVariableManager;
 
 	/**
 	 * Default constructor.
@@ -155,4 +169,123 @@ public class SeedManager {
 		groupManager.addUserById(thesisDataExtracionGroup.getId(), adminUser.getId());
 	}
 
+	public void seed2() {
+		try {
+			InputStream inputStream = ResourceUtilities
+					.getResourceInputStream("impact-indicators_limesurvey_survey.lss");
+
+			String imageStr = Base64.getEncoder()
+					.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes());
+
+			System.out.println(imageStr);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
+	}
+
+	public void seedLimesurvey() throws Exception {
+		/**
+		 * 0. Study Variable Seeding
+		 */
+		/**
+		 * 0.1. Study Variable Classes
+		 */
+		StudyVariableClass socialImpactIndicatorsStudyVariableClass = studyVariableClassManager
+				.createOneStudyVariableClass("Indicadores de Impacto Social", "indicadoresImpactoSocial");
+		StudyVariableClass economicImpactIndicatorsStudyVariableClass = studyVariableClassManager
+				.createOneStudyVariableClass("Indicadores de Impacto Económico", "indicadoresImpactoEconomico");
+		StudyVariableClass naturalEnvironmentImpactIndicatorsStudyVariableClass = studyVariableClassManager
+				.createOneStudyVariableClass("Indicadores de Impacto Medioambiental",
+						"indicadoresImpactoMedioambiental");
+		StudyVariableClass successFactorsStudyVariableClass = studyVariableClassManager
+				.createOneStudyVariableClass("Factores de Éxito", "factoresExito");
+		StudyVariableClass failureFactorsStudyVariableClass = studyVariableClassManager
+				.createOneStudyVariableClass("Factores de Fracaso", "factoresFracaso");
+		/**
+		 * 0.2. Study Variables
+		 */
+//		String longName, String shortName, Boolean isQuantitativeContinuous,
+//		Boolean isQuantitativeDiscrete, boolean isQualitative, boolean isLikert, boolean isBoolean,
+//		StudyVariableClass studyVariableClass
+		/**
+		 * 0.2.1. Social Impact Indicators
+		 */
+		StudyVariable employeeNumberStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Número de empleados de la empresa beneficiaria", "numeroEmpleados", false, true, false, false, false,
+				socialImpactIndicatorsStudyVariableClass);
+		StudyVariable companySizeStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Tamaño de la empresa beneficiaria", "tamanoEmpresa", false, false, true, false, false,
+				socialImpactIndicatorsStudyVariableClass);
+		StudyVariable propiedadCapitalStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Propiedad del capital", "propiedadCapital", false, false, true, false, false,
+				socialImpactIndicatorsStudyVariableClass);
+		StudyVariable economyFieldStudyVariable = studyVariableManager.createOneStudyVariable("Sector de la economía",
+				"sectorEconomia", false, false, true, false, false, socialImpactIndicatorsStudyVariableClass);
+		StudyVariable ambitoActuacionStudyVariable = studyVariableManager.createOneStudyVariable("Ámbito de actuación",
+				"ambitoActuacion", false, false, true, false, false, socialImpactIndicatorsStudyVariableClass);
+		StudyVariable conceptoEntregaStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Concepto de Entrega del Producto", "conceptoEntrega", false, false, true, false, false,
+				socialImpactIndicatorsStudyVariableClass);
+		/**
+		 * 0.2.2. Economic Impact Indicators
+		 */
+		StudyVariable projectBudgetStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Presupuesto del Proyecto de Tesis", "presupuesto", true, false, false, false, false,
+				economicImpactIndicatorsStudyVariableClass);
+		StudyVariable netYearlyIncomeStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Ingreso bruto anual de la empresa", "ingresoBrutoEmpresa", true, false, false, false, false,
+				economicImpactIndicatorsStudyVariableClass);
+		/**
+		 * 0.2.3. Natural Environment Impact Indicators
+		 */
+		StudyVariable naturalEnvironmentRelatedStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Relación con áreas del medio ambiente", "rlcnMedioambiente", false, false, true, false, true,
+				economicImpactIndicatorsStudyVariableClass);
+		/*
+		 * 0.2.4. Success factors
+		 */
+		StudyVariable requirementsClarityStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Requisitos claros y bien definidos", "claridadRequisitos", false, false, false, true, false,
+				successFactorsStudyVariableClass);
+		StudyVariable objetivesClarityStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Objetivos y metas claras", "claridadObjetivos", false, false, false, true, false,
+				successFactorsStudyVariableClass);
+		StudyVariable cronogramaRealistaStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Cronograma realista", "cronogramaRealista", false, false, false, true, false,
+				successFactorsStudyVariableClass);
+		StudyVariable directivesSupportStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Soporte de directivos de la empresa beneficiaria", "soporteDirectivos", false, false, false, true,
+				false, successFactorsStudyVariableClass);
+		StudyVariable userInvolvementStudyVariable = studyVariableManager.createOneStudyVariable(
+				"Involucramiento del usuario o del cliente", "involucramientoUsrio", false, false, false, true, false,
+				successFactorsStudyVariableClass);
+
+		InputStream inputStream;
+		Encoder encoder = Base64.getEncoder();
+		String limesurveySessionKey;
+		try {
+			limesurveySessionKey = LimesurveyService.getSessionKey();
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new Exception(
+					"Imposible establecer conexión con la API de limesurvey. Por favor asegúrese de que la interfaz JSON-RPC está activada. Dirígase a https://manual.limesurvey.org/RemoteControl_2_API para obtener mas información.");
+		}
+		/**
+		 * 1. Survey creation
+		 */
+		/**
+		 * 1.1. Impact indicators survey
+		 */
+		inputStream = ResourceUtilities.getResourceInputStream("impact-indicators_limesurvey_survey.lss");
+		int impactIndicatorsSurveyId = LimesurveyService.importSurvey(limesurveySessionKey,
+				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
+		/**
+		 * 1.2. Success or Failure Factors Survey
+		 */
+		inputStream = ResourceUtilities.getResourceInputStream("success-failure-factors_limesurvey_survey.lss");
+		int successFailureFactorsSurveyId = LimesurveyService.importSurvey(limesurveySessionKey,
+				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
+	}
 }

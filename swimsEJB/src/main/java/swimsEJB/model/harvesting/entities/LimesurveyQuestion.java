@@ -7,13 +7,13 @@ import java.util.List;
 
 
 /**
- * The persistent class for the limesurvey_survey_assignments database table.
+ * The persistent class for the limesurvey_questions database table.
  * 
  */
 @Entity
-@Table(name="limesurvey_survey_assignments", schema="harvesting")
-@NamedQuery(name="LimesurveySurveyAssignment.findAll", query="SELECT l FROM LimesurveySurveyAssignment l")
-public class LimesurveySurveyAssignment implements Serializable {
+@Table(name="limesurvey_questions", schema="harvesting")
+@NamedQuery(name="LimesurveyQuestion.findAll", query="SELECT l FROM LimesurveyQuestion l")
+public class LimesurveyQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -24,28 +24,25 @@ public class LimesurveySurveyAssignment implements Serializable {
 	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="is_dispatched", nullable=false)
-	private Boolean isDispatched;
+	@Column(name="limesurvey_question_id", nullable=false)
+	private Integer limesurveyQuestionId;
 
 	@Column(name="limesurvey_survey_id", nullable=false)
 	private Integer limesurveySurveyId;
 
-	@Column(name="limesurvey_survey_token", nullable=false, length=2147483647)
-	private String limesurveySurveyToken;
-
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	//bi-directional many-to-one association to ThesisAssignment
+	//bi-directional many-to-one association to StudyVariable
 	@ManyToOne
-	@JoinColumn(name="thesis_assignment_id", nullable=false)
-	private ThesisAssignment thesisAssignment;
+	@JoinColumn(name="study_variable_id", nullable=false)
+	private StudyVariable studyVariable;
 
 	//bi-directional many-to-one association to LimesurveyResponse
-	@OneToMany(mappedBy="limesurveySurveyAssignment")
+	@OneToMany(mappedBy="limesurveyQuestion")
 	private List<LimesurveyResponse> limesurveyResponses;
 
-	public LimesurveySurveyAssignment() {
+	public LimesurveyQuestion() {
 	}
 
 	public Integer getId() {
@@ -64,12 +61,12 @@ public class LimesurveySurveyAssignment implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public Boolean getIsDispatched() {
-		return this.isDispatched;
+	public Integer getLimesurveyQuestionId() {
+		return this.limesurveyQuestionId;
 	}
 
-	public void setIsDispatched(Boolean isDispatched) {
-		this.isDispatched = isDispatched;
+	public void setLimesurveyQuestionId(Integer limesurveyQuestionId) {
+		this.limesurveyQuestionId = limesurveyQuestionId;
 	}
 
 	public Integer getLimesurveySurveyId() {
@@ -80,14 +77,6 @@ public class LimesurveySurveyAssignment implements Serializable {
 		this.limesurveySurveyId = limesurveySurveyId;
 	}
 
-	public String getLimesurveySurveyToken() {
-		return this.limesurveySurveyToken;
-	}
-
-	public void setLimesurveySurveyToken(String limesurveySurveyToken) {
-		this.limesurveySurveyToken = limesurveySurveyToken;
-	}
-
 	public Timestamp getUpdatedAt() {
 		return this.updatedAt;
 	}
@@ -96,12 +85,12 @@ public class LimesurveySurveyAssignment implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public ThesisAssignment getThesisAssignment() {
-		return this.thesisAssignment;
+	public StudyVariable getStudyVariable() {
+		return this.studyVariable;
 	}
 
-	public void setThesisAssignment(ThesisAssignment thesisAssignment) {
-		this.thesisAssignment = thesisAssignment;
+	public void setStudyVariable(StudyVariable studyVariable) {
+		this.studyVariable = studyVariable;
 	}
 
 	public List<LimesurveyResponse> getLimesurveyResponses() {
@@ -114,14 +103,14 @@ public class LimesurveySurveyAssignment implements Serializable {
 
 	public LimesurveyResponse addLimesurveyRespons(LimesurveyResponse limesurveyRespons) {
 		getLimesurveyResponses().add(limesurveyRespons);
-		limesurveyRespons.setLimesurveySurveyAssignment(this);
+		limesurveyRespons.setLimesurveyQuestion(this);
 
 		return limesurveyRespons;
 	}
 
 	public LimesurveyResponse removeLimesurveyRespons(LimesurveyResponse limesurveyRespons) {
 		getLimesurveyResponses().remove(limesurveyRespons);
-		limesurveyRespons.setLimesurveySurveyAssignment(null);
+		limesurveyRespons.setLimesurveyQuestion(null);
 
 		return limesurveyRespons;
 	}
