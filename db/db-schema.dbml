@@ -55,7 +55,7 @@ table harvesting.thesis_assignments {
   }
 }
 
-table harvesting.limesurvey_survey_assignments {
+table harvesting.survey_assignments {
   id int [pk, increment]
   thesis_assignment_id int [not null, ref: > harvesting.thesis_assignments.id]
   limesurvey_survey_id int [not null]
@@ -69,7 +69,7 @@ table harvesting.limesurvey_survey_assignments {
   }
 }
 
-table harvesting.limesurvey_questions {
+table harvesting.questions {
   id int [pk, increment]
   limesurvey_survey_id int [not null]
   // represents the field "code" that appears in the user interface
@@ -82,11 +82,11 @@ table harvesting.limesurvey_questions {
   updated_at timestamp [not null, default: `now()`]
 }
 
-table harvesting.limesurvey_responses {
+table harvesting.responses {
   id bigint [pk, increment]
-  limesurvey_question_title varchar(20) [not null, ref: > harvesting.limesurvey_questions.limesurvey_question_title]
+  limesurvey_question_title varchar(20) [not null, ref: > harvesting.questions.limesurvey_question_title]
   limesurvey_answer_code varchar(5) [not null]
-  limesurvey_survey_assignment_id int [not null, ref: > harvesting.limesurvey_survey_assignments.id]
+  limesurvey_survey_assignment_id int [not null, ref: > harvesting.survey_assignments.id]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
 }
