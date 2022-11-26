@@ -321,7 +321,8 @@ public class SeedManager {
 				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
 		
 		/**
-		 * 2. Limesurvey question
+		 * 2. Questions
 		 */
+		
 	}
 }

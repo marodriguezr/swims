@@ -35,7 +35,7 @@ public class SurveyAssignmentManager {
 	public List<Integer> findLimesurveySurveyIdsByOaiRecordId(String oaiRecordId) {
 		EntityManager entityManager = daoManager.getEntityManager();
 		Query query = entityManager.createNativeQuery(
-				"select lsa.limesurvey_survey_id from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
+				"select lsa.limesurvey_survey_id from harvesting.thesis_assignments ta, harvesting.survey_assignments lsa "
 						+ "where ta.id = lsa.thesis_assignment_id and ta.oai_record_id = '" + oaiRecordId + "'");
 		List<Object> objects = query.getResultList();
 		List<Integer> alreadyPresentlimesurveySurveyIds = new ArrayList<>();
