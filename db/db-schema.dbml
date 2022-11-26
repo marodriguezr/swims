@@ -70,12 +70,11 @@ table harvesting.survey_assignments {
 }
 
 table harvesting.questions {
-  id int [pk, increment]
-  limesurvey_survey_id int [not null]
   // represents the field "code" that appears in the user interface
   // when creating new questions or subquestions.
   // In the limesurvey db tables is named "tile"
-  limesurvey_question_title varchar(20) [not null, unique]
+  limesurvey_question_title varchar(20) [pk]
+  limesurvey_survey_id int [not null]
   limesurvey_question_id int [not null, unique]
   study_variable_id int [not null, ref: > harvesting.study_variables.id]
   created_at timestamp [not null, default: `now()`]

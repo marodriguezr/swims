@@ -45,14 +45,14 @@ public class StudyVariable implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
+	//bi-directional many-to-one association to Question
+	@OneToMany(mappedBy="studyVariable")
+	private List<Question> questions;
+
 	//bi-directional many-to-one association to StudyVariableClass
 	@ManyToOne
 	@JoinColumn(name="study_variable_class_id", nullable=false)
 	private StudyVariableClass studyVariableClass;
-
-	//bi-directional many-to-one association to Question
-	@OneToMany(mappedBy="studyVariable")
-	private List<Question> questions;
 
 	public StudyVariable() {
 	}
@@ -129,14 +129,6 @@ public class StudyVariable implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public StudyVariableClass getStudyVariableClass() {
-		return this.studyVariableClass;
-	}
-
-	public void setStudyVariableClass(StudyVariableClass studyVariableClass) {
-		this.studyVariableClass = studyVariableClass;
-	}
-
 	public List<Question> getQuestions() {
 		return this.questions;
 	}
@@ -157,6 +149,14 @@ public class StudyVariable implements Serializable {
 		question.setStudyVariable(null);
 
 		return question;
+	}
+
+	public StudyVariableClass getStudyVariableClass() {
+		return this.studyVariableClass;
+	}
+
+	public void setStudyVariableClass(StudyVariableClass studyVariableClass) {
+		this.studyVariableClass = studyVariableClass;
 	}
 
 }

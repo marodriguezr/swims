@@ -31,7 +31,7 @@ public class Response implements Serializable {
 
 	//bi-directional many-to-one association to Question
 	@ManyToOne
-	@JoinColumn(name="limesurvey_question_title", referencedColumnName="limesurvey_question_title", nullable=false)
+	@JoinColumn(name="limesurvey_question_title", nullable=false)
 	private Question question;
 
 	//bi-directional many-to-one association to SurveyAssignment

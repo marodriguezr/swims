@@ -30,14 +30,14 @@ public class ThesisAssignment implements Serializable {
 	@Column(name="user_id", nullable=false)
 	private Integer userId;
 
+	//bi-directional many-to-one association to SurveyAssignment
+	@OneToMany(mappedBy="thesisAssignment")
+	private List<SurveyAssignment> surveyAssignments;
+
 	//bi-directional many-to-one association to OaiRecord
 	@ManyToOne
 	@JoinColumn(name="oai_record_id", nullable=false)
 	private OaiRecord oaiRecord;
-
-	//bi-directional many-to-one association to SurveyAssignment
-	@OneToMany(mappedBy="thesisAssignment")
-	private List<SurveyAssignment> surveyAssignments;
 
 	public ThesisAssignment() {
 	}
@@ -74,14 +74,6 @@ public class ThesisAssignment implements Serializable {
 		this.userId = userId;
 	}
 
-	public OaiRecord getOaiRecord() {
-		return this.oaiRecord;
-	}
-
-	public void setOaiRecord(OaiRecord oaiRecord) {
-		this.oaiRecord = oaiRecord;
-	}
-
 	public List<SurveyAssignment> getSurveyAssignments() {
 		return this.surveyAssignments;
 	}
@@ -102,6 +94,14 @@ public class ThesisAssignment implements Serializable {
 		surveyAssignment.setThesisAssignment(null);
 
 		return surveyAssignment;
+	}
+
+	public OaiRecord getOaiRecord() {
+		return this.oaiRecord;
+	}
+
+	public void setOaiRecord(OaiRecord oaiRecord) {
+		this.oaiRecord = oaiRecord;
 	}
 
 }
