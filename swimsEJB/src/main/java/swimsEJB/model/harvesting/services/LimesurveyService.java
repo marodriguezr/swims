@@ -20,6 +20,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 
 public class LimesurveyService {
@@ -131,5 +132,20 @@ public class LimesurveyService {
 		JsonObject response = executeHttpPostRequest("import_survey", sessionKey == null ? getSessionKey() : sessionKey,
 				base64EncodedSurvey, "lss");
 		return response.get("result").getAsInt();
+	}
+
+	public static HashMap<String, LimesurveyQuestionDto> listQuestions(String sessionKey, int limesurveySurveyId)
+			throws Exception {
+		JsonObject response = executeHttpPostRequest("list_questions", sessionKey == null ? getSessionKey() : sessionKey,
+				limesurveySurveyId);
+		JsonArray jsonArray = response.get("result").getAsJsonArray();
+		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtos = new HashMap<>();
+		jsonArray.forEach(arg0 -> {
+			JsonObject jsonObject = arg0.getAsJsonObject();
+			limesurveyQuestionDtos.put(jsonObject.get("title").getAsString(),
+					new LimesurveyQuestionDto(jsonObject.get("id").getAsInt(), jsonObject.get("question").getAsString(),
+							jsonObject.get("sid").getAsInt(), jsonObject.get("title").getAsString()));
+		});
+		return limesurveyQuestionDtos;
 	}
 }
