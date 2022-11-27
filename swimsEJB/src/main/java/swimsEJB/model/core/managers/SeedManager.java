@@ -372,7 +372,7 @@ public class SeedManager {
 			LimesurveyQuestionDto limesurveyQuestionDto = impactIndicatorsSurveyQuestionDtos
 					.get(studyVariable.getShortName());
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), studyVariable);
+					limesurveyQuestionDto.getId(), studyVariable, limesurveyQuestionDto.getParentQid());
 		}
 		/**
 		 * 2.2. Success or Failure Factors
@@ -386,7 +386,7 @@ public class SeedManager {
 			LimesurveyQuestionDto limesurveyQuestionDto = successFailureFactorsSurveyQuestionDtos
 					.get(studyVariable.getShortName());
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), studyVariable);
+					limesurveyQuestionDto.getId(), studyVariable, limesurveyQuestionDto.getParentQid());
 		}
 
 	}

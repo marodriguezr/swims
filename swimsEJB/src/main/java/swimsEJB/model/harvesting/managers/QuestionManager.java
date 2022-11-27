@@ -28,15 +28,22 @@ public class QuestionManager {
 	}
 
 	public Question createOneQuestion(String limesurveyQuestionTitle, int limesurveySurveyId, int limesurveyQuestionId,
-			StudyVariable studyVariable) throws Exception {
+			StudyVariable studyVariable, Integer limesurveyParentQuestionId) throws Exception {
 		Question question = new Question();
 		question.setLimesurveyQuestionTitle(limesurveyQuestionTitle);
 		question.setLimesurveySurveyId(limesurveySurveyId);
 		question.setLimesurveyQuestionId(limesurveyQuestionId);
 		question.setStudyVariable(studyVariable);
+		question.setLimesurveyParentQuestionId(limesurveyParentQuestionId == null ? 0 : limesurveyParentQuestionId);
 		question.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		question.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		return (Question) daoManager.createOne(question);
+	}
+
+	public Question createOneQuestion(String limesurveyQuestionTitle, int limesurveySurveyId, int limesurveyQuestionId,
+			StudyVariable studyVariable) throws Exception {
+		return createOneQuestion(limesurveyQuestionTitle, limesurveySurveyId, limesurveyQuestionId, studyVariable,
+				null);
 	}
 
 }

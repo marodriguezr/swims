@@ -4,7 +4,9 @@ public class LimesurveyQuestionDto {
 	private int id;
 	private String question;
 	private int sid;
+	private int gid;
 	private String title;
+	private int parentQid;
 
 	public int getId() {
 		return id;
@@ -38,12 +40,32 @@ public class LimesurveyQuestionDto {
 		this.title = title;
 	}
 
-	public LimesurveyQuestionDto(int id, String question, int sid, String title) {
+	public int getGid() {
+		return gid;
+	}
+
+	public void setGid(int gid) {
+		this.gid = gid;
+	}
+
+	public int getParentQid() {
+		return parentQid;
+	}
+
+	public void setParentQid(int parentQid) {
+		this.parentQid = parentQid;
+	}
+
+	public LimesurveyQuestionDto(int id, String question, int sid, int gid, String title, int parentQid) {
 		super();
 		this.id = id;
 		this.question = question;
 		this.sid = sid;
+		this.gid = gid;
 		this.title = title;
+		this.parentQid = parentQid;
 	}
+
+	
 
 }
