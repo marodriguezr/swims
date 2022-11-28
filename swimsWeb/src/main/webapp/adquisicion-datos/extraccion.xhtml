@@ -29,7 +29,23 @@
 						<f:facet name="subtitle">
 							<h3>#{thesisAssignment.oaiRecord.title}</h3>
 						</f:facet>
-						<p:carousel numScroll="1"
+						<div class="p-d-flex gap-on-data-extraction-inf-fields">
+							<h:outputText styleClass="p-text-bold"
+								value="Documento de tesis:" />
+							<a href="#{thesisAssignment.oaiRecord.url}" target="_blank">
+								<h:outputText value="#{thesisAssignment.oaiRecord.url}" />
+							</a>
+						</div>
+						<div class="p-d-flex gap-on-data-extraction-inf-fields">
+							<h:outputText styleClass="p-text-bold" value="Autor:" />
+							<h:outputText value="#{thesisAssignment.oaiRecord.creator}" />
+						</div>
+						<div class="p-d-flex gap-on-data-extraction-inf-fields">
+							<h:outputText styleClass="p-text-bold" value="Tutor:" />
+							<h:outputText value="#{thesisAssignment.oaiRecord.contributor}" />
+						</div>
+						<p:carousel numScroll="1" styleClass="p-mt-4"
+							rendered="#{thesisAssignment.surveyAssignments.size() gt 1}"
 							responsiveOptions="#{extractionBean.responsiveOptions}"
 							value="#{thesisAssignment.surveyAssignments}"
 							var="limesurveySurveyAssignment" numVisible="3">
@@ -42,10 +58,11 @@
 									</div>
 									<div class="p-d-flex p-jc-center">
 										<a target="_blank"
-											href="#{webappPathsBean.LIMESURVEY_PROTOCOL}#{webappPathsBean.LIMESURVEY_PUBLIC_HOST}:#{webappPathsBean.LIMESURVEY_PUBLIC_PORT}#{webappPathsBean.LIMESURVEY_BASE_URL}/index.php/#{limesurveySurveyAssignment.limesurveySurveyId}?newtest=Y&amp;token=#{limesurveySurveyAssignment.limesurveySurveyToken}"><h:outputText />
+											href="#{webappPathsBean.LIMESURVEY_PROTOCOL}#{webappPathsBean.LIMESURVEY_PUBLIC_HOST}:#{webappPathsBean.LIMESURVEY_PUBLIC_PORT}#{webappPathsBean.LIMESURVEY_BASE_URL}/index.php/#{limesurveySurveyAssignment.limesurveySurveyId}?newtest=Y&amp;token=#{limesurveySurveyAssignment.limesurveySurveyToken}">
 											<p:commandButton alt="Responder" type="button"
 												icon="pi pi-external-link"
-												styleClass="rounded-button p-mr-2" title="Responder" /></a>
+												styleClass="rounded-button p-mr-2" title="Responder" />
+										</a>
 										<p:commandButton title="Marcar como completado"
 											icon="pi pi-check"
 											styleClass="ui-button-success rounded-button"
@@ -55,6 +72,28 @@
 								</div>
 							</div>
 						</p:carousel>
+						<h:panelGroup
+							style="border-style: solid; border-width: 1px; border-radius: 5px; border-color: gray;"
+							layout="block"
+							styleClass="p-p-2 p-shadow-1 p-ml-6 p-mr-6 p-mb-4 p-mt-4"
+							rendered="#{thesisAssignment.surveyAssignments.size() eq 1}">
+							<div class="p-d-flex p-jc-center">
+								<h4 class="p-text-center">#{extractionBean.findLimesurveySurveyById(thesisAssignment.surveyAssignments.get(0).limesurveySurveyId).surveylsTitle}</h4>
+							</div>
+							<div class="p-d-flex p-jc-center">
+								<a target="_blank"
+									href="#{webappPathsBean.LIMESURVEY_PROTOCOL}#{webappPathsBean.LIMESURVEY_PUBLIC_HOST}:#{webappPathsBean.LIMESURVEY_PUBLIC_PORT}#{webappPathsBean.LIMESURVEY_BASE_URL}/index.php/#{thesisAssignment.surveyAssignments.get(0).limesurveySurveyId}?newtest=Y&amp;token=#{thesisAssignment.surveyAssignments.get(0).limesurveySurveyToken}">
+									<p:commandButton alt="Responder" type="button"
+										icon="pi pi-external-link" styleClass="rounded-button p-mr-2"
+										title="Responder" />
+								</a>
+								<p:commandButton title="Marcar como completado"
+									icon="pi pi-check"
+									styleClass="ui-button-success rounded-button"
+									actionListener="#{extractionBean.dispatchSurveyActionListener(thesisAssignment.surveyAssignments.get(0))}"
+									update="@form"></p:commandButton>
+							</div>
+						</h:panelGroup>
 					</p:card>
 				</p:repeat>
 			</p:card>

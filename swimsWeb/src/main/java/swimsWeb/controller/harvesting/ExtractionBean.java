@@ -86,6 +86,7 @@ public class ExtractionBean implements Serializable {
 		try {
 			limesurveySurveyAssignmentManager.dispatchSurvey(surveyAssignment);
 			onPageLoad();
+			JSFMessages.INFO("Ecuesta registrada de forma exitosa.");
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.ERROR(e.getMessage());

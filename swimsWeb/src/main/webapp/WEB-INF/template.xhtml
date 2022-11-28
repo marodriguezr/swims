@@ -10,6 +10,26 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<h:outputStylesheet name="/css/primeflex.min.css" />
 	<style>
+.gap-on-data-extraction-inf-fields {
+	gap: 0px;
+	flex-direction: column;
+}
+
+@media screen and (min-width: 768px) {
+	.gap-on-data-extraction-inf-fields {
+		gap: 5px;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	.gap-on-data-extraction-inf-fields {
+		gap: 5px;
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+}
 </style>
 </h:head>
 <h:body>
@@ -46,7 +66,7 @@
 							action="#{userSelectionBean.loadPage()}"></p:menuitem>
 						<p:menuitem
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH)}"
-							icon="pi pi-fw pi-file-edit" value="Extracción de Datos"
+							icon="pi pi-fw pi-list" value="Extracción de Datos"
 							action="#{extractionBean.loadPage()}"></p:menuitem>
 					</p:submenu>
 					<p:submenu

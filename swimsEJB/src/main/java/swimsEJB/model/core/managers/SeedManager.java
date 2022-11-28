@@ -355,21 +355,21 @@ public class SeedManager {
 		/**
 		 * 1.1. Impact indicators survey
 		 */
-		inputStream = ResourceUtilities.getResourceInputStream("impact-indicators_limesurvey_survey.lss");
+		inputStream = ResourceUtilities.getResourceInputStream("impact-indicators_limesurvey-survey.lss");
 		int impactIndicatorsSurveyId = LimesurveyService.importSurvey(
 				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
 		LimesurveyService.activateSurveyWithParticipants(impactIndicatorsSurveyId);
 		/**
 		 * 1.2. Success or Failure Factors Survey
 		 */
-		inputStream = ResourceUtilities.getResourceInputStream("success-failure-factors_limesurvey_survey.lss");
+		inputStream = ResourceUtilities.getResourceInputStream("success-failure-factors_limesurvey-survey.lss");
 		int successFailureFactorsSurveyId = LimesurveyService.importSurvey(
 				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
 		LimesurveyService.activateSurveyWithParticipants(successFailureFactorsSurveyId);
 		/**
 		 * 1.3 Tools Survey
 		 */
-		inputStream = ResourceUtilities.getResourceInputStream("tools-limesurvey-survey.lss");
+		inputStream = ResourceUtilities.getResourceInputStream("tools_limesurvey-survey.lss");
 		int toolsSurveyId = LimesurveyService.importSurvey(
 				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
 		LimesurveyService.activateSurveyWithParticipants(toolsSurveyId);
