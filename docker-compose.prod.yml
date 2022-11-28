@@ -25,7 +25,7 @@ services:
     environment:
       DB_HOST: swims-postgres
       DB_PASSWORD: ${POSTGRES_PASSWORD:?err}
-      ADMIN_PASSWORD: ${LIMESURVEY_ADMIN_PASSWORD:?err}
+      ADMIN_PASSWORD: ${LIMESURVEY_FIRST_ADMIN_PASSWORD:?err}
 
   swims_wildfly:
     build:
