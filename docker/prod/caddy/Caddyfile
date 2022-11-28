@@ -2,10 +2,10 @@ localhost {
     redir /limesurvey /limesurvey/
     
     route /limesurvey/* {
-        reverse_proxy swims-limesurvey-dev:8080
+        reverse_proxy swims-limesurvey:8080
     }
 
-    reverse_proxy swims-wildfly-dev:8080
+    reverse_proxy swims-wildfly:8080
 }
 
     
