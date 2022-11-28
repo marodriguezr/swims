@@ -48,6 +48,8 @@ services:
     image: swims-caddy
     container_name: swims-caddy
     restart: unless-stopped
+    environment:
+      HOSTNAME: ${HOSTNAME:?err}
     volumes:
       - swims_caddy_data:/data
       - swims_caddy_config:/config

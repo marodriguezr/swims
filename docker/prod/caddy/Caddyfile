@@ -1,4 +1,4 @@
-localhost {
+{$HOSTNAME} {
     redir /limesurvey /limesurvey/
     
     route /limesurvey/* {
