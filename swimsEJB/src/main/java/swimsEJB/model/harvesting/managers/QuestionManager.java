@@ -1,6 +1,7 @@
 package swimsEJB.model.harvesting.managers;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -49,4 +50,12 @@ public class QuestionManager {
 				null);
 	}
 
+	public Question findOneByQuestionTitle(String limesurveyQuestionTitle) throws Exception {
+		return (Question) daoManager.findOneById(Question.class, limesurveyQuestionTitle);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Question> findAllQuestionsByLimesurveySurveyId(int limesurveySurveyId) {
+		return daoManager.findManyWhere(Question.class, "o.limesurveySurveyId = " + limesurveySurveyId, null);
+	}
 }

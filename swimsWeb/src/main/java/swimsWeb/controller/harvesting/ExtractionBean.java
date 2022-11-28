@@ -13,6 +13,7 @@ import javax.inject.Named;
 import org.primefaces.model.ResponsiveOption;
 
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
+import swimsEJB.model.harvesting.entities.SurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
 import swimsEJB.model.harvesting.managers.SurveyAssignmentManager;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
@@ -79,6 +80,17 @@ public class ExtractionBean implements Serializable {
 		responsiveOptions.add(new ResponsiveOption("1024px", 3, 1));
 		responsiveOptions.add(new ResponsiveOption("768px", 2, 1));
 		responsiveOptions.add(new ResponsiveOption("560px", 1, 1));
+	}
+
+	public void dispatchSurveyActionListener(SurveyAssignment surveyAssignment) {
+		try {
+			limesurveySurveyAssignmentManager.dispatchSurvey(surveyAssignment);
+			onPageLoad();
+		} catch (Exception e) {
+			// TODO: handle exception
+			JSFMessages.ERROR(e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	public void extractLimesurveySurveyDataActionListener(int limesurveySurveyId, String token) {

@@ -121,9 +121,9 @@ public class LimesurveyService {
 		}
 	}
 
-	public static void exportResponse(int limesurveySurveyId, String token) throws Exception {
+	public static JsonObject exportResponse(int limesurveySurveyId, String token) throws Exception {
 		JsonObject response = executeHttpPostRequestWithoutSessionKey("export_responses_by_token", limesurveySurveyId,
-				"json", token, null, "complete", "code", "long");
+				"json", token, null, "complete");
 		if (response.get("result").isJsonObject()) {
 			throw new Exception("La encuesta no ha sido respondida aún.");
 		}
@@ -133,6 +133,7 @@ public class LimesurveyService {
 		if (jsonArray.isEmpty())
 			throw new Exception("La encuesta no ha sido respondida aún.");
 		;
+		return jsonArray.get(0).getAsJsonObject();
 	}
 
 	public static int importSurvey(String base64EncodedSurvey) throws Exception {

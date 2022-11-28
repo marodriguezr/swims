@@ -49,7 +49,8 @@
 										<p:commandButton title="Marcar como completado"
 											icon="pi pi-check"
 											styleClass="ui-button-success rounded-button"
-											actionListener="#{extractionBean.extractLimesurveySurveyDataActionListener(limesurveySurveyAssignment.limesurveySurveyId, limesurveySurveyAssignment.limesurveySurveyToken)}"></p:commandButton>
+											actionListener="#{extractionBean.dispatchSurveyActionListener(limesurveySurveyAssignment)}"
+											update="@form"></p:commandButton>
 									</div>
 								</div>
 							</div>
