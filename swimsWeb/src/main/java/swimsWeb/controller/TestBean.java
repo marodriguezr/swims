@@ -10,6 +10,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
+import swimsEJB.model.CompoundTestRegister;
 import swimsEJB.model.TestManager;
 import swimsEJB.model.auth.managers.GroupManager;
 import swimsEJB.model.core.managers.SeedManager;
@@ -27,6 +28,7 @@ public class TestBean implements Serializable {
 	private TestManager testManager;
 	@EJB
 	private SeedManager seedManager;
+	List<CompoundTestRegister> compoundTestRegisters;
 
 	public TestBean() {
 		// TODO Auto-generated constructor stub
@@ -76,4 +78,17 @@ public class TestBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
+
+	public void findAllCompoundRegisters() {
+		this.compoundTestRegisters = testManager.findAllCompoundTestRegisters();
+	}
+
+	public List<CompoundTestRegister> getCompoundTestRegisters() {
+		return compoundTestRegisters;
+	}
+
+	public void setCompoundTestRegisters(List<CompoundTestRegister> compoundTestRegisters) {
+		this.compoundTestRegisters = compoundTestRegisters;
+	}
+
 }

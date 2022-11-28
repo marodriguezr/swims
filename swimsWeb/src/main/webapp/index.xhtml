@@ -9,11 +9,30 @@
 
 	<ui:define name="onLoad">
 		<f:metadata>
-			<f:viewAction />
+			<f:viewAction action="#{testBean.findAllCompoundRegisters()}" />
 		</f:metadata>
 	</ui:define>
 
 	<ui:define name="content">
-		<h:outputText value="SWIMS"></h:outputText>
+		<h:form>
+			<p:dataTable value="#{testBean.compoundTestRegisters}"
+				var="testResgister">
+				<p:column headerText="Título de tesis">
+					<h:outputText value="#{testResgister.thesisTitle}" />
+				</p:column>
+
+				<p:column headerText="Variable de estudio">
+					<h:outputText value="#{testResgister.studyVariableLongName}" />
+				</p:column>
+
+				<p:column headerText="Títul(Código) de pregunta">
+					<h:outputText value="#{testResgister.limesurveyQuestionTitle}" />
+				</p:column>
+
+				<p:column headerText="Código de respuesta">
+					<h:outputText value="#{testResgister.limesurveyAnswerCode}" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
 	</ui:define>
 </ui:composition>
