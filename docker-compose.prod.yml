@@ -12,6 +12,8 @@ services:
       - swims_postgres_data:/var/lib/postgres
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
+    ports:
+      - "5432:5432"
 
   swims_limesurvey:
     build:
@@ -48,11 +50,11 @@ services:
     image: swims-caddy
     container_name: swims-caddy
     restart: unless-stopped
-    environment:
-      HOSTNAME: ${HOSTNAME:?err}
     volumes:
       - swims_caddy_data:/data
       - swims_caddy_config:/config
+    environment:
+      HOSTNAME: ${HOSTNAME:?err}
     ports:
       - 80:80
       - 443:443
