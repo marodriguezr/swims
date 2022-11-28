@@ -72,6 +72,7 @@ CREATE TABLE "harvesting"."questions" (
   "limesurvey_survey_id" int NOT NULL,
   "limesurvey_question_id" int UNIQUE NOT NULL,
   "limesurvey_parent_question_id" int NOT NULL,
+  "limesurvey_parent_question_title" varchar(20) NOT NULL,
   "study_variable_id" int NOT NULL,
   "created_at" timestamp NOT NULL DEFAULT (now()),
   "updated_at" timestamp NOT NULL DEFAULT (now())

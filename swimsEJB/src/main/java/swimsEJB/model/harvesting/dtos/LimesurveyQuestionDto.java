@@ -66,6 +66,4 @@ public class LimesurveyQuestionDto {
 		this.parentQid = parentQid;
 	}
 
-	
-
 }

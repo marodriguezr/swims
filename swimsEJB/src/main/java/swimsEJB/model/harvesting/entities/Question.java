@@ -26,6 +26,9 @@ public class Question implements Serializable {
 	@Column(name="limesurvey_parent_question_id", nullable=false)
 	private Integer limesurveyParentQuestionId;
 
+	@Column(name="limesurvey_parent_question_title", nullable=false, length=20)
+	private String limesurveyParentQuestionTitle;
+
 	@Column(name="limesurvey_question_id", nullable=false)
 	private Integer limesurveyQuestionId;
 
@@ -69,6 +72,14 @@ public class Question implements Serializable {
 
 	public void setLimesurveyParentQuestionId(Integer limesurveyParentQuestionId) {
 		this.limesurveyParentQuestionId = limesurveyParentQuestionId;
+	}
+
+	public String getLimesurveyParentQuestionTitle() {
+		return this.limesurveyParentQuestionTitle;
+	}
+
+	public void setLimesurveyParentQuestionTitle(String limesurveyParentQuestionTitle) {
+		this.limesurveyParentQuestionTitle = limesurveyParentQuestionTitle;
 	}
 
 	public Integer getLimesurveyQuestionId() {

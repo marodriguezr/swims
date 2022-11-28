@@ -22,6 +22,7 @@ import com.google.gson.JsonParser;
 
 import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
+import swimsEJB.utilities.ArrayUtilities;
 
 public class LimesurveyService {
 	private static HttpClient httpClient = HttpClientBuilder.create().build();
@@ -40,13 +41,11 @@ public class LimesurveyService {
 	public static JsonObject executeHttpPostRequest(String method, Object... params) throws Exception {
 		HttpPost post = getHttpPost();
 		String stringifiedParams = gson.toJson(params);
-		System.out.println(stringifiedParams);
 		post.setEntity(
 				new StringEntity("{\"method\": \"" + method + "\", \"params\": " + stringifiedParams + ", \"id\": 1}"));
 		HttpResponse response = httpClient.execute(post);
 		if (response.getStatusLine().getStatusCode() == 200) {
 			String stringifiedResponse = EntityUtils.toString(response.getEntity());
-			System.out.println(stringifiedResponse);
 			JsonObject jsonObject = JsonParser.parseString(stringifiedResponse).getAsJsonObject();
 			if (!jsonObject.get("error").isJsonNull())
 				throw new Exception("Request failed, error: " + jsonObject.get("error").getAsString());
@@ -60,9 +59,20 @@ public class LimesurveyService {
 				.get("result").getAsString();
 	}
 
+	public static void releaseSessionKey(String sessionKey) throws Exception {
+		executeHttpPostRequest("release_session_key", sessionKey);
+	}
+
+	public static JsonObject executeHttpPostRequestWithoutSessionKey(String method, Object... params) throws Exception {
+		String sessionKey = getSessionKey();
+		JsonObject jsonObject = executeHttpPostRequest(method, ArrayUtilities.add2BeginningOfArray(params, sessionKey));
+		releaseSessionKey(sessionKey);
+		return jsonObject;
+	}
+
 	public static List<LimesurveySurveyDto> listAllSurveys() throws Exception {
 		try {
-			JsonObject response = executeHttpPostRequest("list_surveys", getSessionKey(), LIMESURVEY_ADMIN_USER);
+			JsonObject response = executeHttpPostRequestWithoutSessionKey("list_surveys", LIMESURVEY_ADMIN_USER);
 			JsonArray jsonArray = response.get("result").getAsJsonArray();
 			List<LimesurveySurveyDto> LimesurveySurveyDtos = new ArrayList<>();
 
@@ -99,7 +109,7 @@ public class LimesurveyService {
 		List<HashMap<String, String>> hashMaps = new ArrayList<>();
 		hashMaps.add(map);
 		try {
-			JsonObject response = executeHttpPostRequest("add_participants", getSessionKey(), limesurveySurveyId,
+			JsonObject response = executeHttpPostRequestWithoutSessionKey("add_participants", limesurveySurveyId,
 					hashMaps);
 			JsonArray jsonArray = response.get("result").getAsJsonArray();
 			return jsonArray.get(0).getAsJsonObject().get("token").getAsString();
@@ -112,32 +122,26 @@ public class LimesurveyService {
 	}
 
 	public static void exportResponse(int limesurveySurveyId, String token) throws Exception {
-		JsonObject response = executeHttpPostRequest("export_responses_by_token", getSessionKey(), limesurveySurveyId,
+		JsonObject response = executeHttpPostRequestWithoutSessionKey("export_responses_by_token", limesurveySurveyId,
 				"json", token, null, "complete", "code", "long");
 		if (response.get("result").isJsonObject()) {
 			throw new Exception("La encuesta no ha sido respondida aún.");
 		}
 		byte[] decodedBytes = Base64.getDecoder().decode(response.get("result").getAsString());
 		String decodedString = new String(decodedBytes);
-		System.out.println(decodedString);
 		JsonArray jsonArray = JsonParser.parseString(decodedString).getAsJsonObject().get("responses").getAsJsonArray();
 		if (jsonArray.isEmpty())
 			throw new Exception("La encuesta no ha sido respondida aún.");
 		;
-
-		System.out.println(jsonArray.toString());
 	}
 
-	public static int importSurvey(String sessionKey, String base64EncodedSurvey) throws Exception {
-		JsonObject response = executeHttpPostRequest("import_survey", sessionKey == null ? getSessionKey() : sessionKey,
-				base64EncodedSurvey, "lss");
+	public static int importSurvey(String base64EncodedSurvey) throws Exception {
+		JsonObject response = executeHttpPostRequestWithoutSessionKey("import_survey", base64EncodedSurvey, "lss");
 		return response.get("result").getAsInt();
 	}
 
-	public static HashMap<String, LimesurveyQuestionDto> listQuestions(String sessionKey, int limesurveySurveyId)
-			throws Exception {
-		JsonObject response = executeHttpPostRequest("list_questions",
-				sessionKey == null ? getSessionKey() : sessionKey, limesurveySurveyId);
+	public static HashMap<String, LimesurveyQuestionDto> listQuestions(int limesurveySurveyId) throws Exception {
+		JsonObject response = executeHttpPostRequestWithoutSessionKey("list_questions", limesurveySurveyId);
 		JsonArray jsonArray = response.get("result").getAsJsonArray();
 		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtos = new HashMap<>();
 		jsonArray.forEach(arg0 -> {
@@ -148,5 +152,18 @@ public class LimesurveyService {
 							jsonObject.get("title").getAsString(), jsonObject.get("parent_qid").getAsInt()));
 		});
 		return limesurveyQuestionDtos;
+	}
+
+	public static void activateSurvey(int surveyId) throws Exception {
+		executeHttpPostRequestWithoutSessionKey("activate_survey", surveyId);
+	}
+
+	public static void initializeSurveyParticipants(int surveyId) throws Exception {
+		executeHttpPostRequestWithoutSessionKey("activate_tokens", surveyId);
+	}
+
+	public static void activateSurveyWithParticipants(int surveyId) throws Exception {
+		activateSurvey(surveyId);
+		initializeSurveyParticipants(surveyId);
 	}
 }

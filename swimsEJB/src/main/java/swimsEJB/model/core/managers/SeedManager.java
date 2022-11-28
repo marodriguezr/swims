@@ -5,8 +5,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Encoder;
+import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -85,7 +87,13 @@ public class SeedManager {
 
 	public void seed(String firstName, String lastName, String email, String password,
 			HashMap<String, String> webappPaths) throws Exception {
-		Sysparam sysparam = sysparamManager.findOneByKey("IS_SYSTEM_SEEDED");
+		Sysparam sysparam;
+		try {
+			sysparam = sysparamManager.findOneByKey("IS_SYSTEM_SEEDED");
+		} catch (Exception e) {
+			throw new Exception(
+					"No se ha encontrado el esquema de base de datos. Por favor configure la base de datos antes de continuar.");
+		}
 		if (sysparam != null)
 			if (sysparam.getValue() == "true")
 				throw new Exception("System already seeded.");
@@ -93,7 +101,7 @@ public class SeedManager {
 			throw new Exception("System already seeded.");
 
 		verifyWebappPathsMapCorrectness(webappPaths);
-		
+
 		/**
 		 * 0. Study Variables and Limesurvey Surveys
 		 */
@@ -197,6 +205,18 @@ public class SeedManager {
 	}
 
 	public void seedStudyVariablesAndLimesurvey() throws Exception {
+		String limesurveySessionKey;
+		try {
+			limesurveySessionKey = LimesurveyService.getSessionKey();
+			LimesurveyService.releaseSessionKey(limesurveySessionKey);
+		} catch (Exception e) {
+			// TODO: handle exception
+			throw new Exception(
+					"Imposible establecer conexión con la API de limesurvey. Por favor asegúrese de que la interfaz JSON-RPC está activada. Dirígase a https://manual.limesurvey.org/RemoteControl_2_API para obtener mas información.");
+		}
+		InputStream inputStream;
+		Encoder encoder = Base64.getEncoder();
+
 		/**
 		 * 0. Study Variable Seeding
 		 */
@@ -219,8 +239,6 @@ public class SeedManager {
 		/**
 		 * 0.2. Study Variables
 		 */
-//		String longName, String shortName, Boolean isNumericContinuous,
-//		Boolean isNumericDiscrete, boolean isCategoricalNominal, boolean isCategoricalOrdinal
 		/**
 		 * 0.2.1. Impact Indicators
 		 */
@@ -331,16 +349,6 @@ public class SeedManager {
 		StudyVariable libraryStudyVariable = studyVariableManager.createOneStudyVariable("Librerías", "libreria", false,
 				false, true, false, devToolsStudyVariableClass);
 
-		InputStream inputStream;
-		Encoder encoder = Base64.getEncoder();
-		String limesurveySessionKey;
-		try {
-			limesurveySessionKey = LimesurveyService.getSessionKey();
-		} catch (Exception e) {
-			// TODO: handle exception
-			throw new Exception(
-					"Imposible establecer conexión con la API de limesurvey. Por favor asegúrese de que la interfaz JSON-RPC está activada. Dirígase a https://manual.limesurvey.org/RemoteControl_2_API para obtener mas información.");
-		}
 		/**
 		 * 1. Survey creation
 		 */
@@ -348,37 +356,52 @@ public class SeedManager {
 		 * 1.1. Impact indicators survey
 		 */
 		inputStream = ResourceUtilities.getResourceInputStream("impact-indicators_limesurvey_survey.lss");
-		int impactIndicatorsSurveyId = LimesurveyService.importSurvey(limesurveySessionKey,
+		int impactIndicatorsSurveyId = LimesurveyService.importSurvey(
 				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
+		LimesurveyService.activateSurveyWithParticipants(impactIndicatorsSurveyId);
 		/**
 		 * 1.2. Success or Failure Factors Survey
 		 */
 		inputStream = ResourceUtilities.getResourceInputStream("success-failure-factors_limesurvey_survey.lss");
-		int successFailureFactorsSurveyId = LimesurveyService.importSurvey(limesurveySessionKey,
+		int successFailureFactorsSurveyId = LimesurveyService.importSurvey(
 				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
-
+		LimesurveyService.activateSurveyWithParticipants(successFailureFactorsSurveyId);
+		/**
+		 * 1.3 Tools Survey
+		 */
+		inputStream = ResourceUtilities.getResourceInputStream("tools-limesurvey-survey.lss");
+		int toolsSurveyId = LimesurveyService.importSurvey(
+				encoder.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes()));
+		LimesurveyService.activateSurveyWithParticipants(toolsSurveyId);
 		/**
 		 * 2. Questions
 		 */
 		/**
 		 * 2.1. Impact Indicator Questions
 		 */
-		HashMap<String, LimesurveyQuestionDto> impactIndicatorsSurveyQuestionDtos = LimesurveyService
-				.listQuestions(limesurveySessionKey, impactIndicatorsSurveyId);
+		HashMap<String, LimesurveyQuestionDto> impactIndicatorsSurveyQuestionDtosMap = LimesurveyService
+				.listQuestions(impactIndicatorsSurveyId);
+		Map<Integer, LimesurveyQuestionDto> impactIndicatorsSurveyQuestionDtosMap2 = impactIndicatorsSurveyQuestionDtosMap
+				.values().stream().collect(Collectors.toMap(LimesurveyQuestionDto::getId, item -> item));
 		for (StudyVariable studyVariable : impactStudyVariables) {
-			if (impactIndicatorsSurveyQuestionDtos.get(studyVariable.getShortName()) == null)
+			if (impactIndicatorsSurveyQuestionDtosMap.get(studyVariable.getShortName()) == null)
 				throw new Exception("La pregunta correspondiente al indicador " + studyVariable.getLongName()
 						+ " no se encuentra registrada.");
-			LimesurveyQuestionDto limesurveyQuestionDto = impactIndicatorsSurveyQuestionDtos
+			LimesurveyQuestionDto limesurveyQuestionDto = impactIndicatorsSurveyQuestionDtosMap
 					.get(studyVariable.getShortName());
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), studyVariable, limesurveyQuestionDto.getParentQid());
+					limesurveyQuestionDto.getId(), studyVariable, limesurveyQuestionDto.getParentQid(),
+					impactIndicatorsSurveyQuestionDtosMap2.get(limesurveyQuestionDto.getParentQid()) == null ? null
+							: impactIndicatorsSurveyQuestionDtosMap2.get(limesurveyQuestionDto.getParentQid())
+									.getTitle());
 		}
 		/**
 		 * 2.2. Success or Failure Factors
 		 */
 		HashMap<String, LimesurveyQuestionDto> successFailureFactorsSurveyQuestionDtos = LimesurveyService
-				.listQuestions(limesurveySessionKey, successFailureFactorsSurveyId);
+				.listQuestions(successFailureFactorsSurveyId);
+		Map<Integer, LimesurveyQuestionDto> successFailureFactorsSurveyQuestionDtos2 = successFailureFactorsSurveyQuestionDtos
+				.values().stream().collect(Collectors.toMap(arg0 -> arg0.getId(), arg0 -> arg0));
 		for (StudyVariable studyVariable : successFailureFactorsStudyVariables) {
 			if (successFailureFactorsSurveyQuestionDtos.get(studyVariable.getShortName()) == null)
 				throw new Exception("La pregunta correspondiente al factor " + studyVariable.getLongName()
@@ -386,8 +409,49 @@ public class SeedManager {
 			LimesurveyQuestionDto limesurveyQuestionDto = successFailureFactorsSurveyQuestionDtos
 					.get(studyVariable.getShortName());
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), studyVariable, limesurveyQuestionDto.getParentQid());
+					limesurveyQuestionDto.getId(), studyVariable, limesurveyQuestionDto.getParentQid(),
+					successFailureFactorsSurveyQuestionDtos2.get(limesurveyQuestionDto.getParentQid()) == null ? null
+							: successFailureFactorsSurveyQuestionDtos2.get(limesurveyQuestionDto.getParentQid())
+									.getTitle());
 		}
-
+		/**
+		 * 2.3. Tools
+		 */
+		HashMap<String, LimesurveyQuestionDto> toolsSurveyQuestionDtos = LimesurveyService.listQuestions(toolsSurveyId);
+		/**
+		 * 2.3.1. Programming Language
+		 */
+		LimesurveyQuestionDto programmingLanguagesQuestion = toolsSurveyQuestionDtos
+				.get(programmingLanguageStudyVariable.getShortName());
+		List<LimesurveyQuestionDto> programmingLanguagesSurveyQuestionDtos = toolsSurveyQuestionDtos.values().stream()
+				.filter(arg0 -> arg0.getParentQid() == programmingLanguagesQuestion.getId())
+				.collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : programmingLanguagesSurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), programmingLanguageStudyVariable,
+					limesurveyQuestionDto.getParentQid(), programmingLanguagesQuestion.getTitle());
+		}
+		/**
+		 * 2.3.2. Framework
+		 */
+		LimesurveyQuestionDto frameworkQuestion = toolsSurveyQuestionDtos.get(frameworkStudyVariable.getShortName());
+		List<LimesurveyQuestionDto> frameworkSurveyQuestionDtos = toolsSurveyQuestionDtos.values().stream()
+				.filter(arg0 -> arg0.getParentQid() == frameworkQuestion.getId()).collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : frameworkSurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), frameworkStudyVariable, limesurveyQuestionDto.getParentQid(),
+					frameworkQuestion.getTitle());
+		}
+		/**
+		 * 2.3.3. Library
+		 */
+		LimesurveyQuestionDto libraryQuestion = toolsSurveyQuestionDtos.get(libraryStudyVariable.getShortName());
+		List<LimesurveyQuestionDto> librarySurveyQuestionDtos = toolsSurveyQuestionDtos.values().stream()
+				.filter(arg0 -> arg0.getParentQid() == libraryQuestion.getId()).collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : librarySurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), libraryStudyVariable, limesurveyQuestionDto.getParentQid(),
+					libraryQuestion.getTitle());
+		}
 	}
 }
