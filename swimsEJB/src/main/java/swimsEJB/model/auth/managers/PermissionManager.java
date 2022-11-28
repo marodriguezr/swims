@@ -61,12 +61,17 @@ public class PermissionManager {
 		return daoManager.findAll(Permission.class, "updatedAt", false);
 	}
 
+	public List<Permission> findAllPermissionsExcept(String webappRelatedPath) {
+		List<Permission> permissions = findAllPermissions();
+		permissions.removeIf(arg0 -> arg0.getWebappRelatedPath().equals(webappRelatedPath));
+		return permissions;
+	}
+
 	public Permission findOnePermissionById(int id) throws Exception {
 		return (Permission) daoManager.findOneById(Permission.class, id);
 	}
 
-	public Permission updateOnePermissionById(int id, String name, Boolean isActive)
-			throws Exception {
+	public Permission updateOnePermissionById(int id, String name, Boolean isActive) throws Exception {
 		Permission permission = findOnePermissionById(id);
 		if (permission == null)
 			throw new Exception("El Permiso especificado no existe.");

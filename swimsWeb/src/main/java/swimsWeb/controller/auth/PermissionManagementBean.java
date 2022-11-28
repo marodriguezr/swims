@@ -35,7 +35,7 @@ public class PermissionManagementBean implements Serializable {
 
 	@PostConstruct
 	public void onLoad() {
-		this.permissions = permissionManager.findAllPermissions();
+		this.permissions = permissionManager.findAllPermissionsExcept(AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH);
 		this.selectedPermissions = new ArrayList<>();
 	}
 
