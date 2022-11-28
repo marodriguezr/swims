@@ -19,6 +19,8 @@ import swimsEJB.model.auth.entities.User;
 import swimsEJB.model.auth.entities.UserGroup;
 import swimsEJB.model.core.managers.DaoManager;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 /**
  * Session Bean implementation class UserManager
  */
@@ -72,6 +74,9 @@ public class UserManager {
 
 	public UserDto createOneUser(String firstName, String lastName, String email, String password, boolean isRoot)
 			throws Exception {
+		if (!EmailValidator.getInstance().isValid(email))
+			throw new Exception("El correo ingresado no es válido, por favor ingrese valores apropiados.");
+		
 		User user = new User();
 
 		user.setFirstName(firstName);
@@ -149,7 +154,7 @@ public class UserManager {
 			return null;
 		return UserToUserDto(user);
 	}
-	
+
 	public User findOneUserById2(int id) throws Exception {
 		User user = (User) daoManager.findOneById(User.class, id);
 		return user;

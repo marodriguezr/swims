@@ -14,6 +14,8 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
+import org.apache.commons.validator.routines.EmailValidator;
+
 import swimsEJB.model.auth.dtos.UserDto;
 import swimsEJB.model.auth.entities.Group;
 import swimsEJB.model.auth.entities.Permission;
@@ -101,6 +103,9 @@ public class SeedManager {
 			throw new Exception("System already seeded.");
 
 		verifyWebappPathsMapCorrectness(webappPaths);
+
+		if (!EmailValidator.getInstance().isValid(email))
+			throw new Exception("El correo electrónico ingresado no es válido. Por favor ingrese un valor apropiado.");
 
 		/**
 		 * 0. Study Variables and Limesurvey Surveys

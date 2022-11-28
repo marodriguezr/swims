@@ -156,6 +156,7 @@ public class UserManagementBean implements Serializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				JSFMessages.ERROR(e.getMessage());
+				return;
 			}
 		}
 		try {

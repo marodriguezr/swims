@@ -206,7 +206,7 @@
 				<f:facet name="footer">
 					<p:commandButton value="Guardar" icon="pi pi-save"
 						actionListener="#{userManagementBean.saveUserDto()}"
-						update=":form:dt-users" oncomplete="PF('manageUserDialog').hide()"
+						update=":form:dt-users" onsuccess="PF('manageUserDialog').hide()"
 						process="manage-users-content @form" />
 					<p:commandButton value="Cancelar" icon="pi pi-times"
 						onclick="PF('manageUserDialog').hide()"
