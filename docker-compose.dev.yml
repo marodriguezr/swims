@@ -37,6 +37,7 @@ services:
       WILDFLY_USERNAME: admin
       LIMESURVEY_FIRST_ADMIN_PASSWORD: adminer
       LIMESURVEY_HOST: swims-limesurvey-dev
+      LIMESURVEY_PUBLIC_HOST: localhost
 
   caddy:
     image: caddy:2-alpine
