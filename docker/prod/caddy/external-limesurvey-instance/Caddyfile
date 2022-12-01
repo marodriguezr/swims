@@ -1,0 +1,7 @@
+{$HOSTNAME} {
+    reverse_proxy swims-wildfly:8080
+}
+
+    
+
+

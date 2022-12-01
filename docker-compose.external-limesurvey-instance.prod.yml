@@ -1,0 +1,54 @@
+volumes:
+  swims_postgres_data:
+  swims_caddy_data:
+  swims_caddy_config:
+
+services:
+  swims_postgres:
+    container_name: swims-postgres
+    restart: unless-stopped
+    volumes:
+      - swims_postgres_data:/var/lib/postgres
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
+    ports:
+      - "5432:5432"
+
+  swims_wildfly:
+    build:
+      context: .
+      dockerfile: docker/prod/wildfly/Dockerfile
+    image: swims-wildfly
+    container_name: swims-wildfly
+    restart: unless-stopped
+    environment:
+      WILDFLY_PASSWORD: ${WILDFLY_PASSWORD:?err}
+      WILDFLY_USERNAME: ${WILDFLY_USERNAME:?err}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
+      LIMESURVEY_FIRST_ADMIN_PASSWORD: ${LIMESURVEY_FIRST_ADMIN_PASSWORD:?err}
+      LIMESURVEY_HOST: swims-limesurvey
+      LIMESURVEY_PUBLIC_HOST: ${LIMESURVEY_PUBLIC_HOST:?err}
+      LIMESURVEY_PUBLIC_PORT: ${LIMESURVEY_PUBLIC_PORT:?err}
+      LIMESURVEY_USES_SSL: ${LIMESURVEY_USES_SSL:?err}
+      LIMESURVEY_REMOTECONTROL_USES_SSL: ${LIMESURVEY_REMOTECONTROL_USES_SSL:?err}
+      LIMESURVEY_BASE_URL: ${LIMESURVEY_BASE_URL:?err}
+      LIMESURVEY_ADMIN_USER: ${LIMESURVEY_ADMIN_USER:?err}
+      LIMESURVE_ON_SAME_NETWORK: ${LIMESURVE_ON_SAME_NETWORK:?err}
+      LIMESURVEY_PORT: ${LIMESURVEY_PORT:?err}
+
+  caddy:
+    build:
+      context: .
+      dockerfile: docker/prod/caddy/external-limesurvey-instance/Dockerfile
+    image: swims-caddy
+    container_name: swims-caddy
+    restart: unless-stopped
+    volumes:
+      - swims_caddy_data:/data
+      - swims_caddy_config:/config
+    environment:
+      HOSTNAME: ${CADDY_HOST:?err}
+    ports:
+      - 80:80
+      - 443:443
+      - "443:443/udp"
