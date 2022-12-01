@@ -38,6 +38,9 @@ services:
       LIMESURVEY_FIRST_ADMIN_PASSWORD: adminer
       LIMESURVEY_HOST: swims-limesurvey-dev
       LIMESURVEY_PUBLIC_HOST: localhost
+      LIMESURVEY_PUBLIC_PORT: 443
+      LIMESURVEY_USES_SSL: true
+      LIMESURVEY_REMOTECONTROL_USES_SSL: false
 
   caddy:
     image: caddy:2-alpine

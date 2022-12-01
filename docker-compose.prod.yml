@@ -43,6 +43,9 @@ services:
       LIMESURVEY_FIRST_ADMIN_PASSWORD: ${LIMESURVEY_FIRST_ADMIN_PASSWORD:?err}
       LIMESURVEY_HOST: swims-limesurvey
       LIMESURVEY_PUBLIC_HOST: ${LIMESURVEY_PUBLIC_HOST:?err}
+      LIMESURVEY_PUBLIC_PORT: ${LIMESURVEY_PUBLIC_PORT:?err}
+      LIMESURVEY_USES_SSL: ${LIMESURVEY_USES_SSL:?err}
+      LIMESURVEY_REMOTECONTROL_USES_SSL: ${LIMESURVEY_REMOTECONTROL_USES_SSL:?err}
 
   caddy:
     build:
@@ -55,7 +58,7 @@ services:
       - swims_caddy_data:/data
       - swims_caddy_config:/config
     environment:
-      HOSTNAME: ${HOSTNAME:?err}
+      HOSTNAME: ${CADDY_HOST:?err}
     ports:
       - 80:80
       - 443:443

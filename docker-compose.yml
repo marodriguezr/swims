@@ -31,9 +31,6 @@ services:
       LIMESURVEY_ADMIN_USER: swims
       LIMESURVE_ON_SAME_NETWORK: true
       LIMESURVEY_PORT: 8080
-      LIMESURVEY_PUBLIC_PORT: 443
-      LIMESURVEY_USES_SSL: true
-      LIMESURVEY_REMOTECONTROL_USES_SSL: false
     networks:
       - swims_network
     depends_on:
