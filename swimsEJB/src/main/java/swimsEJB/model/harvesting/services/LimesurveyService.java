@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.http.HttpResponse;
@@ -17,10 +18,12 @@ import org.apache.http.util.EntityUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
+import swimsEJB.model.harvesting.dtos.LimesurveyQuestionPropertiesDto;
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 import swimsEJB.utilities.ArrayUtilities;
 
@@ -166,5 +169,25 @@ public class LimesurveyService {
 	public static void activateSurveyWithParticipants(int surveyId) throws Exception {
 		activateSurvey(surveyId);
 		initializeSurveyParticipants(surveyId);
+	}
+
+	public static LimesurveyQuestionPropertiesDto getQuestionProperties(int questionId) throws Exception {
+		JsonObject jsonObject = executeHttpPostRequestWithoutSessionKey("get_question_properties", questionId)
+				.get("result").getAsJsonObject();
+
+		if (!(jsonObject.get("answeroptions").isJsonObject())) {
+			return new LimesurveyQuestionPropertiesDto(jsonObject.get("qid").getAsInt(), "",
+					jsonObject.get("sid").getAsInt(), jsonObject.get("gid").getAsInt(),
+					jsonObject.get("title").getAsString(), jsonObject.get("parent_qid").getAsInt(), new HashMap<>());
+		}
+		JsonObject jsonAnswerOptions = jsonObject.get("answeroptions").getAsJsonObject();
+		HashMap<String, String> answerOptions = new HashMap<>();
+		for (Entry<String, JsonElement> entry : jsonAnswerOptions.entrySet()) {
+			answerOptions.put(entry.getKey(), entry.getValue().getAsJsonObject().get("answer").getAsString());
+		}
+
+		return new LimesurveyQuestionPropertiesDto(jsonObject.get("qid").getAsInt(), "",
+				jsonObject.get("sid").getAsInt(), jsonObject.get("gid").getAsInt(),
+				jsonObject.get("title").getAsString(), jsonObject.get("parent_qid").getAsInt(), answerOptions);
 	}
 }

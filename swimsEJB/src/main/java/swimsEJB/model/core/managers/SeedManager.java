@@ -8,7 +8,6 @@ import java.util.Base64.Encoder;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -193,22 +192,6 @@ public class SeedManager {
 		groupManager.addUserById(thesisDataExtracionGroup.getId(), adminUser.getId());
 	}
 
-	public void seed2() {
-		try {
-			InputStream inputStream = ResourceUtilities
-					.getResourceInputStream("impact-indicators_limesurvey_survey.lss");
-
-			String imageStr = Base64.getEncoder()
-					.encodeToString(new String(inputStream.readAllBytes(), StandardCharsets.UTF_8).getBytes());
-
-			System.out.println(imageStr);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-
-	}
-
 	public void seedStudyVariablesAndLimesurvey() throws Exception {
 		String limesurveySessionKey;
 		try {
@@ -386,8 +369,6 @@ public class SeedManager {
 		 */
 		HashMap<String, LimesurveyQuestionDto> impactIndicatorsSurveyQuestionDtosMap = LimesurveyService
 				.listQuestions(impactIndicatorsSurveyId);
-		Map<Integer, LimesurveyQuestionDto> impactIndicatorsSurveyQuestionDtosMap2 = impactIndicatorsSurveyQuestionDtosMap
-				.values().stream().collect(Collectors.toMap(LimesurveyQuestionDto::getId, item -> item));
 		for (StudyVariable studyVariable : impactStudyVariables) {
 			if (impactIndicatorsSurveyQuestionDtosMap.get(studyVariable.getShortName()) == null)
 				throw new Exception("La pregunta correspondiente al indicador " + studyVariable.getLongName()
@@ -395,18 +376,13 @@ public class SeedManager {
 			LimesurveyQuestionDto limesurveyQuestionDto = impactIndicatorsSurveyQuestionDtosMap
 					.get(studyVariable.getShortName());
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), studyVariable, limesurveyQuestionDto.getParentQid(),
-					impactIndicatorsSurveyQuestionDtosMap2.get(limesurveyQuestionDto.getParentQid()) == null ? null
-							: impactIndicatorsSurveyQuestionDtosMap2.get(limesurveyQuestionDto.getParentQid())
-									.getTitle());
+					limesurveyQuestionDto.getId(), studyVariable);
 		}
 		/**
 		 * 2.2. Success or Failure Factors
 		 */
 		HashMap<String, LimesurveyQuestionDto> successFailureFactorsSurveyQuestionDtos = LimesurveyService
 				.listQuestions(successFailureFactorsSurveyId);
-		Map<Integer, LimesurveyQuestionDto> successFailureFactorsSurveyQuestionDtos2 = successFailureFactorsSurveyQuestionDtos
-				.values().stream().collect(Collectors.toMap(arg0 -> arg0.getId(), arg0 -> arg0));
 		for (StudyVariable studyVariable : successFailureFactorsStudyVariables) {
 			if (successFailureFactorsSurveyQuestionDtos.get(studyVariable.getShortName()) == null)
 				throw new Exception("La pregunta correspondiente al factor " + studyVariable.getLongName()
@@ -414,10 +390,7 @@ public class SeedManager {
 			LimesurveyQuestionDto limesurveyQuestionDto = successFailureFactorsSurveyQuestionDtos
 					.get(studyVariable.getShortName());
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), studyVariable, limesurveyQuestionDto.getParentQid(),
-					successFailureFactorsSurveyQuestionDtos2.get(limesurveyQuestionDto.getParentQid()) == null ? null
-							: successFailureFactorsSurveyQuestionDtos2.get(limesurveyQuestionDto.getParentQid())
-									.getTitle());
+					limesurveyQuestionDto.getId(), studyVariable);
 		}
 		/**
 		 * 2.3. Tools
@@ -433,8 +406,7 @@ public class SeedManager {
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : programmingLanguagesSurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), programmingLanguageStudyVariable,
-					limesurveyQuestionDto.getParentQid(), programmingLanguagesQuestion.getTitle());
+					limesurveyQuestionDto.getId(), programmingLanguageStudyVariable);
 		}
 		/**
 		 * 2.3.2. Framework
@@ -444,8 +416,7 @@ public class SeedManager {
 				.filter(arg0 -> arg0.getParentQid() == frameworkQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : frameworkSurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), frameworkStudyVariable, limesurveyQuestionDto.getParentQid(),
-					frameworkQuestion.getTitle());
+					limesurveyQuestionDto.getId(), frameworkStudyVariable);
 		}
 		/**
 		 * 2.3.3. Library
@@ -455,8 +426,7 @@ public class SeedManager {
 				.filter(arg0 -> arg0.getParentQid() == libraryQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : librarySurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), libraryStudyVariable, limesurveyQuestionDto.getParentQid(),
-					libraryQuestion.getTitle());
+					limesurveyQuestionDto.getId(), libraryStudyVariable);
 		}
 	}
 }
