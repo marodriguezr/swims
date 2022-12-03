@@ -27,12 +27,24 @@ public class StudyVariableManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	public StudyVariable createOneStudyVariable(String longName, String shortName, Boolean isNumericContinuous,
+	public StudyVariable createOneStudyVariable(String id, String name, Boolean isNumericContinuous,
 			Boolean isNumericDiscrete, boolean isCategoricalNominal, boolean isCategoricalOrdinal,
 			StudyVariableClass studyVariableClass) throws Exception {
+		if (id.isBlank()) {
+			throw new Exception("Debe ingresar un valor apropiado como identificador.");
+		}
+		if (id.length() > 32) {
+			throw new Exception("Debe ingresar un valor con 32 caracteres o menos como identificador.");
+		}
+		if (name.isBlank()) {
+			throw new Exception("Debe ingresar un valor apropiado como nombre.");
+		}
+		if (name.length() > 256) {
+			throw new Exception("Debe ingresar un valor con 256 caracteres o menos como nombre.");
+		}
 		StudyVariable studyVariable = new StudyVariable();
-		studyVariable.setLongName(longName);
-		studyVariable.setShortName(shortName);
+		studyVariable.setId(id);
+		studyVariable.setName(name);
 		studyVariable.setIsNumericContinuous(isNumericContinuous);
 		studyVariable.setIsNumericDiscrete(isNumericDiscrete);
 		studyVariable.setIsCategoricalNominal(isCategoricalNominal);

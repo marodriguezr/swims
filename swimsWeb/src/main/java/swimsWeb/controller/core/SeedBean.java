@@ -65,10 +65,11 @@ public class SeedBean implements Serializable {
 		try {
 			if (!password.equals(passwordConfirmation)) {
 				JSFMessages.WARN("Las contraseñas no coinciden.");
-
+				return;
 			}
 			if (password.isEmpty()) {
 				JSFMessages.WARN("Por favor ingrese una constraseña apropiada");
+				return;
 			}
 			seedManager.seed(this.firstName, this.lastName, this.email, this.password,
 					WebappPaths.getAllWebappPathsAsMap());
@@ -76,6 +77,7 @@ public class SeedBean implements Serializable {
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.WARN(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 

@@ -23,22 +23,20 @@ table harvesting.oai_records {
 }
 
 table harvesting.study_variable_classes {
-  id int [pk, increment]
-  long_name varchar [not null, unique]
-  short_name varchar [not null, unique]
+  id varchar(32) [pk]
+  name varchar(256) [not null, unique]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
 }
 
 table harvesting.study_variables {
-  id int [pk, increment]
-  long_name varchar [not null, unique]
-  short_name varchar [not null, unique]
+  id varchar(32) [pk]
+  name varchar(256) [not null, unique]
   is_numeric_continuous boolean [not null]
   is_numeric_discrete boolean [not null]
   is_categorical_nominal boolean [not null]
   is_categorical_ordinal boolean [not null]
-  study_variable_class_id int [not null, ref: > harvesting.study_variable_classes.id]
+  study_variable_class_id varchar(32) [not null, ref: > harvesting.study_variable_classes.id]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
 }
@@ -59,7 +57,7 @@ table harvesting.survey_assignments {
   id int [pk, increment]
   thesis_assignment_id int [not null, ref: > harvesting.thesis_assignments.id]
   limesurvey_survey_id int [not null]
-  limesurvey_survey_token varchar [not null]
+  limesurvey_survey_token varchar [not null, unique]
   is_dispatched boolean [not null, default: false]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
@@ -76,7 +74,7 @@ table harvesting.questions {
   limesurvey_question_title varchar(20) [pk]
   limesurvey_survey_id int [not null]
   limesurvey_question_id int [not null, unique]
-  study_variable_id int [not null, ref: > harvesting.study_variables.id]
+  study_variable_id varchar(32) [not null, ref: > harvesting.study_variables.id]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
 }

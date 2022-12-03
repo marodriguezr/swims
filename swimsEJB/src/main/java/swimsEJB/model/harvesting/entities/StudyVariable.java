@@ -17,9 +17,8 @@ public class StudyVariable implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
-	private Integer id;
+	@Column(unique=true, nullable=false, length=32)
+	private String id;
 
 	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
@@ -36,11 +35,8 @@ public class StudyVariable implements Serializable {
 	@Column(name="is_numeric_discrete", nullable=false)
 	private Boolean isNumericDiscrete;
 
-	@Column(name="long_name", nullable=false, length=2147483647)
-	private String longName;
-
-	@Column(name="short_name", nullable=false, length=2147483647)
-	private String shortName;
+	@Column(nullable=false, length=256)
+	private String name;
 
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
@@ -57,11 +53,11 @@ public class StudyVariable implements Serializable {
 	public StudyVariable() {
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -105,20 +101,12 @@ public class StudyVariable implements Serializable {
 		this.isNumericDiscrete = isNumericDiscrete;
 	}
 
-	public String getLongName() {
-		return this.longName;
+	public String getName() {
+		return this.name;
 	}
 
-	public void setLongName(String longName) {
-		this.longName = longName;
-	}
-
-	public String getShortName() {
-		return this.shortName;
-	}
-
-	public void setShortName(String shortName) {
-		this.shortName = shortName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Timestamp getUpdatedAt() {
