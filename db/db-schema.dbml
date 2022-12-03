@@ -76,8 +76,6 @@ table harvesting.questions {
   limesurvey_question_title varchar(20) [pk]
   limesurvey_survey_id int [not null]
   limesurvey_question_id int [not null, unique]
-  limesurvey_parent_question_id int [not null]
-  limesurvey_parent_question_title varchar(20) [not null]
   study_variable_id int [not null, ref: > harvesting.study_variables.id]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
