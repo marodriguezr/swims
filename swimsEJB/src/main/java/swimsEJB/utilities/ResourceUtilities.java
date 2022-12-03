@@ -65,7 +65,7 @@ public class ResourceUtilities {
 	}
 
 	// print input stream
-	public static String printInputStream(InputStream is) {
+	public static String getAsString(InputStream is) {
 		String response = "";
 		try (InputStreamReader streamReader = new InputStreamReader(is, StandardCharsets.UTF_8);
 				BufferedReader reader = new BufferedReader(streamReader)) {
