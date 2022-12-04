@@ -2,7 +2,10 @@ package swimsEJB.model.harvesting.managers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -10,10 +13,18 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import swimsEJB.model.core.managers.DaoManager;
-import swimsEJB.model.harvesting.entities.Response;
+import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
+import swimsEJB.model.harvesting.dtos.LimesurveyQuestionPropertiesDto;
+import swimsEJB.model.harvesting.entities.ExpectedAnswer;
+import swimsEJB.model.harvesting.entities.Question;
 import swimsEJB.model.harvesting.entities.SurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
+import swimsEJB.model.harvesting.entities.UnexpectedAnswer;
+import swimsEJB.model.harvesting.services.LimesurveyService;
 
 /**
  * Session Bean implementation class SurveyAssignmentManager
@@ -25,7 +36,13 @@ public class SurveyAssignmentManager {
 	@EJB
 	private DaoManager daoManager;
 	@EJB
-	private ResponseManager responseManager;
+	private ExpectedAnswerManager responseManager;
+	@EJB
+	private QuestionManager questionManager;
+	@EJB
+	private ExpectedAnswerManager expectedAnswerManager;
+	@EJB
+	private UnexpectedAnswerManager unexpectedAnswerManager;
 
 	/**
 	 * Default constructor.
@@ -109,11 +126,84 @@ public class SurveyAssignmentManager {
 		return updateOneSurveyAssignmentById(id, null, null, null, true);
 	}
 
+	/**
+	 * The following method queries limesurvey for an specific response which is
+	 * identified by token and survey ID. Then it gathers the data from the JSON
+	 * structure in which answers are keyed by the question's title, if the answer
+	 * belongs to a child question the key would be parentTitle[childTitle] and if
+	 * the question is not an expected one for instance "other" keyed as
+	 * questionTitle[other]
+	 * 
+	 * @param surveyAssignment
+	 * @return
+	 * @throws Exception
+	 */
 	public SurveyAssignment dispatchSurvey(SurveyAssignment surveyAssignment) throws Exception {
-		List<Response> responses = responseManager
-				.createManyResponsesByLimesurveySurveyIdAndLimesurveySurveyToken(surveyAssignment);
-		if (responses.isEmpty())
+		List<ExpectedAnswer> expectedAnswers = new ArrayList<>();
+		List<UnexpectedAnswer> unexpectedAnswers = new ArrayList<>();
+
+		List<Question> questions = questionManager
+				.findAllQuestionsByLimesurveySurveyId(surveyAssignment.getLimesurveySurveyId());
+		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtos = LimesurveyService
+				.listQuestions(surveyAssignment.getLimesurveySurveyId());
+
+		HashMap<Integer, LimesurveyQuestionPropertiesDto> limesurveyParentQuestionPropertiesDtos = new HashMap<>();
+		for (Integer integer : new ArrayList<>(
+				new HashSet<>(limesurveyQuestionDtos.values().stream().filter(arg0 -> arg0.getParentQid() != 0)
+						.map(arg0 -> arg0.getParentQid()).collect(Collectors.toList())))) {
+			limesurveyParentQuestionPropertiesDtos.put(integer, LimesurveyService.getQuestionProperties(integer));
+		}
+
+		JsonObject response = LimesurveyService.exportResponse(surveyAssignment.getLimesurveySurveyId(),
+				surveyAssignment.getLimesurveySurveyToken());
+
+		for (Question question : questions) {
+			JsonElement element = response.get(question.getLimesurveyQuestionTitle() + "[other]");
+			if (element != null) {
+				if (element.isJsonNull())
+					continue;
+				if (element.getAsString().isBlank())
+					continue;
+				unexpectedAnswers.add(unexpectedAnswerManager.createOneUnexpectedAnswer(question, element.getAsString(),
+						surveyAssignment));
+				continue;
+			}
+
+			element = response.get(question.getLimesurveyQuestionTitle());
+			if (element != null) {
+				if (element.isJsonNull())
+					continue;
+				if (element.getAsString().isBlank())
+					continue;
+				expectedAnswers.add(expectedAnswerManager.createOneExpectedAnswer(question, element.getAsString(),
+						surveyAssignment));
+				continue;
+			}
+
+			LimesurveyQuestionPropertiesDto parentQuestionPropertiesDto = limesurveyParentQuestionPropertiesDtos
+					.get(limesurveyQuestionDtos.get(question.getLimesurveyQuestionTitle()).getParentQid());
+			if (parentQuestionPropertiesDto == null)
+				continue;
+			element = response
+					.get(parentQuestionPropertiesDto.getTitle() + "[" + question.getLimesurveyQuestionTitle() + "]");
+			if (element != null) {
+				if (element.isJsonNull())
+					continue;
+				if (element.getAsString().isBlank())
+					continue;
+				expectedAnswers.add(expectedAnswerManager.createOneExpectedAnswer(question, element.getAsString(),
+						surveyAssignment));
+				continue;
+			}
+		}
+
+		if (expectedAnswers.isEmpty() && unexpectedAnswers.isEmpty())
 			throw new Exception("Ha ocurrido un error en el proceso de despacho.");
-		return updateOneSurveyAssignmentAsDispatched(surveyAssignment);
+		surveyAssignment = updateOneSurveyAssignmentAsDispatched(surveyAssignment);
+
+		surveyAssignment.setExpectedAnswers(expectedAnswers);
+		surveyAssignment.setUnexpectedAnswers(unexpectedAnswers);
+
+		return surveyAssignment;
 	}
 }

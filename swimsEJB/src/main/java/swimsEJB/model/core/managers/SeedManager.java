@@ -251,6 +251,9 @@ public class SeedManager {
 		StudyVariable ambitoActuacionStudyVariable = studyVariableManager.createOneStudyVariable("ambitoActuacion",
 				"Ámbito de actuación", false, false, true, false, socialImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(ambitoActuacionStudyVariable);
+		StudyVariable ubicacionAfeccionStudyVariable = studyVariableManager.createOneStudyVariable("ubicacionAfeccion",
+				"Ubicación de Afección", false, false, true, false, socialImpactIndicatorsStudyVariableClass);
+		impactStudyVariables.add(ubicacionAfeccionStudyVariable);
 		StudyVariable conceptoEntregaStudyVariable = studyVariableManager.createOneStudyVariable("conceptoEntrega",
 				"Concepto de Entrega del Producto", false, false, true, false,
 				socialImpactIndicatorsStudyVariableClass);
@@ -324,15 +327,22 @@ public class SeedManager {
 		successFailureFactorsStudyVariables.add(customerSatisfactionStudyVariable);
 
 		/**
-		 * Development tools
+		 * 0.2.5. Tools
+		 */
+		List<StudyVariable> toolsStudyVariables = new ArrayList<>();
+		/**
+		 * 0.2.5.1. Development tools
 		 */
 		StudyVariable programmingLanguageStudyVariable = studyVariableManager.createOneStudyVariable(
 				"lenguajeProgramacion", "Lenguaje de Programación", false, false, true, false,
 				devToolsStudyVariableClass);
+		toolsStudyVariables.add(programmingLanguageStudyVariable);
 		StudyVariable frameworkStudyVariable = studyVariableManager.createOneStudyVariable("framework", "Framework",
 				false, false, true, false, devToolsStudyVariableClass);
+		toolsStudyVariables.add(frameworkStudyVariable);
 		StudyVariable libraryStudyVariable = studyVariableManager.createOneStudyVariable("libreria", "Librerías", false,
 				false, true, false, devToolsStudyVariableClass);
+		toolsStudyVariables.add(libraryStudyVariable);
 
 		/**
 		 * 1. Survey creation
@@ -393,6 +403,14 @@ public class SeedManager {
 		 * 2.3. Tools
 		 */
 		HashMap<String, LimesurveyQuestionDto> toolsSurveyQuestionDtos = LimesurveyService.listQuestions(toolsSurveyId);
+		for (StudyVariable studyVariable : toolsStudyVariables) {
+			if (toolsSurveyQuestionDtos.get(studyVariable.getId()) == null)
+				throw new Exception("La pregunta correspondiente a la herramienta " + studyVariable.getName()
+						+ " no se encuentra registrada.");
+			LimesurveyQuestionDto limesurveyQuestionDto = toolsSurveyQuestionDtos.get(studyVariable.getId());
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), studyVariable);
+		}
 		/**
 		 * 2.3.1. Programming Language
 		 */

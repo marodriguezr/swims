@@ -37,9 +37,13 @@ public class Question implements Serializable {
 	@JoinColumn(name="study_variable_id", nullable=false)
 	private StudyVariable studyVariable;
 
-	//bi-directional many-to-one association to Response
+	//bi-directional many-to-one association to ExpectedAnswer
 	@OneToMany(mappedBy="question")
-	private List<Response> responses;
+	private List<ExpectedAnswer> expectedAnswers;
+
+	//bi-directional many-to-one association to UnexpectedAnswer
+	@OneToMany(mappedBy="question")
+	private List<UnexpectedAnswer> unexpectedAnswers;
 
 	public Question() {
 	}
@@ -92,26 +96,48 @@ public class Question implements Serializable {
 		this.studyVariable = studyVariable;
 	}
 
-	public List<Response> getResponses() {
-		return this.responses;
+	public List<ExpectedAnswer> getExpectedAnswers() {
+		return this.expectedAnswers;
 	}
 
-	public void setResponses(List<Response> responses) {
-		this.responses = responses;
+	public void setExpectedAnswers(List<ExpectedAnswer> expectedAnswers) {
+		this.expectedAnswers = expectedAnswers;
 	}
 
-	public Response addRespons(Response respons) {
-		getResponses().add(respons);
-		respons.setQuestion(this);
+	public ExpectedAnswer addExpectedAnswer(ExpectedAnswer expectedAnswer) {
+		getExpectedAnswers().add(expectedAnswer);
+		expectedAnswer.setQuestion(this);
 
-		return respons;
+		return expectedAnswer;
 	}
 
-	public Response removeRespons(Response respons) {
-		getResponses().remove(respons);
-		respons.setQuestion(null);
+	public ExpectedAnswer removeExpectedAnswer(ExpectedAnswer expectedAnswer) {
+		getExpectedAnswers().remove(expectedAnswer);
+		expectedAnswer.setQuestion(null);
 
-		return respons;
+		return expectedAnswer;
+	}
+
+	public List<UnexpectedAnswer> getUnexpectedAnswers() {
+		return this.unexpectedAnswers;
+	}
+
+	public void setUnexpectedAnswers(List<UnexpectedAnswer> unexpectedAnswers) {
+		this.unexpectedAnswers = unexpectedAnswers;
+	}
+
+	public UnexpectedAnswer addUnexpectedAnswer(UnexpectedAnswer unexpectedAnswer) {
+		getUnexpectedAnswers().add(unexpectedAnswer);
+		unexpectedAnswer.setQuestion(this);
+
+		return unexpectedAnswer;
+	}
+
+	public UnexpectedAnswer removeUnexpectedAnswer(UnexpectedAnswer unexpectedAnswer) {
+		getUnexpectedAnswers().remove(unexpectedAnswer);
+		unexpectedAnswer.setQuestion(null);
+
+		return unexpectedAnswer;
 	}
 
 }

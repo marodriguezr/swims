@@ -6,13 +6,13 @@ import java.sql.Timestamp;
 
 
 /**
- * The persistent class for the responses database table.
+ * The persistent class for the expected_answers database table.
  * 
  */
 @Entity
-@Table(name="responses", schema="harvesting")
-@NamedQuery(name="Response.findAll", query="SELECT r FROM Response r")
-public class Response implements Serializable {
+@Table(name="expected_answers", schema="harvesting")
+@NamedQuery(name="ExpectedAnswer.findAll", query="SELECT e FROM ExpectedAnswer e")
+public class ExpectedAnswer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -39,7 +39,7 @@ public class Response implements Serializable {
 	@JoinColumn(name="survey_assignment_id", nullable=false)
 	private SurveyAssignment surveyAssignment;
 
-	public Response() {
+	public ExpectedAnswer() {
 	}
 
 	public Long getId() {

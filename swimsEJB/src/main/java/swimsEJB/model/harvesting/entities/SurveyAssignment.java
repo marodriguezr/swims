@@ -36,14 +36,18 @@ public class SurveyAssignment implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	//bi-directional many-to-one association to Response
-	@OneToMany(mappedBy="surveyAssignment")
-	private List<Response> responses;
-
 	//bi-directional many-to-one association to ThesisAssignment
 	@ManyToOne
 	@JoinColumn(name="thesis_assignment_id", nullable=false)
 	private ThesisAssignment thesisAssignment;
+
+	//bi-directional many-to-one association to ExpectedAnswer
+	@OneToMany(mappedBy="surveyAssignment")
+	private List<ExpectedAnswer> expectedAnswers;
+
+	//bi-directional many-to-one association to UnexpectedAnswer
+	@OneToMany(mappedBy="surveyAssignment")
+	private List<UnexpectedAnswer> unexpectedAnswers;
 
 	public SurveyAssignment() {
 	}
@@ -96,34 +100,56 @@ public class SurveyAssignment implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public List<Response> getResponses() {
-		return this.responses;
-	}
-
-	public void setResponses(List<Response> responses) {
-		this.responses = responses;
-	}
-
-	public Response addRespons(Response respons) {
-		getResponses().add(respons);
-		respons.setSurveyAssignment(this);
-
-		return respons;
-	}
-
-	public Response removeRespons(Response respons) {
-		getResponses().remove(respons);
-		respons.setSurveyAssignment(null);
-
-		return respons;
-	}
-
 	public ThesisAssignment getThesisAssignment() {
 		return this.thesisAssignment;
 	}
 
 	public void setThesisAssignment(ThesisAssignment thesisAssignment) {
 		this.thesisAssignment = thesisAssignment;
+	}
+
+	public List<ExpectedAnswer> getExpectedAnswers() {
+		return this.expectedAnswers;
+	}
+
+	public void setExpectedAnswers(List<ExpectedAnswer> expectedAnswers) {
+		this.expectedAnswers = expectedAnswers;
+	}
+
+	public ExpectedAnswer addExpectedAnswer(ExpectedAnswer expectedAnswer) {
+		getExpectedAnswers().add(expectedAnswer);
+		expectedAnswer.setSurveyAssignment(this);
+
+		return expectedAnswer;
+	}
+
+	public ExpectedAnswer removeExpectedAnswer(ExpectedAnswer expectedAnswer) {
+		getExpectedAnswers().remove(expectedAnswer);
+		expectedAnswer.setSurveyAssignment(null);
+
+		return expectedAnswer;
+	}
+
+	public List<UnexpectedAnswer> getUnexpectedAnswers() {
+		return this.unexpectedAnswers;
+	}
+
+	public void setUnexpectedAnswers(List<UnexpectedAnswer> unexpectedAnswers) {
+		this.unexpectedAnswers = unexpectedAnswers;
+	}
+
+	public UnexpectedAnswer addUnexpectedAnswer(UnexpectedAnswer unexpectedAnswer) {
+		getUnexpectedAnswers().add(unexpectedAnswer);
+		unexpectedAnswer.setSurveyAssignment(this);
+
+		return unexpectedAnswer;
+	}
+
+	public UnexpectedAnswer removeUnexpectedAnswer(UnexpectedAnswer unexpectedAnswer) {
+		getUnexpectedAnswers().remove(unexpectedAnswer);
+		unexpectedAnswer.setSurveyAssignment(null);
+
+		return unexpectedAnswer;
 	}
 
 }
