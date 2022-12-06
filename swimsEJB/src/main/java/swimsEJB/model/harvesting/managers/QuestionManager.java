@@ -29,22 +29,20 @@ public class QuestionManager {
 	}
 
 	public Question createOneQuestion(String limesurveyQuestionTitle, int limesurveySurveyId, int limesurveyQuestionId,
-			StudyVariable studyVariable)
-			throws Exception {
+			StudyVariable studyVariable) throws Exception {
 		Question question = new Question();
 		question.setLimesurveyQuestionTitle(limesurveyQuestionTitle);
 		question.setLimesurveySurveyId(limesurveySurveyId);
 		question.setLimesurveyQuestionId(limesurveyQuestionId);
 		question.setStudyVariable(studyVariable);
-		
+
 		question.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		question.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		return (Question) daoManager.createOne(question);
 	}
 
-
-	public Question findOneByQuestionTitle(String limesurveyQuestionTitle) throws Exception {
-		return (Question) daoManager.findOneById(Question.class, limesurveyQuestionTitle);
+	public Question findOneQuestionById(int id) throws Exception {
+		return (Question) daoManager.findOneById(Question.class, id);
 	}
 
 	@SuppressWarnings("unchecked")

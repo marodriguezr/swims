@@ -41,9 +41,9 @@ public class ExpectedAnswerManager {
 		return (ExpectedAnswer) daoManager.createOne(expectedAnswer);
 	}
 
-	public ExpectedAnswer createOneExpectedAnswer(String limesurveyQuestionTitle, String limesurveyAnswerCode,
+	public ExpectedAnswer createOneExpectedAnswer(int limesurveyQuestionId, String limesurveyAnswerCode,
 			SurveyAssignment surveyAssignment) throws Exception {
-		Question question = questionManager.findOneByQuestionTitle(limesurveyQuestionTitle);
+		Question question = questionManager.findOneQuestionById(limesurveyQuestionId);
 		if (question == null)
 			throw new Exception("La Pregunta especificada no se encuentra registrada.");
 		return createOneExpectedAnswer(question, limesurveyAnswerCode, surveyAssignment);

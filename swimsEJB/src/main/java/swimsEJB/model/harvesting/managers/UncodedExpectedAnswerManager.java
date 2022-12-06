@@ -41,9 +41,9 @@ public class UncodedExpectedAnswerManager {
 		return (UncodedExpectedAnswer) daoManager.createOne(uncodedExpectedAnswer);
 	}
 
-	public UncodedExpectedAnswer createOneUncodedExpectedAnswer(String limesurveyQuestionTitle, String answer,
+	public UncodedExpectedAnswer createOneUncodedExpectedAnswer(int limesurveyQuestionId, String answer,
 			SurveyAssignment surveyAssignment) throws Exception {
-		Question question = questionManager.findOneByQuestionTitle(limesurveyQuestionTitle);
+		Question question = questionManager.findOneQuestionById(limesurveyQuestionId);
 		if (question == null)
 			throw new Exception("La Pregunta especificada no se encuentra registrada.");
 		return createOneUncodedExpectedAnswer(question, answer, surveyAssignment);
