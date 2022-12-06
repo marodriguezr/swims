@@ -29,3 +29,8 @@ Having **Maven**, **Java** and **Docker** installed locally.
    ```bash
    mvn clean package && docker cp ./swimsEAP/target/swims-1.0.ear swims_wildfly_dev:/app
    ```
+2. Deploy postgresql-42.5.0.jar to wildfly-dev docker container
+
+   ```bash
+   docker cp ./docker/prod/wildfly/postgresql-42.5.0.jar swims-wildfly-dev:/app
+   ```

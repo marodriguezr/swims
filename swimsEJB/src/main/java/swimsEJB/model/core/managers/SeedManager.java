@@ -218,6 +218,9 @@ public class SeedManager {
 		StudyVariableClass naturalEnvironmentImpactIndicatorsStudyVariableClass = studyVariableClassManager
 				.createOneStudyVariableClass("indicadoresImpactoMedioambiental",
 						"Indicadores de Impacto Medioambiental");
+		StudyVariableClass otherIndicatorsStudyVariableClass = studyVariableClassManager
+				.createOneStudyVariableClass("otrosIndicadores",
+						"Otros Indicadores");
 		StudyVariableClass successFactorsStudyVariableClass = studyVariableClassManager
 				.createOneStudyVariableClass("factoresExito", "Factores de Éxito");
 		StudyVariableClass failureFactorsStudyVariableClass = studyVariableClassManager
@@ -276,6 +279,13 @@ public class SeedManager {
 				"rlcnMedioambiente", "Relación con áreas del medio ambiente", false, false, true, false,
 				naturalEnvironmentImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(naturalEnvironmentRelatedStudyVariable);
+		/**
+		 * 0.2.1.4. Other Impact Indicators
+		 */
+		StudyVariable startDateStudyVariable = studyVariableManager.createOneStudyVariable(
+				"fechaInicio", "Fecha de inicio del proyecto", false, true, false, false,
+				naturalEnvironmentImpactIndicatorsStudyVariableClass);
+		impactStudyVariables.add(startDateStudyVariable);
 		/*
 		 * 0.2.4. Factors
 		 */
