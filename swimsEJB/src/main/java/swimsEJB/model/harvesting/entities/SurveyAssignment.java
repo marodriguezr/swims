@@ -36,14 +36,18 @@ public class SurveyAssignment implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
+	//bi-directional many-to-one association to ExpectedAnswer
+	@OneToMany(mappedBy="surveyAssignment")
+	private List<ExpectedAnswer> expectedAnswers;
+
 	//bi-directional many-to-one association to ThesisAssignment
 	@ManyToOne
 	@JoinColumn(name="thesis_assignment_id", nullable=false)
 	private ThesisAssignment thesisAssignment;
 
-	//bi-directional many-to-one association to ExpectedAnswer
+	//bi-directional many-to-one association to UncodedExpectedAnswer
 	@OneToMany(mappedBy="surveyAssignment")
-	private List<ExpectedAnswer> expectedAnswers;
+	private List<UncodedExpectedAnswer> uncodedExpectedAnswers;
 
 	//bi-directional many-to-one association to UnexpectedAnswer
 	@OneToMany(mappedBy="surveyAssignment")
@@ -100,14 +104,6 @@ public class SurveyAssignment implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public ThesisAssignment getThesisAssignment() {
-		return this.thesisAssignment;
-	}
-
-	public void setThesisAssignment(ThesisAssignment thesisAssignment) {
-		this.thesisAssignment = thesisAssignment;
-	}
-
 	public List<ExpectedAnswer> getExpectedAnswers() {
 		return this.expectedAnswers;
 	}
@@ -128,6 +124,36 @@ public class SurveyAssignment implements Serializable {
 		expectedAnswer.setSurveyAssignment(null);
 
 		return expectedAnswer;
+	}
+
+	public ThesisAssignment getThesisAssignment() {
+		return this.thesisAssignment;
+	}
+
+	public void setThesisAssignment(ThesisAssignment thesisAssignment) {
+		this.thesisAssignment = thesisAssignment;
+	}
+
+	public List<UncodedExpectedAnswer> getUncodedExpectedAnswers() {
+		return this.uncodedExpectedAnswers;
+	}
+
+	public void setUncodedExpectedAnswers(List<UncodedExpectedAnswer> uncodedExpectedAnswers) {
+		this.uncodedExpectedAnswers = uncodedExpectedAnswers;
+	}
+
+	public UncodedExpectedAnswer addUncodedExpectedAnswer(UncodedExpectedAnswer uncodedExpectedAnswer) {
+		getUncodedExpectedAnswers().add(uncodedExpectedAnswer);
+		uncodedExpectedAnswer.setSurveyAssignment(this);
+
+		return uncodedExpectedAnswer;
+	}
+
+	public UncodedExpectedAnswer removeUncodedExpectedAnswer(UncodedExpectedAnswer uncodedExpectedAnswer) {
+		getUncodedExpectedAnswers().remove(uncodedExpectedAnswer);
+		uncodedExpectedAnswer.setSurveyAssignment(null);
+
+		return uncodedExpectedAnswer;
 	}
 
 	public List<UnexpectedAnswer> getUnexpectedAnswers() {

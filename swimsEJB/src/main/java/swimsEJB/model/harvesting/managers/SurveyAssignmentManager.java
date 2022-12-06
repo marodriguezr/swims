@@ -3,7 +3,6 @@ package swimsEJB.model.harvesting.managers;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +22,7 @@ import swimsEJB.model.harvesting.entities.ExpectedAnswer;
 import swimsEJB.model.harvesting.entities.Question;
 import swimsEJB.model.harvesting.entities.SurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
+import swimsEJB.model.harvesting.entities.UncodedExpectedAnswer;
 import swimsEJB.model.harvesting.entities.UnexpectedAnswer;
 import swimsEJB.model.harvesting.services.LimesurveyService;
 
@@ -43,6 +43,8 @@ public class SurveyAssignmentManager {
 	private ExpectedAnswerManager expectedAnswerManager;
 	@EJB
 	private UnexpectedAnswerManager unexpectedAnswerManager;
+	@EJB
+	private UncodedExpectedAnswerManager uncodedExpectedAnswerManager;
 
 	/**
 	 * Default constructor.
@@ -139,7 +141,11 @@ public class SurveyAssignmentManager {
 	 * @throws Exception
 	 */
 	public SurveyAssignment dispatchSurvey(SurveyAssignment surveyAssignment) throws Exception {
+		JsonObject response = LimesurveyService.exportResponse(surveyAssignment.getLimesurveySurveyId(),
+				surveyAssignment.getLimesurveySurveyToken());
+		
 		List<ExpectedAnswer> expectedAnswers = new ArrayList<>();
+		List<UncodedExpectedAnswer> uncodedExpectedAnswers = new ArrayList<>();
 		List<UnexpectedAnswer> unexpectedAnswers = new ArrayList<>();
 
 		List<Question> questions = questionManager
@@ -147,15 +153,11 @@ public class SurveyAssignmentManager {
 		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtos = LimesurveyService
 				.listQuestions(surveyAssignment.getLimesurveySurveyId());
 
-		HashMap<Integer, LimesurveyQuestionPropertiesDto> limesurveyParentQuestionPropertiesDtos = new HashMap<>();
-		for (Integer integer : new ArrayList<>(
-				new HashSet<>(limesurveyQuestionDtos.values().stream().filter(arg0 -> arg0.getParentQid() != 0)
-						.map(arg0 -> arg0.getParentQid()).collect(Collectors.toList())))) {
-			limesurveyParentQuestionPropertiesDtos.put(integer, LimesurveyService.getQuestionProperties(integer));
+		HashMap<Integer, LimesurveyQuestionPropertiesDto> limesurveyQuestionPropertiesDtos = new HashMap<>();
+		for (Integer integer : limesurveyQuestionDtos.values().stream().map(arg0 -> arg0.getId())
+				.collect(Collectors.toList())) {
+			limesurveyQuestionPropertiesDtos.put(integer, LimesurveyService.getQuestionProperties(integer));
 		}
-
-		JsonObject response = LimesurveyService.exportResponse(surveyAssignment.getLimesurveySurveyId(),
-				surveyAssignment.getLimesurveySurveyToken());
 
 		for (Question question : questions) {
 			JsonElement element = response.get(question.getLimesurveyQuestionTitle() + "[other]");
@@ -175,12 +177,28 @@ public class SurveyAssignmentManager {
 					continue;
 				if (element.getAsString().isBlank())
 					continue;
+				/**
+				 * Within the Answer Options map of a LimesurveyQuestionPropertiesDto remains the "Expected answers" keyed
+				 * by its code, which is actually what is returned as response of the question, for instance
+				 * element.get("tamanoEmpresa") would return either "micro", "peque" or another 5 character code of the
+				 * expected answer which again if exists must be recorded in the answer options map.
+				 * When a response is uncoded for example element.get("ingresoBrutoEmpresa"), the value is expected to be a 
+				 * numeric string but as not every number would be recorded as an expected answer or answer option the
+				 * answer optionsMap won't contain this value making it an uncoded answer but that is expected.
+				 * This case can happen when freetext fields are declared as questions in limesurvey.
+				 */
+				if (limesurveyQuestionPropertiesDtos.get(question.getLimesurveyQuestionId()).getAnswerOptions()
+						.get(element.getAsString()) == null) {
+					uncodedExpectedAnswers.add(uncodedExpectedAnswerManager.createOneUncodedExpectedAnswer(question,
+							element.getAsString(), surveyAssignment));
+					continue;
+				}
 				expectedAnswers.add(expectedAnswerManager.createOneExpectedAnswer(question, element.getAsString(),
 						surveyAssignment));
 				continue;
 			}
 
-			LimesurveyQuestionPropertiesDto parentQuestionPropertiesDto = limesurveyParentQuestionPropertiesDtos
+			LimesurveyQuestionPropertiesDto parentQuestionPropertiesDto = limesurveyQuestionPropertiesDtos
 					.get(limesurveyQuestionDtos.get(question.getLimesurveyQuestionTitle()).getParentQid());
 			if (parentQuestionPropertiesDto == null)
 				continue;
@@ -202,6 +220,7 @@ public class SurveyAssignmentManager {
 		surveyAssignment = updateOneSurveyAssignmentAsDispatched(surveyAssignment);
 
 		surveyAssignment.setExpectedAnswers(expectedAnswers);
+		surveyAssignment.setUncodedExpectedAnswers(uncodedExpectedAnswers);
 		surveyAssignment.setUnexpectedAnswers(unexpectedAnswers);
 
 		return surveyAssignment;
