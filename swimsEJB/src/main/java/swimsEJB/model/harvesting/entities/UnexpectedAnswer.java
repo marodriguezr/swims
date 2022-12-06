@@ -31,7 +31,7 @@ public class UnexpectedAnswer implements Serializable {
 
 	//bi-directional many-to-one association to Question
 	@ManyToOne
-	@JoinColumn(name="limesurvey_question_title", nullable=false)
+	@JoinColumn(name="limesurvey_question_id", nullable=false)
 	private Question question;
 
 	//bi-directional many-to-one association to SurveyAssignment

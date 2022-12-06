@@ -17,14 +17,14 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="limesurvey_question_title", unique=true, nullable=false, length=20)
-	private String limesurveyQuestionTitle;
+	@Column(name="limesurvey_question_id", unique=true, nullable=false)
+	private Integer limesurveyQuestionId;
 
 	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="limesurvey_question_id", nullable=false)
-	private Integer limesurveyQuestionId;
+	@Column(name="limesurvey_question_title", nullable=false, length=20)
+	private String limesurveyQuestionTitle;
 
 	@Column(name="limesurvey_survey_id", nullable=false)
 	private Integer limesurveySurveyId;
@@ -52,12 +52,12 @@ public class Question implements Serializable {
 	public Question() {
 	}
 
-	public String getLimesurveyQuestionTitle() {
-		return this.limesurveyQuestionTitle;
+	public Integer getLimesurveyQuestionId() {
+		return this.limesurveyQuestionId;
 	}
 
-	public void setLimesurveyQuestionTitle(String limesurveyQuestionTitle) {
-		this.limesurveyQuestionTitle = limesurveyQuestionTitle;
+	public void setLimesurveyQuestionId(Integer limesurveyQuestionId) {
+		this.limesurveyQuestionId = limesurveyQuestionId;
 	}
 
 	public Timestamp getCreatedAt() {
@@ -68,12 +68,12 @@ public class Question implements Serializable {
 		this.createdAt = createdAt;
 	}
 
-	public Integer getLimesurveyQuestionId() {
-		return this.limesurveyQuestionId;
+	public String getLimesurveyQuestionTitle() {
+		return this.limesurveyQuestionTitle;
 	}
 
-	public void setLimesurveyQuestionId(Integer limesurveyQuestionId) {
-		this.limesurveyQuestionId = limesurveyQuestionId;
+	public void setLimesurveyQuestionTitle(String limesurveyQuestionTitle) {
+		this.limesurveyQuestionTitle = limesurveyQuestionTitle;
 	}
 
 	public Integer getLimesurveySurveyId() {
