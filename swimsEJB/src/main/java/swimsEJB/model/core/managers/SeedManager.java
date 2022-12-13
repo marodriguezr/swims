@@ -225,8 +225,8 @@ public class SeedManager {
 				.createOneStudyVariableClass("factoresExito", "Factores de Éxito");
 		StudyVariableClass failureFactorsStudyVariableClass = studyVariableClassManager
 				.createOneStudyVariableClass("factoresFracaso", "Factores de Fracaso");
-		StudyVariableClass devToolsStudyVariableClass = studyVariableClassManager
-				.createOneStudyVariableClass("heramientasDesarrollo", "Herramientas de Desarrollo");
+		StudyVariableClass devResourcesStudyVariableClass = studyVariableClassManager
+				.createOneStudyVariableClass("recursosDesarrollo", "Recursos de Desarrollo");
 		/**
 		 * 0.2. Study Variables
 		 */
@@ -337,22 +337,29 @@ public class SeedManager {
 		successFailureFactorsStudyVariables.add(customerSatisfactionStudyVariable);
 
 		/**
-		 * 0.2.5. Tools
+		 * 0.2.5. Development Resources
 		 */
-		List<StudyVariable> toolsStudyVariables = new ArrayList<>();
+		List<StudyVariable> devResourcesStudyVariables = new ArrayList<>();
 		/**
 		 * 0.2.5.1. Development tools
 		 */
 		StudyVariable programmingLanguageStudyVariable = studyVariableManager.createOneStudyVariable(
 				"lenguajeProgramacion", "Lenguaje de Programación", false, false, true, false,
-				devToolsStudyVariableClass);
-		toolsStudyVariables.add(programmingLanguageStudyVariable);
+				devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(programmingLanguageStudyVariable);
 		StudyVariable frameworkStudyVariable = studyVariableManager.createOneStudyVariable("framework", "Framework",
-				false, false, true, false, devToolsStudyVariableClass);
-		toolsStudyVariables.add(frameworkStudyVariable);
+				false, false, true, false, devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(frameworkStudyVariable);
 		StudyVariable libraryStudyVariable = studyVariableManager.createOneStudyVariable("libreria", "Librerías", false,
-				false, true, false, devToolsStudyVariableClass);
-		toolsStudyVariables.add(libraryStudyVariable);
+				false, true, false, devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(libraryStudyVariable);
+		/**
+		 * 0.2.5.2. Development methodologies
+		 */
+		StudyVariable devMethodologyStudyVariable = studyVariableManager.createOneStudyVariable(
+				"metodologiaDesarroll", "Metodología de desarrollo", false, false, true, false,
+				devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(devMethodologyStudyVariable);
 
 		/**
 		 * 1. Survey creation
@@ -372,12 +379,12 @@ public class SeedManager {
 				.importSurvey(new String(encoder.encode(inputStream.readAllBytes()), StandardCharsets.UTF_8));
 		LimesurveyService.activateSurveyWithParticipants(successFailureFactorsSurveyId);
 		/**
-		 * 1.3 Tools Survey
+		 * 1.3 Development Resources Survey
 		 */
-		inputStream = ResourceUtilities.getResourceInputStream("tools_limesurvey-survey.lss");
-		int toolsSurveyId = LimesurveyService
+		inputStream = ResourceUtilities.getResourceInputStream("dev-resources_limesurvey-survey.lss");
+		int devResourcesSurveyId = LimesurveyService
 				.importSurvey(new String(encoder.encode(inputStream.readAllBytes()), StandardCharsets.UTF_8));
-		LimesurveyService.activateSurveyWithParticipants(toolsSurveyId);
+		LimesurveyService.activateSurveyWithParticipants(devResourcesSurveyId);
 		/**
 		 * 2. Questions
 		 */
@@ -410,23 +417,26 @@ public class SeedManager {
 					limesurveyQuestionDto.getId(), studyVariable);
 		}
 		/**
-		 * 2.3. Tools
+		 * 2.3. Development Resources
 		 */
-		HashMap<String, LimesurveyQuestionDto> toolsSurveyQuestionDtos = LimesurveyService.listQuestions(toolsSurveyId);
-		for (StudyVariable studyVariable : toolsStudyVariables) {
-			if (toolsSurveyQuestionDtos.get(studyVariable.getId()) == null)
-				throw new Exception("La pregunta correspondiente a la herramienta " + studyVariable.getName()
+		HashMap<String, LimesurveyQuestionDto> devResourcesSurveyQuestionDtos = LimesurveyService.listQuestions(devResourcesSurveyId);
+		for (StudyVariable studyVariable : devResourcesStudyVariables) {
+			if (devResourcesSurveyQuestionDtos.get(studyVariable.getId()) == null)
+				throw new Exception("La pregunta correspondiente al recurso " + studyVariable.getName()
 						+ " no se encuentra registrada.");
-			LimesurveyQuestionDto limesurveyQuestionDto = toolsSurveyQuestionDtos.get(studyVariable.getId());
+			LimesurveyQuestionDto limesurveyQuestionDto = devResourcesSurveyQuestionDtos.get(studyVariable.getId());
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
 					limesurveyQuestionDto.getId(), studyVariable);
 		}
 		/**
-		 * 2.3.1. Programming Language
+		 * 2.3.1. Dev Tools
 		 */
-		LimesurveyQuestionDto programmingLanguagesQuestion = toolsSurveyQuestionDtos
+		/**
+		 * 2.3.1.1. Programming Language
+		 */
+		LimesurveyQuestionDto programmingLanguagesQuestion = devResourcesSurveyQuestionDtos
 				.get(programmingLanguageStudyVariable.getId());
-		List<LimesurveyQuestionDto> programmingLanguagesSurveyQuestionDtos = toolsSurveyQuestionDtos.values().stream()
+		List<LimesurveyQuestionDto> programmingLanguagesSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == programmingLanguagesQuestion.getId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : programmingLanguagesSurveyQuestionDtos) {
@@ -434,24 +444,37 @@ public class SeedManager {
 					limesurveyQuestionDto.getId(), programmingLanguageStudyVariable);
 		}
 		/**
-		 * 2.3.2. Framework
+		 * 2.3.1.2. Framework
 		 */
-		LimesurveyQuestionDto frameworkQuestion = toolsSurveyQuestionDtos.get(frameworkStudyVariable.getId());
-		List<LimesurveyQuestionDto> frameworkSurveyQuestionDtos = toolsSurveyQuestionDtos.values().stream()
+		LimesurveyQuestionDto frameworkQuestion = devResourcesSurveyQuestionDtos.get(frameworkStudyVariable.getId());
+		List<LimesurveyQuestionDto> frameworkSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == frameworkQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : frameworkSurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
 					limesurveyQuestionDto.getId(), frameworkStudyVariable);
 		}
 		/**
-		 * 2.3.3. Library
+		 * 2.3.1.3. Library
 		 */
-		LimesurveyQuestionDto libraryQuestion = toolsSurveyQuestionDtos.get(libraryStudyVariable.getId());
-		List<LimesurveyQuestionDto> librarySurveyQuestionDtos = toolsSurveyQuestionDtos.values().stream()
+		LimesurveyQuestionDto libraryQuestion = devResourcesSurveyQuestionDtos.get(libraryStudyVariable.getId());
+		List<LimesurveyQuestionDto> librarySurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == libraryQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : librarySurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
 					limesurveyQuestionDto.getId(), libraryStudyVariable);
+		}
+		/**
+		 * 2.3.2. Dev Methodologies
+		 * 
+		 */
+		LimesurveyQuestionDto devMethodologiesQuestion = devResourcesSurveyQuestionDtos
+				.get(devMethodologyStudyVariable.getId());
+		List<LimesurveyQuestionDto> devMethodologiesSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
+				.filter(arg0 -> arg0.getParentQid() == devMethodologiesQuestion.getId())
+				.collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : devMethodologiesSurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), devMethodologyStudyVariable);
 		}
 	}
 }
