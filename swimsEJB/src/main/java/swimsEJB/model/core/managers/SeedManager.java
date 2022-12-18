@@ -219,8 +219,7 @@ public class SeedManager {
 				.createOneStudyVariableClass("indicadoresImpactoMedioambiental",
 						"Indicadores de Impacto Medioambiental");
 		StudyVariableClass otherIndicatorsStudyVariableClass = studyVariableClassManager
-				.createOneStudyVariableClass("otrosIndicadores",
-						"Otros Indicadores");
+				.createOneStudyVariableClass("otrosIndicadores", "Otros Indicadores");
 		StudyVariableClass successFactorsStudyVariableClass = studyVariableClassManager
 				.createOneStudyVariableClass("factoresExito", "Factores de Éxito");
 		StudyVariableClass failureFactorsStudyVariableClass = studyVariableClassManager
@@ -237,26 +236,37 @@ public class SeedManager {
 		/**
 		 * 0.2.1.1. Social Impact Indicators
 		 */
+		StudyVariable organizationNameStudyVariable = studyVariableManager.createOneStudyVariable("nombreEntidadBenef",
+				"Nombre de la entidad beneficiaria", false, false, true, false,
+				socialImpactIndicatorsStudyVariableClass);
+		impactStudyVariables.add(organizationNameStudyVariable);
+
 		StudyVariable employeeNumberStudyVariable = studyVariableManager.createOneStudyVariable("numeroEmpleados",
 				"Número de empleados de la empresa beneficiaria", false, true, false, false,
 				socialImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(employeeNumberStudyVariable);
+
 		StudyVariable companySizeStudyVariable = studyVariableManager.createOneStudyVariable("tamanoEmpresa",
 				"Tamaño de la empresa beneficiaria", false, false, true, false,
 				socialImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(companySizeStudyVariable);
+
 		StudyVariable propiedadCapitalStudyVariable = studyVariableManager.createOneStudyVariable("propiedadCapital",
 				"Propiedad del capital", false, false, true, false, socialImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(propiedadCapitalStudyVariable);
+
 		StudyVariable economyFieldStudyVariable = studyVariableManager.createOneStudyVariable("sectorEconomia",
 				"Sector de la economía", false, false, true, false, socialImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(economyFieldStudyVariable);
+
 		StudyVariable ambitoActuacionStudyVariable = studyVariableManager.createOneStudyVariable("ambitoActuacion",
 				"Ámbito de actuación", false, false, true, false, socialImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(ambitoActuacionStudyVariable);
+
 		StudyVariable ubicacionAfeccionStudyVariable = studyVariableManager.createOneStudyVariable("ubicacionAfeccion",
 				"Ubicación de Afección", false, false, true, false, socialImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(ubicacionAfeccionStudyVariable);
+
 		StudyVariable conceptoEntregaStudyVariable = studyVariableManager.createOneStudyVariable("conceptoEntrega",
 				"Concepto de Entrega del Producto", false, false, true, false,
 				socialImpactIndicatorsStudyVariableClass);
@@ -282,10 +292,10 @@ public class SeedManager {
 		/**
 		 * 0.2.1.4. Other Impact Indicators
 		 */
-		StudyVariable startDateStudyVariable = studyVariableManager.createOneStudyVariable(
-				"fechaInicio", "Fecha de inicio del proyecto", false, true, false, false,
-				naturalEnvironmentImpactIndicatorsStudyVariableClass);
+		StudyVariable startDateStudyVariable = studyVariableManager.createOneStudyVariable("fechaInicio",
+				"Fecha de inicio del proyecto", false, true, false, false, otherIndicatorsStudyVariableClass);
 		impactStudyVariables.add(startDateStudyVariable);
+
 		/*
 		 * 0.2.4. Factors
 		 */
@@ -335,6 +345,36 @@ public class SeedManager {
 				"aseguramtoSatsfacsn", "Satisfacción del cliente", false, false, false, true,
 				successFactorsStudyVariableClass);
 		successFailureFactorsStudyVariables.add(customerSatisfactionStudyVariable);
+		StudyVariable upToDateProjectStatusReportStudyVariable = studyVariableManager.createOneStudyVariable(
+				"reporteProgActualiz", "Reporte de progreso actualizado", false, false, false, true,
+				successFactorsStudyVariableClass);
+		successFailureFactorsStudyVariables.add(upToDateProjectStatusReportStudyVariable);
+		/**
+		 * 0.2.4.2. Failure Factors
+		 */
+		StudyVariable testLackingStudyVariable = studyVariableManager.createOneStudyVariable("faltaPruebas",
+				"Falta de pruebas de software", false, false, false, true, failureFactorsStudyVariableClass);
+		successFailureFactorsStudyVariables.add(testLackingStudyVariable);
+		StudyVariable targetIdentificationLackingStudyVariable = studyVariableManager.createOneStudyVariable(
+				"faltaIdentPobObjet", "Falta de identificación de la población objetivo", false, false, false, true,
+				failureFactorsStudyVariableClass);
+		successFailureFactorsStudyVariables.add(targetIdentificationLackingStudyVariable);
+		StudyVariable requirementChangeStudyVariable = studyVariableManager.createOneStudyVariable("cambioRequisitos",
+				"Cambio de requisitos y especificaciones", false, false, false, true, failureFactorsStudyVariableClass);
+		successFailureFactorsStudyVariables.add(requirementChangeStudyVariable);
+		StudyVariable improperBudgetStudyVariable = studyVariableManager.createOneStudyVariable("presupuestoInsufic",
+				"Presupuesto insuficiente", false, false, false, true, failureFactorsStudyVariableClass);
+		successFailureFactorsStudyVariables.add(improperBudgetStudyVariable);
+		StudyVariable unplannedScopeGrowthStudyVariable = studyVariableManager.createOneStudyVariable(
+				"crecimiInespAlcanc", "Crecimiento inesperado del alcance", false, false, false, true,
+				failureFactorsStudyVariableClass);
+		successFailureFactorsStudyVariables.add(unplannedScopeGrowthStudyVariable);
+		StudyVariable restrictiveToolsStudyVariable = studyVariableManager.createOneStudyVariable("herramientRestric",
+				"Herramientas restrictivas", false, false, false, true, failureFactorsStudyVariableClass);
+		successFailureFactorsStudyVariables.add(restrictiveToolsStudyVariable);
+		StudyVariable managerChangeStudyVariable = studyVariableManager.createOneStudyVariable("cambioGestor",
+				"Cambio de gestor del proyecto", false, false, true, false, failureFactorsStudyVariableClass);
+		successFailureFactorsStudyVariables.add(managerChangeStudyVariable);
 
 		/**
 		 * 0.2.5. Development Resources
@@ -344,7 +384,7 @@ public class SeedManager {
 		 * 0.2.5.1. Development tools
 		 */
 		StudyVariable programmingLanguageStudyVariable = studyVariableManager.createOneStudyVariable(
-				"lenguajeProgramacion", "Lenguaje de Programación", false, false, true, false,
+				"lenguaje", "Lenguaje utilizado", false, false, true, false,
 				devResourcesStudyVariableClass);
 		devResourcesStudyVariables.add(programmingLanguageStudyVariable);
 		StudyVariable frameworkStudyVariable = studyVariableManager.createOneStudyVariable("framework", "Framework",
@@ -353,12 +393,30 @@ public class SeedManager {
 		StudyVariable libraryStudyVariable = studyVariableManager.createOneStudyVariable("libreria", "Librerías", false,
 				false, true, false, devResourcesStudyVariableClass);
 		devResourcesStudyVariables.add(libraryStudyVariable);
+		StudyVariable devEnvironmentStudyVariable = studyVariableManager.createOneStudyVariable("entornoDesarrollo",
+				"Entorno de desarrollo", false, false, true, false, devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(devEnvironmentStudyVariable);
+		StudyVariable dbmsStudyVariable = studyVariableManager.createOneStudyVariable("dbms",
+				"Sistema gestor de base de datos", false, false, true, false, devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(dbmsStudyVariable);
+		StudyVariable deploymentServerStudyVariable = studyVariableManager.createOneStudyVariable("servidorDespliegue",
+				"Servidor de despliegue", false, false, true, false, devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(deploymentServerStudyVariable);
+		StudyVariable deploymentOsStudyVariable = studyVariableManager.createOneStudyVariable("soDespliegue",
+				"Sistema operativo de despliegue", false, false, true, false, devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(deploymentOsStudyVariable);
+		StudyVariable helpfulSoftwareStudyVariable = studyVariableManager.createOneStudyVariable("swApoyo",
+				"Software de apoyo", false, false, true, false, devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(helpfulSoftwareStudyVariable);
+		StudyVariable iaasProviderStudyVariable = studyVariableManager.createOneStudyVariable("iaasProvider",
+				"Proveedor de infraestructura como servicio", false, false, true, false,
+				devResourcesStudyVariableClass);
+		devResourcesStudyVariables.add(iaasProviderStudyVariable);
 		/**
 		 * 0.2.5.2. Development methodologies
 		 */
-		StudyVariable devMethodologyStudyVariable = studyVariableManager.createOneStudyVariable(
-				"metodologiaDesarroll", "Metodología de desarrollo", false, false, true, false,
-				devResourcesStudyVariableClass);
+		StudyVariable devMethodologyStudyVariable = studyVariableManager.createOneStudyVariable("metodologiaDesarroll",
+				"Metodología de desarrollo", false, false, true, false, devResourcesStudyVariableClass);
 		devResourcesStudyVariables.add(devMethodologyStudyVariable);
 
 		/**
@@ -419,7 +477,8 @@ public class SeedManager {
 		/**
 		 * 2.3. Development Resources
 		 */
-		HashMap<String, LimesurveyQuestionDto> devResourcesSurveyQuestionDtos = LimesurveyService.listQuestions(devResourcesSurveyId);
+		HashMap<String, LimesurveyQuestionDto> devResourcesSurveyQuestionDtos = LimesurveyService
+				.listQuestions(devResourcesSurveyId);
 		for (StudyVariable studyVariable : devResourcesStudyVariables) {
 			if (devResourcesSurveyQuestionDtos.get(studyVariable.getId()) == null)
 				throw new Exception("La pregunta correspondiente al recurso " + studyVariable.getName()
@@ -436,8 +495,8 @@ public class SeedManager {
 		 */
 		LimesurveyQuestionDto programmingLanguagesQuestion = devResourcesSurveyQuestionDtos
 				.get(programmingLanguageStudyVariable.getId());
-		List<LimesurveyQuestionDto> programmingLanguagesSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
-				.filter(arg0 -> arg0.getParentQid() == programmingLanguagesQuestion.getId())
+		List<LimesurveyQuestionDto> programmingLanguagesSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
+				.stream().filter(arg0 -> arg0.getParentQid() == programmingLanguagesQuestion.getId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : programmingLanguagesSurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
@@ -464,13 +523,83 @@ public class SeedManager {
 					limesurveyQuestionDto.getId(), libraryStudyVariable);
 		}
 		/**
+		 * 2.3.1.3. Dev Environment
+		 */
+		LimesurveyQuestionDto devEnvironmentQuestion = devResourcesSurveyQuestionDtos
+				.get(devEnvironmentStudyVariable.getId());
+		List<LimesurveyQuestionDto> devEnviromentSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
+				.filter(arg0 -> arg0.getParentQid() == devEnvironmentQuestion.getId()).collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : devEnviromentSurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), devEnvironmentStudyVariable);
+		}
+		/**
+		 * 2.3.1.3. DBMS
+		 */
+		LimesurveyQuestionDto dbmsQuestion = devResourcesSurveyQuestionDtos.get(dbmsStudyVariable.getId());
+		List<LimesurveyQuestionDto> dbmsSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
+				.filter(arg0 -> arg0.getParentQid() == dbmsQuestion.getId()).collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : dbmsSurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), dbmsStudyVariable);
+		}
+		/**
+		 * 2.3.1.3. Deployment Server
+		 */
+		LimesurveyQuestionDto deploymentServerQuestion = devResourcesSurveyQuestionDtos
+				.get(deploymentServerStudyVariable.getId());
+		List<LimesurveyQuestionDto> deploymentServerSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
+				.stream().filter(arg0 -> arg0.getParentQid() == deploymentServerQuestion.getId())
+				.collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : deploymentServerSurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), deploymentServerStudyVariable);
+		}
+		/**
+		 * 2.3.1.3. Deployment OS
+		 */
+		LimesurveyQuestionDto deploymentOsQuestion = devResourcesSurveyQuestionDtos
+				.get(deploymentOsStudyVariable.getId());
+		List<LimesurveyQuestionDto> deploymentOsSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
+				.stream().filter(arg0 -> arg0.getParentQid() == deploymentOsQuestion.getId())
+				.collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : deploymentOsSurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), deploymentOsStudyVariable);
+		}
+		/**
+		 * 2.3.1.3. Helpful Software
+		 */
+		LimesurveyQuestionDto helpfulSwQuestion = devResourcesSurveyQuestionDtos
+				.get(helpfulSoftwareStudyVariable.getId());
+		List<LimesurveyQuestionDto> helpfulSwSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
+				.stream().filter(arg0 -> arg0.getParentQid() == helpfulSwQuestion.getId())
+				.collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : helpfulSwSurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), helpfulSoftwareStudyVariable);
+		}
+		/**
+		 * 2.3.1.3. IAAS Provider 
+		 */
+		LimesurveyQuestionDto iaasProviderQuestion = devResourcesSurveyQuestionDtos
+				.get(iaasProviderStudyVariable.getId());
+		List<LimesurveyQuestionDto> iaasProviderSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
+				.stream().filter(arg0 -> arg0.getParentQid() == iaasProviderQuestion.getId())
+				.collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : iaasProviderSurveyQuestionDtos) {
+			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
+					limesurveyQuestionDto.getId(), iaasProviderStudyVariable);
+		}
+		
+		/**
 		 * 2.3.2. Dev Methodologies
 		 * 
 		 */
 		LimesurveyQuestionDto devMethodologiesQuestion = devResourcesSurveyQuestionDtos
 				.get(devMethodologyStudyVariable.getId());
-		List<LimesurveyQuestionDto> devMethodologiesSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
-				.filter(arg0 -> arg0.getParentQid() == devMethodologiesQuestion.getId())
+		List<LimesurveyQuestionDto> devMethodologiesSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
+				.stream().filter(arg0 -> arg0.getParentQid() == devMethodologiesQuestion.getId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : devMethodologiesSurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
