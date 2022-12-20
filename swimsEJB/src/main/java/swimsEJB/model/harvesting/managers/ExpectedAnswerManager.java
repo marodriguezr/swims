@@ -30,11 +30,11 @@ public class ExpectedAnswerManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ExpectedAnswer createOneExpectedAnswer(Question question, String limesurveyAnswerCode,
+	public ExpectedAnswer createOneExpectedAnswer(Question question, String answer,
 			SurveyAssignment surveyAssignment) throws Exception {
 		ExpectedAnswer expectedAnswer = new ExpectedAnswer();
 		expectedAnswer.setQuestion(question);
-		expectedAnswer.setLimesurveyAnswerCode(limesurveyAnswerCode);
+		expectedAnswer.setAnswer(answer);
 		expectedAnswer.setSurveyAssignment(surveyAssignment);
 		expectedAnswer.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		expectedAnswer.setUpdatedAt(new Timestamp(System.currentTimeMillis()));

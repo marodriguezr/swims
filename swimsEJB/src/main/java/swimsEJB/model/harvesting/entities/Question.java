@@ -17,19 +17,19 @@ public class Question implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="limesurvey_question_id", unique=true, nullable=false)
+	@Column(name="limesurvey_question_id")
 	private Integer limesurveyQuestionId;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="limesurvey_question_title", nullable=false, length=20)
+	@Column(name="limesurvey_question_title")
 	private String limesurveyQuestionTitle;
 
-	@Column(name="limesurvey_survey_id", nullable=false)
+	@Column(name="limesurvey_survey_id")
 	private Integer limesurveySurveyId;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to ExpectedAnswer
@@ -38,12 +38,8 @@ public class Question implements Serializable {
 
 	//bi-directional many-to-one association to StudyVariable
 	@ManyToOne
-	@JoinColumn(name="study_variable_id", nullable=false)
+	@JoinColumn(name="study_variable_id")
 	private StudyVariable studyVariable;
-
-	//bi-directional many-to-one association to UncodedExpectedAnswer
-	@OneToMany(mappedBy="question")
-	private List<UncodedExpectedAnswer> uncodedExpectedAnswers;
 
 	//bi-directional many-to-one association to UnexpectedAnswer
 	@OneToMany(mappedBy="question")
@@ -120,28 +116,6 @@ public class Question implements Serializable {
 
 	public void setStudyVariable(StudyVariable studyVariable) {
 		this.studyVariable = studyVariable;
-	}
-
-	public List<UncodedExpectedAnswer> getUncodedExpectedAnswers() {
-		return this.uncodedExpectedAnswers;
-	}
-
-	public void setUncodedExpectedAnswers(List<UncodedExpectedAnswer> uncodedExpectedAnswers) {
-		this.uncodedExpectedAnswers = uncodedExpectedAnswers;
-	}
-
-	public UncodedExpectedAnswer addUncodedExpectedAnswer(UncodedExpectedAnswer uncodedExpectedAnswer) {
-		getUncodedExpectedAnswers().add(uncodedExpectedAnswer);
-		uncodedExpectedAnswer.setQuestion(this);
-
-		return uncodedExpectedAnswer;
-	}
-
-	public UncodedExpectedAnswer removeUncodedExpectedAnswer(UncodedExpectedAnswer uncodedExpectedAnswer) {
-		getUncodedExpectedAnswers().remove(uncodedExpectedAnswer);
-		uncodedExpectedAnswer.setQuestion(null);
-
-		return uncodedExpectedAnswer;
 	}
 
 	public List<UnexpectedAnswer> getUnexpectedAnswers() {

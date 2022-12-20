@@ -17,26 +17,24 @@ public class ExpectedAnswer implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private Long id;
 
-	@Column(name="created_at", nullable=false)
+	private String answer;
+
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="limesurvey_answer_code", nullable=false, length=5)
-	private String limesurveyAnswerCode;
-
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to Question
 	@ManyToOne
-	@JoinColumn(name="limesurvey_question_id", nullable=false)
+	@JoinColumn(name="limesurvey_question_id")
 	private Question question;
 
 	//bi-directional many-to-one association to SurveyAssignment
 	@ManyToOne
-	@JoinColumn(name="survey_assignment_id", nullable=false)
+	@JoinColumn(name="survey_assignment_id")
 	private SurveyAssignment surveyAssignment;
 
 	public ExpectedAnswer() {
@@ -50,20 +48,20 @@ public class ExpectedAnswer implements Serializable {
 		this.id = id;
 	}
 
+	public String getAnswer() {
+		return this.answer;
+	}
+
+	public void setAnswer(String answer) {
+		this.answer = answer;
+	}
+
 	public Timestamp getCreatedAt() {
 		return this.createdAt;
 	}
 
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
-	}
-
-	public String getLimesurveyAnswerCode() {
-		return this.limesurveyAnswerCode;
-	}
-
-	public void setLimesurveyAnswerCode(String limesurveyAnswerCode) {
-		this.limesurveyAnswerCode = limesurveyAnswerCode;
 	}
 
 	public Timestamp getUpdatedAt() {

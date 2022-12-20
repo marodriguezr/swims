@@ -17,19 +17,17 @@ public class OaiSet implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false, length=2147483647)
 	private String id;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="is_active", nullable=false)
+	@Column(name="is_active")
 	private Boolean isActive;
 
-	@Column(nullable=false, length=2147483647)
 	private String name;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to OaiRecord

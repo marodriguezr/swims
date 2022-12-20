@@ -18,16 +18,15 @@ public class ThesisAssignment implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
-	@Column(name="user_id", nullable=false)
+	@Column(name="user_id")
 	private Integer userId;
 
 	//bi-directional many-to-one association to SurveyAssignment
@@ -36,7 +35,7 @@ public class ThesisAssignment implements Serializable {
 
 	//bi-directional many-to-one association to OaiRecord
 	@ManyToOne
-	@JoinColumn(name="oai_record_id", nullable=false)
+	@JoinColumn(name="oai_record_id")
 	private OaiRecord oaiRecord;
 
 	public ThesisAssignment() {

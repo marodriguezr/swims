@@ -17,26 +17,24 @@ public class UnexpectedAnswer implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private Long id;
 
-	@Column(nullable=false, length=2147483647)
 	private String answer;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to Question
 	@ManyToOne
-	@JoinColumn(name="limesurvey_question_id", nullable=false)
+	@JoinColumn(name="limesurvey_question_id")
 	private Question question;
 
 	//bi-directional many-to-one association to SurveyAssignment
 	@ManyToOne
-	@JoinColumn(name="survey_assignment_id", nullable=false)
+	@JoinColumn(name="survey_assignment_id")
 	private SurveyAssignment surveyAssignment;
 
 	public UnexpectedAnswer() {

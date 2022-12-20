@@ -18,22 +18,21 @@ public class SurveyAssignment implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="is_dispatched", nullable=false)
+	@Column(name="is_dispatched")
 	private Boolean isDispatched;
 
-	@Column(name="limesurvey_survey_id", nullable=false)
+	@Column(name="limesurvey_survey_id")
 	private Integer limesurveySurveyId;
 
-	@Column(name="limesurvey_survey_token", nullable=false, length=2147483647)
+	@Column(name="limesurvey_survey_token")
 	private String limesurveySurveyToken;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to ExpectedAnswer
@@ -42,12 +41,8 @@ public class SurveyAssignment implements Serializable {
 
 	//bi-directional many-to-one association to ThesisAssignment
 	@ManyToOne
-	@JoinColumn(name="thesis_assignment_id", nullable=false)
+	@JoinColumn(name="thesis_assignment_id")
 	private ThesisAssignment thesisAssignment;
-
-	//bi-directional many-to-one association to UncodedExpectedAnswer
-	@OneToMany(mappedBy="surveyAssignment")
-	private List<UncodedExpectedAnswer> uncodedExpectedAnswers;
 
 	//bi-directional many-to-one association to UnexpectedAnswer
 	@OneToMany(mappedBy="surveyAssignment")
@@ -132,28 +127,6 @@ public class SurveyAssignment implements Serializable {
 
 	public void setThesisAssignment(ThesisAssignment thesisAssignment) {
 		this.thesisAssignment = thesisAssignment;
-	}
-
-	public List<UncodedExpectedAnswer> getUncodedExpectedAnswers() {
-		return this.uncodedExpectedAnswers;
-	}
-
-	public void setUncodedExpectedAnswers(List<UncodedExpectedAnswer> uncodedExpectedAnswers) {
-		this.uncodedExpectedAnswers = uncodedExpectedAnswers;
-	}
-
-	public UncodedExpectedAnswer addUncodedExpectedAnswer(UncodedExpectedAnswer uncodedExpectedAnswer) {
-		getUncodedExpectedAnswers().add(uncodedExpectedAnswer);
-		uncodedExpectedAnswer.setSurveyAssignment(this);
-
-		return uncodedExpectedAnswer;
-	}
-
-	public UncodedExpectedAnswer removeUncodedExpectedAnswer(UncodedExpectedAnswer uncodedExpectedAnswer) {
-		getUncodedExpectedAnswers().remove(uncodedExpectedAnswer);
-		uncodedExpectedAnswer.setSurveyAssignment(null);
-
-		return uncodedExpectedAnswer;
 	}
 
 	public List<UnexpectedAnswer> getUnexpectedAnswers() {

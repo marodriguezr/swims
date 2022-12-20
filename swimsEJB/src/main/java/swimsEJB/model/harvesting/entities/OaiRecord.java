@@ -18,46 +18,38 @@ public class OaiRecord implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false, length=2147483647)
 	private String id;
 
-	@Column(nullable=false, length=2147483647)
 	private String contributor;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(nullable=false, length=2147483647)
 	private String creator;
 
-	@Column(nullable=false, length=2147483647)
 	private String description;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="inferred_issue_date", nullable=false)
+	@Column(name="inferred_issue_date")
 	private Date inferredIssueDate;
 
-	@Column(name="is_active", nullable=false)
+	@Column(name="is_active")
 	private Boolean isActive;
 
-	@Column(nullable=false, length=2147483647)
 	private String publisher;
 
-	@Column(nullable=false, length=2147483647)
 	private String subject;
 
-	@Column(nullable=false, length=2147483647)
 	private String title;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
-	@Column(nullable=false, length=2147483647)
 	private String url;
 
 	//bi-directional many-to-one association to OaiSet
 	@ManyToOne
-	@JoinColumn(name="oai_set_id", nullable=false)
+	@JoinColumn(name="oai_set_id")
 	private OaiSet oaiSet;
 
 	//bi-directional many-to-one association to ThesisAssignment
