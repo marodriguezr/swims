@@ -21,6 +21,6 @@
 	<error-page>
 		<exception-type>javax.faces.application.ViewExpiredException</exception-type>
 		<location>/WEB-INF/errorpages/expired.xhtml</location>
-	</error-page>
+	</error-page>	
 
 </web-app>

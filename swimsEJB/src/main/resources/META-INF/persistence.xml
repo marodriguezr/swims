@@ -16,7 +16,6 @@
 		<class>swimsEJB.model.harvesting.entities.StudyVariable</class>
 		<class>swimsEJB.model.harvesting.entities.SurveyAssignment</class>
 		<class>swimsEJB.model.harvesting.entities.ThesisAssignment</class>
-		<class>swimsEJB.model.harvesting.entities.UncodedExpectedAnswer</class>
 		<class>swimsEJB.model.harvesting.entities.UnexpectedAnswer</class>
 	</persistence-unit>
 </persistence>

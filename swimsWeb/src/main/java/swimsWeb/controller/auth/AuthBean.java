@@ -56,6 +56,11 @@ public class AuthBean implements Serializable {
 		return "/index?faces-redirect=true";
 	}
 
+	/**
+	 * Verifies if all of the given paths is available to the user.
+	 * @param requiredWebappPaths
+	 * @return
+	 */
 	public boolean verifyRenderabilityByAllWebappPaths(String... requiredWebappPaths) {
 		if (signInBean.getSignedUserDto() == null)
 			return false;
@@ -69,6 +74,11 @@ public class AuthBean implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Verifies if at least one of the given paths is available to the user.
+	 * @param requiredWebappPaths
+	 * @return
+	 */
 	public boolean verifyRenderabilityByOneWebappPath(String... requiredWebappPaths) {
 		if (signInBean.getSignedUserDto() == null)
 			return false;

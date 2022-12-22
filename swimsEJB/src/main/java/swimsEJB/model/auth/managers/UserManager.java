@@ -1,10 +1,15 @@
 package swimsEJB.model.auth.managers;
 
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import javax.ejb.EJB;
@@ -12,6 +17,8 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import com.opencsv.CSVReader;
 
 import swimsEJB.model.auth.dtos.UserDto;
 import swimsEJB.model.auth.entities.Group;
@@ -45,6 +52,8 @@ public class UserManager {
 	}
 
 	public UserDto UserToUserDto(User user) {
+		if (user == null)
+			return null;
 		UserDto userDto = new UserDto();
 		userDto.setId(user.getId());
 		userDto.setActive(user.getIsActive());
@@ -76,7 +85,7 @@ public class UserManager {
 			throws Exception {
 		if (!EmailValidator.getInstance().isValid(email))
 			throw new Exception("El correo ingresado no es válido, por favor ingrese valores apropiados.");
-		
+
 		User user = new User();
 
 		user.setFirstName(firstName);
@@ -362,4 +371,40 @@ public class UserManager {
 		}
 		return userDtos;
 	}
+
+	public UserDto findOneUserDtoByEmail(String email) {
+		return UserToUserDto((User) daoManager.findOneWhere(User.class, "o.email = '" + email + "'"));
+	}
+
+	public List<UserDto> importUsers(byte[] bytes, List<Integer> groupIds) throws Exception {
+		Path path = java.nio.file.Files.createTempFile("file", ".csv");
+		Files.write(path, bytes);
+		List<List<String>> records = new ArrayList<List<String>>();
+		try (CSVReader csvReader = new CSVReader(new InputStreamReader(new FileInputStream(path.toFile()), "UTF-8"))) {
+			String[] values = null;
+			while ((values = csvReader.readNext()) != null) {
+				records.add(Arrays.asList(values));
+			}
+		}
+		// Expected to be the headers row
+		records.remove(0);
+
+		// Record validation
+		for (List<String> list : records) {
+			if (!EmailValidator.getInstance().isValid(list.get(2))) {
+				throw new Exception("El correo " + list.get(2) + " es inválido.");
+			}
+			if (findOneUserDtoByEmail(list.get(2)) != null) {
+				throw new Exception("El correo " + list.get(2) + " ya se encuentra registrado.");
+			}
+		}
+
+		List<UserDto> createdUserDtos = new ArrayList<>();
+		for (List<String> list : records) {
+			createdUserDtos
+					.add(createOneUserWithGroupIds(list.get(0), list.get(1), list.get(2), list.get(3), groupIds));
+		}
+		return createdUserDtos;
+	}
+
 }

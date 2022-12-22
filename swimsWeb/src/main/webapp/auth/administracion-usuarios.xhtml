@@ -14,9 +14,19 @@
 	</ui:define>
 
 	<ui:define name="content">
+		<script>
+			//<![CDATA[
+			function start() {
+				PF('statusDialog').show();
+			}
+
+			function stop() {
+				PF('statusDialog').hide();
+			}
+			//]]>
+		</script>
 
 		<h:form id="form">
-
 			<p:toolbar>
 				<p:toolbarGroup>
 					<p:commandButton value="Nuevo" icon="pi pi-plus"
@@ -39,6 +49,11 @@
 					</p:commandButton>
 				</p:toolbarGroup>
 				<p:toolbarGroup align="right">
+					<p:commandButton value="Importar" icon="pi pi-download"
+						oncomplete="PF('importDialog').show()" style="margin-right: .5rem"
+						actionListener="#{userManagementBean.openImportDialog()}"
+						update=":dialogs2:import-dialog">
+					</p:commandButton>
 					<p:commandButton value="Refrescar" icon="pi pi-refresh"
 						styleClass="ui-button-secondary"
 						actionListener="#{userManagementBean.onLoad()}" update="@form">
@@ -166,9 +181,10 @@
 								goodLabel="Buena" strongLabel="Fuerte" feedback="true"
 								inline="true" toggleMask="true" redisplay="true"
 								value="#{userManagementBean.password}" id="password"></p:password>
-							<h:outputText styleClass="p-text-light"
-								value="De no ser provista una nueva contraseña, la contraseña anterior será mantenida." />
+							<small>De no ser provista una nueva contraseña, la
+								contraseña anterior será mantenida.</small>
 						</div>
+
 						<div class="p-field">
 							<p:outputLabel for="passwordConfirmation">Confirmación contraseña</p:outputLabel>
 							<p:password style="width: 100%;"
@@ -213,7 +229,9 @@
 						class="ui-button-secondary" type="button" />
 				</f:facet>
 			</p:dialog>
+		</h:form>
 
+		<h:form>
 			<p:confirmDialog widgetVar="inactivateUserDialog" showEffect="fade"
 				width="300" message="¿Está seguro de inactivar este usuario?"
 				header="Confirmación" severity="warn">
@@ -245,6 +263,62 @@
 					styleClass="ui-confirmdialog-no ui-button-secondary"
 					icon="pi pi-times" />
 			</p:confirmDialog>
+		</h:form>
+
+		<h:form id="dialogs2" enctype="multipart/form-data">
+			<p:dialog style="width: 50vw; min-width: 50vw; max-width: 50vw;"
+				header="Importar" showEffect="fade" modal="true"
+				widgetVar="importDialog" id="import-dialog" responsive="true">
+				<p:outputPanel>
+					<div class="p-d-flex p-flex-column">
+						<p:outputLabel styleClass="p-mb-1" for="@next">Plantillas:</p:outputLabel>
+						<div>
+							<p:commandButton styleClass="ui-button-outlined p-mr-2"
+								value="CSV" ajax="false"
+								onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:fileDownload value="#{userManagementBean.csvTemplate}" />
+							</p:commandButton>
+							<p:commandButton styleClass="ui-button-outlined p-mr-2"
+								value="ODS" ajax="false"
+								onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:fileDownload value="#{userManagementBean.odsTemplate}" />
+							</p:commandButton>
+							<p:commandButton styleClass="ui-button-outlined" value="XLSX"
+								ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:fileDownload value="#{userManagementBean.xlsxTemplate}" />
+							</p:commandButton>
+						</div>
+					</div>
+
+					<div class="p-d-flex p-flex-column p-mt-2">
+						<p:outputLabel styleClass="p-mb-1" for="@next">Archivo:</p:outputLabel>
+						<p:fileUpload label="Seleccionar"
+							value="#{userManagementBean.uploadedFile}" mode="simple"
+							skinSimple="true" />
+						<small>Solo archivos CSV son procesables.</small> <br /> <small>Puede
+							exportar archivos ODS y XLSX (Excel) en formato CSV.</small>
+					</div>
+
+					<div class="field p-mt-2">
+						<p:outputLabel styleClass="p-mb-1" for="@next">Grupos:</p:outputLabel>
+						<p:selectManyMenu filter="true" filterMatchMode="contains"
+							showCheckbox="true"
+							value="#{userManagementBean.selectedGroupIds}">
+							<f:selectItems value="#{userManagementBean.groups}" var="group"
+								itemLabel="#{group.name}" itemValue="#{group.id}" />
+						</p:selectManyMenu>
+					</div>
+				</p:outputPanel>
+
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" icon="pi pi-save" ajax="false"
+						actionListener="#{userManagementBean.importActionListener()}"
+						onsuccess="PF('importDialog').hide()" update=":form:dt-users" />
+					<p:commandButton value="Cancelar" icon="pi pi-times"
+						onclick="PF('importDialog').hide()" class="ui-button-secondary"
+						type="button" />
+				</f:facet>
+			</p:dialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

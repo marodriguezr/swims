@@ -46,8 +46,7 @@ public final class WebappPaths {
 	/**
 	 * 1.3. THESIS RECORD ASSIGNMENT
 	 */
-	public static final String HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH = HARVESTING_WEBAPP_PATH
-			+ "/asignacion";
+	public static final String HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH = HARVESTING_WEBAPP_PATH + "/asignacion";
 	/**
 	 * 1.3.1. USER SELECTION
 	 */
@@ -74,6 +73,12 @@ public final class WebappPaths {
 	 */
 	public static final String HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH = HARVESTING_WEBAPP_PATH
 			+ "/extraccion";
+
+	/**
+	 * 1.5 THESIS RECORD MANAGEMENT
+	 */
+	public static final String HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH = HARVESTING_WEBAPP_PATH
+			+ "/administracion-registros-tesis";
 
 	/**
 	 * 3. AUTH MODULE
@@ -128,6 +133,8 @@ public final class WebappPaths {
 		webAppPatHashMap.put("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH", AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH);
 		webAppPatHashMap.put("AUTH_USER_MANAGEMENT_WEBAPP_PATH", AUTH_USER_MANAGEMENT_WEBAPP_PATH);
 		webAppPatHashMap.put("AUTH_UPDATE_PASSWORD_WEBAPP_PATH", AUTH_UPDATE_PASSWORD_WEBAPP_PATH);
+		webAppPatHashMap.put("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH",
+				HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH);
 
 		return webAppPatHashMap;
 	}

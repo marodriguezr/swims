@@ -10,8 +10,13 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
+import org.primefaces.model.file.UploadedFile;
 
 import swimsEJB.model.auth.dtos.UserDto;
 import swimsEJB.model.auth.entities.Group;
@@ -24,10 +29,6 @@ import swimsWeb.utilities.JSFMessages;
 public class UserManagementBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	public UserManagementBean() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@EJB
 	private UserManager userManager;
@@ -44,6 +45,26 @@ public class UserManagementBean implements Serializable {
 	private UserDto selectedUserDto;
 	private String password;
 	private String passwordConfirmation;
+	private UploadedFile uploadedFile;
+	private StreamedContent xlsxTemplate;
+	private StreamedContent odsTemplate;
+	private StreamedContent csvTemplate;
+
+	public UserManagementBean() {
+		// TODO Auto-generated constructor stub
+		xlsxTemplate = DefaultStreamedContent.builder().name("plantilla.xlsx").contentType("text/xlsx")
+				.stream(() -> FacesContext.getCurrentInstance().getExternalContext()
+						.getResourceAsStream("/resources/assets/plantilla.xlsx"))
+				.build();
+		odsTemplate = DefaultStreamedContent.builder().name("plantilla.ods").contentType("text/ods")
+				.stream(() -> FacesContext.getCurrentInstance().getExternalContext()
+						.getResourceAsStream("/resources/assets/plantilla.ods"))
+				.build();
+		csvTemplate = DefaultStreamedContent.builder().name("plantilla.csv").contentType("text/csv")
+				.stream(() -> FacesContext.getCurrentInstance().getExternalContext()
+						.getResourceAsStream("/resources/assets/plantilla.csv"))
+				.build();
+	}
 
 	@PostConstruct
 	public void onLoad() {
@@ -75,6 +96,7 @@ public class UserManagementBean implements Serializable {
 		passwordConfirmation = "";
 
 		this.selectedUserDto = newUserDto;
+		this.selectedGroupIds = new ArrayList<>();
 	}
 
 	public boolean hasSelectedUserDtos() {
@@ -136,6 +158,11 @@ public class UserManagementBean implements Serializable {
 		return "Inactivar";
 	}
 
+	public void openImportDialog() {
+		this.uploadedFile = null;
+		this.selectedGroupIds = new ArrayList<>();
+	}
+
 	public void saveUserDto() {
 		if (!password.equals(passwordConfirmation)) {
 			JSFMessages.WARN("Las contraseñas no coinciden.");
@@ -147,6 +174,7 @@ public class UserManagementBean implements Serializable {
 				return;
 			}
 			try {
+				System.out.println(selectedUserDto.getFirstName());
 				userManager.createOneUserWithGroupIds(selectedUserDto.getFirstName(), selectedUserDto.getLastName(),
 						selectedUserDto.getEmail(), this.password, selectedGroupIds);
 				this.findAllUserDtos();
@@ -164,6 +192,25 @@ public class UserManagementBean implements Serializable {
 					selectedUserDto.getLastName(), selectedUserDto.isActive(), password, selectedGroupIds);
 			this.findAllUserDtos();
 			JSFMessages.INFO("Usuario actualizado de forma exitosa.");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSFMessages.ERROR(e.getMessage());
+		}
+	}
+
+	public void importActionListener() {
+		if (uploadedFile == null) {
+			JSFMessages.WARN("Por favor seleccione un archivo .csv para continuar.");
+			return;
+		}
+		if (!uploadedFile.getContentType().equals("text/csv")) {
+			JSFMessages.WARN("Solo es posible procesar archivos csv.");
+			return;
+		}
+		try {
+			userDtos.addAll(userManager.importUsers(uploadedFile.getContent(), selectedGroupIds));
+			JSFMessages.INFO("Usuarios importados de forma exitosa.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -232,6 +279,38 @@ public class UserManagementBean implements Serializable {
 
 	public void setSelectedGroupIds(List<Integer> selectedGroupIds) {
 		this.selectedGroupIds = selectedGroupIds;
+	}
+
+	public UploadedFile getUploadedFile() {
+		return uploadedFile;
+	}
+
+	public void setUploadedFile(UploadedFile uploadedFile) {
+		this.uploadedFile = uploadedFile;
+	}
+
+	public StreamedContent getXlsxTemplate() {
+		return xlsxTemplate;
+	}
+
+	public void setXlsxTemplate(StreamedContent xlsxTemplate) {
+		this.xlsxTemplate = xlsxTemplate;
+	}
+
+	public StreamedContent getOdsTemplate() {
+		return odsTemplate;
+	}
+
+	public void setOdsTemplate(StreamedContent odsTemplate) {
+		this.odsTemplate = odsTemplate;
+	}
+
+	public StreamedContent getCsvTemplate() {
+		return csvTemplate;
+	}
+
+	public void setCsvTemplate(StreamedContent csvTemplate) {
+		this.csvTemplate = csvTemplate;
 	}
 
 }

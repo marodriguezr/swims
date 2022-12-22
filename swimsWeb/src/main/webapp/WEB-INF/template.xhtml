@@ -56,10 +56,17 @@
 							action="#{oaiSetsManagementBean.loadPage()}"
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH)}">
 						</p:menuitem>
-						<p:menuitem
-							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH)}"
-							icon="pi pi-fw pi-plus" value="Inclusión de Registros OAI"
-							action="#{setSelectionBean.loadPage()}"></p:menuitem>
+						<p:submenu label="Registros OAI" icon="pi pi-copy"
+							rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}">
+							<p:menuitem
+								rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH)}"
+								icon="pi pi-fw pi-plus" value="Inclusión de Registros OAI"
+								action="#{setSelectionBean.loadPage()}"></p:menuitem>
+							<p:menuitem
+								rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}"
+								icon="pi pi-fw pi-eye" value="Administración de Registros OAI"
+								action="#{thesisRecordManagementBean.loadPage()}"></p:menuitem>
+						</p:submenu>
 						<p:menuitem
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH)}"
 							icon="pi pi-fw pi-inbox" value="Asignación de Registros de Tesis"

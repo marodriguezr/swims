@@ -126,6 +126,9 @@ public class SeedManager {
 		Permission thesisRecordDataExtractionPermission = permissionManager.createOnePermission(
 				"Extracción de Datos de Tesis",
 				webappPaths.get("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH"));
+		Permission thesisRecordManagementPermission = permissionManager.createOnePermission(
+				"Administración de Registros de Tesis",
+				webappPaths.get("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH"));
 		/**
 		 * 1.2. AUTH
 		 */
@@ -156,7 +159,7 @@ public class SeedManager {
 		 */
 		groupManager.addPermissionById(thesisRecordManagementGroup.getId(), oaiRecordsInclusionPermission.getId());
 		groupManager.addPermissionById(thesisRecordManagementGroup.getId(), thesisRecordInclussionPermission.getId());
-
+		groupManager.addPermissionById(thesisRecordManagementGroup.getId(), thesisRecordManagementPermission.getId());
 		/**
 		 * 3.3. Thesis Data Extraction Group
 		 */
@@ -383,9 +386,8 @@ public class SeedManager {
 		/**
 		 * 0.2.5.1. Development tools
 		 */
-		StudyVariable programmingLanguageStudyVariable = studyVariableManager.createOneStudyVariable(
-				"lenguaje", "Lenguaje utilizado", false, false, true, false,
-				devResourcesStudyVariableClass);
+		StudyVariable programmingLanguageStudyVariable = studyVariableManager.createOneStudyVariable("lenguaje",
+				"Lenguaje utilizado", false, false, true, false, devResourcesStudyVariableClass);
 		devResourcesStudyVariables.add(programmingLanguageStudyVariable);
 		StudyVariable frameworkStudyVariable = studyVariableManager.createOneStudyVariable("framework", "Framework",
 				false, false, true, false, devResourcesStudyVariableClass);
@@ -560,9 +562,8 @@ public class SeedManager {
 		 */
 		LimesurveyQuestionDto deploymentOsQuestion = devResourcesSurveyQuestionDtos
 				.get(deploymentOsStudyVariable.getId());
-		List<LimesurveyQuestionDto> deploymentOsSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
-				.stream().filter(arg0 -> arg0.getParentQid() == deploymentOsQuestion.getId())
-				.collect(Collectors.toList());
+		List<LimesurveyQuestionDto> deploymentOsSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
+				.filter(arg0 -> arg0.getParentQid() == deploymentOsQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : deploymentOsSurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
 					limesurveyQuestionDto.getId(), deploymentOsStudyVariable);
@@ -572,26 +573,24 @@ public class SeedManager {
 		 */
 		LimesurveyQuestionDto helpfulSwQuestion = devResourcesSurveyQuestionDtos
 				.get(helpfulSoftwareStudyVariable.getId());
-		List<LimesurveyQuestionDto> helpfulSwSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
-				.stream().filter(arg0 -> arg0.getParentQid() == helpfulSwQuestion.getId())
-				.collect(Collectors.toList());
+		List<LimesurveyQuestionDto> helpfulSwSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
+				.filter(arg0 -> arg0.getParentQid() == helpfulSwQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : helpfulSwSurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
 					limesurveyQuestionDto.getId(), helpfulSoftwareStudyVariable);
 		}
 		/**
-		 * 2.3.1.3. IAAS Provider 
+		 * 2.3.1.3. IAAS Provider
 		 */
 		LimesurveyQuestionDto iaasProviderQuestion = devResourcesSurveyQuestionDtos
 				.get(iaasProviderStudyVariable.getId());
-		List<LimesurveyQuestionDto> iaasProviderSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
-				.stream().filter(arg0 -> arg0.getParentQid() == iaasProviderQuestion.getId())
-				.collect(Collectors.toList());
+		List<LimesurveyQuestionDto> iaasProviderSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
+				.filter(arg0 -> arg0.getParentQid() == iaasProviderQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : iaasProviderSurveyQuestionDtos) {
 			questionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
 					limesurveyQuestionDto.getId(), iaasProviderStudyVariable);
 		}
-		
+
 		/**
 		 * 2.3.2. Dev Methodologies
 		 * 
