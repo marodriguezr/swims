@@ -122,7 +122,7 @@
 					<div class="p-field">
 						<p:panel
 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.titles.size() gt 1}"
-							header="Títulos" toggleable="true" collapsed="true">
+							header="Títulos" toggleable="true" collapsed="false">
 							<p:dataScroller
 								value="#{recordsSelectionBean.selectedOaiRecordDto.titles}"
 								var="title">
@@ -142,7 +142,7 @@
 					<div class="p-field">
 						<p:panel
 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.creators.size() gt 1}"
-							header="Autores" toggleable="true" collapsed="true">
+							header="Autores" toggleable="true" collapsed="false">
 							<p:dataScroller
 								value="#{recordsSelectionBean.selectedOaiRecordDto.creators}"
 								var="iterable">
@@ -162,7 +162,7 @@
 					<div class="p-field">
 						<p:panel
 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.subjects.size() gt 1}"
-							header="Palabras clave" toggleable="true" collapsed="true">
+							header="Palabras clave" toggleable="true" collapsed="false">
 							<p:dataScroller
 								value="#{recordsSelectionBean.selectedOaiRecordDto.subjects}"
 								var="iterable">
@@ -182,7 +182,7 @@
 					<div class="p-field">
 						<p:panel
 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.descriptions.size() gt 1}"
-							header="Descripciones" toggleable="true" collapsed="true">
+							header="Descripciones" toggleable="true" collapsed="false">
 							<p:dataScroller
 								value="#{recordsSelectionBean.selectedOaiRecordDto.descriptions}"
 								var="iterable">
@@ -202,7 +202,7 @@
 					<div class="p-field">
 						<p:panel
 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.contributors.size() gt 1}"
-							header="Directores" toggleable="true" collapsed="true">
+							header="Directores" toggleable="true" collapsed="false">
 							<p:dataScroller
 								value="#{recordsSelectionBean.selectedOaiRecordDto.contributors}"
 								var="iterable">
@@ -231,7 +231,7 @@
 					<div class="p-field">
 						<p:panel
 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.identifiers.size() gt 1}"
-							header="Identificadores" toggleable="true" collapsed="true">
+							header="Identificadores" toggleable="true" collapsed="false">
 							<p:dataScroller
 								value="#{recordsSelectionBean.selectedOaiRecordDto.identifiers}"
 								var="iterable">
