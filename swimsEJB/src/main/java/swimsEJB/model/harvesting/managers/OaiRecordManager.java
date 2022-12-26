@@ -148,21 +148,24 @@ public class OaiRecordManager {
 		return oaiRecordDtos;
 	}
 
-	public List<OaiRecordDto> removeDuplicateOaiRecordDtos(List<OaiRecordDto> oaiRecordDtos,
-			List<OaiRecordDto> oaiRecordDtos2) {
-		HashMap<String, OaiRecordDto> oaiRecordDtoHashMap = new HashMap<>();
-		for (OaiRecordDto oaiRecordDto : oaiRecordDtos) {
-			oaiRecordDtoHashMap.put(oaiRecordDto.getId(), oaiRecordDto);
+	public List<OaiRecordDto> removeDuplicateOaiRecordDtos(List<OaiRecordDto> existentOaiRecordDtos,
+			List<OaiRecordDto> newOaiRecordDtos) {
+		HashMap<String, OaiRecordDto> existentOaiRecordDtosMap = new HashMap<>();
+		for (OaiRecordDto oaiRecordDto : existentOaiRecordDtos) {
+			existentOaiRecordDtosMap.put(oaiRecordDto.getId(), oaiRecordDto);
 		}
 
-		List<OaiRecordDto> oaiRecordDtos3 = new ArrayList<OaiRecordDto>();
-		for (OaiRecordDto oaiRecordDto : oaiRecordDtos2) {
-			if (oaiRecordDtoHashMap.containsKey(oaiRecordDto.getId()))
+		HashMap<String, OaiRecordDto> uniqueOaiRecordDtosMap = new HashMap<>();
+		for (OaiRecordDto oaiRecordDto : newOaiRecordDtos) {
+			if (existentOaiRecordDtosMap.containsKey(oaiRecordDto.getId()))
 				continue;
-			oaiRecordDtos3.add(oaiRecordDto);
+			if (uniqueOaiRecordDtosMap.containsKey(oaiRecordDto.getId()))
+				continue;
+			uniqueOaiRecordDtosMap.put(oaiRecordDto.getId(), oaiRecordDto);
+
 		}
 
-		return oaiRecordDtos3;
+		return new ArrayList<OaiRecordDto>(uniqueOaiRecordDtosMap.values());
 	}
 
 	public String fetchOaiStringByOaiRecordId(String oaiRecordId) throws Exception {
@@ -474,7 +477,8 @@ public class OaiRecordManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<OaiRecord> findAllUnassignedOaiRecordsByLimesurveySurveyDtos(List<LimesurveySurveyDto> availableLimesurveySurveyDtos) throws Exception {
+	public List<OaiRecord> findAllUnassignedOaiRecordsByLimesurveySurveyDtos(
+			List<LimesurveySurveyDto> availableLimesurveySurveyDtos) throws Exception {
 		EntityManager entityManager = daoManager.getEntityManager();
 		String queryString = "select or2.id from harvesting.oai_records or2 except ";
 		for (int i = 0; i < availableLimesurveySurveyDtos.size(); i++) {
