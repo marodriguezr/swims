@@ -1,4 +1,4 @@
-package swimsWeb.controller;
+package swimsWeb.controllers;
 
 import java.io.IOException;
 import java.io.Serializable;

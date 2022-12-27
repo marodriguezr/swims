@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvesting;
+package swimsWeb.controllers.harvesting;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,8 +19,8 @@ import swimsEJB.model.harvesting.managers.SurveyAssignmentManager;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsEJB.model.harvesting.services.LimesurveyService;
-import swimsWeb.controller.auth.SignInBean;
-import swimsWeb.controller.harvesting.thesis_record_assignment.ThesisSelectionBean;
+import swimsWeb.controllers.auth.SignInBean;
+import swimsWeb.controllers.harvesting.thesis_record_assignment.ThesisSelectionBean;
 import swimsWeb.utilities.JSFMessages;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH;

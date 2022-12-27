@@ -1,4 +1,4 @@
-package swimsWeb.controller.auth;
+package swimsWeb.controllers.auth;
 
 import static swimsWeb.constants.WebappPaths.AUTH_UPDATE_PASSWORD_WEBAPP_PATH;
 import static swimsWeb.constants.WebappPaths.SIGN_IN_WEBAPP_PATH;

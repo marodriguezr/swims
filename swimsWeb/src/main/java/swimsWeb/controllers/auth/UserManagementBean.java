@@ -1,4 +1,4 @@
-package swimsWeb.controller.auth;
+package swimsWeb.controllers.auth;
 
 import static swimsWeb.constants.WebappPaths.AUTH_USER_MANAGEMENT_WEBAPP_PATH;
 

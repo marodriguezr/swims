@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvesting.thesis_record_assignment;
+package swimsWeb.controllers.harvesting.thesis_record_assignment;
 
 import java.io.Serializable;
 import java.util.List;

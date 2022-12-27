@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvesting.oai_records_inclusion;
+package swimsWeb.controllers.harvesting.oai_records_inclusion;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH;
 import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH;

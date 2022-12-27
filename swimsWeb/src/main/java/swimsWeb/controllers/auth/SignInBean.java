@@ -1,4 +1,4 @@
-package swimsWeb.controller.auth;
+package swimsWeb.controllers.auth;
 
 import java.io.Serializable;
 

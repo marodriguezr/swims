@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvesting;
+package swimsWeb.controllers.harvesting;
 
 import java.io.Serializable;
 import java.util.List;

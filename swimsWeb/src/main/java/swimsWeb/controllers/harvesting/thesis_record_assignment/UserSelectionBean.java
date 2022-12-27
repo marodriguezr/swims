@@ -1,4 +1,4 @@
-package swimsWeb.controller.harvesting.thesis_record_assignment;
+package swimsWeb.controllers.harvesting.thesis_record_assignment;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_ASSIGNMENT_USER_SELECTION_WEBAPP_PATH;
 import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH;

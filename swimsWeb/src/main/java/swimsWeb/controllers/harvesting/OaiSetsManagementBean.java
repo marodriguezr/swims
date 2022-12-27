@@ -1,7 +1,7 @@
 /**
  * 
  */
-package swimsWeb.controller.harvesting;
+package swimsWeb.controllers.harvesting;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH;
 

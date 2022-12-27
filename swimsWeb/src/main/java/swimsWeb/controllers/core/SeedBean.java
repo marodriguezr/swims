@@ -1,4 +1,4 @@
-package swimsWeb.controller.core;
+package swimsWeb.controllers.core;
 
 import static swimsWeb.constants.WebappPaths.INDEX_WEBAPP_PATH;
 
