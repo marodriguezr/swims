@@ -28,6 +28,7 @@
 		<finalName>${project.parent.artifactId}-${project.version}</finalName>
 		<plugins>
 			<plugin>
+				<?m2e execute onConfiguration,onIncremental?>
 				<artifactId>maven-ear-plugin</artifactId>
 				<configuration>
 					<archive>

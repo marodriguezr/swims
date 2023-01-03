@@ -25,7 +25,8 @@
 						<p:outputLabel for="currentPassword">Contraseña actual</p:outputLabel>
 						<p:password style="width: 100%;" id="currentPassword"
 							toggleMask="true" value="#{updatePasswordBean.currentPassword}"
-							required="true" />
+							required="true"
+							requiredMessage="Debe ingresar su contraseña actual." />
 					</div>
 					<div class="p-field">
 						<p:outputLabel for="newPassword">Contraseña nueva</p:outputLabel>
@@ -33,7 +34,8 @@
 							goodLabel="Buena" strongLabel="Fuerte" feedback="true"
 							inline="true" toggleMask="true" redisplay="true"
 							value="#{updatePasswordBean.newPassword}" required="true"
-							id="newPassword"></p:password>
+							id="newPassword"
+							requiredMessage="Debe ingresar su contraseña nueva."></p:password>
 					</div>
 					<div class="p-field">
 						<p:outputLabel for="newPasswordConfirmation">Confirmación contraseña nueva</p:outputLabel>
@@ -41,7 +43,8 @@
 							goodLabel="Buena" strongLabel="Fuerte" feedback="true"
 							inline="true" toggleMask="true" redisplay="true"
 							value="#{updatePasswordBean.newPasswordConfirmation}"
-							required="true" id="newPasswordConfirmation"></p:password>
+							required="true" id="newPasswordConfirmation"
+							requiredMessage="Debe ingresar la confirmación de su contraseña nueva."></p:password>
 					</div>
 				</div>
 				<f:facet name="footer">

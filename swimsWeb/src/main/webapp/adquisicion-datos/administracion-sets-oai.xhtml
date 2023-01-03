@@ -23,12 +23,12 @@
 				<div class="ui-fluid">
 					<div class="p-field">
 						<p:outputLabel for="name">Nombre</p:outputLabel>
-						<p:inputText value="#{oaiSetsManagementBean.name}" id="name" required="true" />
+						<p:inputText value="#{oaiSetsManagementBean.name}" id="name" required="true" requiredMessage="Debe ingresar un Nombre del Set de Tesis."/>
 					</div>
 					<div class="p-field">
 						<p:outputLabel for="identifier">Identificador</p:outputLabel>
 						<p:inputText id="identifier" value="#{oaiSetsManagementBean.identifier}"
-							required="true" />
+							required="true" requiredMessage="Debe ingresar un Identificador."/>
 					</div>
 				</div>
 				<f:facet name="footer">

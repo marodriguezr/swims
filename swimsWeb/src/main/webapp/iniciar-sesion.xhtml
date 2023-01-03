@@ -24,12 +24,14 @@
 					<div class="p-field">
 						<p:outputLabel for="email">Correo electrónico</p:outputLabel>
 						<p:inputText value="#{signInBean.email}" id="email"
-							required="true" />
+							required="true"
+							requiredMessage="Debe ingresar su Correo Electrónico." />
 					</div>
 					<div class="p-field">
 						<p:outputLabel for="password">Contraseña</p:outputLabel>
 						<p:password style="width: 100%;" id="password" toggleMask="true"
-							value="#{signInBean.password}" required="true" />
+							value="#{signInBean.password}" required="true"
+							requiredMessage="Debe ingresar su Contraseña." />
 					</div>
 				</div>
 				<f:facet name="footer">

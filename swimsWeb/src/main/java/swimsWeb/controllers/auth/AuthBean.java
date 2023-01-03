@@ -33,7 +33,7 @@ public class AuthBean implements Serializable {
 	}
 
 	public String onPageLoad() {
-//		Checks whether if the user is requesting any of its accessible paths
+		// Checks whether if the user is requesting any of its accessible paths
 		if (signInBean.getSignedUserDto() == null) {
 			JSFMessages.ERROR("Acceso no permitido");
 			return "/iniciar-sesion?faces-redirect=true";
@@ -58,6 +58,7 @@ public class AuthBean implements Serializable {
 
 	/**
 	 * Verifies if all of the given paths is available to the user.
+	 * 
 	 * @param requiredWebappPaths
 	 * @return
 	 */
@@ -76,6 +77,7 @@ public class AuthBean implements Serializable {
 
 	/**
 	 * Verifies if at least one of the given paths is available to the user.
+	 * 
 	 * @param requiredWebappPaths
 	 * @return
 	 */
