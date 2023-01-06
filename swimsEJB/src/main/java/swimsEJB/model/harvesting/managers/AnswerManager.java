@@ -35,8 +35,8 @@ public class AnswerManager {
 			throw new Exception("Debe ingresar una respuesta.");
 		if (studyVariable == null)
 			throw new Exception("Debe proveer una variable de estudio.");
-		if (answer.length() > 64)
-			throw new Exception("Debe ingresar 64 caracteres o menos como respuesta.");
+		if (answer.length() > 256)
+			throw new Exception("Debe ingresar 256 caracteres o menos como respuesta.");
 
 		Answer answer2 = new Answer();
 

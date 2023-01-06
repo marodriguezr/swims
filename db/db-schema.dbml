@@ -123,7 +123,7 @@ table harvesting.limesurvey_unexpected_answers {
 
 table harvesting.answers {
   id int [pk, increment]
-  answer varchar(64) [not null]
+  answer varchar(256) [not null]
   study_variable_id varchar(32) [not null, ref:> harvesting.study_variables.id]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]

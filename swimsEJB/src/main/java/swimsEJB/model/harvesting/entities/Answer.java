@@ -4,34 +4,33 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
-
 /**
  * The persistent class for the answers database table.
  * 
  */
 @Entity
-@Table(name="answers", schema="harvesting")
-@NamedQuery(name="Answer.findAll", query="SELECT a FROM Answer a")
+@Table(name = "answers", schema = "harvesting")
+@NamedQuery(name = "Answer.findAll", query = "SELECT a FROM Answer a")
 public class Answer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(unique = true, nullable = false)
 	private Integer id;
 
-	@Column(nullable=false, length=64)
+	@Column(nullable = false, length = 256)
 	private String answer;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name = "created_at", nullable = false)
 	private Timestamp createdAt;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name = "updated_at", nullable = false)
 	private Timestamp updatedAt;
 
-	//bi-directional many-to-one association to StudyVariable
+	// bi-directional many-to-one association to StudyVariable
 	@ManyToOne
-	@JoinColumn(name="study_variable_id", nullable=false)
+	@JoinColumn(name = "study_variable_id", nullable = false)
 	private StudyVariable studyVariable;
 
 	public Answer() {
