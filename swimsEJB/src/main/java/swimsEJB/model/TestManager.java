@@ -84,9 +84,9 @@ public class TestManager {
 		try {
 			EntityManager entityManager = daoManager.getEntityManager();
 			Query query = entityManager.createNativeQuery(
-					"select or2.title, sv.name, q.limesurvey_question_title, r.limesurvey_answer_code "
-							+ "from harvesting.study_variables sv, harvesting.questions q, harvesting.expected_answers r, harvesting.oai_records or2, harvesting.survey_assignments sa, harvesting.thesis_assignments ta "
-							+ "where sv.id = q.study_variable_id and q.limesurvey_question_id = r.limesurvey_question_id and r.survey_assignment_id = sa.id and sa.thesis_assignment_id = ta.id  and ta.oai_record_id = or2.id "
+					"select or2.title, sv.name, q.limesurvey_question_title, r.answer "
+							+ "from harvesting.study_variables sv, harvesting.limesurvey_questions q, harvesting.limesurvey_expected_answers r, harvesting.oai_records or2, harvesting.limesurvey_survey_assignments sa, harvesting.thesis_assignments ta "
+							+ "where sv.id = q.study_variable_id and q.limesurvey_question_id = r.limesurvey_question_id and r.limesurvey_survey_assignment_id = sa.id and sa.thesis_assignment_id = ta.id  and ta.oai_record_id = or2.id "
 							+ "order by r.created_at ");
 			List<Object[]> objects = query.getResultList();
 			List<CompoundTestRegister> compoundTestRegisters = new ArrayList<>();
@@ -103,9 +103,9 @@ public class TestManager {
 			return new ArrayList<>();
 		}
 	}
-	
+
 	public void test4(byte[] bytes) {
-		
+
 	}
 
 }
