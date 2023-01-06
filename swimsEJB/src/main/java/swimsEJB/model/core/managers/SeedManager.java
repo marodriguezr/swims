@@ -26,11 +26,14 @@ import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
 import swimsEJB.model.harvesting.entities.StudyVariable;
 import swimsEJB.model.harvesting.entities.StudyVariableClass;
 import swimsEJB.model.harvesting.managers.OaiSetManager;
+import swimsEJB.model.harvesting.managers.QuestionManager;
 import swimsEJB.model.harvesting.managers.LimesurveyQuestionManager;
 import swimsEJB.model.harvesting.managers.StudyVariableClassManager;
 import swimsEJB.model.harvesting.managers.StudyVariableManager;
 import swimsEJB.model.harvesting.services.LimesurveyService;
 import swimsEJB.utilities.ResourceUtilities;
+
+import static swimsEJB.constants.StudyVariables.*;
 
 /**
  * Session Bean implementation class CoreManager
@@ -55,6 +58,8 @@ public class SeedManager {
 	private StudyVariableManager studyVariableManager;
 	@EJB
 	private LimesurveyQuestionManager limesurveyQuestionManager;
+	@EJB
+	private QuestionManager questionManager;
 
 	/**
 	 * Default constructor.
@@ -239,10 +244,11 @@ public class SeedManager {
 		/**
 		 * 0.2.1.1. Social Impact Indicators
 		 */
-		StudyVariable organizationNameStudyVariable = studyVariableManager.createOneStudyVariable("nombreEntidadBenef",
-				"Nombre de la entidad beneficiaria", false, false, true, false,
+		// Different to other study variables wont be added as part of a limesruvey
+		// question as its mean to be self managed or managed outside of limesurvey.
+		StudyVariable beneficairyEntityStudyVariable = studyVariableManager.createOneStudyVariable(
+				BENEFICIARY_NAME_STUDY_VARIABLE_NAME, "Nombre de la entidad beneficiaria", false, false, true, false,
 				socialImpactIndicatorsStudyVariableClass);
-		impactStudyVariables.add(organizationNameStudyVariable);
 
 		StudyVariable employeeNumberStudyVariable = studyVariableManager.createOneStudyVariable("numeroEmpleados",
 				"Número de empleados de la empresa beneficiaria", false, true, false, false,
@@ -446,7 +452,7 @@ public class SeedManager {
 				.importSurvey(new String(encoder.encode(inputStream.readAllBytes()), StandardCharsets.UTF_8));
 		LimesurveyService.activateSurveyWithParticipants(devResourcesSurveyId);
 		/**
-		 * 2. Questions
+		 * 2. Limesurvey Questions
 		 */
 		/**
 		 * 2.1. Impact Indicator Questions
@@ -459,8 +465,8 @@ public class SeedManager {
 						+ " no se encuentra registrada.");
 			LimesurveyQuestionDto limesurveyQuestionDto = impactIndicatorsSurveyQuestionDtosMap
 					.get(studyVariable.getId());
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), studyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), studyVariable);
 		}
 		/**
 		 * 2.2. Success or Failure Factors
@@ -473,8 +479,8 @@ public class SeedManager {
 						+ " no se encuentra registrada.");
 			LimesurveyQuestionDto limesurveyQuestionDto = successFailureFactorsSurveyQuestionDtos
 					.get(studyVariable.getId());
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), studyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), studyVariable);
 		}
 		/**
 		 * 2.3. Development Resources
@@ -486,8 +492,8 @@ public class SeedManager {
 				throw new Exception("La pregunta correspondiente al recurso " + studyVariable.getName()
 						+ " no se encuentra registrada.");
 			LimesurveyQuestionDto limesurveyQuestionDto = devResourcesSurveyQuestionDtos.get(studyVariable.getId());
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), studyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), studyVariable);
 		}
 		/**
 		 * 2.3.1. Dev Tools
@@ -501,8 +507,8 @@ public class SeedManager {
 				.stream().filter(arg0 -> arg0.getParentQid() == programmingLanguagesQuestion.getId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : programmingLanguagesSurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), programmingLanguageStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), programmingLanguageStudyVariable);
 		}
 		/**
 		 * 2.3.1.2. Framework
@@ -511,8 +517,8 @@ public class SeedManager {
 		List<LimesurveyQuestionDto> frameworkSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == frameworkQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : frameworkSurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), frameworkStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), frameworkStudyVariable);
 		}
 		/**
 		 * 2.3.1.3. Library
@@ -521,8 +527,8 @@ public class SeedManager {
 		List<LimesurveyQuestionDto> librarySurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == libraryQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : librarySurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), libraryStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), libraryStudyVariable);
 		}
 		/**
 		 * 2.3.1.3. Dev Environment
@@ -532,8 +538,8 @@ public class SeedManager {
 		List<LimesurveyQuestionDto> devEnviromentSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == devEnvironmentQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : devEnviromentSurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), devEnvironmentStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), devEnvironmentStudyVariable);
 		}
 		/**
 		 * 2.3.1.3. DBMS
@@ -542,8 +548,8 @@ public class SeedManager {
 		List<LimesurveyQuestionDto> dbmsSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == dbmsQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : dbmsSurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), dbmsStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), dbmsStudyVariable);
 		}
 		/**
 		 * 2.3.1.3. Deployment Server
@@ -554,8 +560,8 @@ public class SeedManager {
 				.stream().filter(arg0 -> arg0.getParentQid() == deploymentServerQuestion.getId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : deploymentServerSurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), deploymentServerStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), deploymentServerStudyVariable);
 		}
 		/**
 		 * 2.3.1.3. Deployment OS
@@ -565,8 +571,8 @@ public class SeedManager {
 		List<LimesurveyQuestionDto> deploymentOsSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == deploymentOsQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : deploymentOsSurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), deploymentOsStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), deploymentOsStudyVariable);
 		}
 		/**
 		 * 2.3.1.3. Helpful Software
@@ -576,8 +582,8 @@ public class SeedManager {
 		List<LimesurveyQuestionDto> helpfulSwSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == helpfulSwQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : helpfulSwSurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), helpfulSoftwareStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), helpfulSoftwareStudyVariable);
 		}
 		/**
 		 * 2.3.1.3. IAAS Provider
@@ -587,8 +593,8 @@ public class SeedManager {
 		List<LimesurveyQuestionDto> iaasProviderSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
 				.filter(arg0 -> arg0.getParentQid() == iaasProviderQuestion.getId()).collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : iaasProviderSurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), iaasProviderStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), iaasProviderStudyVariable);
 		}
 
 		/**
@@ -601,8 +607,18 @@ public class SeedManager {
 				.stream().filter(arg0 -> arg0.getParentQid() == devMethodologiesQuestion.getId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : devMethodologiesSurveyQuestionDtos) {
-			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto.getSid(),
-					limesurveyQuestionDto.getId(), devMethodologyStudyVariable);
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), devMethodologyStudyVariable);
 		}
+
+		/**
+		 * 3. Non Limesurvey Managed Questions
+		 */
+		/**
+		 * 3.1. Impact Indicator Questions
+		 */
+		questionManager.createOneQuestion("Seleccione el nombre de la entidad beneficiaria",
+				beneficairyEntityStudyVariable);
 	}
+
 }

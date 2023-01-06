@@ -13,11 +13,12 @@ import javax.inject.Named;
 import org.primefaces.model.ResponsiveOption;
 
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
-import swimsEJB.model.harvesting.entities.Beneficiary;
+import swimsEJB.model.harvesting.entities.Answer;
 import swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
 import swimsEJB.model.harvesting.managers.LimesurveySurveyAssignmentManager;
-import swimsEJB.model.harvesting.managers.BeneficiaryManager;
+import swimsEJB.model.harvesting.managers.AnswerManager;
+import swimsEJB.model.harvesting.managers.ExpectedAnswerManager;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsEJB.model.harvesting.services.LimesurveyService;
@@ -26,6 +27,7 @@ import swimsWeb.controllers.harvesting.thesis_record_assignment.ThesisSelectionB
 import swimsWeb.utilities.JSFMessages;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH;
+import static swimsEJB.constants.StudyVariables.BENEFICIARY_NAME_STUDY_VARIABLE_NAME;
 
 @Named
 @SessionScoped
@@ -39,16 +41,19 @@ public class ExtractionBean implements Serializable {
 	private LimesurveySurveyAssignmentManager limesurveySurveyAssignmentManager;
 	@EJB
 	private OaiRecordManager oaiRecordManager;
-	@EJB
-	private BeneficiaryManager beneficiaryManager;
+
 	@Inject
 	private ThesisSelectionBean thesisSelectionBean;
 	@Inject
 	private SignInBean signInBean;
 	private List<ResponsiveOption> responsiveOptions;
-	private List<Beneficiary> beneficiaries;
+	private List<Answer> beneficiaries;
 	private String beneficiaryName;
 	private Integer selectedBeneficiaryId;
+	@EJB
+	private ExpectedAnswerManager expectedAnswerManager;
+	@EJB
+	private AnswerManager answerManager;
 
 	public ExtractionBean() {
 		// TODO Auto-generated constructor stub
@@ -79,7 +84,7 @@ public class ExtractionBean implements Serializable {
 	}
 
 	public void loadBeneficiaries() {
-		this.beneficiaries = beneficiaryManager.findAllBeneficiaries();
+		this.beneficiaries = answerManager.findManyAnswersByStudyVariableId(BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
 	}
 
 	public void openNewBeneficiaryDialog() {
@@ -110,8 +115,7 @@ public class ExtractionBean implements Serializable {
 
 	public void dispatchSurveyActionListener(LimesurveySurveyAssignment surveyAssignment) {
 		try {
-			LimesurveySurveyAssignment dispatchedSurveyAssignment = limesurveySurveyAssignmentManager
-					.dispatchSurvey(surveyAssignment);
+			limesurveySurveyAssignmentManager.dispatchSurvey(surveyAssignment);
 			loadThesisAssignments();
 //			this.thesisAssignments.removeIf(arg0 -> arg0.getId() == dispatchedSurveyAssignment.getId());
 			JSFMessages.INFO("Ecuesta registrada de forma exitosa.");
@@ -132,6 +136,22 @@ public class ExtractionBean implements Serializable {
 		}
 	}
 
+	public void dispatchBeneficiaryAnswer(ThesisAssignment thesisAssignment) {
+		if (this.selectedBeneficiaryId == null) {
+			JSFMessages.WARN("Debe seleccionar una Entidad Beneficiaria.");
+			return;
+		}
+		try {
+			expectedAnswerManager.dispatchBeneficiaryAnswer(this.selectedBeneficiaryId.toString(), thesisAssignment);
+			JSFMessages.INFO("Nombre de la entidad beneficiaria registrado de forma exitosa.");
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSFMessages.ERROR(e.getMessage());
+		}
+	}
+
 	public LimesurveySurveyDto findLimesurveySurveyById(int sid) {
 		return thesisSelectionBean.getLimesurveySurveyDtos().stream().filter(arg0 -> arg0.getSid() == sid).findFirst()
 				.orElse(null);
@@ -139,14 +159,19 @@ public class ExtractionBean implements Serializable {
 
 	public void createNewBeneficiary() {
 		try {
-			Beneficiary createdBeneficiary = this.beneficiaryManager.createOneBeneficiary(beneficiaryName);
+			Answer createdBeneficiary = this.answerManager.createOneAnswer(beneficiaryName,
+					BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
 			this.beneficiaries.add(createdBeneficiary);
 			JSFMessages.INFO("Beneficiario creado de forma exitosa.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			JSFMessages.ERROR(e.getMessage());
+			JSFMessages.ERROR("La entidad Beneficiaria ya exite.");
 		}
+	}
+
+	public boolean isBeneficiaryStudyVariableAnsweredForThesisAssignent(ThesisAssignment thesisAssignment) {
+		return expectedAnswerManager.isBeneficiaryStudyVariableAnsweredForThesisAssignent(thesisAssignment);
 	}
 
 	public List<ThesisAssignment> getThesisAssignments() {
@@ -165,14 +190,6 @@ public class ExtractionBean implements Serializable {
 		this.responsiveOptions = responsiveOptions;
 	}
 
-	public List<Beneficiary> getBeneficiaries() {
-		return beneficiaries;
-	}
-
-	public void setBeneficiaries(List<Beneficiary> beneficiaries) {
-		this.beneficiaries = beneficiaries;
-	}
-
 	public String getBeneficiaryName() {
 		return beneficiaryName;
 	}
@@ -187,6 +204,14 @@ public class ExtractionBean implements Serializable {
 
 	public void setSelectedBeneficiaryId(Integer selectedBeneficiaryId) {
 		this.selectedBeneficiaryId = selectedBeneficiaryId;
+	}
+
+	public List<Answer> getBeneficiaries() {
+		return beneficiaries;
+	}
+
+	public void setBeneficiaries(List<Answer> beneficiaries) {
+		this.beneficiaries = beneficiaries;
 	}
 
 }

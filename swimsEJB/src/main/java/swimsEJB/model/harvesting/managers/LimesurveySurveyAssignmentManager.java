@@ -16,7 +16,6 @@ import com.google.gson.JsonObject;
 
 import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
-import swimsEJB.model.harvesting.entities.Beneficiary;
 import swimsEJB.model.harvesting.entities.LimesurveyExpectedAnswer;
 import swimsEJB.model.harvesting.entities.LimesurveyQuestion;
 import swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment;
@@ -41,9 +40,7 @@ public class LimesurveySurveyAssignmentManager {
 	private LimesurveyExpectedAnswerManager limesurveyExpectedAnswerManager;
 	@EJB
 	private LimesurveyUnexpectedAnswerManager limesurveyUnexpectedAnswerManager;
-	@EJB
-	private BeneficiaryManager beneficiaryManager;
-
+	
 	/**
 	 * Default constructor.
 	 */
@@ -205,12 +202,5 @@ public class LimesurveySurveyAssignmentManager {
 		return surveyAssignment;
 	}
 
-	public void dispatchBeneficiarySurvey(Integer beneficiaryId) throws Exception {
-
-		if (beneficiaryId == null)
-			throw new Exception("Debe proveer un Id de la Entidad Beneficiaria");
-		Beneficiary foundBeneficiary = beneficiaryManager.findOneBeneficiaryById(beneficiaryId);
-		if (foundBeneficiary == null)
-			throw new Exception("La entidad Beneficiaria provista no está registrada.");
-	}
+	
 }

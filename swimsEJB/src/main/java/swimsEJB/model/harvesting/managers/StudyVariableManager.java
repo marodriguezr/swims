@@ -55,4 +55,7 @@ public class StudyVariableManager {
 		return (StudyVariable) daoManager.createOne(studyVariable);
 	}
 
+	public StudyVariable findOneStudyVariableById(String id) throws Exception {
+		return (StudyVariable) daoManager.findOneById(StudyVariable.class, id);
+	}
 }

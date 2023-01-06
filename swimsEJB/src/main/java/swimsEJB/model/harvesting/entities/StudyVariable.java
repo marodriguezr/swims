@@ -45,10 +45,18 @@ public class StudyVariable implements Serializable {
 	@OneToMany(mappedBy="studyVariable")
 	private List<LimesurveyQuestion> limesurveyQuestions;
 
+	//bi-directional many-to-one association to Question
+	@OneToMany(mappedBy="studyVariable")
+	private List<Question> questions;
+
 	//bi-directional many-to-one association to StudyVariableClass
 	@ManyToOne
 	@JoinColumn(name="study_variable_class_id", nullable=false)
 	private StudyVariableClass studyVariableClass;
+
+	//bi-directional many-to-one association to Answer
+	@OneToMany(mappedBy="studyVariable")
+	private List<Answer> answers;
 
 	public StudyVariable() {
 	}
@@ -139,12 +147,56 @@ public class StudyVariable implements Serializable {
 		return limesurveyQuestion;
 	}
 
+	public List<Question> getQuestions() {
+		return this.questions;
+	}
+
+	public void setQuestions(List<Question> questions) {
+		this.questions = questions;
+	}
+
+	public Question addQuestion(Question question) {
+		getQuestions().add(question);
+		question.setStudyVariable(this);
+
+		return question;
+	}
+
+	public Question removeQuestion(Question question) {
+		getQuestions().remove(question);
+		question.setStudyVariable(null);
+
+		return question;
+	}
+
 	public StudyVariableClass getStudyVariableClass() {
 		return this.studyVariableClass;
 	}
 
 	public void setStudyVariableClass(StudyVariableClass studyVariableClass) {
 		this.studyVariableClass = studyVariableClass;
+	}
+
+	public List<Answer> getAnswers() {
+		return this.answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
+
+	public Answer addAnswer(Answer answer) {
+		getAnswers().add(answer);
+		answer.setStudyVariable(this);
+
+		return answer;
+	}
+
+	public Answer removeAnswer(Answer answer) {
+		getAnswers().remove(answer);
+		answer.setStudyVariable(null);
+
+		return answer;
 	}
 
 }

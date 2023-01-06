@@ -62,7 +62,9 @@
 
 						<div
 							class="p-d-flex p-ai-center p-mt-2 data-extraction-tiles-container">
-							<div class="data-extraction-beneficiary-container">
+
+							<h:panelGroup class="data-extraction-beneficiary-container"
+								rendered="#{extractionBean.isBeneficiaryStudyVariableAnsweredForThesisAssignent(thesisAssignment) eq false}">
 								<div class="p-p-4 p-shadow-1"
 									style="border-style: solid; border-width: 1px; border-radius: 5px; border-color: gray;">
 									<div class="p-d-flex p-jc-center p-ai-center"
@@ -73,27 +75,31 @@
 											onclick="PF('newBeneficiaryInfoDialog').show()"></div>
 									</div>
 
-									<p:selectOneMenu styleClass="p-mb-3"
+									<p:selectOneMenu styleClass="p-mb-3" filter="true"
+										filterMatchMode="contains"
 										value="#{extractionBean.selectedBeneficiaryId}"
 										style="width: 100%;">
 										<f:selectItem itemLabel="Seleccione una Entidad Beneficiaria." />
 										<f:selectItems value="#{extractionBean.beneficiaries}"
-											var="beneficiary" itemLabel="#{beneficiary.name}"
+											var="beneficiary" itemLabel="#{beneficiary.answer}"
 											itemValue="#{beneficiary.id}"></f:selectItems>
 									</p:selectOneMenu>
 
 									<div class="p-d-flex p-jc-center">
 										<p:commandButton icon="pi pi-plus"
-											onsuccess="PF('newBeneficiaryDialog').show()"
+											oncomplete="PF('newBeneficiaryDialog').show()"
 											actionListener="#{extractionBean.openNewBeneficiaryDialog()}"
-											styleClass="rounded-button p-mr-2"></p:commandButton>
+											styleClass="rounded-button p-mr-2"
+											update=":newBeneficiaryForm"></p:commandButton>
 
 										<p:commandButton title="Marcar como completado"
 											icon="pi pi-check"
-											styleClass="ui-button-success rounded-button" update="@form"></p:commandButton>
+											styleClass="ui-button-success rounded-button" update="@form"
+											actionListener="#{extractionBean.dispatchBeneficiaryAnswer(thesisAssignment)}"></p:commandButton>
 									</div>
 								</div>
-							</div>
+							</h:panelGroup>
+
 							<h:panelGroup
 								rendered="#{thesisAssignment.limesurveySurveyAssignments.size() gt 1}"
 								class="data-extraction-carousel-container">
@@ -157,7 +163,7 @@
 		</h:form>
 	</ui:define>
 	<ui:define name="dialogs">
-		<h:form>
+		<h:form id="newBeneficiaryForm">
 			<p:dialog header="Nuevo beneficiario"
 				widgetVar="newBeneficiaryDialog">
 				<p:outputPanel>
