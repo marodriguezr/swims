@@ -12,8 +12,6 @@ services:
       - swims_postgres_data:/var/lib/postgres
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
-    ports:
-      - "5432:5432"
 
   swims_limesurvey:
     build:
