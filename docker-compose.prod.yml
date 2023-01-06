@@ -60,6 +60,6 @@ services:
     environment:
       HOSTNAME: ${CADDY_HOST:?err}
     ports:
-      - 80:80
-      - 443:443
-      - "443:443/udp"
+      - ${CADDY_HTTP_PORT:?err}:80
+      - ${CADDY_HTTPS_PORT:?err}:443
+      - "${CADDY_HTTPS_PORT:?err}:443/udp"
