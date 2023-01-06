@@ -17,14 +17,16 @@ public class StudyVariableClass implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(unique=true, nullable=false, length=32)
 	private String id;
 
-	@Column(name="created_at")
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
+	@Column(nullable=false, length=256)
 	private String name;
 
-	@Column(name="updated_at")
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to StudyVariable

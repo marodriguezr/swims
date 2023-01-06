@@ -482,7 +482,7 @@ public class OaiRecordManager {
 		EntityManager entityManager = daoManager.getEntityManager();
 		String queryString = "select or2.id from harvesting.oai_records or2 except ";
 		for (int i = 0; i < availableLimesurveySurveyDtos.size(); i++) {
-			queryString += "select ta.oai_record_id from harvesting.thesis_assignments ta, harvesting.survey_assignments lsa "
+			queryString += "select ta.oai_record_id from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
 					+ "where ta.id = lsa.thesis_assignment_id and lsa.limesurvey_survey_id = "
 					+ availableLimesurveySurveyDtos.get(i).getSid();
 			if (i != (availableLimesurveySurveyDtos.size() - 1))

@@ -8,7 +8,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import swimsEJB.model.core.managers.DaoManager;
-import swimsEJB.model.harvesting.entities.Question;
+import swimsEJB.model.harvesting.entities.LimesurveyQuestion;
 import swimsEJB.model.harvesting.entities.StudyVariable;
 
 /**
@@ -16,7 +16,7 @@ import swimsEJB.model.harvesting.entities.StudyVariable;
  */
 @Stateless
 @LocalBean
-public class QuestionManager {
+public class LimesurveyQuestionManager {
 
 	@EJB
 	private DaoManager daoManager;
@@ -24,13 +24,13 @@ public class QuestionManager {
 	/**
 	 * Default constructor.
 	 */
-	public QuestionManager() {
+	public LimesurveyQuestionManager() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Question createOneQuestion(String limesurveyQuestionTitle, int limesurveySurveyId, int limesurveyQuestionId,
+	public LimesurveyQuestion createOneQuestion(String limesurveyQuestionTitle, int limesurveySurveyId, int limesurveyQuestionId,
 			StudyVariable studyVariable) throws Exception {
-		Question question = new Question();
+		LimesurveyQuestion question = new LimesurveyQuestion();
 		question.setLimesurveyQuestionTitle(limesurveyQuestionTitle);
 		question.setLimesurveySurveyId(limesurveySurveyId);
 		question.setLimesurveyQuestionId(limesurveyQuestionId);
@@ -38,15 +38,15 @@ public class QuestionManager {
 
 		question.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		question.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		return (Question) daoManager.createOne(question);
+		return (LimesurveyQuestion) daoManager.createOne(question);
 	}
 
-	public Question findOneQuestionById(int id) throws Exception {
-		return (Question) daoManager.findOneById(Question.class, id);
+	public LimesurveyQuestion findOneQuestionById(int id) throws Exception {
+		return (LimesurveyQuestion) daoManager.findOneById(LimesurveyQuestion.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Question> findAllQuestionsByLimesurveySurveyId(int limesurveySurveyId) {
-		return daoManager.findManyWhere(Question.class, "o.limesurveySurveyId = " + limesurveySurveyId, null);
+	public List<LimesurveyQuestion> findAllQuestionsByLimesurveySurveyId(int limesurveySurveyId) {
+		return daoManager.findManyWhere(LimesurveyQuestion.class, "o.limesurveySurveyId = " + limesurveySurveyId, null);
 	}
 }

@@ -33,7 +33,7 @@ public class ThesisAssignmentManager {
 	@EJB
 	private OaiRecordManager oaiRecordManager;
 	@EJB
-	private SurveyAssignmentManager limesurveySurveyAssignmentManager;
+	private LimesurveySurveyAssignmentManager limesurveySurveyAssignmentManager;
 
 	/**
 	 * Default constructor.
@@ -57,7 +57,7 @@ public class ThesisAssignmentManager {
 	public int countUndispatchedThesisAssignmentsByUserId(int userId) {
 		EntityManager entityManager = daoManager.getEntityManager();
 		Query query = entityManager.createNativeQuery("select count (distinct ta.oai_record_id) "
-				+ "from harvesting.thesis_assignments ta, harvesting.survey_assignments lsa "
+				+ "from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
 				+ "where lsa.thesis_assignment_id = ta.id and lsa.is_dispatched = false and ta.user_id = " + userId);
 		List<Object> objects = query.getResultList();
 		return Integer.parseInt(objects.get(0).toString());
@@ -67,7 +67,7 @@ public class ThesisAssignmentManager {
 	public int countUndispatchedSurveysByUserId(int userId) {
 		EntityManager entityManager = daoManager.getEntityManager();
 		Query query = entityManager.createNativeQuery("select count(ta) "
-				+ "from harvesting.thesis_assignments ta, harvesting.survey_assignments lsa "
+				+ "from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
 				+ "where ta.id = lsa.thesis_assignment_id and lsa.is_dispatched = false and ta.user_id = " + userId);
 		List<Object> objects = query.getResultList();
 		return Integer.parseInt(objects.get(0).toString());
@@ -153,9 +153,9 @@ public class ThesisAssignmentManager {
 	@SuppressWarnings("unchecked")
 	public List<ThesisAssignment> findAllUndispatchedThesisAssignments() throws Exception {
 		EntityManager entityManager = daoManager.getEntityManager();
-		Query query = entityManager.createNativeQuery("select distinct (ta.id) "
-				+ "from harvesting.thesis_assignments ta, harvesting.survey_assignments lsa "
-				+ "where ta.id = lsa.thesis_assignment_id and lsa.is_dispatched = false");
+		Query query = entityManager.createNativeQuery(
+				"select distinct (ta.id) " + "from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
+						+ "where ta.id = lsa.thesis_assignment_id and lsa.is_dispatched = false");
 		List<Object> objects = query.getResultList();
 
 		List<ThesisAssignment> thesisAssignments = new ArrayList<>();
@@ -173,7 +173,7 @@ public class ThesisAssignmentManager {
 	public List<ThesisAssignment> findAllUndispatchedThesisAssignmentsByUserId(int userId) throws Exception {
 		EntityManager entityManager = daoManager.getEntityManager();
 		Query query = entityManager.createNativeQuery("select distinct (ta.id) "
-				+ "from harvesting.thesis_assignments ta, harvesting.survey_assignments lsa "
+				+ "from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
 				+ "where ta.id = lsa.thesis_assignment_id and lsa.is_dispatched = false and ta.user_id = " + userId);
 		List<Object> objects = query.getResultList();
 

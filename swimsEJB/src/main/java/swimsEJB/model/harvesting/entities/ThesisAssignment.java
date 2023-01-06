@@ -18,24 +18,25 @@ public class ThesisAssignment implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="created_at")
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="updated_at")
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	@Column(name="user_id")
+	@Column(name="user_id", nullable=false)
 	private Integer userId;
 
-	//bi-directional many-to-one association to SurveyAssignment
+	//bi-directional many-to-one association to LimesurveySurveyAssignment
 	@OneToMany(mappedBy="thesisAssignment")
-	private List<SurveyAssignment> surveyAssignments;
+	private List<LimesurveySurveyAssignment> limesurveySurveyAssignments;
 
 	//bi-directional many-to-one association to OaiRecord
 	@ManyToOne
-	@JoinColumn(name="oai_record_id")
+	@JoinColumn(name="oai_record_id", nullable=false)
 	private OaiRecord oaiRecord;
 
 	public ThesisAssignment() {
@@ -73,26 +74,26 @@ public class ThesisAssignment implements Serializable {
 		this.userId = userId;
 	}
 
-	public List<SurveyAssignment> getSurveyAssignments() {
-		return this.surveyAssignments;
+	public List<LimesurveySurveyAssignment> getLimesurveySurveyAssignments() {
+		return this.limesurveySurveyAssignments;
 	}
 
-	public void setSurveyAssignments(List<SurveyAssignment> surveyAssignments) {
-		this.surveyAssignments = surveyAssignments;
+	public void setLimesurveySurveyAssignments(List<LimesurveySurveyAssignment> limesurveySurveyAssignments) {
+		this.limesurveySurveyAssignments = limesurveySurveyAssignments;
 	}
 
-	public SurveyAssignment addSurveyAssignment(SurveyAssignment surveyAssignment) {
-		getSurveyAssignments().add(surveyAssignment);
-		surveyAssignment.setThesisAssignment(this);
+	public LimesurveySurveyAssignment addLimesurveySurveyAssignment(LimesurveySurveyAssignment limesurveySurveyAssignment) {
+		getLimesurveySurveyAssignments().add(limesurveySurveyAssignment);
+		limesurveySurveyAssignment.setThesisAssignment(this);
 
-		return surveyAssignment;
+		return limesurveySurveyAssignment;
 	}
 
-	public SurveyAssignment removeSurveyAssignment(SurveyAssignment surveyAssignment) {
-		getSurveyAssignments().remove(surveyAssignment);
-		surveyAssignment.setThesisAssignment(null);
+	public LimesurveySurveyAssignment removeLimesurveySurveyAssignment(LimesurveySurveyAssignment limesurveySurveyAssignment) {
+		getLimesurveySurveyAssignments().remove(limesurveySurveyAssignment);
+		limesurveySurveyAssignment.setThesisAssignment(null);
 
-		return surveyAssignment;
+		return limesurveySurveyAssignment;
 	}
 
 	public OaiRecord getOaiRecord() {

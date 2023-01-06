@@ -16,11 +16,12 @@ import com.google.gson.JsonObject;
 
 import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
-import swimsEJB.model.harvesting.entities.ExpectedAnswer;
-import swimsEJB.model.harvesting.entities.Question;
-import swimsEJB.model.harvesting.entities.SurveyAssignment;
+import swimsEJB.model.harvesting.entities.Beneficiary;
+import swimsEJB.model.harvesting.entities.LimesurveyExpectedAnswer;
+import swimsEJB.model.harvesting.entities.LimesurveyQuestion;
+import swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
-import swimsEJB.model.harvesting.entities.UnexpectedAnswer;
+import swimsEJB.model.harvesting.entities.LimesurveyUnexpectedAnswer;
 import swimsEJB.model.harvesting.services.LimesurveyService;
 
 /**
@@ -28,23 +29,25 @@ import swimsEJB.model.harvesting.services.LimesurveyService;
  */
 @Stateless
 @LocalBean
-public class SurveyAssignmentManager {
+public class LimesurveySurveyAssignmentManager {
 
 	@EJB
 	private DaoManager daoManager;
 	@EJB
-	private ExpectedAnswerManager responseManager;
+	private LimesurveyExpectedAnswerManager responseManager;
 	@EJB
-	private QuestionManager questionManager;
+	private LimesurveyQuestionManager limesurveyQuestionManager;
 	@EJB
-	private ExpectedAnswerManager expectedAnswerManager;
+	private LimesurveyExpectedAnswerManager limesurveyExpectedAnswerManager;
 	@EJB
-	private UnexpectedAnswerManager unexpectedAnswerManager;
+	private LimesurveyUnexpectedAnswerManager limesurveyUnexpectedAnswerManager;
+	@EJB
+	private BeneficiaryManager beneficiaryManager;
 
 	/**
 	 * Default constructor.
 	 */
-	public SurveyAssignmentManager() {
+	public LimesurveySurveyAssignmentManager() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -52,7 +55,7 @@ public class SurveyAssignmentManager {
 	public List<Integer> findLimesurveySurveyIdsByOaiRecordId(String oaiRecordId) {
 		EntityManager entityManager = daoManager.getEntityManager();
 		Query query = entityManager.createNativeQuery(
-				"select lsa.limesurvey_survey_id from harvesting.thesis_assignments ta, harvesting.survey_assignments lsa "
+				"select lsa.limesurvey_survey_id from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
 						+ "where ta.id = lsa.thesis_assignment_id and ta.oai_record_id = '" + oaiRecordId + "'");
 		List<Object> objects = query.getResultList();
 		List<Integer> alreadyPresentlimesurveySurveyIds = new ArrayList<>();
@@ -62,37 +65,38 @@ public class SurveyAssignmentManager {
 		return alreadyPresentlimesurveySurveyIds;
 	}
 
-	public SurveyAssignment createOneSurveyAssignment(int limesurveySurveyId, String limesurveySurveyAccessToken,
-			ThesisAssignment thesisAssignment) throws Exception {
-		SurveyAssignment SurveyAssignment = new SurveyAssignment();
-		SurveyAssignment.setLimesurveySurveyId(limesurveySurveyId);
-		SurveyAssignment.setLimesurveySurveyToken(limesurveySurveyAccessToken);
-		SurveyAssignment.setThesisAssignment(thesisAssignment);
-		SurveyAssignment.setIsDispatched(false);
-		SurveyAssignment.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		SurveyAssignment.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		return (SurveyAssignment) daoManager.createOne(SurveyAssignment);
+	public LimesurveySurveyAssignment createOneSurveyAssignment(int limesurveySurveyId,
+			String limesurveySurveyAccessToken, ThesisAssignment thesisAssignment) throws Exception {
+		LimesurveySurveyAssignment surveyAssignment = new LimesurveySurveyAssignment();
+		surveyAssignment.setLimesurveySurveyId(limesurveySurveyId);
+		surveyAssignment.setLimesurveySurveyToken(limesurveySurveyAccessToken);
+		surveyAssignment.setThesisAssignment(thesisAssignment);
+		surveyAssignment.setIsDispatched(false);
+		surveyAssignment.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		surveyAssignment.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		return (LimesurveySurveyAssignment) daoManager.createOne(surveyAssignment);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SurveyAssignment> findAllSurveyAssignmentsByThesisAssignementId(int thesisAssignementId) {
-		List<SurveyAssignment> SurveyAssignments = daoManager.findManyWhere(SurveyAssignment.class,
+	public List<LimesurveySurveyAssignment> findAllSurveyAssignmentsByThesisAssignementId(int thesisAssignementId) {
+		List<LimesurveySurveyAssignment> SurveyAssignments = daoManager.findManyWhere(LimesurveySurveyAssignment.class,
 				"o.thesisAssignment.id = " + thesisAssignementId, null);
 		return SurveyAssignments;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<SurveyAssignment> findAllUndispatchedSurveyAssignmentsByThesisAssignementId(int thesisAssignementId) {
-		List<SurveyAssignment> SurveyAssignments = daoManager.findManyWhere(SurveyAssignment.class,
+	public List<LimesurveySurveyAssignment> findAllUndispatchedSurveyAssignmentsByThesisAssignementId(
+			int thesisAssignementId) {
+		List<LimesurveySurveyAssignment> SurveyAssignments = daoManager.findManyWhere(LimesurveySurveyAssignment.class,
 				"o.thesisAssignment.id = " + thesisAssignementId + " and o.isDispatched = false", null);
 		return SurveyAssignments;
 	}
 
-	public SurveyAssignment findOneSurveyAssignmentById(int id) throws Exception {
-		return (SurveyAssignment) daoManager.findOneById(SurveyAssignment.class, id);
+	public LimesurveySurveyAssignment findOneSurveyAssignmentById(int id) throws Exception {
+		return (LimesurveySurveyAssignment) daoManager.findOneById(LimesurveySurveyAssignment.class, id);
 	}
 
-	public SurveyAssignment updateOneSurveyAssignment(SurveyAssignment surveyAssignment,
+	public LimesurveySurveyAssignment updateOneSurveyAssignment(LimesurveySurveyAssignment surveyAssignment,
 			ThesisAssignment thesisAssignment, Integer limesurveySurveyId, String limesurveySurveyToken,
 			Boolean isDispatched) throws Exception {
 		if (thesisAssignment != null)
@@ -103,23 +107,24 @@ public class SurveyAssignmentManager {
 			surveyAssignment.setLimesurveySurveyToken(limesurveySurveyToken);
 		if (isDispatched != null)
 			surveyAssignment.setIsDispatched(isDispatched);
-		return (SurveyAssignment) daoManager.updateOne(surveyAssignment);
+		return (LimesurveySurveyAssignment) daoManager.updateOne(surveyAssignment);
 	}
 
-	public SurveyAssignment updateOneSurveyAssignmentById(int id, ThesisAssignment thesisAssignment,
+	public LimesurveySurveyAssignment updateOneSurveyAssignmentById(int id, ThesisAssignment thesisAssignment,
 			Integer limesurveySurveyId, String limesurveySurveyToken, Boolean isDispatched) throws Exception {
-		SurveyAssignment surveyAssignment = findOneSurveyAssignmentById(id);
+		LimesurveySurveyAssignment surveyAssignment = findOneSurveyAssignmentById(id);
 		if (surveyAssignment == null)
 			throw new Exception("La Asignación de Encuesta especificada no se encuentra registrada.");
 		return updateOneSurveyAssignment(surveyAssignment, thesisAssignment, limesurveySurveyId, limesurveySurveyToken,
 				isDispatched);
 	}
 
-	public SurveyAssignment updateOneSurveyAssignmentAsDispatched(SurveyAssignment surveyAssignment) throws Exception {
+	public LimesurveySurveyAssignment updateOneSurveyAssignmentAsDispatched(LimesurveySurveyAssignment surveyAssignment)
+			throws Exception {
 		return updateOneSurveyAssignment(surveyAssignment, null, null, null, true);
 	}
 
-	public SurveyAssignment updateOneSurveyAssignmentAsDispatchedById(int id) throws Exception {
+	public LimesurveySurveyAssignment updateOneSurveyAssignmentAsDispatchedById(int id) throws Exception {
 		return updateOneSurveyAssignmentById(id, null, null, null, true);
 	}
 
@@ -135,30 +140,30 @@ public class SurveyAssignmentManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public SurveyAssignment dispatchSurvey(SurveyAssignment surveyAssignment) throws Exception {
+	public LimesurveySurveyAssignment dispatchSurvey(LimesurveySurveyAssignment surveyAssignment) throws Exception {
 		JsonObject response = LimesurveyService.exportResponse(surveyAssignment.getLimesurveySurveyId(),
 				surveyAssignment.getLimesurveySurveyToken());
 
-		List<ExpectedAnswer> expectedAnswers = new ArrayList<>();
-		List<UnexpectedAnswer> unexpectedAnswers = new ArrayList<>();
+		List<LimesurveyExpectedAnswer> expectedAnswers = new ArrayList<>();
+		List<LimesurveyUnexpectedAnswer> unexpectedAnswers = new ArrayList<>();
 
-		HashMap<Integer, Question> questionsMap = new HashMap<>();
-		for (Question question : questionManager
+		HashMap<Integer, LimesurveyQuestion> questionsMap = new HashMap<>();
+		for (LimesurveyQuestion question : limesurveyQuestionManager
 				.findAllQuestionsByLimesurveySurveyId(surveyAssignment.getLimesurveySurveyId())) {
 			questionsMap.put(question.getLimesurveyQuestionId(), question);
 		}
 		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtos = LimesurveyService
 				.listQuestions(surveyAssignment.getLimesurveySurveyId());
 
-		for (Question question : questionsMap.values()) {
+		for (LimesurveyQuestion question : questionsMap.values()) {
 			JsonElement element = response.get(question.getLimesurveyQuestionTitle() + "[other]");
 			if (element != null) {
 				if (element.isJsonNull())
 					continue;
 				if (element.getAsString().isBlank())
 					continue;
-				unexpectedAnswers.add(unexpectedAnswerManager.createOneUnexpectedAnswer(question, element.getAsString(),
-						surveyAssignment));
+				unexpectedAnswers.add(limesurveyUnexpectedAnswerManager.createOneLimesurveyUnexpectedAnswer(question,
+						element.getAsString(), surveyAssignment));
 				continue;
 			}
 
@@ -168,12 +173,12 @@ public class SurveyAssignmentManager {
 					continue;
 				if (element.getAsString().isBlank())
 					continue;
-				expectedAnswers.add(expectedAnswerManager.createOneExpectedAnswer(question, element.getAsString(),
-						surveyAssignment));
+				expectedAnswers.add(limesurveyExpectedAnswerManager.createOneLimesurveyExpectedAnswer(question,
+						element.getAsString(), surveyAssignment));
 				continue;
 			}
 
-			Question parentQuestion = questionsMap
+			LimesurveyQuestion parentQuestion = questionsMap
 					.get(limesurveyQuestionDtos.get(question.getLimesurveyQuestionTitle()).getParentQid());
 			if (parentQuestion == null)
 				continue;
@@ -184,8 +189,8 @@ public class SurveyAssignmentManager {
 					continue;
 				if (element.getAsString().isBlank())
 					continue;
-				expectedAnswers.add(expectedAnswerManager.createOneExpectedAnswer(question, element.getAsString(),
-						surveyAssignment));
+				expectedAnswers.add(limesurveyExpectedAnswerManager.createOneLimesurveyExpectedAnswer(question,
+						element.getAsString(), surveyAssignment));
 				continue;
 			}
 		}
@@ -194,9 +199,18 @@ public class SurveyAssignmentManager {
 			throw new Exception("Ha ocurrido un error en el proceso de despacho.");
 		surveyAssignment = updateOneSurveyAssignmentAsDispatched(surveyAssignment);
 
-		surveyAssignment.setExpectedAnswers(expectedAnswers);
-		surveyAssignment.setUnexpectedAnswers(unexpectedAnswers);
+		surveyAssignment.setLimesurveyExpectedAnswers(expectedAnswers);
+		surveyAssignment.setLimesurveyUnexpectedAnswers(unexpectedAnswers);
 
 		return surveyAssignment;
+	}
+
+	public void dispatchBeneficiarySurvey(Integer beneficiaryId) throws Exception {
+
+		if (beneficiaryId == null)
+			throw new Exception("Debe proveer un Id de la Entidad Beneficiaria");
+		Beneficiary foundBeneficiary = beneficiaryManager.findOneBeneficiaryById(beneficiaryId);
+		if (foundBeneficiary == null)
+			throw new Exception("La entidad Beneficiaria provista no está registrada.");
 	}
 }
