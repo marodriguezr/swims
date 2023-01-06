@@ -24,6 +24,8 @@ services:
       DB_HOST: swims-postgres
       DB_PASSWORD: ${POSTGRES_PASSWORD:?err}
       ADMIN_PASSWORD: ${LIMESURVEY_FIRST_ADMIN_PASSWORD:?err}
+    ports:
+      - "8881:8080"
 
   swims_wildfly:
     build:
@@ -42,15 +44,5 @@ services:
       LIMESURVEY_PUBLIC_PORT: ${LIMESURVEY_PUBLIC_PORT:?err}
       LIMESURVEY_USES_SSL: ${LIMESURVEY_USES_SSL:?err}
       LIMESURVEY_REMOTECONTROL_USES_SSL: ${LIMESURVEY_REMOTECONTROL_USES_SSL:?err}
-
-  swims_tinyproxy:
-    build:
-      context: .
-      dockerfile: docker/prod/tinyproxy/Dockerfile
-    image: swims-tinyproxy
-    container_name: swims-tinyproxy
-    restart: unless-stopped
-    cap_drop:
-      - ALL
     ports:
-      - 8888:8888
+      - "8882:8080"

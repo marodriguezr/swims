@@ -55,3 +55,7 @@ services:
       - 80:80
       - 443:443
       - "443:443/udp"
+    networks:
+      - swims_network
+    depends_on:
+      - swims_wildfly

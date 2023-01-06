@@ -45,7 +45,7 @@
 						<webModule>
 							<groupId>${project.groupId}</groupId>
 							<artifactId>swimsWeb</artifactId>
-							<contextRoot>/</contextRoot>
+							<contextRoot>/swims</contextRoot>
 							<bundleFileName>swimsWeb-${project.version}.war</bundleFileName>
 						</webModule>
 					</modules>

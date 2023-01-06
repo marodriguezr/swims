@@ -1,6 +1,8 @@
 volumes:
   swims_postgres_data:
   swims_limesurvey_surveys:
+  swims_caddy_data:
+  swims_caddy_config:
 
 services:
   swims_postgres:
@@ -24,8 +26,6 @@ services:
       DB_HOST: swims-postgres
       DB_PASSWORD: ${POSTGRES_PASSWORD:?err}
       ADMIN_PASSWORD: ${LIMESURVEY_FIRST_ADMIN_PASSWORD:?err}
-    ports:
-      - "8089:8080"
 
   swims_wildfly:
     build:
@@ -44,5 +44,24 @@ services:
       LIMESURVEY_PUBLIC_PORT: ${LIMESURVEY_PUBLIC_PORT:?err}
       LIMESURVEY_USES_SSL: ${LIMESURVEY_USES_SSL:?err}
       LIMESURVEY_REMOTECONTROL_USES_SSL: ${LIMESURVEY_REMOTECONTROL_USES_SSL:?err}
+
+  caddy:
+    build:
+      context: .
+      dockerfile: docker/prod/caddy/Dockerfile
+    image: swims-caddy
+    container_name: swims-caddy
+    restart: unless-stopped
+    volumes:
+      - swims_caddy_data:/data
+      - swims_caddy_config:/config
+    environment:
+      HOSTNAME: ${CADDY_HOST:?err}
     ports:
-      - "8088:8080"
+      - ${CADDY_HTTP_PORT:-80}:80
+      - ${CADDY_HTTPS_PORT:-443}:443
+      - "${CADDY_HTTPS_PORT:-443}:443/udp"
+    networks:
+      - swims_network
+    depends_on:
+      - swims_wildfly
