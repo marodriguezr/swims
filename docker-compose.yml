@@ -17,7 +17,7 @@ services:
       DB_NAME: swimsdb
       DB_USERNAME: swims
       DB_PORT: 5432
-      BASE_URL: ${LIMESURVEY_BASE_URL:-/limesurvey}
+      BASE_URL: /swims/limesurvey
       ADMIN_USER: swims
       LISTEN_PORT: 8080
     networks:
@@ -30,7 +30,7 @@ services:
       POSTGRES_PORT: 5432
       POSTGRES_USER: swims 
       POSTGRES_DB: swimsdb
-      LIMESURVEY_BASE_URL: ${LIMESURVEY_BASE_URL:-/limesurvey}
+      LIMESURVEY_BASE_URL: /swims/limesurvey
       LIMESURVEY_ADMIN_USER: swims
       LIMESURVE_ON_SAME_NETWORK: true
       LIMESURVEY_PORT: 8080

@@ -1,8 +1,6 @@
 volumes:
   swims_postgres_data_dev:
   swims_limesurvey_surveys_dev:
-  swims_caddy_data_dev:
-  swims_caddy_config_dev:
 
 services:
   swims_postgres:
@@ -23,7 +21,7 @@ services:
     environment:
       DB_HOST: swims-postgres-dev
       DB_PASSWORD: admin
-      ADMIN_PASSWORD: adminer
+      ADMIN_PASSWORD: admin
     ports:
       - "8081:8080"
 
@@ -35,27 +33,13 @@ services:
     environment:
       WILDFLY_PASSWORD: adminadmin
       WILDFLY_USERNAME: admin
-      LIMESURVEY_FIRST_ADMIN_PASSWORD: adminer
+      POSTGRES_PASSWORD: admin
+      POSTGRES_HOST: swims-postgres-dev
+      LIMESURVEY_FIRST_ADMIN_PASSWORD: admin
       LIMESURVEY_HOST: swims-limesurvey-dev
       LIMESURVEY_PUBLIC_HOST: localhost
-      LIMESURVEY_PUBLIC_PORT: 443
-      LIMESURVEY_USES_SSL: true
+      LIMESURVEY_PUBLIC_PORT: 8081
+      LIMESURVEY_USES_SSL: false
       LIMESURVEY_REMOTECONTROL_USES_SSL: false
     ports:
       - "8080:8080"
-
-  caddy:
-    image: caddy:2-alpine
-    container_name: swims-caddy-dev
-    volumes:
-      - swims_caddy_data_dev:/data
-      - swims_caddy_config_dev:/config
-      - ./docker/dev/caddy/Caddyfile:/etc/caddy/Caddyfile
-    ports:
-      - 80:80
-      - 443:443
-      - "443:443/udp"
-    networks:
-      - swims_network
-    depends_on:
-      - swims_wildfly
