@@ -477,7 +477,7 @@
                 <http-listener name="default" socket-binding="http" redirect-socket="https" enable-http2="true"/>
                 <https-listener name="https" socket-binding="https" ssl-context="applicationSSC" enable-http2="true"/>
                 <host name="default-host" alias="localhost">
-                    <location name="${env.LIMESURVEY_BASE_URL}" handler="limesurvey-proxy"/>
+                    <location name="/swims/limesurvey" handler="limesurvey-proxy"/>
                     <location name="/" handler="welcome-content"/>
                     <http-invoker http-authentication-factory="application-http-authentication"/>
                 </host>
@@ -489,7 +489,7 @@
             <handlers>
                 <file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
                 <reverse-proxy name="limesurvey-proxy">
-                    <host path="${env.LIMESURVEY_BASE_URL}" name="http://${env.LIMESURVEY_HOST}:${env.LIMESURVEY_PORT}" outbound-socket-binding="limesurvey"/>
+                    <host path="/swims/limesurvey" name="http://swims-limesurvey:8080" outbound-socket-binding="limesurvey"/>
                 </reverse-proxy>
             </handlers>
             <application-security-domains>
@@ -528,7 +528,7 @@
             <remote-destination host="${jboss.mail.server.host:localhost}" port="${jboss.mail.server.port:25}"/>
         </outbound-socket-binding>
         <outbound-socket-binding name="limesurvey">
-            <remote-destination host="${env.LIMESURVEY_HOST}" port="${env.LIMESURVEY_PORT}"/>
+            <remote-destination host="swims-limesurvey" port="8080"/>
         </outbound-socket-binding>
     </socket-binding-group>
     <deployments>
