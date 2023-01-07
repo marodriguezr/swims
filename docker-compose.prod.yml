@@ -36,21 +36,12 @@ services:
       WILDFLY_PASSWORD: ${WILDFLY_PASSWORD:?err}
       WILDFLY_USERNAME: ${WILDFLY_USERNAME:?err}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?err}
+      POSTGRES_HOST: swims-postgres
       LIMESURVEY_FIRST_ADMIN_PASSWORD: ${LIMESURVEY_FIRST_ADMIN_PASSWORD:?err}
       LIMESURVEY_HOST: swims-limesurvey
       LIMESURVEY_PUBLIC_HOST: ${LIMESURVEY_PUBLIC_HOST:?err}
       LIMESURVEY_PUBLIC_PORT: ${LIMESURVEY_PUBLIC_PORT:?err}
       LIMESURVEY_USES_SSL: ${LIMESURVEY_USES_SSL:?err}
       LIMESURVEY_REMOTECONTROL_USES_SSL: ${LIMESURVEY_REMOTECONTROL_USES_SSL:?err}
-
-  swims_tinyproxy:
-    build:
-      context: .
-      dockerfile: docker/prod/tinyproxy/Dockerfile
-    image: swims-tinyproxy
-    container_name: swims-tinyproxy
-    restart: unless-stopped
-    cap_drop:
-      - ALL
     ports:
-      - 8888:8888
+      - "${WILDFLY_EXPOSED_PORT:?err}:8080"

@@ -27,6 +27,9 @@ services:
 
   swims_wildfly:
     environment:
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: swims 
+      POSTGRES_DB: swimsdb
       LIMESURVEY_BASE_URL: ${LIMESURVEY_BASE_URL:-/limesurvey}
       LIMESURVEY_ADMIN_USER: swims
       LIMESURVE_ON_SAME_NETWORK: true
