@@ -34,7 +34,7 @@ public class LimesurveyService {
 	public static HttpPost getHttpPost() {
 		HttpPost post = new HttpPost(LIMESURVEY_REMOTECONTROL_USES_SSL ? "https://"
 				: "http://"
-						+ (LIMESURVE_ON_SAME_NETWORK ? LIMESURVEY_HOST + ":" + LIMESURVEY_PORT
+						+ (LIMESURVEY_ON_SAME_NETWORK ? LIMESURVEY_HOST + ":" + LIMESURVEY_PORT
 								: LIMESURVEY_PUBLIC_HOST + ":" + LIMESURVEY_PUBLIC_PORT)
 						+ LIMESURVEY_BASE_URL + "/index.php/admin/remotecontrol");
 		post.setHeader("Content-type", "application/json");

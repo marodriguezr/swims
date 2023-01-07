@@ -5,7 +5,7 @@ public final class SystemEnvironmentVariables {
 	}
 
 	public static final String LIMESURVEY_BASE_URL = System.getenv().getOrDefault("LIMESURVEY_BASE_URL", "");
-	public static final Boolean LIMESURVE_ON_SAME_NETWORK = System.getenv("LIMESURVE_ON_SAME_NETWORK").equals("true")
+	public static final Boolean LIMESURVEY_ON_SAME_NETWORK = System.getenv("LIMESURVEY_ON_SAME_NETWORK").equals("true")
 			? true
 			: false;
 	public static final String LIMESURVEY_HOST = System.getenv("LIMESURVEY_HOST");

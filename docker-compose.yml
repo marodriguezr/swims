@@ -32,7 +32,7 @@ services:
       POSTGRES_DB: swimsdb
       LIMESURVEY_BASE_URL: /swims/limesurvey
       LIMESURVEY_ADMIN_USER: swims
-      LIMESURVE_ON_SAME_NETWORK: true
+      LIMESURVEY_ON_SAME_NETWORK: true
       LIMESURVEY_PORT: 8080
     networks:
       - swims_network
