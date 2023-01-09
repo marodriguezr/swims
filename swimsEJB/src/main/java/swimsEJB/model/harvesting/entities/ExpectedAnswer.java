@@ -3,6 +3,7 @@ package swimsEJB.model.harvesting.entities;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 
 /**
@@ -18,44 +19,35 @@ public class ExpectedAnswer implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(unique=true, nullable=false)
-	private Long id;
-
-	@Column(nullable=false, length=2147483647)
-	private String answer;
+	private Integer id;
 
 	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
+	@Column(name="expected_answer", nullable=false, length=256)
+	private String expectedAnswer;
+
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
+
+	//bi-directional many-to-one association to Answer
+	@OneToMany(mappedBy="expectedAnswer")
+	private List<Answer> answers;
 
 	//bi-directional many-to-one association to Question
 	@ManyToOne
 	@JoinColumn(name="question_id", nullable=false)
 	private Question question;
 
-	//bi-directional many-to-one association to ThesisAssignment
-	@ManyToOne
-	@JoinColumn(name="thesis_assignment_id", nullable=false)
-	private ThesisAssignment thesisAssignment;
-
 	public ExpectedAnswer() {
 	}
 
-	public Long getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getAnswer() {
-		return this.answer;
-	}
-
-	public void setAnswer(String answer) {
-		this.answer = answer;
 	}
 
 	public Timestamp getCreatedAt() {
@@ -66,6 +58,14 @@ public class ExpectedAnswer implements Serializable {
 		this.createdAt = createdAt;
 	}
 
+	public String getExpectedAnswer() {
+		return this.expectedAnswer;
+	}
+
+	public void setExpectedAnswer(String expectedAnswer) {
+		this.expectedAnswer = expectedAnswer;
+	}
+
 	public Timestamp getUpdatedAt() {
 		return this.updatedAt;
 	}
@@ -74,20 +74,34 @@ public class ExpectedAnswer implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
+	public List<Answer> getAnswers() {
+		return this.answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
+
+	public Answer addAnswer(Answer answer) {
+		getAnswers().add(answer);
+		answer.setExpectedAnswer(this);
+
+		return answer;
+	}
+
+	public Answer removeAnswer(Answer answer) {
+		getAnswers().remove(answer);
+		answer.setExpectedAnswer(null);
+
+		return answer;
+	}
+
 	public Question getQuestion() {
 		return this.question;
 	}
 
 	public void setQuestion(Question question) {
 		this.question = question;
-	}
-
-	public ThesisAssignment getThesisAssignment() {
-		return this.thesisAssignment;
-	}
-
-	public void setThesisAssignment(ThesisAssignment thesisAssignment) {
-		this.thesisAssignment = thesisAssignment;
 	}
 
 }

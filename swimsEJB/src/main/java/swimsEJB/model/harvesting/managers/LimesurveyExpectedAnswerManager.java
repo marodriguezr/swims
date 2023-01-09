@@ -7,7 +7,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import swimsEJB.model.core.managers.DaoManager;
-import swimsEJB.model.harvesting.entities.LimesurveyExpectedAnswer;
+import swimsEJB.model.harvesting.entities.LimesurveyAnswer;
 import swimsEJB.model.harvesting.entities.LimesurveyQuestion;
 import swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment;
 
@@ -30,18 +30,18 @@ public class LimesurveyExpectedAnswerManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LimesurveyExpectedAnswer createOneLimesurveyExpectedAnswer(LimesurveyQuestion question, String answer,
+	public LimesurveyAnswer createOneLimesurveyExpectedAnswer(LimesurveyQuestion question, String answer,
 			LimesurveySurveyAssignment surveyAssignment) throws Exception {
-		LimesurveyExpectedAnswer expectedAnswer = new LimesurveyExpectedAnswer();
+		LimesurveyAnswer expectedAnswer = new LimesurveyAnswer();
 		expectedAnswer.setLimesurveyQuestion(question);
 		expectedAnswer.setAnswer(answer);
 		expectedAnswer.setLimesurveySurveyAssignment(surveyAssignment);
 		expectedAnswer.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		expectedAnswer.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		return (LimesurveyExpectedAnswer) daoManager.createOne(expectedAnswer);
+		return (LimesurveyAnswer) daoManager.createOne(expectedAnswer);
 	}
 
-	public LimesurveyExpectedAnswer createOneLimesurveyExpectedAnswer(int limesurveyLimesurveyQuestionId, String limesurveyAnswerCode,
+	public LimesurveyAnswer createOneLimesurveyExpectedAnswer(int limesurveyLimesurveyQuestionId, String limesurveyAnswerCode,
 			LimesurveySurveyAssignment surveyAssignment) throws Exception {
 		LimesurveyQuestion question = limesurveyQuestionManager.findOneQuestionById(limesurveyLimesurveyQuestionId);
 		if (question == null)

@@ -91,19 +91,31 @@ table harvesting.questions {
 }
 
 table harvesting.expected_answers {
+  id int [pk, increment]
+  expected_answer varchar(256) [not null]
+  question_id int [not null, ref:> harvesting.questions.id]
+  created_at timestamp [not null, default: `now()`]
+  updated_at timestamp [not null, default: `now()`]
+  
+  Indexes {
+    (expected_answer, question_id) [unique]
+  }
+}
+
+table harvesting.answers {
   id bigint [pk, increment]
   question_id int [not null, ref: > harvesting.questions.id]
-  answer varchar [not null]
+  expected_answer_id int [not null, ref: > harvesting.expected_answers.id]
   thesis_assignment_id int [not null, ref: > harvesting.thesis_assignments.id]
   created_at timestamp [not null, default: `now()`]
   updated_at timestamp [not null, default: `now()`]
   
   Indexes {
-    (answer, thesis_assignment_id) [unique]
+    (expected_answer_id, thesis_assignment_id) [unique]
   }
 }
 
-table harvesting.limesurvey_expected_answers {
+table harvesting.limesurvey_answers {
   id bigint [pk, increment]
   limesurvey_question_id int [not null, ref: > harvesting.limesurvey_questions.limesurvey_question_id]
   answer varchar [not null]
@@ -121,17 +133,7 @@ table harvesting.limesurvey_unexpected_answers {
   updated_at timestamp [not null, default: `now()`]
 }
 
-table harvesting.answers {
-  id int [pk, increment]
-  answer varchar(256) [not null]
-  study_variable_id varchar(32) [not null, ref:> harvesting.study_variables.id]
-  created_at timestamp [not null, default: `now()`]
-  updated_at timestamp [not null, default: `now()`]
-  
-  Indexes {
-    (answer, study_variable_id) [unique]
-  }
-}
+
 
 table auth.users {
   id int [pk, increment]

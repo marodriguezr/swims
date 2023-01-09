@@ -10,7 +10,7 @@
 		<class>swimsEJB.model.core.entities.Sysparam</class>
 		<class>swimsEJB.model.harvesting.entities.Answer</class>
 		<class>swimsEJB.model.harvesting.entities.ExpectedAnswer</class>
-		<class>swimsEJB.model.harvesting.entities.LimesurveyExpectedAnswer</class>
+		<class>swimsEJB.model.harvesting.entities.LimesurveyAnswer</class>
 		<class>swimsEJB.model.harvesting.entities.LimesurveyQuestion</class>
 		<class>swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment</class>
 		<class>swimsEJB.model.harvesting.entities.LimesurveyUnexpectedAnswer</class>

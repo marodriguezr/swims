@@ -13,12 +13,12 @@ import javax.inject.Named;
 import org.primefaces.model.ResponsiveOption;
 
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
-import swimsEJB.model.harvesting.entities.Answer;
+import swimsEJB.model.harvesting.entities.ExpectedAnswer;
 import swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
 import swimsEJB.model.harvesting.managers.LimesurveySurveyAssignmentManager;
-import swimsEJB.model.harvesting.managers.AnswerManager;
 import swimsEJB.model.harvesting.managers.ExpectedAnswerManager;
+import swimsEJB.model.harvesting.managers.AnswerManager;
 import swimsEJB.model.harvesting.managers.OaiRecordManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsEJB.model.harvesting.services.LimesurveyService;
@@ -47,13 +47,13 @@ public class ExtractionBean implements Serializable {
 	@Inject
 	private SignInBean signInBean;
 	private List<ResponsiveOption> responsiveOptions;
-	private List<Answer> beneficiaries;
+	private List<ExpectedAnswer> beneficiaries;
 	private String beneficiaryName;
 	private Integer selectedBeneficiaryId;
 	@EJB
-	private ExpectedAnswerManager expectedAnswerManager;
-	@EJB
 	private AnswerManager answerManager;
+	@EJB
+	private ExpectedAnswerManager expectedAnswerManager;
 
 	public ExtractionBean() {
 		// TODO Auto-generated constructor stub
@@ -84,7 +84,8 @@ public class ExtractionBean implements Serializable {
 	}
 
 	public void loadBeneficiaries() {
-		this.beneficiaries = answerManager.findManyAnswersByStudyVariableId(BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
+		this.beneficiaries = expectedAnswerManager
+				.findManyExpectedAnswersByStudyVariableId(BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
 	}
 
 	public void openNewBeneficiaryDialog() {
@@ -142,7 +143,7 @@ public class ExtractionBean implements Serializable {
 			return;
 		}
 		try {
-			expectedAnswerManager.dispatchBeneficiaryAnswer(this.selectedBeneficiaryId.toString(), thesisAssignment);
+			answerManager.dispatchBeneficiaryAnswer(this.selectedBeneficiaryId, thesisAssignment);
 			JSFMessages.INFO("Nombre de la entidad beneficiaria registrado de forma exitosa.");
 
 		} catch (Exception e) {
@@ -159,7 +160,7 @@ public class ExtractionBean implements Serializable {
 
 	public void createNewBeneficiary() {
 		try {
-			Answer createdBeneficiary = this.answerManager.createOneAnswer(beneficiaryName,
+			ExpectedAnswer createdBeneficiary = this.expectedAnswerManager.createOneExpectedAnswer(beneficiaryName,
 					BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
 			this.beneficiaries.add(createdBeneficiary);
 			JSFMessages.INFO("Beneficiario creado de forma exitosa.");
@@ -171,7 +172,7 @@ public class ExtractionBean implements Serializable {
 	}
 
 	public boolean isBeneficiaryStudyVariableAnsweredForThesisAssignent(ThesisAssignment thesisAssignment) {
-		return expectedAnswerManager.isBeneficiaryStudyVariableAnsweredForThesisAssignent(thesisAssignment);
+		return answerManager.isBeneficiaryStudyVariableAnsweredForThesisAssignent(thesisAssignment);
 	}
 
 	public List<ThesisAssignment> getThesisAssignments() {
@@ -206,11 +207,11 @@ public class ExtractionBean implements Serializable {
 		this.selectedBeneficiaryId = selectedBeneficiaryId;
 	}
 
-	public List<Answer> getBeneficiaries() {
+	public List<ExpectedAnswer> getBeneficiaries() {
 		return beneficiaries;
 	}
 
-	public void setBeneficiaries(List<Answer> beneficiaries) {
+	public void setBeneficiaries(List<ExpectedAnswer> beneficiaries) {
 		this.beneficiaries = beneficiaries;
 	}
 

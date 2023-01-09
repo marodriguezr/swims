@@ -30,6 +30,10 @@ public class Question implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
+	//bi-directional many-to-one association to Answer
+	@OneToMany(mappedBy="question")
+	private List<Answer> answers;
+
 	//bi-directional many-to-one association to ExpectedAnswer
 	@OneToMany(mappedBy="question")
 	private List<ExpectedAnswer> expectedAnswers;
@@ -72,6 +76,28 @@ public class Question implements Serializable {
 
 	public void setUpdatedAt(Timestamp updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	public List<Answer> getAnswers() {
+		return this.answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
+
+	public Answer addAnswer(Answer answer) {
+		getAnswers().add(answer);
+		answer.setQuestion(this);
+
+		return answer;
+	}
+
+	public Answer removeAnswer(Answer answer) {
+		getAnswers().remove(answer);
+		answer.setQuestion(null);
+
+		return answer;
 	}
 
 	public List<ExpectedAnswer> getExpectedAnswers() {

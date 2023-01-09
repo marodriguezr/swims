@@ -30,9 +30,9 @@ public class ThesisAssignment implements Serializable {
 	@Column(name="user_id", nullable=false)
 	private Integer userId;
 
-	//bi-directional many-to-one association to ExpectedAnswer
+	//bi-directional many-to-one association to Answer
 	@OneToMany(mappedBy="thesisAssignment")
-	private List<ExpectedAnswer> expectedAnswers;
+	private List<Answer> answers;
 
 	//bi-directional many-to-one association to LimesurveySurveyAssignment
 	@OneToMany(mappedBy="thesisAssignment")
@@ -78,26 +78,26 @@ public class ThesisAssignment implements Serializable {
 		this.userId = userId;
 	}
 
-	public List<ExpectedAnswer> getExpectedAnswers() {
-		return this.expectedAnswers;
+	public List<Answer> getAnswers() {
+		return this.answers;
 	}
 
-	public void setExpectedAnswers(List<ExpectedAnswer> expectedAnswers) {
-		this.expectedAnswers = expectedAnswers;
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
 	}
 
-	public ExpectedAnswer addExpectedAnswer(ExpectedAnswer expectedAnswer) {
-		getExpectedAnswers().add(expectedAnswer);
-		expectedAnswer.setThesisAssignment(this);
+	public Answer addAnswer(Answer answer) {
+		getAnswers().add(answer);
+		answer.setThesisAssignment(this);
 
-		return expectedAnswer;
+		return answer;
 	}
 
-	public ExpectedAnswer removeExpectedAnswer(ExpectedAnswer expectedAnswer) {
-		getExpectedAnswers().remove(expectedAnswer);
-		expectedAnswer.setThesisAssignment(null);
+	public Answer removeAnswer(Answer answer) {
+		getAnswers().remove(answer);
+		answer.setThesisAssignment(null);
 
-		return expectedAnswer;
+		return answer;
 	}
 
 	public List<LimesurveySurveyAssignment> getLimesurveySurveyAssignments() {

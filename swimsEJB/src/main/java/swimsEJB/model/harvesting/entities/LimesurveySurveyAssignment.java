@@ -36,10 +36,6 @@ public class LimesurveySurveyAssignment implements Serializable {
 	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	//bi-directional many-to-one association to LimesurveyExpectedAnswer
-	@OneToMany(mappedBy="limesurveySurveyAssignment")
-	private List<LimesurveyExpectedAnswer> limesurveyExpectedAnswers;
-
 	//bi-directional many-to-one association to ThesisAssignment
 	@ManyToOne
 	@JoinColumn(name="thesis_assignment_id", nullable=false)
@@ -48,6 +44,10 @@ public class LimesurveySurveyAssignment implements Serializable {
 	//bi-directional many-to-one association to LimesurveyUnexpectedAnswer
 	@OneToMany(mappedBy="limesurveySurveyAssignment")
 	private List<LimesurveyUnexpectedAnswer> limesurveyUnexpectedAnswers;
+
+	//bi-directional many-to-one association to LimesurveyAnswer
+	@OneToMany(mappedBy="limesurveySurveyAssignment")
+	private List<LimesurveyAnswer> limesurveyAnswers;
 
 	public LimesurveySurveyAssignment() {
 	}
@@ -100,28 +100,6 @@ public class LimesurveySurveyAssignment implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public List<LimesurveyExpectedAnswer> getLimesurveyExpectedAnswers() {
-		return this.limesurveyExpectedAnswers;
-	}
-
-	public void setLimesurveyExpectedAnswers(List<LimesurveyExpectedAnswer> limesurveyExpectedAnswers) {
-		this.limesurveyExpectedAnswers = limesurveyExpectedAnswers;
-	}
-
-	public LimesurveyExpectedAnswer addLimesurveyExpectedAnswer(LimesurveyExpectedAnswer limesurveyExpectedAnswer) {
-		getLimesurveyExpectedAnswers().add(limesurveyExpectedAnswer);
-		limesurveyExpectedAnswer.setLimesurveySurveyAssignment(this);
-
-		return limesurveyExpectedAnswer;
-	}
-
-	public LimesurveyExpectedAnswer removeLimesurveyExpectedAnswer(LimesurveyExpectedAnswer limesurveyExpectedAnswer) {
-		getLimesurveyExpectedAnswers().remove(limesurveyExpectedAnswer);
-		limesurveyExpectedAnswer.setLimesurveySurveyAssignment(null);
-
-		return limesurveyExpectedAnswer;
-	}
-
 	public ThesisAssignment getThesisAssignment() {
 		return this.thesisAssignment;
 	}
@@ -150,6 +128,28 @@ public class LimesurveySurveyAssignment implements Serializable {
 		limesurveyUnexpectedAnswer.setLimesurveySurveyAssignment(null);
 
 		return limesurveyUnexpectedAnswer;
+	}
+
+	public List<LimesurveyAnswer> getLimesurveyAnswers() {
+		return this.limesurveyAnswers;
+	}
+
+	public void setLimesurveyAnswers(List<LimesurveyAnswer> limesurveyAnswers) {
+		this.limesurveyAnswers = limesurveyAnswers;
+	}
+
+	public LimesurveyAnswer addLimesurveyAnswer(LimesurveyAnswer limesurveyAnswer) {
+		getLimesurveyAnswers().add(limesurveyAnswer);
+		limesurveyAnswer.setLimesurveySurveyAssignment(this);
+
+		return limesurveyAnswer;
+	}
+
+	public LimesurveyAnswer removeLimesurveyAnswer(LimesurveyAnswer limesurveyAnswer) {
+		getLimesurveyAnswers().remove(limesurveyAnswer);
+		limesurveyAnswer.setLimesurveySurveyAssignment(null);
+
+		return limesurveyAnswer;
 	}
 
 }

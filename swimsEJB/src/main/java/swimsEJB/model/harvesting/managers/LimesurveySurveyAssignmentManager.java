@@ -16,7 +16,7 @@ import com.google.gson.JsonObject;
 
 import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
-import swimsEJB.model.harvesting.entities.LimesurveyExpectedAnswer;
+import swimsEJB.model.harvesting.entities.LimesurveyAnswer;
 import swimsEJB.model.harvesting.entities.LimesurveyQuestion;
 import swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
@@ -141,7 +141,7 @@ public class LimesurveySurveyAssignmentManager {
 		JsonObject response = LimesurveyService.exportResponse(surveyAssignment.getLimesurveySurveyId(),
 				surveyAssignment.getLimesurveySurveyToken());
 
-		List<LimesurveyExpectedAnswer> expectedAnswers = new ArrayList<>();
+		List<LimesurveyAnswer> expectedAnswers = new ArrayList<>();
 		List<LimesurveyUnexpectedAnswer> unexpectedAnswers = new ArrayList<>();
 
 		HashMap<Integer, LimesurveyQuestion> questionsMap = new HashMap<>();
@@ -196,7 +196,7 @@ public class LimesurveySurveyAssignmentManager {
 			throw new Exception("Ha ocurrido un error en el proceso de despacho.");
 		surveyAssignment = updateOneSurveyAssignmentAsDispatched(surveyAssignment);
 
-		surveyAssignment.setLimesurveyExpectedAnswers(expectedAnswers);
+		surveyAssignment.setLimesurveyAnswers(expectedAnswers);
 		surveyAssignment.setLimesurveyUnexpectedAnswers(unexpectedAnswers);
 
 		return surveyAssignment;

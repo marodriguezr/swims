@@ -4,52 +4,52 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+
 /**
  * The persistent class for the answers database table.
  * 
  */
 @Entity
-@Table(name = "answers", schema = "harvesting")
-@NamedQuery(name = "Answer.findAll", query = "SELECT a FROM Answer a")
+@Table(name="answers", schema="harvesting")
+@NamedQuery(name="Answer.findAll", query="SELECT a FROM Answer a")
 public class Answer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(unique = true, nullable = false)
-	private Integer id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(unique=true, nullable=false)
+	private Long id;
 
-	@Column(nullable = false, length = 256)
-	private String answer;
-
-	@Column(name = "created_at", nullable = false)
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name = "updated_at", nullable = false)
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	// bi-directional many-to-one association to StudyVariable
+	//bi-directional many-to-one association to ExpectedAnswer
 	@ManyToOne
-	@JoinColumn(name = "study_variable_id", nullable = false)
-	private StudyVariable studyVariable;
+	@JoinColumn(name="expected_answer_id", nullable=false)
+	private ExpectedAnswer expectedAnswer;
+
+	//bi-directional many-to-one association to Question
+	@ManyToOne
+	@JoinColumn(name="question_id", nullable=false)
+	private Question question;
+
+	//bi-directional many-to-one association to ThesisAssignment
+	@ManyToOne
+	@JoinColumn(name="thesis_assignment_id", nullable=false)
+	private ThesisAssignment thesisAssignment;
 
 	public Answer() {
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getAnswer() {
-		return this.answer;
-	}
-
-	public void setAnswer(String answer) {
-		this.answer = answer;
 	}
 
 	public Timestamp getCreatedAt() {
@@ -68,12 +68,28 @@ public class Answer implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public StudyVariable getStudyVariable() {
-		return this.studyVariable;
+	public ExpectedAnswer getExpectedAnswer() {
+		return this.expectedAnswer;
 	}
 
-	public void setStudyVariable(StudyVariable studyVariable) {
-		this.studyVariable = studyVariable;
+	public void setExpectedAnswer(ExpectedAnswer expectedAnswer) {
+		this.expectedAnswer = expectedAnswer;
+	}
+
+	public Question getQuestion() {
+		return this.question;
+	}
+
+	public void setQuestion(Question question) {
+		this.question = question;
+	}
+
+	public ThesisAssignment getThesisAssignment() {
+		return this.thesisAssignment;
+	}
+
+	public void setThesisAssignment(ThesisAssignment thesisAssignment) {
+		this.thesisAssignment = thesisAssignment;
 	}
 
 }

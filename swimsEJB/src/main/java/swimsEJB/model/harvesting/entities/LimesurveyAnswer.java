@@ -6,13 +6,13 @@ import java.sql.Timestamp;
 
 
 /**
- * The persistent class for the limesurvey_expected_answers database table.
+ * The persistent class for the limesurvey_answers database table.
  * 
  */
 @Entity
-@Table(name="limesurvey_expected_answers", schema="harvesting")
-@NamedQuery(name="LimesurveyExpectedAnswer.findAll", query="SELECT l FROM LimesurveyExpectedAnswer l")
-public class LimesurveyExpectedAnswer implements Serializable {
+@Table(name="limesurvey_answers", schema="harvesting")
+@NamedQuery(name="LimesurveyAnswer.findAll", query="SELECT l FROM LimesurveyAnswer l")
+public class LimesurveyAnswer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -39,7 +39,7 @@ public class LimesurveyExpectedAnswer implements Serializable {
 	@JoinColumn(name="limesurvey_survey_assignment_id", nullable=false)
 	private LimesurveySurveyAssignment limesurveySurveyAssignment;
 
-	public LimesurveyExpectedAnswer() {
+	public LimesurveyAnswer() {
 	}
 
 	public Long getId() {

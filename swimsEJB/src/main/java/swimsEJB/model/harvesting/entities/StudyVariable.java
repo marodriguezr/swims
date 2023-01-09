@@ -54,10 +54,6 @@ public class StudyVariable implements Serializable {
 	@JoinColumn(name="study_variable_class_id", nullable=false)
 	private StudyVariableClass studyVariableClass;
 
-	//bi-directional many-to-one association to Answer
-	@OneToMany(mappedBy="studyVariable")
-	private List<Answer> answers;
-
 	public StudyVariable() {
 	}
 
@@ -175,28 +171,6 @@ public class StudyVariable implements Serializable {
 
 	public void setStudyVariableClass(StudyVariableClass studyVariableClass) {
 		this.studyVariableClass = studyVariableClass;
-	}
-
-	public List<Answer> getAnswers() {
-		return this.answers;
-	}
-
-	public void setAnswers(List<Answer> answers) {
-		this.answers = answers;
-	}
-
-	public Answer addAnswer(Answer answer) {
-		getAnswers().add(answer);
-		answer.setStudyVariable(this);
-
-		return answer;
-	}
-
-	public Answer removeAnswer(Answer answer) {
-		getAnswers().remove(answer);
-		answer.setStudyVariable(null);
-
-		return answer;
 	}
 
 }

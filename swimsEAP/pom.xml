@@ -22,6 +22,11 @@
 			<artifactId>swimsWeb</artifactId>
 			<type>war</type>
 		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>swimsAPI</artifactId>
+			<type>war</type>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -47,6 +52,12 @@
 							<artifactId>swimsWeb</artifactId>
 							<contextRoot>/swims</contextRoot>
 							<bundleFileName>swimsWeb-${project.version}.war</bundleFileName>
+						</webModule>
+						<webModule>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>swimsAPI</artifactId>
+							<contextRoot>/swims/api</contextRoot>
+							<bundleFileName>swimsAPI-${project.version}.war</bundleFileName>
 						</webModule>
 					</modules>
 				</configuration>

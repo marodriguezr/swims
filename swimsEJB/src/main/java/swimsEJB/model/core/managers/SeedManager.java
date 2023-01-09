@@ -23,11 +23,12 @@ import swimsEJB.model.auth.managers.PermissionManager;
 import swimsEJB.model.auth.managers.UserManager;
 import swimsEJB.model.core.entities.Sysparam;
 import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
+import swimsEJB.model.harvesting.entities.Question;
 import swimsEJB.model.harvesting.entities.StudyVariable;
 import swimsEJB.model.harvesting.entities.StudyVariableClass;
 import swimsEJB.model.harvesting.managers.OaiSetManager;
 import swimsEJB.model.harvesting.managers.QuestionManager;
-import swimsEJB.model.harvesting.managers.AnswerManager;
+import swimsEJB.model.harvesting.managers.ExpectedAnswerManager;
 import swimsEJB.model.harvesting.managers.LimesurveyQuestionManager;
 import swimsEJB.model.harvesting.managers.StudyVariableClassManager;
 import swimsEJB.model.harvesting.managers.StudyVariableManager;
@@ -62,7 +63,7 @@ public class SeedManager {
 	@EJB
 	private QuestionManager questionManager;
 	@EJB
-	private AnswerManager answerManager;
+	private ExpectedAnswerManager expectedAnswerManager;
 
 	/**
 	 * Default constructor.
@@ -620,8 +621,8 @@ public class SeedManager {
 		/**
 		 * 3.1. Impact Indicator Questions
 		 */
-		questionManager.createOneQuestion("Seleccione el nombre de la entidad beneficiaria",
-				beneficairyEntityStudyVariable);
+		Question beneficiaryQuestion = questionManager
+				.createOneQuestion("Seleccione el nombre de la entidad beneficiaria", beneficairyEntityStudyVariable);
 
 		/**
 		 * 4. Answers
@@ -629,52 +630,47 @@ public class SeedManager {
 		/**
 		 * 4.1. Beneficiary Entity Names
 		 */
-		answerManager.createOneAnswer("Gobierno Autónomo Descentralizado de la Provincia de Imbabura",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("GAD Municipal de Montúfar", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("GAD Municipal de San Miguel de Urcuquí", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Unidad Educativa Fiscomisional Salesiana Sánchez y Cifuentes",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Unidad Educativa Particular Pensionado Atahualpa",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Unidad Educativa Fiscal Cristóbal de Troya",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Cooperativa de Ahorro y Crédito San Antonio Ltda",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Empresa BYPROS SISTEMAS INCORPORADOS", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("NET SERVICE", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("OMNES WEB.11", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("SINFOTECNIA", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("LOPEZ YEPEZ & ASOCIADOS S.A. CONFAC S.A.", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Empresas IT EMPRESARIAL S.A.", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Soluciones Avanzadas Informáticas y Telecomunicaciones SAITEL",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("GAD Municipal del Cantón Otavalo", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Empresa de Servicios Municipales de Antonio Ante",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("GAD Municipal de Espejo", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Empresa Municipal de Agua Potable y Alcantarillado de Ibarra  EMAPA-I",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("VASQUIN CIA. LTDA", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Empresa FARMAENLACE CIA. LTDA.", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("GAD Municipal de San Miguel de Ibarra", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("GAD Municipal de Santa Ana de Cotacachi", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("GAD Municipal de Huaca", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Compañía Representaciones Chamorro Burbano S.A.",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("OMCEMEDIOS", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Cooperativa de Ahorro y Crédito Mujeres Unidas TANTANAKUSHKA WARMIKUNAPAC",
-				BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Kruger Corporation S.A.", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("CODENORTE", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Unidad Educativa Juan Diego", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Greenetics Soluciones S.A", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("EMPRESA ITZAM DEVELOPMET AND DESIGN", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("EMPRESA INDUSTRIAS KARMAT", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("EMPRESA ONVIA", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("EMPRESA J&L COMPUTER SERVICE", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("EMPRESA PAPAGAYODEV CIA. LTDA", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		answerManager.createOneAnswer("Bitproy Cia. Ltda.", BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
+		expectedAnswerManager.createOneExpectedAnswer("Gobierno Autónomo Descentralizado de la Provincia de Imbabura",
+				beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de Montúfar", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de San Miguel de Urcuquí", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Unidad Educativa Fiscomisional Salesiana Sánchez y Cifuentes",
+				beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Unidad Educativa Particular Pensionado Atahualpa", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Unidad Educativa Fiscal Cristóbal de Troya", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Cooperativa de Ahorro y Crédito San Antonio Ltda", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Empresa BYPROS SISTEMAS INCORPORADOS", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("NET SERVICE", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("OMNES WEB.11", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("SINFOTECNIA", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("LOPEZ YEPEZ & ASOCIADOS S.A. CONFAC S.A.", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Empresas IT EMPRESARIAL S.A.", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Soluciones Avanzadas Informáticas y Telecomunicaciones SAITEL",
+				beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal del Cantón Otavalo", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Empresa de Servicios Municipales de Antonio Ante", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de Espejo", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Empresa Municipal de Agua Potable y Alcantarillado de Ibarra  EMAPA-I",
+				beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("VASQUIN CIA. LTDA", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Empresa FARMAENLACE CIA. LTDA.", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de San Miguel de Ibarra", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de Santa Ana de Cotacachi", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de Huaca", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Compañía Representaciones Chamorro Burbano S.A.", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("OMCEMEDIOS", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer(
+				"Cooperativa de Ahorro y Crédito Mujeres Unidas TANTANAKUSHKA WARMIKUNAPAC", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Kruger Corporation S.A.", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("CODENORTE", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Unidad Educativa Juan Diego", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Greenetics Soluciones S.A", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("EMPRESA ITZAM DEVELOPMET AND DESIGN", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("EMPRESA INDUSTRIAS KARMAT", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("EMPRESA ONVIA", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("EMPRESA J&L COMPUTER SERVICE", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("EMPRESA PAPAGAYODEV CIA. LTDA", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Bitproy Cia. Ltda.", beneficiaryQuestion);
 
 	}
 

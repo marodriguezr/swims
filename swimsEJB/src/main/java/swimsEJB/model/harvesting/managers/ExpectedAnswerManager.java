@@ -1,6 +1,7 @@
 package swimsEJB.model.harvesting.managers;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -9,9 +10,6 @@ import javax.ejb.Stateless;
 import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvesting.entities.ExpectedAnswer;
 import swimsEJB.model.harvesting.entities.Question;
-import swimsEJB.model.harvesting.entities.ThesisAssignment;
-
-import static swimsEJB.constants.StudyVariables.BENEFICIARY_NAME_STUDY_VARIABLE_NAME;
 
 /**
  * Session Bean implementation class AnswerManager
@@ -19,6 +17,7 @@ import static swimsEJB.constants.StudyVariables.BENEFICIARY_NAME_STUDY_VARIABLE_
 @Stateless
 @LocalBean
 public class ExpectedAnswerManager {
+
 	@EJB
 	private DaoManager daoManager;
 	@EJB
@@ -31,33 +30,36 @@ public class ExpectedAnswerManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ExpectedAnswer createOneAnswer(Question question, String answer, ThesisAssignment thesisAssignment)
-			throws Exception {
+	public ExpectedAnswer createOneExpectedAnswer(String answer, Question question) throws Exception {
+		if (answer.isBlank())
+			throw new Exception("Debe ingresar una respuesta.");
 		if (question == null)
 			throw new Exception("Debe proveer una pregunta.");
-		if (answer.isBlank())
-			throw new Exception("Debe proveer una respuesta.");
-		if (thesisAssignment == null)
-			throw new Exception("Debe proveer una asignación de Tesis");
+		if (answer.length() > 256)
+			throw new Exception("Debe ingresar 256 caracteres o menos como respuesta.");
 
 		ExpectedAnswer answer2 = new ExpectedAnswer();
+
+		answer2.setExpectedAnswer(answer);
 		answer2.setQuestion(question);
-		answer2.setAnswer(answer);
-		answer2.setThesisAssignment(thesisAssignment);
+		;
 		answer2.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		answer2.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		return (ExpectedAnswer) daoManager.createOne(answer2);
 	}
 
-	public ExpectedAnswer dispatchBeneficiaryAnswer(String answer, ThesisAssignment thesisAssignment) throws Exception {
-		Question question = questionManager.findOneQuestionByStudyVariableId(BENEFICIARY_NAME_STUDY_VARIABLE_NAME);
-		return createOneAnswer(question, answer, thesisAssignment);
+	public ExpectedAnswer createOneExpectedAnswer(String answer, String studyVariableId) throws Exception {
+		Question question = questionManager.findOneQuestionByStudyVariableId(answer);
+		return createOneExpectedAnswer(answer, question);
 	}
 
-	public boolean isBeneficiaryStudyVariableAnsweredForThesisAssignent(ThesisAssignment thesisAssignment) {
-		ExpectedAnswer foundExpectedAnswer = (ExpectedAnswer) daoManager.findOneWhere(ExpectedAnswer.class,
-				"o.thesisAssignment.id = " + thesisAssignment.getId() + " AND o.question.studyVariable.id = '"
-						+ BENEFICIARY_NAME_STUDY_VARIABLE_NAME + "'");
-		return foundExpectedAnswer != null;
+	@SuppressWarnings("unchecked")
+	public List<ExpectedAnswer> findManyExpectedAnswersByStudyVariableId(String studyVariableId) {
+		return daoManager.findManyWhere(ExpectedAnswer.class, "o.question.studyVariable.id = '" + studyVariableId + "'",
+				null);
+	}
+
+	public ExpectedAnswer findOneExpectedAnswerById(int expectedAnswerId) throws Exception {
+		return (ExpectedAnswer) daoManager.findOneById(ExpectedAnswer.class, expectedAnswerId);
 	}
 }
