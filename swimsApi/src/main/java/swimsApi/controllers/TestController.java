@@ -33,6 +33,9 @@ public class TestController {
 			hashMap.put("id", oaiRecord.getId());
 			hashMap.put("contributor", oaiRecord.getContributor());
 			hashMap.put("author", oaiRecord.getCreator());
+			hashMap.put("subject", oaiRecord.getSubject());
+			hashMap.put("issue_date", oaiRecord.getInferredIssueDate());
+			hashMap.put("description", oaiRecord.getDescription());
 
 			hashMaps.add(hashMap);
 		}

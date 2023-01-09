@@ -14,30 +14,27 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<h:form>
-			<p:dataTable value="#{testBean.compoundTestRegisters}"
-				var="testResgister">
-				<p:column headerText="Título de tesis">
-					<h:outputText value="#{testResgister.thesisTitle}" />
-				</p:column>
-
-				<p:column headerText="Variable de estudio">
-					<h:outputText value="#{testResgister.studyVariableLongName}" />
-				</p:column>
-
-				<p:column headerText="Título(Código) de pregunta">
-					<h:outputText value="#{testResgister.limesurveyQuestionTitle}" />
-				</p:column>
-
-				<p:column headerText="Código de respuesta">
-					<h:outputText value="#{testResgister.limesurveyAnswerCode}" />
-				</p:column>
-			</p:dataTable>
-		</h:form>
-		<div class="p-d-flex p-ai-center p-jc-center">
-			<iframe title="tes2" width="1024" height="612"
-				src="https://app.powerbi.com/view?r=eyJrIjoiNTY2NjVkMzYtZmFkOS00ODY4LTk4YWQtZDk1OWFkNzQ1ODgzIiwidCI6IjhkYmUxNDY5LWM3OWMtNGUyMS05ZDQzLWNhNjVkOWU5YzQ3NSIsImMiOjR9"
-				frameborder="0" allowFullScreen="true"></iframe>
-		</div>
+		<p:card>
+			<f:facet name="title">
+        Sistema para la Medición del Impacto de Productos de Software
+    </f:facet>
+			<f:facet name="subtitle">
+        Gráficas Disponibles
+    </f:facet>
+			<div class="grid-container">
+				<p:panel header="Tesis por Docente" collapsed="false"
+					toggleable="true">
+					<iframe title="tes2" width="100%" height="612"
+						src="https://app.powerbi.com/view?r=eyJrIjoiNTY2NjVkMzYtZmFkOS00ODY4LTk4YWQtZDk1OWFkNzQ1ODgzIiwidCI6IjhkYmUxNDY5LWM3OWMtNGUyMS05ZDQzLWNhNjVkOWU5YzQ3NSIsImMiOjR9"
+						frameborder="0" allowFullScreen="true"></iframe>
+				</p:panel>
+				<p:panel header="Tesis por Docente" collapsed="false"
+					toggleable="true">
+					<iframe title="tes2" width="100%" height="612"
+						src="https://app.powerbi.com/view?r=eyJrIjoiNTY2NjVkMzYtZmFkOS00ODY4LTk4YWQtZDk1OWFkNzQ1ODgzIiwidCI6IjhkYmUxNDY5LWM3OWMtNGUyMS05ZDQzLWNhNjVkOWU5YzQ3NSIsImMiOjR9"
+						frameborder="0" allowFullScreen="true"></iframe>
+				</p:panel>
+			</div>
+		</p:card>
 	</ui:define>
 </ui:composition>
