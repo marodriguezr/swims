@@ -3,10 +3,11 @@ FROM maven:3-openjdk-11 as build
 ## Setting working directory
 WORKDIR /usr/src/mymaven
 ## Copying project
-COPY ./swimsEAP /usr/src/mymaven/swimsEAP
-COPY ./swimsEJB /usr/src/mymaven/swimsEJB
-COPY ./swimsWeb /usr/src/mymaven/swimsWeb
-COPY ./pom.xml /usr/src/mymaven/pom.xml
+# COPY ./swimsEAP /usr/src/mymaven/swimsEAP
+# COPY ./swimsEJB /usr/src/mymaven/swimsEJB
+# COPY ./swimsWeb /usr/src/mymaven/swimsWeb
+# COPY ./pom.xml /usr/src/mymaven/pom.xml
+COPY ./** /usr/src/mymaven/
 
 ## Cleaning, installing dependencies and packaging
 RUN mvn clean install && mvn clean package
