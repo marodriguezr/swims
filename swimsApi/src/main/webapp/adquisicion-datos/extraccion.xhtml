@@ -1,0 +1,194 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Inicio</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{authBean.onPageLoad()}" />
+			<f:viewAction action="#{extractionBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
+
+
+	<ui:define name="content">
+		<h:form id="main">
+			<p:toolbar>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Refrescar" icon="pi pi-refresh"
+						styleClass="ui-button-secondary"
+						actionListener="#{extractionBean.refresh()}" update="@form">
+					</p:commandButton>
+				</p:toolbarGroup>
+			</p:toolbar>
+			<p:card id="card">
+				<f:facet name="title">
+						Extracción de datos
+					</f:facet>
+				<p>Por favor conteste las encuestas asignadas.</p>
+
+				<ui:repeat var="thesisAssignment"
+					value="#{extractionBean.thesisAssignments}">
+					<p:card class="p-mb-2">
+						<f:facet name="subtitle">
+							<h3>#{thesisAssignment.oaiRecord.title}</h3>
+						</f:facet>
+						<div class="p-d-flex gap-on-data-extraction-inf-fields">
+							<h:outputText styleClass="p-text-bold"
+								value="Documento de tesis:" />
+							<a href="#{thesisAssignment.oaiRecord.url}" target="_blank">
+								<h:outputText value="#{thesisAssignment.oaiRecord.url}" />
+							</a>
+						</div>
+						<div class="p-d-flex gap-on-data-extraction-inf-fields">
+							<h:outputText styleClass="p-text-bold" value="Autor:" />
+							<h:outputText value="#{thesisAssignment.oaiRecord.creator}" />
+						</div>
+						<div class="p-d-flex gap-on-data-extraction-inf-fields">
+							<h:outputText styleClass="p-text-bold" value="Tutor:" />
+							<h:outputText value="#{thesisAssignment.oaiRecord.contributor}" />
+						</div>
+						<div class="p-d-flex gap-on-data-extraction-inf-fields">
+							<h:outputText styleClass="p-text-bold"
+								value="Fecha de Publicación:" />
+							<h:outputText
+								value="#{recordsSelectionBean.dateFormat.format(thesisAssignment.oaiRecord.inferredIssueDate)}" />
+						</div>
+
+						<div
+							class="p-d-flex p-ai-center p-mt-2 data-extraction-tiles-container p-jc-center">
+
+							<h:panelGroup class="data-extraction-beneficiary-container"
+								rendered="#{extractionBean.isBeneficiaryStudyVariableAnsweredForThesisAssignent(thesisAssignment) eq false}">
+								<div class="p-p-4 p-shadow-1"
+									style="border-style: solid; border-width: 1px; border-radius: 5px; border-color: gray;">
+									<div class="p-d-flex p-jc-center p-ai-center"
+										style="gap: .5rem;">
+										<h4 class="p-text-center">Nombre de la Entidad
+											Beneficiaria</h4>
+										<div class="pi pi-info-circle" style="cursor: pointer;"
+											onclick="PF('newBeneficiaryInfoDialog').show()"></div>
+									</div>
+
+									<p:selectOneMenu styleClass="p-mb-3" filter="true"
+										filterMatchMode="contains"
+										value="#{extractionBean.selectedBeneficiaryId}"
+										style="width: 100%;">
+										<f:selectItems value="#{extractionBean.beneficiaries}"
+											var="beneficiary" itemLabel="#{beneficiary.expectedAnswer}"
+											itemValue="#{beneficiary.id}"></f:selectItems>
+									</p:selectOneMenu>
+
+									<div class="p-d-flex p-jc-center">
+										<p:commandButton icon="pi pi-plus"
+											oncomplete="PF('newBeneficiaryDialog').show()"
+											actionListener="#{extractionBean.openNewBeneficiaryDialog()}"
+											styleClass="rounded-button p-mr-2"
+											update=":newBeneficiaryForm"></p:commandButton>
+
+										<p:commandButton title="Marcar como completado"
+											icon="pi pi-check"
+											styleClass="ui-button-success rounded-button" update="@form"
+											actionListener="#{extractionBean.dispatchBeneficiaryAnswer(thesisAssignment)}"></p:commandButton>
+									</div>
+								</div>
+							</h:panelGroup>
+
+							<h:panelGroup
+								rendered="#{thesisAssignment.limesurveySurveyAssignments.size() gt 1}"
+								class="data-extraction-carousel-container">
+								<p:carousel numScroll="1" styleClass="p-mt-4"
+									responsiveOptions="#{extractionBean.responsiveOptions}"
+									value="#{thesisAssignment.limesurveySurveyAssignments}"
+									var="limesurveySurveyAssignment" numVisible="3">
+
+									<div class="p-pl-1 p-pr-1 p-mb-1 p-mt-1">
+										<div class="p-p-4 p-shadow-1"
+											style="border-style: solid; border-width: 1px; border-radius: 5px; border-color: gray;">
+											<div class="p-d-flex p-jc-center">
+												<h4 class="p-text-center">#{extractionBean.findLimesurveySurveyById(limesurveySurveyAssignment.limesurveySurveyId).surveylsTitle}</h4>
+											</div>
+											<div class="p-d-flex p-jc-center">
+												<a target="_blank"
+													href="#{webappPathsBean.LIMESURVEY_PROTOCOL}#{webappPathsBean.LIMESURVEY_PUBLIC_HOST}:#{webappPathsBean.LIMESURVEY_PUBLIC_PORT}#{webappPathsBean.LIMESURVEY_BASE_URL}/index.php/#{limesurveySurveyAssignment.limesurveySurveyId}?newtest=Y&amp;token=#{limesurveySurveyAssignment.limesurveySurveyToken}">
+													<p:commandButton alt="Responder" type="button"
+														icon="pi pi-external-link"
+														styleClass="rounded-button p-mr-2" title="Responder" />
+												</a>
+												<p:commandButton title="Marcar como completado"
+													icon="pi pi-check"
+													styleClass="ui-button-success rounded-button"
+													actionListener="#{extractionBean.dispatchSurveyActionListener(limesurveySurveyAssignment)}"
+													update="@form"></p:commandButton>
+											</div>
+										</div>
+									</div>
+								</p:carousel>
+							</h:panelGroup>
+							<h:panelGroup
+								style="border-style: solid; border-width: 1px; border-radius: 5px; border-color: gray;"
+								layout="block"
+								styleClass="p-p-2 p-shadow-1 p-ml-6 p-mr-6 p-mb-4 p-mt-4 data-extraction-carousel-container"
+								rendered="#{thesisAssignment.limesurveySurveyAssignments.size() eq 1}">
+								<div class="p-d-flex p-jc-center">
+									<h4 class="p-text-center">#{extractionBean.findLimesurveySurveyById(thesisAssignment.limesurveySurveyAssignments.get(0).limesurveySurveyId).surveylsTitle}</h4>
+								</div>
+								<div class="p-d-flex p-jc-center">
+									<a target="_blank"
+										href="#{webappPathsBean.LIMESURVEY_PROTOCOL}#{webappPathsBean.LIMESURVEY_PUBLIC_HOST}:#{webappPathsBean.LIMESURVEY_PUBLIC_PORT}#{webappPathsBean.LIMESURVEY_BASE_URL}/index.php/#{thesisAssignment.limesurveySurveyAssignments.get(0).limesurveySurveyId}?newtest=Y&amp;token=#{thesisAssignment.limesurveySurveyAssignments.get(0).limesurveySurveyToken}">
+										<p:commandButton alt="Responder" type="button"
+											icon="pi pi-external-link" styleClass="rounded-button p-mr-2"
+											title="Responder" />
+									</a>
+									<p:commandButton title="Marcar como completado"
+										icon="pi pi-check"
+										styleClass="ui-button-success rounded-button"
+										actionListener="#{extractionBean.dispatchSurveyActionListener(thesisAssignment.limesurveySurveyAssignments.get(0))}"
+										update="@form"></p:commandButton>
+								</div>
+							</h:panelGroup>
+						</div>
+
+					</p:card>
+				</ui:repeat>
+				<h:outputText value="No existen Tesis asignadas o pendientes."
+					rendered="#{extractionBean.thesisAssignments.size() eq 0}" />
+			</p:card>
+		</h:form>
+	</ui:define>
+	<ui:define name="dialogs">
+		<h:form id="newBeneficiaryForm">
+			<p:dialog header="Nuevo beneficiario"
+				widgetVar="newBeneficiaryDialog">
+				<p:outputPanel>
+					<div class="p-d-flex p-flex-column">
+						<p:outputLabel styleClass="p-mb-2" for="name">Nombre/s</p:outputLabel>
+						<p:inputText id="name" required="true"
+							value="#{extractionBean.beneficiaryName}"
+							requiredMessage="Debe ingresar un Nombre." />
+					</div>
+				</p:outputPanel>
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" icon="pi pi-save"
+						onsuccess="PF('newBeneficiaryDialog').hide()" update=":main:card"
+						actionListener="#{extractionBean.createNewBeneficiary()}" />
+					<p:commandButton value="Cancelar" icon="pi pi-times"
+						onclick="PF('newBeneficiaryDialog').hide()"
+						class="ui-button-secondary" type="button" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+
+		<p:dialog widgetVar="newBeneficiaryInfoDialog">
+			<p:outputPanel>
+				<p>Seleccione una de las Entidades disponibles, en caso de no
+					existir registre una nueva entidad mediante el botón "+".</p>
+			</p:outputPanel>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

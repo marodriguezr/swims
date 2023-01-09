@@ -1,0 +1,97 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Selección de Usuario</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{authBean.onPageLoad()}" />
+			<f:viewAction action="#{userSelectionBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form>
+			<p:card>
+				<f:facet name="title">
+			Selección de Usuario
+			</f:facet>
+				<ui:include
+					src="#{webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH}/steps.xhtml" />
+				<div class="p-pt-4">
+					<div class="ui-fluid">
+						<div class="field">
+
+							<p:selectOneListbox id="user" var="c" filter="true"
+								filterMatchMode="contains" converter="#{userDtoConverter}"
+								value="#{userSelectionBean.selectedUserDto}">
+								<f:selectItems value="#{userSelectionBean.userDtos}"
+									var="userDto"
+									itemLabel="#{userDto.firstName} #{userDto.lastName}"
+									itemValue="#{userDto}" />
+
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4" value="No. Tesis asignadas" />
+									</div>
+									<h:outputText
+										value="#{userSelectionBean.findUndispatchedThesisAssignmentsCountByUserId(c.id)}" />
+								</p:column>
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4"
+											value="No. Encuestas pendientes" />
+									</div>
+									<h:outputText
+										value="#{userSelectionBean.findUndispatchedSurveysCountByUserId(c.id)}" />
+								</p:column>
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4" value="Nombre/s" />
+									</div>
+									<h:outputText value="#{c.firstName}" />
+								</p:column>
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4" value="Apellido/s" />
+									</div>
+									<h:outputText value="#{c.lastName}" />
+								</p:column>
+								<p:column styleClass="p-d-flex p-flex-column">
+									<div class="p-d-flex p-ai-center p-jc-center">
+										<h:outputText
+											rendered="#{userSelectionBean.findIndexOfUserDto(userSelectionBean.userDtos, c) eq 0}"
+											styleClass="p-text-bold p-pb-4" value="Email" />
+									</div>
+									<h:outputText value="#{c.email}" />
+								</p:column>
+
+							</p:selectOneListbox>
+
+						</div>
+					</div>
+				</div>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-fw pi-angle-double-left"
+						value="Regresar" styleClass="ui-button-secondary" disabled="true" />
+
+					<p:commandButton styleClass="p-ml-2"
+						icon="pi pi-fw pi-angle-double-right" value="Avanzar"
+						action="#{thesisSelectionBean.loadPage()}" />
+				</f:facet>
+			</p:card>
+		</h:form>
+	</ui:define>
+</ui:composition>

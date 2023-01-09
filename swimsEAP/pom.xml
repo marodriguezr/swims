@@ -24,7 +24,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>swimsAPI</artifactId>
+			<artifactId>swimsApi</artifactId>
 			<type>war</type>
 		</dependency>
 	</dependencies>
@@ -55,9 +55,9 @@
 						</webModule>
 						<webModule>
 							<groupId>${project.groupId}</groupId>
-							<artifactId>swimsAPI</artifactId>
+							<artifactId>swimsApi</artifactId>
 							<contextRoot>/swims/api</contextRoot>
-							<bundleFileName>swimsAPI-${project.version}.war</bundleFileName>
+							<bundleFileName>swimsApi-${project.version}.war</bundleFileName>
 						</webModule>
 					</modules>
 				</configuration>

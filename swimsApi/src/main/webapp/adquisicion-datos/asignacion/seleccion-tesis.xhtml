@@ -1,0 +1,232 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Selección de Tesis</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{thesisSelectionBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form>
+			<p:card>
+				<f:facet name="title">
+			Selección de Tesis
+			</f:facet>
+				<ui:include
+					src="#{webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH}/steps.xhtml" />
+
+				<div class="p-pt-4 p-pb-2">
+					<div>
+						<h:outputText styleClass="p-text-bold"
+							value="Conteo total de registros: " />
+						<h:outputText value="#{thesisSelectionBean.oaiRecords.size()}" />
+					</div>
+				</div>
+				<div class="ui-fluid">
+					<p:dataTable value="#{thesisSelectionBean.oaiRecords}"
+						var="oaiRecord" reflow="true" rows="5" paginator="true"
+						id="availableOaiRecords" rowSelectMode="add"
+						rowKey="#{oaiRecord.id}"
+						selection="#{thesisSelectionBean.selectedOaiRecords}">
+						<p:column filterMatchMode="contains" selectionMode="multiple"
+							exportable="false"></p:column>
+
+						<p:column filterMatchMode="contains" sortBy="#{oaiRecord.title}"
+							filterBy="#{oaiRecord.title}" headerText="Titulo">
+							<a target="_blank" href="#{oaiRecord.url}"><h:outputText
+									value="#{oaiRecord.title}" /></a>
+						</p:column>
+
+						<p:column filterMatchMode="contains" sortBy="#{oaiRecord.creator}"
+							filterBy="#{oaiRecord.creator}" headerText="Autor">
+							<h:outputText value="#{oaiRecord.creator}" />
+						</p:column>
+
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecord.contributor}"
+							filterBy="#{oaiRecord.contributor}" headerText="Director">
+							<h:outputText value="#{oaiRecord.contributor}" />
+						</p:column>
+
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecord.description}"
+							filterBy="#{oaiRecord.description}" headerText="Descripción">
+							<h:outputText value="#{oaiRecord.description}" />
+						</p:column>
+
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecord.inferredIssueDate}"
+							filterBy="#{recordsSelectionBean.dateFormat.format(oaiRecord.inferredIssueDate)}"
+							headerText="Fecha de publicación">
+							<h:outputText rendered="#{oaiRecord.inferredIssueDate ne null}"
+								value="#{recordsSelectionBean.dateFormat.format(oaiRecord.inferredIssueDate)}" />
+						</p:column>
+
+						<p:column>
+							<p:commandButton icon="pi pi-fw pi-plus"
+								oncomplete="PF('allRecordInfoDialog').show()"
+								update=":allRecordInfoForm"
+								actionListener="#{thesisSelectionBean.setSelectedOaiRecordDtoWithExternalData(oaiRecord)}"></p:commandButton>
+						</p:column>
+					</p:dataTable>
+				</div>
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-fw pi-angle-double-left"
+						value="Regresar" styleClass="ui-button-secondary"
+						action="#{userSelectionBean.loadPage()}" />
+					<p:commandButton action="#{surveysSelectionBean.loadPage()}"
+						styleClass="p-ml-2" icon="pi pi-fw pi-angle-double-right"
+						value="Avanzar" />
+
+				</f:facet>
+			</p:card>
+		</h:form>
+	</ui:define>
+
+	<ui:define name="dialogs">
+		<p:dialog height="50vh" width="80vw" blockScroll="true"
+			header="Toda la información del registro" showEffect="fade"
+			modal="true" widgetVar="allRecordInfoDialog" responsive="true">
+			<h:form id="allRecordInfoForm">
+				<div class="ui-fluid">
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.titles.size() gt 1}"
+							header="Títulos" toggleable="true" collapsed="false">
+							<p:dataScroller
+								value="#{thesisSelectionBean.selectedOaiRecordDto.titles}"
+								var="title">
+								<h:outputText value="#{title}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.titles.size() eq 1}"
+							header="Título" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{thesisSelectionBean.selectedOaiRecordDto.titles.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.creators.size() gt 1}"
+							header="Autores" toggleable="true" collapsed="false">
+							<p:dataScroller
+								value="#{thesisSelectionBean.selectedOaiRecordDto.creators}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.creators.size() eq 1}"
+							header="Autor" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{thesisSelectionBean.selectedOaiRecordDto.creators.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.subjects.size() gt 1}"
+							header="Palabras clave" toggleable="true" collapsed="false">
+							<p:dataScroller
+								value="#{thesisSelectionBean.selectedOaiRecordDto.subjects}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.subjects.size() eq 1}"
+							header="Palabra clave" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{thesisSelectionBean.selectedOaiRecordDto.subjects.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.descriptions.size() gt 1}"
+							header="Descripciones" toggleable="true" collapsed="false">
+							<p:dataScroller
+								value="#{thesisSelectionBean.selectedOaiRecordDto.descriptions}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.descriptions.size() eq 1}"
+							header="Descripcion" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{thesisSelectionBean.selectedOaiRecordDto.descriptions.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.contributors.size() gt 1}"
+							header="Directores" toggleable="true" collapsed="false">
+							<p:dataScroller
+								value="#{thesisSelectionBean.selectedOaiRecordDto.contributors}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.contributors.size() eq 1}"
+							header="Director" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{thesisSelectionBean.selectedOaiRecordDto.contributors.get(0)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.inferredIssueDate ne null}"
+							header="Fecha de publicación" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{recordsSelectionBean.dateFormat.format(thesisSelectionBean.selectedOaiRecordDto.inferredIssueDate)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.identifiers.size() gt 1}"
+							header="Identificadores" toggleable="true" collapsed="false">
+							<p:dataScroller
+								value="#{thesisSelectionBean.selectedOaiRecordDto.identifiers}"
+								var="iterable">
+								<h:outputText value="#{iterable}" />
+								<br />
+								<br />
+							</p:dataScroller>
+						</p:panel>
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.identifiers.size() eq 1}"
+							header="Identificador" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{thesisSelectionBean.selectedOaiRecordDto.identifiers.get(0)}" />
+						</p:panel>
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

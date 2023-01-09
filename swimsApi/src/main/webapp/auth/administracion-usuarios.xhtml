@@ -1,0 +1,326 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Administración de usuarios</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{authBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<script>
+			//<![CDATA[
+			function start() {
+				PF('statusDialog').show();
+			}
+
+			function stop() {
+				PF('statusDialog').hide();
+			}
+			//]]>
+		</script>
+
+		<h:form id="form">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Nuevo" icon="pi pi-plus"
+						styleClass="ui-button-success"
+						actionListener="#{userManagementBean.openNew()}"
+						update=":dialogs:manage-users-content"
+						oncomplete="PF('manageUserDialog').show()"
+						style="margin-right: .5rem">
+						<p:resetInput target=":dialogs:manage-users-content" />
+					</p:commandButton>
+					<p:commandButton id="inactivate-users-button"
+						value="#{userManagementBean.inactivateButtonMessage}"
+						icon="pi pi-times" styleClass="ui-button-info"
+						actionListener="#{userManagementBean.inactivateSelectedUserDtos()}"
+						disabled="#{!userManagementBean.hasSelectedUserDtos()}"
+						update="@form">
+						<p:confirm header="Confirmación"
+							message="¿Está seguro de inactivar los usuarios seleccionados? Los usuarios perderán el acceso."
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Importar" icon="pi pi-download"
+						oncomplete="PF('importDialog').show()" style="margin-right: .5rem"
+						actionListener="#{userManagementBean.openImportDialog()}"
+						update=":dialogs2:import-dialog">
+					</p:commandButton>
+					<p:commandButton value="Refrescar" icon="pi pi-refresh"
+						styleClass="ui-button-secondary"
+						actionListener="#{userManagementBean.onLoad()}" update="@form">
+					</p:commandButton>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable emptyMessage="No existen registros." id="dt-users"
+				widgetVar="dtUsers" var="user"
+				value="#{userManagementBean.userDtos}" reflow="true"
+				selection="#{userManagementBean.selectedUserDtos}"
+				rowKey="#{user.id}" paginator="true" rows="10" rowSelectMode="add"
+				paginatorPosition="bottom">
+
+				<f:facet name="header">
+					<div
+						style="display: flex; justify-content: space-between; align-items: center;">
+						<span style="font-weight: bold">USUARIOS</span> <span
+							class="ui-input-icon-left"
+							style="display: flex; align-items: center;"> <i
+							class="pi pi-search"></i> <p:inputText id="globalFilter"
+								onkeyup="PF('dtUsers').filter()" placeholder="Buscar" />
+						</span>
+
+					</div>
+				</f:facet>
+
+				<p:ajax event="rowSelect" update=":form:inactivate-users-button" />
+				<p:ajax event="rowUnselect" update=":form:inactivate-users-button" />
+				<p:ajax event="rowSelectCheckbox"
+					update=":form:inactivate-users-button" />
+				<p:ajax event="rowUnselectCheckbox"
+					update=":form:inactivate-users-button" />
+				<p:ajax event="toggleSelect" update=":form:inactivate-users-button" />
+
+				<p:column selectionMode="multiple" exportable="false"></p:column>
+
+				<p:column headerText="Nombre/" sortBy="#{user.firstName}"
+					filterBy="#{user.firstName}">
+					<h:outputText value="#{user.firstName}" />
+				</p:column>
+
+				<p:column headerText="Apellido/s" sortBy="#{user.lastName}"
+					filterBy="#{user.lastName}">
+					<h:outputText value="#{user.lastName}" />
+				</p:column>
+
+				<p:column headerText="Correo electrónico" sortBy="#{user.email}"
+					filterBy="#{user.email}">
+					<h:outputText value="#{user.email}" />
+				</p:column>
+
+				<p:column headerText="Estado" sortBy="#{user.active}">
+					<h:outputText rendered="#{user.active eq true}" value="Activo" />
+					<h:outputText rendered="#{user.active eq false}" value="Inactivo" />
+				</p:column>
+
+
+
+				<p:column exportable="false">
+					<p:commandButton icon="pi pi-pencil" alt="Modificar"
+						update=":dialogs:manage-users-content"
+						oncomplete="PF('manageUserDialog').show()"
+						styleClass="p-mr-2 rounded-button ui-button-help" process="@this">
+						<f:setPropertyActionListener value="#{user}"
+							target="#{userManagementBean.selectedUserDtoWithGroups}" />
+						<p:resetInput target=":dialogs:manage-users-content" />
+					</p:commandButton>
+					<p:commandButton icon="pi pi-check" alt="Activar"
+						update=":form:dt-users"
+						styleClass="p-mr-2 rounded-button ui-button-success"
+						actionListener="#{userManagementBean.activateUserDto(user)}"
+						process="@this">
+					</p:commandButton>
+					<p:commandButton alt="Inactivar"
+						styleClass="ui-button-warning rounded-button p-mr-2"
+						icon="pi pi-times" process="@this"
+						oncomplete="PF('inactivateUserDialog').show()">
+						<f:setPropertyActionListener value="#{user}"
+							target="#{userManagementBean.selectedUserDto}" />
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="dialogs">
+			<p:dialog header="Detalles del Usuario" showEffect="fade"
+				modal="true" widgetVar="manageUserDialog" responsive="true">
+				<p:outputPanel id="manage-users-content" class="ui-fluid">
+					<p:outputPanel
+						rendered="#{userManagementBean.selectedUserDto ne null}">
+
+						<div class="field">
+							<p:outputLabel for="name">Nombre/s</p:outputLabel>
+							<p:inputText id="name"
+								value="#{userManagementBean.selectedUserDto.firstName}"
+								required="true" requiredMessage="Debe ingresar un Nombre." />
+						</div>
+
+						<div class="field">
+							<p:outputLabel for="lastName">Apellido/s</p:outputLabel>
+							<p:inputText id="lastName"
+								value="#{userManagementBean.selectedUserDto.lastName}"
+								required="true" requiredMessage="Debe ingresar un Apellido." />
+						</div>
+
+						<div class="field">
+							<p:outputLabel for="email">Correo electrónico</p:outputLabel>
+							<p:inputText id="email"
+								value="#{userManagementBean.selectedUserDto.email}"
+								required="true"
+								rendered="#{userManagementBean.selectedUserDto.id eq -1}"
+								requiredMessage="Debe ingresar un Correo Electrónico." />
+							<p:inputText disabled="true"
+								value="#{userManagementBean.selectedUserDto.email}"
+								required="true"
+								rendered="#{userManagementBean.selectedUserDto.id ne -1}"
+								requiredMessage="Debe ingresar un Correo Electrónico." />
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="password">Contraseña</p:outputLabel>
+							<p:password style="width: 100%;"
+								promptLabel="Ingrese su contraseña" weakLabel="Débil"
+								goodLabel="Buena" strongLabel="Fuerte" feedback="true"
+								inline="true" toggleMask="true" redisplay="true"
+								value="#{userManagementBean.password}" id="password"></p:password>
+							<small>De no ser provista una nueva contraseña, la
+								contraseña anterior será mantenida.</small>
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="passwordConfirmation">Confirmación contraseña</p:outputLabel>
+							<p:password style="width: 100%;"
+								promptLabel="Ingrese su contraseña" weakLabel="Débil"
+								goodLabel="Buena" strongLabel="Fuerte" feedback="true"
+								inline="true" toggleMask="true" redisplay="true"
+								value="#{userManagementBean.passwordConfirmation}"
+								id="passwordConfirmation"></p:password>
+						</div>
+
+						<div class="field">
+							<p:outputLabel for="group">Grupos</p:outputLabel>
+							<p:selectManyMenu filter="true" filterMatchMode="contains"
+								showCheckbox="true" id="group"
+								value="#{userManagementBean.selectedGroupIds}">
+								<f:selectItems value="#{userManagementBean.groups}" var="group"
+									itemLabel="#{group.name}" itemValue="#{group.id}" />
+							</p:selectManyMenu>
+						</div>
+
+						<div class="field" style="display: flex; flex-direction: column;">
+							<p:outputLabel
+								rendered="#{userManagementBean.selectedUserDto.id ne -1}"
+								for="isActive">Estado</p:outputLabel>
+							<p:selectBooleanCheckbox
+								rendered="#{userManagementBean.selectedUserDto.id ne -1}"
+								id="isActive"
+								value="#{userManagementBean.selectedUserDto.active}"
+								required="true">
+							</p:selectBooleanCheckbox>
+						</div>
+					</p:outputPanel>
+				</p:outputPanel>
+
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" icon="pi pi-save"
+						actionListener="#{userManagementBean.saveUserDto()}"
+						update=":form:dt-users" onsuccess="PF('manageUserDialog').hide()"
+						process="manage-users-content @form" />
+					<p:commandButton value="Cancelar" icon="pi pi-times"
+						onclick="PF('manageUserDialog').hide()"
+						class="ui-button-secondary" type="button" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+
+		<h:form>
+			<p:confirmDialog widgetVar="inactivateUserDialog" showEffect="fade"
+				width="300" message="¿Está seguro de inactivar este usuario?"
+				header="Confirmación" severity="warn">
+				<p:commandButton value="Si" icon="pi pi-check"
+					actionListener="#{userManagementBean.inactivateSelectedUserDto()}"
+					update=":form:dt-users" process="@this"
+					oncomplete="PF('inactivateUserDialog').hide()" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('inactivateUserDialog').hide()" />
+			</p:confirmDialog>
+
+			<p:confirmDialog widgetVar="deleteUserDialog" showEffect="fade"
+				width="300" message="¿Está seguro de eliminar este usuario?"
+				header="Confirmación" severity="warn">
+				<p:commandButton value="Si" icon="pi pi-check"
+					actionListener="#{userManagementBean.deleteSelectedUserDto()}"
+					update=":form:dt-users" process="@this"
+					oncomplete="PF('deleteUserDialog').hide()" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('deleteUserDialog').hide()" />
+			</p:confirmDialog>
+
+			<p:confirmDialog global="true" showEffect="fade" width="300">
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button-secondary"
+					icon="pi pi-times" />
+			</p:confirmDialog>
+		</h:form>
+
+		<h:form id="dialogs2" enctype="multipart/form-data">
+			<p:dialog style="width: 50vw; min-width: 50vw; max-width: 50vw;"
+				header="Importar" showEffect="fade" modal="true"
+				widgetVar="importDialog" id="import-dialog" responsive="true">
+				<p:outputPanel>
+					<div class="p-d-flex p-flex-column">
+						<p:outputLabel styleClass="p-mb-1" for="@next">Plantillas:</p:outputLabel>
+						<div>
+							<p:commandButton styleClass="ui-button-outlined p-mr-2"
+								value="CSV" ajax="false"
+								onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:fileDownload value="#{userManagementBean.csvTemplate}" />
+							</p:commandButton>
+							<p:commandButton styleClass="ui-button-outlined p-mr-2"
+								value="ODS" ajax="false"
+								onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:fileDownload value="#{userManagementBean.odsTemplate}" />
+							</p:commandButton>
+							<p:commandButton styleClass="ui-button-outlined" value="XLSX"
+								ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);">
+								<p:fileDownload value="#{userManagementBean.xlsxTemplate}" />
+							</p:commandButton>
+						</div>
+					</div>
+
+					<div class="p-d-flex p-flex-column p-mt-2">
+						<p:outputLabel styleClass="p-mb-1" for="@next">Archivo:</p:outputLabel>
+						<p:fileUpload label="Seleccionar"
+							value="#{userManagementBean.uploadedFile}" mode="simple"
+							skinSimple="true" />
+						<small>Solo archivos CSV son procesables.</small> <br /> <small>Puede
+							exportar archivos ODS y XLSX (Excel) en formato CSV.</small>
+					</div>
+
+					<div class="field p-mt-2">
+						<p:outputLabel styleClass="p-mb-1" for="@next">Grupos:</p:outputLabel>
+						<p:selectManyMenu filter="true" filterMatchMode="contains"
+							showCheckbox="true"
+							value="#{userManagementBean.selectedGroupIds}">
+							<f:selectItems value="#{userManagementBean.groups}" var="group"
+								itemLabel="#{group.name}" itemValue="#{group.id}" />
+						</p:selectManyMenu>
+					</div>
+				</p:outputPanel>
+
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" icon="pi pi-save" ajax="false"
+						actionListener="#{userManagementBean.importActionListener()}"
+						onsuccess="PF('importDialog').hide()" update=":form:dt-users" />
+					<p:commandButton value="Cancelar" icon="pi pi-times"
+						onclick="PF('importDialog').hide()" class="ui-button-secondary"
+						type="button" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

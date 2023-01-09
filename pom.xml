@@ -12,7 +12,7 @@
 		<module>swimsEAP</module>
 		<module>swimsEJB</module>
 		<module>swimsWeb</module>
-		<module>swimsAPI</module>
+		<module>swimsApi</module>
 	</modules>
 
 	<distributionManagement>
@@ -47,7 +47,7 @@
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>swimsAPI</artifactId>
+				<artifactId>swimsApi</artifactId>
 				<version>${project.version}</version>
 				<type>war</type>
 			</dependency>
