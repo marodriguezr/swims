@@ -148,21 +148,21 @@
 					<p:outputPanel
 						rendered="#{userManagementBean.selectedUserDto ne null}">
 
-						<div class="field">
+						<div class="p-field p-mb-3">
 							<p:outputLabel for="name">Nombre/s</p:outputLabel>
 							<p:inputText id="name"
 								value="#{userManagementBean.selectedUserDto.firstName}"
 								required="true" requiredMessage="Debe ingresar un Nombre." />
 						</div>
 
-						<div class="field">
+						<div class="p-field p-mb-3">
 							<p:outputLabel for="lastName">Apellido/s</p:outputLabel>
 							<p:inputText id="lastName"
 								value="#{userManagementBean.selectedUserDto.lastName}"
 								required="true" requiredMessage="Debe ingresar un Apellido." />
 						</div>
 
-						<div class="field">
+						<div class="p-field p-mb-3">
 							<p:outputLabel for="email">Correo electrónico</p:outputLabel>
 							<p:inputText id="email"
 								value="#{userManagementBean.selectedUserDto.email}"
@@ -176,18 +176,21 @@
 								requiredMessage="Debe ingresar un Correo Electrónico." />
 						</div>
 
-						<div class="p-field">
+						<div class="p-field p-mb-3">
 							<p:outputLabel for="password">Contraseña</p:outputLabel>
 							<p:password style="width: 100%;"
 								promptLabel="Ingrese su contraseña" weakLabel="Débil"
 								goodLabel="Buena" strongLabel="Fuerte" feedback="true"
 								inline="true" toggleMask="true" redisplay="true"
 								value="#{userManagementBean.password}" id="password"></p:password>
-							<small>De no ser provista una nueva contraseña, la
-								contraseña anterior será mantenida.</small>
+							<h:panelGroup layout="block"
+								rendered="#{userManagementBean.selectedUserDto.id ne -1}">
+								<small>De no ser provista una nueva contraseña, la
+									contraseña anterior será mantenida.</small>
+							</h:panelGroup>
 						</div>
 
-						<div class="p-field">
+						<div class="p-field p-mb-3">
 							<p:outputLabel for="passwordConfirmation">Confirmación contraseña</p:outputLabel>
 							<p:password style="width: 100%;"
 								promptLabel="Ingrese su contraseña" weakLabel="Débil"
@@ -197,7 +200,7 @@
 								id="passwordConfirmation"></p:password>
 						</div>
 
-						<div class="field">
+						<div class="p-field p-mb-3">
 							<p:outputLabel for="group">Grupos</p:outputLabel>
 							<p:selectManyMenu filter="true" filterMatchMode="contains"
 								showCheckbox="true" id="group"
@@ -207,7 +210,7 @@
 							</p:selectManyMenu>
 						</div>
 
-						<div class="field" style="display: flex; flex-direction: column;">
+						<div class="p-field" style="display: flex; flex-direction: column;">
 							<p:outputLabel
 								rendered="#{userManagementBean.selectedUserDto.id ne -1}"
 								for="isActive">Estado</p:outputLabel>

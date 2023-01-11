@@ -106,7 +106,10 @@ public class UserManagementBean implements Serializable {
 	public void inactivateSelectedUserDtos() {
 		for (UserDto userDto : selectedUserDtos) {
 			try {
-				userManager.updateOneUserById(userDto.getId(), userDto.getFirstName(), userDto.getLastName(), false);
+				UserDto updatedUser = userManager.updateOneUserById(userDto.getId(), userDto.getFirstName(),
+						userDto.getLastName(), false);
+				this.userDtos.removeIf(t -> t.getId() == updatedUser.getId());
+				this.userDtos.add(0, updatedUser);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -116,7 +119,7 @@ public class UserManagementBean implements Serializable {
 		JSFMessages
 				.INFO(selectedUserDtos.size() > 1 ? selectedUserDtos.size() + " usuarios inactivados de forma exitosa."
 						: "1 usuario inactivado de forma exitosa.");
-		this.findAllUserDtos();
+
 		selectedUserDtos = new ArrayList<>();
 	}
 
@@ -127,26 +130,16 @@ public class UserManagementBean implements Serializable {
 
 	public void activateUserDto(UserDto userDto) {
 		try {
-			userManager.updateOneUserById(userDto.getId(), userDto.getFirstName(), userDto.getLastName(), true);
+			UserDto updatedUser = userManager.updateOneUserById(userDto.getId(), userDto.getFirstName(),
+					userDto.getLastName(), true);
 			JSFMessages.INFO("Usuario activado de forma exitosa.");
-			this.findAllUserDtos();
+			this.userDtos.removeIf(t -> t.getId() == updatedUser.getId());
+			this.userDtos.add(0, updatedUser);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			JSFMessages.ERROR(e.getMessage());
 
-		}
-	}
-
-	public void deleteSelectedUserDto() {
-		try {
-			userManager.deleteOneUserById(this.selectedUserDto.getId());
-			JSFMessages.INFO("Usuario eliminado de forma exitosa.");
-			this.findAllUserDtos();
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			JSFMessages.ERROR(e.getMessage());
 		}
 	}
 
@@ -169,15 +162,14 @@ public class UserManagementBean implements Serializable {
 			return;
 		}
 		if (selectedUserDto.getId() == -1) {
-			if (password.isEmpty()) {
+			if (password.isBlank()) {
 				JSFMessages.WARN("Por favor ingrese una constraseña apropiada");
 				return;
 			}
 			try {
-				System.out.println(selectedUserDto.getFirstName());
-				userManager.createOneUserWithGroupIds(selectedUserDto.getFirstName(), selectedUserDto.getLastName(),
-						selectedUserDto.getEmail(), this.password, selectedGroupIds);
-				this.findAllUserDtos();
+				UserDto createdUser = userManager.createOneUserWithGroupIds(selectedUserDto.getFirstName(),
+						selectedUserDto.getLastName(), selectedUserDto.getEmail(), this.password, selectedGroupIds);
+				this.userDtos.add(0, createdUser);
 				JSFMessages.INFO("Usuario creado de forma exitosa.");
 				return;
 			} catch (Exception e) {
@@ -188,9 +180,10 @@ public class UserManagementBean implements Serializable {
 			}
 		}
 		try {
-			userManager.updateOneUserById(selectedUserDto.getId(), selectedUserDto.getFirstName(),
+			UserDto updatedUser = userManager.updateOneUserById(selectedUserDto.getId(), selectedUserDto.getFirstName(),
 					selectedUserDto.getLastName(), selectedUserDto.isActive(), password, selectedGroupIds);
-			this.findAllUserDtos();
+			this.userDtos.removeIf(arg0 -> arg0.getId() == updatedUser.getId());
+			this.userDtos.add(0, updatedUser);
 			JSFMessages.INFO("Usuario actualizado de forma exitosa.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

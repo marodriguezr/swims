@@ -141,7 +141,7 @@ public class UserManager {
 
 	@SuppressWarnings("unchecked")
 	public List<UserDto> findAllUsers() {
-		List<UserDto> foundUserDtos = UsersToUserDtos(daoManager.findAll(User.class));
+		List<UserDto> foundUserDtos = UsersToUserDtos(daoManager.findAll(User.class, "updatedAt", false));
 		return foundUserDtos;
 	}
 
@@ -217,10 +217,10 @@ public class UserManager {
 			throw new Exception("El Usuario específicado no está registrado.");
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
-
 		if (!password.isEmpty())
 			user.setPassword(BCrypt.hashpw(password, BCrypt.gensalt(10)));
 		user.setIsActive(isActive);
+		user.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		try {
 			return UserToUserDto((User) daoManager.updateOne(user));
 		} catch (Exception e) {
