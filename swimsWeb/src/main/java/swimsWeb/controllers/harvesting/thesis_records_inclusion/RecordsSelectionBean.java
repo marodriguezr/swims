@@ -1,4 +1,4 @@
-package swimsWeb.controllers.harvesting.oai_records_inclusion;
+package swimsWeb.controllers.harvesting.thesis_records_inclusion;
 
 import static swimsWeb.constants.WebappPaths.*;
 
@@ -48,17 +48,17 @@ public class RecordsSelectionBean implements Serializable {
 	public String onPageLoad() {
 		if (this.fechaBean.getFrom() == null || this.fechaBean.getUntil() == null) {
 			JSFMessages.WARN("Debe seleccionar fechas entre las cuales se extraerán los datos.");
-			return HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
+			return HARVESTING_THESIS_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
 		if (this.fechaBean.getUntil().compareTo(LocalDate.now()) > 0) {
 			JSFMessages.WARN(
 					"Debe seleccionar fechas apropiadas. Ni la fecha de inicio ni fin deben sobrepasar la fecha actual.");
-			return HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
+			return HARVESTING_THESIS_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
 		if (this.fechaBean.getFrom().compareTo(this.fechaBean.getUntil()) >= 0) {
 			JSFMessages
 					.WARN("Debe seleccionar fechas apropiadas. La fecha de inicio debe ser menor a la fecha de fin.");
-			return HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
+			return HARVESTING_THESIS_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
 		return null;
 	}
@@ -90,7 +90,7 @@ public class RecordsSelectionBean implements Serializable {
 			JSFMessages.ERROR(e.getMessage());
 			return null;
 		}
-		return HARVESTING_OAI_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
+		return HARVESTING_THESIS_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public void autoSelectOaiRecordDtos() {

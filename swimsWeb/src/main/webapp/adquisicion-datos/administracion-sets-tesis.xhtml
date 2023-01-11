@@ -6,13 +6,13 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="title">Sets OAI</ui:define>
-	
+
 	<ui:define name="onLoad">
 		<f:metadata>
 			<f:viewAction action="#{authBean.onPageLoad()}" />
 		</f:metadata>
 	</ui:define>
-	
+
 	<ui:define name="content">
 		<h:form>
 			<p:card>
@@ -23,17 +23,20 @@
 				<div class="ui-fluid">
 					<div class="p-field">
 						<p:outputLabel for="name">Nombre</p:outputLabel>
-						<p:inputText value="#{oaiSetsManagementBean.name}" id="name" required="true" requiredMessage="Debe ingresar un Nombre del Set de Tesis."/>
+						<p:inputText value="#{thesisSetsManagementBean.name}" id="name"
+							required="true"
+							requiredMessage="Debe ingresar un Nombre del Set de Tesis." />
 					</div>
 					<div class="p-field">
 						<p:outputLabel for="identifier">Identificador</p:outputLabel>
-						<p:inputText id="identifier" value="#{oaiSetsManagementBean.identifier}"
-							required="true" requiredMessage="Debe ingresar un Identificador."/>
+						<p:inputText id="identifier"
+							value="#{thesisSetsManagementBean.identifier}" required="true"
+							requiredMessage="Debe ingresar un Identificador." />
 					</div>
 				</div>
 				<f:facet name="footer">
 					<p:commandButton icon="pi pi-save" update="@form" value="Guardar"
-						actionListener="#{oaiSetsManagementBean.createOneOaiSetActionListener()}" />
+						actionListener="#{thesisSetsManagementBean.createOneOaiSetActionListener()}" />
 
 					<p:commandButton oncomplete="PF('oaiSetsHelpDialog').show()"
 						icon="pi pi-question" value="Ayuda"

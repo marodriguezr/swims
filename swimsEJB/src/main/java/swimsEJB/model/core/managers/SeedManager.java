@@ -80,11 +80,11 @@ public class SeedManager {
 	}
 
 	public void verifyWebappPathsMapCorrectness(HashMap<String, String> webappPaths) throws Exception {
-		if (!webappPaths.containsKey("HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH"))
-			throw new Exception("HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH non existent.");
 		;
-		if (!webappPaths.containsKey("HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH"))
-			throw new Exception("HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH non existent.");
 		if (!webappPaths.containsKey("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH"))
 			throw new Exception("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH non existent.");
 		if (!webappPaths.containsKey("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH"))
@@ -126,10 +126,10 @@ public class SeedManager {
 		/**
 		 * 1.1. HARVESTING
 		 */
-		Permission oaiRecordsInclusionPermission = permissionManager.createOnePermission("Inclusión de Registros OAI",
-				webappPaths.get("HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH"));
-		Permission oaiSetsManagementPermission = permissionManager.createOnePermission("Administración de Sets OAI",
-				webappPaths.get("HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH"));
+		Permission thesisRecordsInclusionPermission = permissionManager.createOnePermission(
+				"Inclusión de Registros de Tesis", webappPaths.get("HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH"));
+		Permission thesisSetsManagementPermission = permissionManager.createOnePermission(
+				"Administración de Sets de Tesis", webappPaths.get("HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH"));
 		Permission thesisRecordInclussionPermission = permissionManager.createOnePermission(
 				"Asignación de Tesis y Encuestas", webappPaths.get("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH"));
 		Permission thesisRecordDataExtractionPermission = permissionManager.createOnePermission(
@@ -159,14 +159,14 @@ public class SeedManager {
 		/**
 		 * 3.1. Admin Group
 		 */
-		groupManager.addPermissionById(adminGroup.getId(), oaiSetsManagementPermission.getId());
+		groupManager.addPermissionById(adminGroup.getId(), thesisSetsManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), permissionManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), userManagementPermission.getId());
 
 		/**
 		 * 3.2. Thesis Record Management Group
 		 */
-		groupManager.addPermissionById(thesisRecordManagementGroup.getId(), oaiRecordsInclusionPermission.getId());
+		groupManager.addPermissionById(thesisRecordManagementGroup.getId(), thesisRecordsInclusionPermission.getId());
 		groupManager.addPermissionById(thesisRecordManagementGroup.getId(), thesisRecordInclussionPermission.getId());
 		groupManager.addPermissionById(thesisRecordManagementGroup.getId(), thesisRecordManagementPermission.getId());
 		/**
@@ -188,7 +188,7 @@ public class SeedManager {
 		 * 6. Others
 		 */
 		/**
-		 * 6.1. CISIC OAI SET
+		 * 6.1. CISIC THESIS SET
 		 */
 		thesisSetManager.createOneThesisSet("col_123456789_40", "CISIC");
 
@@ -636,9 +636,12 @@ public class SeedManager {
 		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de San Miguel de Urcuquí", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("Unidad Educativa Fiscomisional Salesiana Sánchez y Cifuentes",
 				beneficiaryQuestion);
-		expectedAnswerManager.createOneExpectedAnswer("Unidad Educativa Particular Pensionado Atahualpa", beneficiaryQuestion);
-		expectedAnswerManager.createOneExpectedAnswer("Unidad Educativa Fiscal Cristóbal de Troya", beneficiaryQuestion);
-		expectedAnswerManager.createOneExpectedAnswer("Cooperativa de Ahorro y Crédito San Antonio Ltda", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Unidad Educativa Particular Pensionado Atahualpa",
+				beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Unidad Educativa Fiscal Cristóbal de Troya",
+				beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Cooperativa de Ahorro y Crédito San Antonio Ltda",
+				beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("Empresa BYPROS SISTEMAS INCORPORADOS", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("NET SERVICE", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("OMNES WEB.11", beneficiaryQuestion);
@@ -648,16 +651,18 @@ public class SeedManager {
 		expectedAnswerManager.createOneExpectedAnswer("Soluciones Avanzadas Informáticas y Telecomunicaciones SAITEL",
 				beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal del Cantón Otavalo", beneficiaryQuestion);
-		expectedAnswerManager.createOneExpectedAnswer("Empresa de Servicios Municipales de Antonio Ante", beneficiaryQuestion);
-		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de Espejo", beneficiaryQuestion);
-		expectedAnswerManager.createOneExpectedAnswer("Empresa Municipal de Agua Potable y Alcantarillado de Ibarra  EMAPA-I",
+		expectedAnswerManager.createOneExpectedAnswer("Empresa de Servicios Municipales de Antonio Ante",
 				beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de Espejo", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer(
+				"Empresa Municipal de Agua Potable y Alcantarillado de Ibarra  EMAPA-I", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("VASQUIN CIA. LTDA", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("Empresa FARMAENLACE CIA. LTDA.", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de San Miguel de Ibarra", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de Santa Ana de Cotacachi", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("GAD Municipal de Huaca", beneficiaryQuestion);
-		expectedAnswerManager.createOneExpectedAnswer("Compañía Representaciones Chamorro Burbano S.A.", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Compañía Representaciones Chamorro Burbano S.A.",
+				beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("OMCEMEDIOS", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer(
 				"Cooperativa de Ahorro y Crédito Mujeres Unidas TANTANAKUSHKA WARMIKUNAPAC", beneficiaryQuestion);

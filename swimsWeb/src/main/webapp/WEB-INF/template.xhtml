@@ -91,18 +91,18 @@
 					<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
 						action="/index?faces-redirect=true"></p:menuitem>
 					<p:submenu
-						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH)}"
+						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH)}"
 						label="Adquisición de datos" icon="pi pi-fw pi-book">
-						<p:menuitem value="Administración de Sets OAI"
+						<p:menuitem value="Administración de Sets de Tesis"
 							icon="pi pi-fw pi-cog"
-							action="#{oaiSetsManagementBean.loadPage()}"
-							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH)}">
+							action="#{thesisSetsManagementBean.loadPage()}"
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH)}">
 						</p:menuitem>
-						<p:submenu label="Registros OAI" icon="pi pi-copy"
-							rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}">
+						<p:submenu label="Registros de Tesis" icon="pi pi-copy"
+							rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}">
 							<p:menuitem
-								rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_OAI_RECORDS_INCLUSION_WEBAPP_PATH)}"
-								icon="pi pi-fw pi-plus" value="Inclusión de Registros OAI"
+								rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH)}"
+								icon="pi pi-fw pi-plus" value="Inclusión de Registros de Tesis"
 								action="#{setSelectionBean.loadPage()}"></p:menuitem>
 							<p:menuitem
 								rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}"

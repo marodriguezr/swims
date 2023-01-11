@@ -3,7 +3,7 @@
  */
 package swimsWeb.controllers.harvesting;
 
-import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH;
 
 import java.io.Serializable;
 
@@ -21,7 +21,7 @@ import swimsWeb.utilities.JSFMessages;
  * @author miguel
  *
  */
-public class OaiSetsManagementBean implements Serializable {
+public class ThesisSetsManagementBean implements Serializable {
 
 	/**
 	 * 
@@ -37,7 +37,7 @@ public class OaiSetsManagementBean implements Serializable {
 	/**
 	 * 
 	 */
-	public OaiSetsManagementBean() {
+	public ThesisSetsManagementBean() {
 		// TODO Auto-generated constructor stub
 	}
 
@@ -48,14 +48,13 @@ public class OaiSetsManagementBean implements Serializable {
 	}
 	
 	public String loadPage() {
-		System.out.println(1);
-		return HARVESTING_OAI_SETS_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
+		return HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public void createOneOaiSetActionListener() {
 		try {
 			thesisSetManager.createOneThesisSet(identifier, name);
-			JSFMessages.INFO("Set OAI creado de forma exitosa.");
+			JSFMessages.INFO("Set de Tesis creado de forma exitosa.");
 			onLoad();
 		} catch (Exception e) {
 			// TODO: handle exception

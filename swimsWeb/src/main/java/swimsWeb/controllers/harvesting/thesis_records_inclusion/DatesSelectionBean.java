@@ -1,4 +1,4 @@
-package swimsWeb.controllers.harvesting.oai_records_inclusion;
+package swimsWeb.controllers.harvesting.thesis_records_inclusion;
 
 import static swimsWeb.constants.WebappPaths.*;
 
@@ -34,13 +34,13 @@ public class DatesSelectionBean implements Serializable {
 		if (this.origenBean.getOaiSetId() != null)
 			return null;
 		JSFMessages.WARN("Por favor, seleccione un set OAI");
-		return HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
+		return HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 
 	}
 
 	public String loadPage() {
 		if (this.origenBean.getOaiSetId() != null)
-			return HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
+			return HARVESTING_THESIS_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		JSFMessages.WARN("Por favor, seleccione un set OAI");
 		return null;
 	}

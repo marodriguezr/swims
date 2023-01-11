@@ -1,9 +1,9 @@
-package swimsWeb.controllers.harvesting.oai_records_inclusion;
+package swimsWeb.controllers.harvesting.thesis_records_inclusion;
 
-import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH;
-import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH;
-import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH;
-import static swimsWeb.constants.WebappPaths.HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH;
 
 import java.io.Serializable;
 
@@ -28,16 +28,16 @@ public class StepsBean implements Serializable {
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		String viewId = ctx.getViewRoot().getViewId();
 		switch (viewId) {
-		case HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH + ".xhmtl":
+		case HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH + ".xhmtl":
 			this.activeIndex = 0;
 			break;
-		case HARVESTING_OAI_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + ".xhtml":
+		case HARVESTING_THESIS_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + ".xhtml":
 			this.activeIndex = 1;
 			break;
-		case HARVESTING_OAI_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH + ".xhtml":
+		case HARVESTING_THESIS_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH + ".xhtml":
 			this.activeIndex = 2;
 			break;
-		case HARVESTING_OAI_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH + ".xhtml":
+		case HARVESTING_THESIS_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH + ".xhtml":
 			this.activeIndex = 3;
 			break;
 		default:
