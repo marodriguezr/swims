@@ -54,7 +54,7 @@ public class OaiSetsManagementBean implements Serializable {
 
 	public void createOneOaiSetActionListener() {
 		try {
-			thesisSetManager.createOneOaiSet(identifier, name);
+			thesisSetManager.createOneThesisSet(identifier, name);
 			JSFMessages.INFO("Set OAI creado de forma exitosa.");
 			onLoad();
 		} catch (Exception e) {

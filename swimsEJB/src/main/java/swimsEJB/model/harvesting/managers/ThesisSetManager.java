@@ -11,7 +11,7 @@ import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvesting.entities.ThesisSet;
 
 /**
- * Session Bean implementation class OaiSetManager
+ * Session Bean implementation class ThesisSetManager
  */
 @Stateless
 @LocalBean
@@ -28,45 +28,45 @@ public class ThesisSetManager {
 	}
 	
 
-	public ThesisSet createOneOaiSet(String identifier, String name) throws Exception {
-		ThesisSet oaiSet;
-		oaiSet = new ThesisSet();
+	public ThesisSet createOneThesisSet(String identifier, String name) throws Exception {
+		ThesisSet thesisSet;
+		thesisSet = new ThesisSet();
 
-		oaiSet.setId(identifier);
-		oaiSet.setName(name);
-		oaiSet.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		oaiSet.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		oaiSet.setIsActive(true);
+		thesisSet.setId(identifier);
+		thesisSet.setName(name);
+		thesisSet.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		thesisSet.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		thesisSet.setIsActive(true);
 
 		try {
-			oaiSet = (ThesisSet) daoManager.createOne(oaiSet);
+			thesisSet = (ThesisSet) daoManager.createOne(thesisSet);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			throw new Exception("Ha ocurrido un error en la creación del Set OAI.");
+			throw new Exception("Ha ocurrido un error en la creación del Set de Tesis.");
 		}
 
-		return oaiSet;
+		return thesisSet;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ThesisSet> findAllOaiSets() {
+	public List<ThesisSet> findAllThesisSets() {
 		return daoManager.findAll(ThesisSet.class);
 	}
 
-	public ThesisSet findOneOaiSetById(String identifier) throws Exception {
+	public ThesisSet findOneThesisSetById(String identifier) throws Exception {
 		return (ThesisSet) daoManager.findOneById(ThesisSet.class, identifier);
 	}
 
-	public ThesisSet updateOneOaiSetById(String identifier, String name) throws Exception {
-		ThesisSet oaiSet = findOneOaiSetById(identifier);
-		if (oaiSet == null)
-			throw new Exception("El Set OAI que ha especificado no existe.");
-		oaiSet.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		return (ThesisSet) daoManager.updateOne(oaiSet);
+	public ThesisSet updateOneThesisSetById(String identifier, String name) throws Exception {
+		ThesisSet thesisSet = findOneThesisSetById(identifier);
+		if (thesisSet == null)
+			throw new Exception("El Set de Tesis que ha especificado no existe.");
+		thesisSet.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		return (ThesisSet) daoManager.updateOne(thesisSet);
 	}
 
-	public ThesisSet deleteOneOaiSetById(String identifier) throws Exception {
+	public ThesisSet deleteOneThesisSetById(String identifier) throws Exception {
 		return (ThesisSet) daoManager.deleteOneById(ThesisSet.class, identifier);
 	}
 }

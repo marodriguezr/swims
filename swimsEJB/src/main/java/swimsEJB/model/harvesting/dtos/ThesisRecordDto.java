@@ -217,12 +217,12 @@ public class ThesisRecordDto {
 		this.id = id;
 	}
 
-	public String getOaiSetId() {
+	public String getThesisSetId() {
 		return thesisSetId;
 	}
 
-	public void setOaiSetId(String oaiSetId) {
-		this.thesisSetId = oaiSetId;
+	public void setThesisSetId(String thesisSetId) {
+		this.thesisSetId = thesisSetId;
 	}
 
 	public Timestamp getCreatedAt() {

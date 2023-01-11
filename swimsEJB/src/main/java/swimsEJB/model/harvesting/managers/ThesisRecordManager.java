@@ -36,7 +36,7 @@ import swimsEJB.utilities.DateUtilities;
 import swimsEJB.utilities.StringHelpers;
 
 /**
- * Session Bean implementation class OaiRecordManager
+ * Session Bean implementation class ThesisRecordManager
  */
 @Stateless
 @LocalBean
@@ -55,12 +55,12 @@ public class ThesisRecordManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> findAllUnassignedOaiRecordIds() {
+	public List<String> findAllUnassignedThesisRecordIds() {
 		return daoManager.findAll(UnassignedThesisAssignmentId.class);
 	}
 
-	public ThesisRecord findOneOaiRecordById(String oaiRecordId) throws Exception {
-		return (ThesisRecord) daoManager.findOneById(ThesisRecord.class, oaiRecordId);
+	public ThesisRecord findOneThesisRecordById(String thesisRecordId) throws Exception {
+		return (ThesisRecord) daoManager.findOneById(ThesisRecord.class, thesisRecordId);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -68,104 +68,104 @@ public class ThesisRecordManager {
 		return daoManager.findAll(ThesisRecord.class);
 	}
 
-	public ThesisRecord createOneOaiRecord(ThesisRecord oaiRecord, ThesisSet thesisSet) throws Exception {
-		oaiRecord.setThesisSet(thesisSet);
-		oaiRecord.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		oaiRecord.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		oaiRecord.setIsActive(true);
+	public ThesisRecord createOneThesisRecord(ThesisRecord thesisRecord, ThesisSet thesisSet) throws Exception {
+		thesisRecord.setThesisSet(thesisSet);
+		thesisRecord.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		thesisRecord.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+		thesisRecord.setIsActive(true);
 
-		return (ThesisRecord) daoManager.createOne(oaiRecord);
+		return (ThesisRecord) daoManager.createOne(thesisRecord);
 	}
 
-	public List<ThesisRecord> createManyThesisRecords(List<ThesisRecord> oaiRecords, ThesisSet oaiSet)
+	public List<ThesisRecord> createManyThesisRecords(List<ThesisRecord> thesisRecords, ThesisSet thesisSet)
 			throws Exception {
-		List<ThesisRecord> oaiRecords2 = new ArrayList<>();
-		for (ThesisRecord oaiRecord : oaiRecords) {
-			oaiRecords2.add(createOneOaiRecord(oaiRecord, oaiSet));
+		List<ThesisRecord> thesisRecords2 = new ArrayList<>();
+		for (ThesisRecord thesisRecord : thesisRecords) {
+			thesisRecords2.add(createOneThesisRecord(thesisRecord, thesisSet));
 		}
-		return oaiRecords2;
+		return thesisRecords2;
 	}
 
-	public ThesisRecord oaiRecordDtoToOaiRecord(ThesisRecordDto thesisRecordDto) {
-		ThesisRecord oaiRecord = new ThesisRecord();
-		oaiRecord.setId(thesisRecordDto.getId());
-		oaiRecord.setUrl(thesisRecordDto.getUrl());
-		oaiRecord.setTitle(
+	public ThesisRecord thesisRecordDtoToThesisRecord(ThesisRecordDto thesisRecordDto) {
+		ThesisRecord thesisRecord = new ThesisRecord();
+		thesisRecord.setId(thesisRecordDto.getId());
+		thesisRecord.setUrl(thesisRecordDto.getUrl());
+		thesisRecord.setTitle(
 				thesisRecordDto.getTitles().isEmpty() ? "Registro sin título" : thesisRecordDto.getTitles().get(0));
-		oaiRecord.setCreator(thesisRecordDto.getCreators().isEmpty() ? "Registro sin creador"
+		thesisRecord.setCreator(thesisRecordDto.getCreators().isEmpty() ? "Registro sin creador"
 				: thesisRecordDto.getCreators().get(0));
-		oaiRecord.setSubject(
+		thesisRecord.setSubject(
 				thesisRecordDto.getSubjects().isEmpty() ? "Registro sin tema" : thesisRecordDto.getSubjects().get(0));
-		oaiRecord.setDescription(thesisRecordDto.getDescriptions().isEmpty() ? "Registro sin descripción"
+		thesisRecord.setDescription(thesisRecordDto.getDescriptions().isEmpty() ? "Registro sin descripción"
 				: thesisRecordDto.getDescriptions().get(0));
-		oaiRecord.setPublisher(thesisRecordDto.getPublishers().isEmpty() ? "Publisher non registered"
+		thesisRecord.setPublisher(thesisRecordDto.getPublishers().isEmpty() ? "Publisher non registered"
 				: thesisRecordDto.getPublishers().get(0));
-		oaiRecord.setContributor(thesisRecordDto.getContributors().isEmpty() ? "Registro sin director"
+		thesisRecord.setContributor(thesisRecordDto.getContributors().isEmpty() ? "Registro sin director"
 				: thesisRecordDto.getContributors().get(0));
-		oaiRecord.setInferredIssueDate(thesisRecordDto.getInferredIssueDate() == null
+		thesisRecord.setInferredIssueDate(thesisRecordDto.getInferredIssueDate() == null
 				? thesisRecordDto.getDates().isEmpty() ? null : thesisRecordDto.getDates().get(0)
 				: thesisRecordDto.getInferredIssueDate());
 
-		return oaiRecord;
+		return thesisRecord;
 	}
 
 	public List<ThesisRecord> thesisRecordDtosToThesisRecords(List<ThesisRecordDto> thesisRecordDtos) {
-		List<ThesisRecord> oaiRecords = new ArrayList<ThesisRecord>();
+		List<ThesisRecord> thesisRecords = new ArrayList<ThesisRecord>();
 		for (ThesisRecordDto thesisRecordDto : thesisRecordDtos) {
-			oaiRecords.add(this.oaiRecordDtoToOaiRecord(thesisRecordDto));
+			thesisRecords.add(this.thesisRecordDtoToThesisRecord(thesisRecordDto));
 		}
-		return oaiRecords;
+		return thesisRecords;
 	}
 
-	public ThesisRecordDto oaiRecordToOaiRecordDto(ThesisRecord oaiRecord) {
+	public ThesisRecordDto thesisRecordToThesisRecordDto(ThesisRecord thesisRecord) {
 		ThesisRecordDto thesisRecordDto;
 		thesisRecordDto = new ThesisRecordDto();
-		thesisRecordDto.setId(oaiRecord.getId());
-		thesisRecordDto.getTitles().add(oaiRecord.getTitle());
-		thesisRecordDto.getCreators().add(oaiRecord.getCreator());
-		thesisRecordDto.getSubjects().add(oaiRecord.getSubject());
-		thesisRecordDto.getDescriptions().add(oaiRecord.getDescription());
-		thesisRecordDto.getPublishers().add(oaiRecord.getPublisher());
-		thesisRecordDto.getContributors().add(oaiRecord.getContributor());
-		thesisRecordDto.getDates().add(oaiRecord.getInferredIssueDate());
-		thesisRecordDto.setInferredIssueDate(oaiRecord.getInferredIssueDate());
-		thesisRecordDto.setOaiSetId(oaiRecord.getThesisSet().getId());
-		thesisRecordDto.setCreatedAt(oaiRecord.getCreatedAt());
-		thesisRecordDto.setUpdateAt(oaiRecord.getUpdatedAt());
-		thesisRecordDto.setActive(oaiRecord.getIsActive());
+		thesisRecordDto.setId(thesisRecord.getId());
+		thesisRecordDto.getTitles().add(thesisRecord.getTitle());
+		thesisRecordDto.getCreators().add(thesisRecord.getCreator());
+		thesisRecordDto.getSubjects().add(thesisRecord.getSubject());
+		thesisRecordDto.getDescriptions().add(thesisRecord.getDescription());
+		thesisRecordDto.getPublishers().add(thesisRecord.getPublisher());
+		thesisRecordDto.getContributors().add(thesisRecord.getContributor());
+		thesisRecordDto.getDates().add(thesisRecord.getInferredIssueDate());
+		thesisRecordDto.setInferredIssueDate(thesisRecord.getInferredIssueDate());
+		thesisRecordDto.setThesisSetId(thesisRecord.getThesisSet().getId());
+		thesisRecordDto.setCreatedAt(thesisRecord.getCreatedAt());
+		thesisRecordDto.setUpdateAt(thesisRecord.getUpdatedAt());
+		thesisRecordDto.setActive(thesisRecord.getIsActive());
 		return thesisRecordDto;
 	}
 
-	public List<ThesisRecordDto> oaiRecordsToOaiRecordDtos(List<ThesisRecord> oaiRecords) {
+	public List<ThesisRecordDto> thesisRecordsToThesisRecordDtos(List<ThesisRecord> thesisRecords) {
 		List<ThesisRecordDto> thesisRecordDtos = new ArrayList<ThesisRecordDto>();
-		for (ThesisRecord oaiRecord : oaiRecords) {
-			thesisRecordDtos.add(oaiRecordToOaiRecordDto(oaiRecord));
+		for (ThesisRecord thesisRecord : thesisRecords) {
+			thesisRecordDtos.add(thesisRecordToThesisRecordDto(thesisRecord));
 		}
 		return thesisRecordDtos;
 	}
 
-	public List<ThesisRecordDto> removeDuplicateOaiRecordDtos(List<ThesisRecordDto> existentOaiRecordDtos,
-			List<ThesisRecordDto> newOaiRecordDtos) {
-		HashMap<String, ThesisRecordDto> existentOaiRecordDtosMap = new HashMap<>();
-		for (ThesisRecordDto thesisRecordDto : existentOaiRecordDtos) {
-			existentOaiRecordDtosMap.put(thesisRecordDto.getId(), thesisRecordDto);
+	public List<ThesisRecordDto> removeDuplicateThesisRecordDtos(List<ThesisRecordDto> existentThesisRecordDtos,
+			List<ThesisRecordDto> newThesisRecordDtos) {
+		HashMap<String, ThesisRecordDto> existentThesisRecordDtosMap = new HashMap<>();
+		for (ThesisRecordDto thesisRecordDto : existentThesisRecordDtos) {
+			existentThesisRecordDtosMap.put(thesisRecordDto.getId(), thesisRecordDto);
 		}
 
-		HashMap<String, ThesisRecordDto> uniqueOaiRecordDtosMap = new HashMap<>();
-		for (ThesisRecordDto thesisRecordDto : newOaiRecordDtos) {
-			if (existentOaiRecordDtosMap.containsKey(thesisRecordDto.getId()))
+		HashMap<String, ThesisRecordDto> uniqueThesisRecordDtosMap = new HashMap<>();
+		for (ThesisRecordDto thesisRecordDto : newThesisRecordDtos) {
+			if (existentThesisRecordDtosMap.containsKey(thesisRecordDto.getId()))
 				continue;
-			if (uniqueOaiRecordDtosMap.containsKey(thesisRecordDto.getId()))
+			if (uniqueThesisRecordDtosMap.containsKey(thesisRecordDto.getId()))
 				continue;
-			uniqueOaiRecordDtosMap.put(thesisRecordDto.getId(), thesisRecordDto);
+			uniqueThesisRecordDtosMap.put(thesisRecordDto.getId(), thesisRecordDto);
 
 		}
 
-		return new ArrayList<ThesisRecordDto>(uniqueOaiRecordDtosMap.values());
+		return new ArrayList<ThesisRecordDto>(uniqueThesisRecordDtosMap.values());
 	}
 
-	public String fetchOaiStringByOaiRecordId(String oaiRecordId) throws Exception {
-		String OAI_URI = "http://repositorio.utn.edu.ec/oai/request?verb=GetRecord&identifier=" + oaiRecordId
+	public String fetchThesisStringByThesisRecordId(String thesisRecordId) throws Exception {
+		String OAI_URI = "http://repositorio.utn.edu.ec/oai/request?verb=GetRecord&identifier=" + thesisRecordId
 				+ "&metadataPrefix=oai_dc";
 		HttpClient httpClient = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI)).build();
@@ -180,21 +180,21 @@ public class ThesisRecordManager {
 		}
 	}
 
-	public List<String> fetchOaiStrings(String oaiSetIdentifier, LocalDate from, LocalDate until) throws Exception {
+	public List<String> fetchThesisStrings(String thesisSetIdentifier, LocalDate from, LocalDate until) throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
 		String OAI_URI = MessageFormat.format(
 				"http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&metadataPrefix=oai_dc&from={1}&until={2}&set={0}",
-				oaiSetIdentifier, dateFormat.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
+				thesisSetIdentifier, dateFormat.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
 				dateFormat.format(Date.from(until.atStartOfDay(ZoneId.systemDefault()).toInstant())));
 		HttpClient httpClient = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI)).build();
 
-		List<String> oaiRecords = new ArrayList<String>();
+		List<String> thesisRecords = new ArrayList<String>();
 
 		HttpResponse<String> response;
 		try {
 			response = httpClient.send(request, BodyHandlers.ofString());
-			oaiRecords.add(response.body());
+			thesisRecords.add(response.body());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -211,17 +211,17 @@ public class ThesisRecordManager {
 					.build();
 			try {
 				response = httpClient.send(request, BodyHandlers.ofString());
-				oaiRecords.add(response.body());
+				thesisRecords.add(response.body());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				throw new Exception("Ha ocurrido un error en la adquisición de recursos externos.");
 			}
 		}
-		return oaiRecords;
+		return thesisRecords;
 	}
 
-	public String getURLFromOaiRecordDto(ThesisRecordDto thesisRecordDto) {
+	public String getURLFromThesisRecordDto(ThesisRecordDto thesisRecordDto) {
 		if (thesisRecordDto.getIdentifiers().size() == 0)
 			return "";
 		for (String identifier : thesisRecordDto.getIdentifiers()) {
@@ -293,11 +293,11 @@ public class ThesisRecordManager {
 		return list;
 	}
 
-	public List<ThesisRecordDto> filterOaiRecordDtosByKeyWords(String[] keywords,
+	public List<ThesisRecordDto> filterThesisRecordDtosByKeyWords(String[] keywords,
 			List<ThesisRecordDto> thesisRecordDtos) {
-		LinkedList<ThesisRecordDto> filteredOaiRecordDtos = new LinkedList<>();
+		LinkedList<ThesisRecordDto> filteredThesisRecordDtos = new LinkedList<>();
 
-		Boolean hastOaiRecordBeenAdded;
+		Boolean hastThesisRecordBeenAdded;
 
 		String[] normalizedKeywords = new String[keywords.length];
 		for (int i = 0; i < keywords.length; i++) {
@@ -306,38 +306,38 @@ public class ThesisRecordManager {
 
 		for (String keyword : normalizedKeywords) {
 			for (ThesisRecordDto thesisRecordDto : thesisRecordDtos) {
-				hastOaiRecordBeenAdded = false;
+				hastThesisRecordBeenAdded = false;
 				for (String title : thesisRecordDto.getTitles()) {
 					if (StringHelpers.stripAccents(title).toLowerCase().contains(keyword)) {
-						filteredOaiRecordDtos.add(thesisRecordDto);
-						hastOaiRecordBeenAdded = true;
+						filteredThesisRecordDtos.add(thesisRecordDto);
+						hastThesisRecordBeenAdded = true;
 						break;
 					}
 				}
 
-				if (hastOaiRecordBeenAdded)
+				if (hastThesisRecordBeenAdded)
 					continue;
 				for (String subject : thesisRecordDto.getSubjects()) {
 					if (StringHelpers.stripAccents(subject).toLowerCase().contains(keyword)) {
-						filteredOaiRecordDtos.add(thesisRecordDto);
-						hastOaiRecordBeenAdded = true;
+						filteredThesisRecordDtos.add(thesisRecordDto);
+						hastThesisRecordBeenAdded = true;
 						break;
 					}
 				}
 
-				if (hastOaiRecordBeenAdded)
+				if (hastThesisRecordBeenAdded)
 					continue;
 				for (String description : thesisRecordDto.getDescriptions()) {
 					if (StringHelpers.stripAccents(description).toLowerCase().contains(keyword)) {
-						filteredOaiRecordDtos.add(thesisRecordDto);
-						hastOaiRecordBeenAdded = true;
+						filteredThesisRecordDtos.add(thesisRecordDto);
+						hastThesisRecordBeenAdded = true;
 						break;
 					}
 				}
 			}
 		}
 
-		return filteredOaiRecordDtos;
+		return filteredThesisRecordDtos;
 	}
 
 	public String removeCharactersBetweenXMLTag(String string, String openingTag, String closingTag) {
@@ -353,7 +353,7 @@ public class ThesisRecordManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public ThesisRecordDto parseStringToOaiRecordDto(String string) {
+	public ThesisRecordDto parseStringToThesisRecordDto(String string) {
 		ThesisRecordDto thesisRecordDto = new ThesisRecordDto();
 
 		String IDENTIFIER_OT = "<identifier>";
@@ -428,7 +428,7 @@ public class ThesisRecordManager {
 		thesisRecordDto.setRelations(extractStringsBetweenXMLTags(string, DC_RELATION_OT, DC_RELATION_CT));
 		thesisRecordDto.setCoverages(extractStringsBetweenXMLTags(string, DC_COVERAGE_OT, DC_COVERAGE_CT));
 		thesisRecordDto.setRights(extractStringsBetweenXMLTags(string, DC_RIGHTS_OT, DC_RIGHTS_CT));
-		thesisRecordDto.setUrl(getURLFromOaiRecordDto(thesisRecordDto));
+		thesisRecordDto.setUrl(getURLFromThesisRecordDto(thesisRecordDto));
 
 		return thesisRecordDto;
 	}
@@ -442,7 +442,7 @@ public class ThesisRecordManager {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<ThesisRecordDto> parseStringToOaiRecordDtos(String string) {
+	public List<ThesisRecordDto> parseStringToThesisRecordDtos(String string) {
 		String RECORD_OT = "<record>";
 		String RECORD_CT = "</record>";
 
@@ -453,24 +453,24 @@ public class ThesisRecordManager {
 			record = extractStringBetweenXMLTags(string, RECORD_OT, RECORD_CT);
 			if (record == null)
 				break;
-			thesisRecordDtos.add(parseStringToOaiRecordDto(record));
+			thesisRecordDtos.add(parseStringToThesisRecordDto(record));
 			string = removeCharactersBetweenXMLTag(string, RECORD_OT, RECORD_CT);
 		}
 		return thesisRecordDtos;
 	}
 
-	public List<ThesisRecordDto> parseStringsToOaiRecordDtos(List<String> strings) {
+	public List<ThesisRecordDto> parseStringsToThesisRecordDtos(List<String> strings) {
 		List<ThesisRecordDto> thesisRecordDtos = new ArrayList<ThesisRecordDto>();
 
 		for (String string : strings) {
-			Stream.of(thesisRecordDtos, parseStringToOaiRecordDtos(string)).forEach(thesisRecordDtos::addAll);
+			Stream.of(thesisRecordDtos, parseStringToThesisRecordDtos(string)).forEach(thesisRecordDtos::addAll);
 		}
 
 		return thesisRecordDtos;
 	}
 
-	public ThesisRecordDto findOneExternalOaiRecordDtoById(String id) throws Exception {
-		return parseStringToOaiRecordDto(fetchOaiStringByOaiRecordId(id));
+	public ThesisRecordDto findOneExternalThesisRecordDtoById(String id) throws Exception {
+		return parseStringToThesisRecordDto(fetchThesisStringByThesisRecordId(id));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -487,11 +487,11 @@ public class ThesisRecordManager {
 		}
 		Query query = entityManager.createNativeQuery(queryString);
 		List<Object> objects = query.getResultList();
-		List<ThesisRecord> oaiRecords = new ArrayList<>();
+		List<ThesisRecord> thesisRecords = new ArrayList<>();
 		for (Object object : objects) {
-			oaiRecords.add(this.findOneOaiRecordById(object.toString()));
+			thesisRecords.add(this.findOneThesisRecordById(object.toString()));
 		}
-		return oaiRecords;
+		return thesisRecords;
 	}
 
 }

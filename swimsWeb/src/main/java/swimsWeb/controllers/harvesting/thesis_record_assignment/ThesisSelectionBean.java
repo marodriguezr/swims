@@ -87,11 +87,11 @@ public class ThesisSelectionBean implements Serializable {
 
 	public void setSelectedOaiRecordDtoWithExternalData(ThesisRecord oaiRecord) {
 		try {
-			this.selectedOaiRecordDto = thesisRecordManager.findOneExternalOaiRecordDtoById(oaiRecord.getId());
+			this.selectedOaiRecordDto = thesisRecordManager.findOneExternalThesisRecordDtoById(oaiRecord.getId());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			this.selectedOaiRecordDto = thesisRecordManager.oaiRecordToOaiRecordDto(oaiRecord);
+			this.selectedOaiRecordDto = thesisRecordManager.thesisRecordToThesisRecordDto(oaiRecord);
 		}
 	}
 

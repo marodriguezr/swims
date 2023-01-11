@@ -190,7 +190,7 @@ public class SeedManager {
 		/**
 		 * 6.1. CISIC OAI SET
 		 */
-		thesisSetManager.createOneOaiSet("col_123456789_40", "CISIC");
+		thesisSetManager.createOneThesisSet("col_123456789_40", "CISIC");
 
 		/**
 		 * 

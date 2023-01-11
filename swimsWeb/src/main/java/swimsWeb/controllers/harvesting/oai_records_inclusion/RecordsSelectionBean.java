@@ -79,10 +79,10 @@ public class RecordsSelectionBean implements Serializable {
 			return null;
 		}
 		try {
-			this.thesisRecordDtos = thesisRecordManager.parseStringsToOaiRecordDtos(thesisRecordManager.fetchOaiStrings(
+			this.thesisRecordDtos = thesisRecordManager.parseStringsToThesisRecordDtos(thesisRecordManager.fetchThesisStrings(
 					this.origenBean.getOaiSetId(), this.fechaBean.getFrom(), this.fechaBean.getUntil()));
-			this.thesisRecordDtos = thesisRecordManager.removeDuplicateOaiRecordDtos(
-					thesisRecordManager.oaiRecordsToOaiRecordDtos(thesisRecordManager.findAllThesisRecords()),
+			this.thesisRecordDtos = thesisRecordManager.removeDuplicateThesisRecordDtos(
+					thesisRecordManager.thesisRecordsToThesisRecordDtos(thesisRecordManager.findAllThesisRecords()),
 					this.thesisRecordDtos);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -94,7 +94,7 @@ public class RecordsSelectionBean implements Serializable {
 	}
 
 	public void autoSelectOaiRecordDtos() {
-		this.selectedOaiRecordDtos = thesisRecordManager.filterOaiRecordDtosByKeyWords(
+		this.selectedOaiRecordDtos = thesisRecordManager.filterThesisRecordDtosByKeyWords(
 				new String[] { "desarrollo de", "implementación de", "desarrollar", "implementar" }, thesisRecordDtos);
 	}
 
@@ -105,7 +105,7 @@ public class RecordsSelectionBean implements Serializable {
 	}
 
 	public String getURLFromOaiRecordDto(ThesisRecordDto thesisRecordDto) {
-		return thesisRecordManager.getURLFromOaiRecordDto(thesisRecordDto);
+		return thesisRecordManager.getURLFromThesisRecordDto(thesisRecordDto);
 	}
 
 	public List<ThesisRecordDto> getOaiRecordDtos() {

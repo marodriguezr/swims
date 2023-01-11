@@ -29,11 +29,11 @@ public class SetSelectionBean implements Serializable {
 	
 	@PostConstruct
 	public void onLoad() {
-		this.oaiSets = thesisSetManager.findAllOaiSets();
+		this.oaiSets = thesisSetManager.findAllThesisSets();
 	}
 	
 	public String loadPage() {
-		this.oaiSets = thesisSetManager.findAllOaiSets();
+		this.oaiSets = thesisSetManager.findAllThesisSets();
 		return HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 	}
 	

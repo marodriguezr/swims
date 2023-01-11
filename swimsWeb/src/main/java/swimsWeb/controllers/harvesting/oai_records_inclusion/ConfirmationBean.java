@@ -63,7 +63,7 @@ public class ConfirmationBean implements Serializable {
 		try {
 			thesisRecordManager.createManyThesisRecords(
 					thesisRecordManager.thesisRecordDtosToThesisRecords(this.filtradoBean.getSelectedOaiRecordDtos()),
-					thesisSetManager.findOneOaiSetById(this.origenBean.getOaiSetId()));
+					thesisSetManager.findOneThesisSetById(this.origenBean.getOaiSetId()));
 			JSFMessages.INFO("Registros creados de forma exitosa.");
 			this.clean();
 			return INDEX_WEBAPP_PATH + "?faces-redirec=true";
