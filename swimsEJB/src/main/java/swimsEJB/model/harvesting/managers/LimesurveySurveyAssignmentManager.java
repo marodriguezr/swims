@@ -4,12 +4,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,6 +19,7 @@ import swimsEJB.model.harvesting.entities.LimesurveyAnswer;
 import swimsEJB.model.harvesting.entities.LimesurveyQuestion;
 import swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
+import swimsEJB.model.harvesting.entities.views.LimesurveySurveyIdsInnerThesisAssignment;
 import swimsEJB.model.harvesting.entities.LimesurveyUnexpectedAnswer;
 import swimsEJB.model.harvesting.services.LimesurveyService;
 
@@ -40,7 +40,7 @@ public class LimesurveySurveyAssignmentManager {
 	private LimesurveyExpectedAnswerManager limesurveyExpectedAnswerManager;
 	@EJB
 	private LimesurveyUnexpectedAnswerManager limesurveyUnexpectedAnswerManager;
-	
+
 	/**
 	 * Default constructor.
 	 */
@@ -49,17 +49,12 @@ public class LimesurveySurveyAssignmentManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Integer> findLimesurveySurveyIdsByOaiRecordId(String oaiRecordId) {
-		EntityManager entityManager = daoManager.getEntityManager();
-		Query query = entityManager.createNativeQuery(
-				"select lsa.limesurvey_survey_id from harvesting.thesis_assignments ta, harvesting.limesurvey_survey_assignments lsa "
-						+ "where ta.id = lsa.thesis_assignment_id and ta.oai_record_id = '" + oaiRecordId + "'");
-		List<Object> objects = query.getResultList();
-		List<Integer> alreadyPresentlimesurveySurveyIds = new ArrayList<>();
-		for (Object object : objects) {
-			alreadyPresentlimesurveySurveyIds.add(Integer.parseInt(object.toString()));
-		}
-		return alreadyPresentlimesurveySurveyIds;
+	public List<Integer> findLimesurveySurveyIdsByThesisRecordId(String thesisRecordId) {
+		List<LimesurveySurveyIdsInnerThesisAssignment> limesurveySurveyIdsInnerThesisAssignments = daoManager
+				.findManyWhere(LimesurveySurveyIdsInnerThesisAssignment.class,
+						"o.thesisRecordId = '" + thesisRecordId + "'", null);
+		return limesurveySurveyIdsInnerThesisAssignments.stream().map(arg0 -> arg0.getLimesurveySurveyId())
+				.collect(Collectors.toList());
 	}
 
 	public LimesurveySurveyAssignment createOneSurveyAssignment(int limesurveySurveyId,
@@ -202,5 +197,4 @@ public class LimesurveySurveyAssignmentManager {
 		return surveyAssignment;
 	}
 
-	
 }

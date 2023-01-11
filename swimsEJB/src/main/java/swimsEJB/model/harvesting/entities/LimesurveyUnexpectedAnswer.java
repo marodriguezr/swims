@@ -17,26 +17,24 @@ public class LimesurveyUnexpectedAnswer implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private Long id;
 
-	@Column(nullable=false, length=2147483647)
 	private String answer;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to LimesurveyQuestion
 	@ManyToOne
-	@JoinColumn(name="limesurvey_question_id", nullable=false)
+	@JoinColumn(name="limesurvey_question_id")
 	private LimesurveyQuestion limesurveyQuestion;
 
 	//bi-directional many-to-one association to LimesurveySurveyAssignment
 	@ManyToOne
-	@JoinColumn(name="limesurvey_survey_assignment_id", nullable=false)
+	@JoinColumn(name="limesurvey_survey_assignment_id")
 	private LimesurveySurveyAssignment limesurveySurveyAssignment;
 
 	public LimesurveyUnexpectedAnswer() {

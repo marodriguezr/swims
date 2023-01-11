@@ -15,8 +15,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
-import swimsEJB.model.harvesting.dtos.OaiRecordAssignedLimesurveySurveyIdsDto;
-import swimsEJB.model.harvesting.entities.OaiRecord;
+import swimsEJB.model.harvesting.dtos.ThesisRecordAssignedLimesurveySurveyIdsDto;
+import swimsEJB.model.harvesting.entities.ThesisRecord;
 import swimsEJB.model.harvesting.managers.LimesurveySurveyAssignmentManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsWeb.utilities.JSFMessages;
@@ -28,7 +28,7 @@ public class SurveysSelectionBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Inject
 	private ThesisSelectionBean thesisSelectionBean;
-	private List<OaiRecordAssignedLimesurveySurveyIdsDto> compoundThesisSurveyAssignments;
+	private List<ThesisRecordAssignedLimesurveySurveyIdsDto> compoundThesisSurveyAssignments;
 	@EJB
 	private ThesisAssignmentManager thesisAssignmentManager;
 	@EJB
@@ -41,9 +41,9 @@ public class SurveysSelectionBean implements Serializable {
 	public void setDefaultValues() {
 		try {
 			this.compoundThesisSurveyAssignments = new ArrayList<>();
-			for (OaiRecord oaiRecord : thesisSelectionBean.getSelectedOaiRecords()) {
+			for (ThesisRecord oaiRecord : thesisSelectionBean.getSelectedOaiRecords()) {
 				this.compoundThesisSurveyAssignments
-						.add(new OaiRecordAssignedLimesurveySurveyIdsDto(oaiRecord,
+						.add(new ThesisRecordAssignedLimesurveySurveyIdsDto(oaiRecord,
 								thesisAssignmentManager.filterLimesurveySurveysByAssignedLimesurveySurveyIds(
 										thesisSelectionBean.getLimesurveySurveyDtos().stream()
 												.map(arg0 -> arg0.getSid()).collect(Collectors.toList()),
@@ -76,7 +76,7 @@ public class SurveysSelectionBean implements Serializable {
 	public void onLoad() {
 		this.compoundThesisSurveyAssignments = new ArrayList<>();
 	}
-	
+
 	public void clean() {
 		this.compoundThesisSurveyAssignments = new ArrayList<>();
 		thesisSelectionBean.clean();
@@ -85,17 +85,17 @@ public class SurveysSelectionBean implements Serializable {
 	public List<LimesurveySurveyDto> filterAvaliableLimesurveySurveyDtos(List<LimesurveySurveyDto> limesurveySurveyDtos,
 			String oaiRecordId) {
 		List<Integer> alreadyPresentSurveyIds = limesurveySurveyAssignmentManager
-				.findLimesurveySurveyIdsByOaiRecordId(oaiRecordId);
+				.findLimesurveySurveyIdsByThesisRecordId(oaiRecordId);
 		return limesurveySurveyDtos.stream().filter(arg0 -> !alreadyPresentSurveyIds.contains(arg0.getSid()))
 				.collect(Collectors.toList());
 	}
 
-	public List<OaiRecordAssignedLimesurveySurveyIdsDto> getCompoundThesisSurveyAssignments() {
+	public List<ThesisRecordAssignedLimesurveySurveyIdsDto> getCompoundThesisSurveyAssignments() {
 		return compoundThesisSurveyAssignments;
 	}
 
 	public void setCompoundThesisSurveyAssignments(
-			List<OaiRecordAssignedLimesurveySurveyIdsDto> compoundThesisSurveyAssignments) {
+			List<ThesisRecordAssignedLimesurveySurveyIdsDto> compoundThesisSurveyAssignments) {
 		this.compoundThesisSurveyAssignments = compoundThesisSurveyAssignments;
 	}
 

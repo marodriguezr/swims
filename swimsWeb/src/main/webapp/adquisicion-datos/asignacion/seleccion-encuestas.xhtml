@@ -26,11 +26,11 @@
 					<ui:repeat var="compound"
 						value="#{surveysSelectionBean.compoundThesisSurveyAssignments}">
 						<div class="p-mb-4">
-							<p:outputLabel for="@next" value="#{compound.oaiRecord.title}"></p:outputLabel>
+							<p:outputLabel for="@next" value="#{compound.thesisRecord.title}"></p:outputLabel>
 							<p:selectManyMenu value="#{compound.assignedLimesurveySurveyIds}"
 								showCheckbox="true">
 								<f:selectItems
-									value="#{surveysSelectionBean.filterAvaliableLimesurveySurveyDtos(thesisSelectionBean.limesurveySurveyDtos, compound.oaiRecord.id)}"
+									value="#{surveysSelectionBean.filterAvaliableLimesurveySurveyDtos(thesisSelectionBean.limesurveySurveyDtos, compound.thesisRecord.id)}"
 									var="limesurveySurvey"
 									itemLabel="#{limesurveySurvey.surveylsTitle}"
 									itemValue="#{limesurveySurvey.sid}"></f:selectItems>

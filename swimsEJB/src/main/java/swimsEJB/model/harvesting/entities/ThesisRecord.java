@@ -8,63 +8,55 @@ import java.util.List;
 
 
 /**
- * The persistent class for the oai_records database table.
+ * The persistent class for the thesis_records database table.
  * 
  */
 @Entity
-@Table(name="oai_records", schema="harvesting")
-@NamedQuery(name="OaiRecord.findAll", query="SELECT o FROM OaiRecord o")
-public class OaiRecord implements Serializable {
+@Table(name="thesis_records", schema="harvesting")
+@NamedQuery(name="ThesisRecord.findAll", query="SELECT t FROM ThesisRecord t")
+public class ThesisRecord implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false, length=2147483647)
 	private String id;
 
-	@Column(nullable=false, length=2147483647)
 	private String contributor;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(nullable=false, length=2147483647)
 	private String creator;
 
-	@Column(nullable=false, length=2147483647)
 	private String description;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name="inferred_issue_date", nullable=false)
+	@Column(name="inferred_issue_date")
 	private Date inferredIssueDate;
 
-	@Column(name="is_active", nullable=false)
+	@Column(name="is_active")
 	private Boolean isActive;
 
-	@Column(nullable=false, length=2147483647)
 	private String publisher;
 
-	@Column(nullable=false, length=2147483647)
 	private String subject;
 
-	@Column(nullable=false, length=2147483647)
 	private String title;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
-	@Column(nullable=false, length=2147483647)
 	private String url;
 
-	//bi-directional many-to-one association to OaiSet
-	@ManyToOne
-	@JoinColumn(name="oai_set_id", nullable=false)
-	private OaiSet oaiSet;
-
 	//bi-directional many-to-one association to ThesisAssignment
-	@OneToMany(mappedBy="oaiRecord")
+	@OneToMany(mappedBy="thesisRecord")
 	private List<ThesisAssignment> thesisAssignments;
 
-	public OaiRecord() {
+	//bi-directional many-to-one association to ThesisSet
+	@ManyToOne
+	@JoinColumn(name="thesis_set_id")
+	private ThesisSet thesisSet;
+
+	public ThesisRecord() {
 	}
 
 	public String getId() {
@@ -163,14 +155,6 @@ public class OaiRecord implements Serializable {
 		this.url = url;
 	}
 
-	public OaiSet getOaiSet() {
-		return this.oaiSet;
-	}
-
-	public void setOaiSet(OaiSet oaiSet) {
-		this.oaiSet = oaiSet;
-	}
-
 	public List<ThesisAssignment> getThesisAssignments() {
 		return this.thesisAssignments;
 	}
@@ -181,16 +165,24 @@ public class OaiRecord implements Serializable {
 
 	public ThesisAssignment addThesisAssignment(ThesisAssignment thesisAssignment) {
 		getThesisAssignments().add(thesisAssignment);
-		thesisAssignment.setOaiRecord(this);
+		thesisAssignment.setThesisRecord(this);
 
 		return thesisAssignment;
 	}
 
 	public ThesisAssignment removeThesisAssignment(ThesisAssignment thesisAssignment) {
 		getThesisAssignments().remove(thesisAssignment);
-		thesisAssignment.setOaiRecord(null);
+		thesisAssignment.setThesisRecord(null);
 
 		return thesisAssignment;
+	}
+
+	public ThesisSet getThesisSet() {
+		return this.thesisSet;
+	}
+
+	public void setThesisSet(ThesisSet thesisSet) {
+		this.thesisSet = thesisSet;
 	}
 
 }

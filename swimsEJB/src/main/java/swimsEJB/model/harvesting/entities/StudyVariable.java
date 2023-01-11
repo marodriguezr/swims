@@ -17,28 +17,26 @@ public class StudyVariable implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false, length=32)
 	private String id;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="is_categorical_nominal", nullable=false)
+	@Column(name="is_categorical_nominal")
 	private Boolean isCategoricalNominal;
 
-	@Column(name="is_categorical_ordinal", nullable=false)
+	@Column(name="is_categorical_ordinal")
 	private Boolean isCategoricalOrdinal;
 
-	@Column(name="is_numeric_continuous", nullable=false)
+	@Column(name="is_numeric_continuous")
 	private Boolean isNumericContinuous;
 
-	@Column(name="is_numeric_discrete", nullable=false)
+	@Column(name="is_numeric_discrete")
 	private Boolean isNumericDiscrete;
 
-	@Column(nullable=false, length=256)
 	private String name;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to LimesurveyQuestion
@@ -51,7 +49,7 @@ public class StudyVariable implements Serializable {
 
 	//bi-directional many-to-one association to StudyVariableClass
 	@ManyToOne
-	@JoinColumn(name="study_variable_class_id", nullable=false)
+	@JoinColumn(name="study_variable_class_id")
 	private StudyVariableClass studyVariableClass;
 
 	public StudyVariable() {

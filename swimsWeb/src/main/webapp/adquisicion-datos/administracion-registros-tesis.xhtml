@@ -30,7 +30,8 @@
 				</p:toolbarGroup>
 			</p:toolbar>
 			<p:dataTable reflow="true" rows="5" paginator="true"
-				value="#{thesisRecordsManagementBean.oaiRecords}" var="thesisRecord">
+				value="#{thesisRecordsManagementBean.thesisRecords}"
+				var="thesisRecord">
 
 				<p:column filterMatchMode="contains" sortBy="#{thesisRecord.title}"
 					filterBy="#{thesisRecord.title}" headerText="Titulo">
@@ -91,7 +92,7 @@
 
 					<div class="p-d-none">
 						<p:dataTable id="exportableTable"
-							value="#{thesisRecordsManagementBean.oaiRecords}"
+							value="#{thesisRecordsManagementBean.thesisRecords}"
 							var="thesisRecord">
 
 							<p:column headerText="Identificador">
@@ -133,7 +134,7 @@
 							</p:column>
 
 							<p:column headerText="ID Set OAI">
-								<h:outputText value="#{thesisRecord.oaiSet.id}" />
+								<h:outputText value="#{thesisRecord.thesisSet.id}" />
 							</p:column>
 
 						</p:dataTable>

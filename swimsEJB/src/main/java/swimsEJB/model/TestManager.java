@@ -2,14 +2,10 @@ package swimsEJB.model;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -76,31 +72,6 @@ public class TestManager {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<CompoundTestRegister> findAllCompoundTestRegisters() {
-		try {
-			EntityManager entityManager = daoManager.getEntityManager();
-			Query query = entityManager.createNativeQuery(
-					"select or2.title, sv.name, q.limesurvey_question_title, r.answer "
-							+ "from harvesting.study_variables sv, harvesting.limesurvey_questions q, harvesting.limesurvey_expected_answers r, harvesting.oai_records or2, harvesting.limesurvey_survey_assignments sa, harvesting.thesis_assignments ta "
-							+ "where sv.id = q.study_variable_id and q.limesurvey_question_id = r.limesurvey_question_id and r.limesurvey_survey_assignment_id = sa.id and sa.thesis_assignment_id = ta.id  and ta.oai_record_id = or2.id "
-							+ "order by r.created_at ");
-			List<Object[]> objects = query.getResultList();
-			List<CompoundTestRegister> compoundTestRegisters = new ArrayList<>();
-			for (Object[] objects2 : objects) {
-				compoundTestRegisters.add(new CompoundTestRegister(objects2[0] == null ? "" : objects2[0].toString(),
-						objects2[1] == null ? "" : objects2[1].toString(),
-						objects2[2] == null ? "" : objects2[2].toString(),
-						objects2[3] == null ? "" : objects2[3].toString()));
-
-			}
-			return compoundTestRegisters;
-		} catch (Exception e) {
-			// TODO: handle exception
-			return new ArrayList<>();
 		}
 	}
 

@@ -7,36 +7,34 @@ import java.util.List;
 
 
 /**
- * The persistent class for the oai_sets database table.
+ * The persistent class for the thesis_sets database table.
  * 
  */
 @Entity
-@Table(name="oai_sets", schema="harvesting")
-@NamedQuery(name="OaiSet.findAll", query="SELECT o FROM OaiSet o")
-public class OaiSet implements Serializable {
+@Table(name="thesis_sets", schema="harvesting")
+@NamedQuery(name="ThesisSet.findAll", query="SELECT t FROM ThesisSet t")
+public class ThesisSet implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique=true, nullable=false, length=2147483647)
 	private String id;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="is_active", nullable=false)
+	@Column(name="is_active")
 	private Boolean isActive;
 
-	@Column(nullable=false, length=2147483647)
 	private String name;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
-	//bi-directional many-to-one association to OaiRecord
-	@OneToMany(mappedBy="oaiSet")
-	private List<OaiRecord> oaiRecords;
+	//bi-directional many-to-one association to ThesisRecord
+	@OneToMany(mappedBy="thesisSet")
+	private List<ThesisRecord> thesisRecords;
 
-	public OaiSet() {
+	public ThesisSet() {
 	}
 
 	public String getId() {
@@ -79,26 +77,26 @@ public class OaiSet implements Serializable {
 		this.updatedAt = updatedAt;
 	}
 
-	public List<OaiRecord> getOaiRecords() {
-		return this.oaiRecords;
+	public List<ThesisRecord> getThesisRecords() {
+		return this.thesisRecords;
 	}
 
-	public void setOaiRecords(List<OaiRecord> oaiRecords) {
-		this.oaiRecords = oaiRecords;
+	public void setThesisRecords(List<ThesisRecord> thesisRecords) {
+		this.thesisRecords = thesisRecords;
 	}
 
-	public OaiRecord addOaiRecord(OaiRecord oaiRecord) {
-		getOaiRecords().add(oaiRecord);
-		oaiRecord.setOaiSet(this);
+	public ThesisRecord addThesisRecord(ThesisRecord thesisRecord) {
+		getThesisRecords().add(thesisRecord);
+		thesisRecord.setThesisSet(this);
 
-		return oaiRecord;
+		return thesisRecord;
 	}
 
-	public OaiRecord removeOaiRecord(OaiRecord oaiRecord) {
-		getOaiRecords().remove(oaiRecord);
-		oaiRecord.setOaiSet(null);
+	public ThesisRecord removeThesisRecord(ThesisRecord thesisRecord) {
+		getThesisRecords().remove(thesisRecord);
+		thesisRecord.setThesisSet(null);
 
-		return oaiRecord;
+		return thesisRecord;
 	}
 
 }

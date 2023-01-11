@@ -36,28 +36,28 @@
 					value="#{extractionBean.thesisAssignments}">
 					<p:card class="p-mb-2">
 						<f:facet name="subtitle">
-							<h3>#{thesisAssignment.oaiRecord.title}</h3>
+							<h3>#{thesisAssignment.thesisRecord.title}</h3>
 						</f:facet>
 						<div class="p-d-flex gap-on-data-extraction-inf-fields">
 							<h:outputText styleClass="p-text-bold"
 								value="Documento de tesis:" />
-							<a href="#{thesisAssignment.oaiRecord.url}" target="_blank">
-								<h:outputText value="#{thesisAssignment.oaiRecord.url}" />
+							<a href="#{thesisAssignment.thesisRecord.url}" target="_blank">
+								<h:outputText value="#{thesisAssignment.thesisRecord.url}" />
 							</a>
 						</div>
 						<div class="p-d-flex gap-on-data-extraction-inf-fields">
 							<h:outputText styleClass="p-text-bold" value="Autor:" />
-							<h:outputText value="#{thesisAssignment.oaiRecord.creator}" />
+							<h:outputText value="#{thesisAssignment.thesisRecord.creator}" />
 						</div>
 						<div class="p-d-flex gap-on-data-extraction-inf-fields">
 							<h:outputText styleClass="p-text-bold" value="Tutor:" />
-							<h:outputText value="#{thesisAssignment.oaiRecord.contributor}" />
+							<h:outputText value="#{thesisAssignment.thesisRecord.contributor}" />
 						</div>
 						<div class="p-d-flex gap-on-data-extraction-inf-fields">
 							<h:outputText styleClass="p-text-bold"
 								value="Fecha de Publicación:" />
 							<h:outputText
-								value="#{recordsSelectionBean.dateFormat.format(thesisAssignment.oaiRecord.inferredIssueDate)}" />
+								value="#{recordsSelectionBean.dateFormat.format(thesisAssignment.thesisRecord.inferredIssueDate)}" />
 						</div>
 
 						<div

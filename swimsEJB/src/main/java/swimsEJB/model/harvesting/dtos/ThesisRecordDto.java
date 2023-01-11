@@ -12,7 +12,7 @@ import java.util.List;
  * @author miguel
  *
  */
-public class OaiRecordDto {
+public class ThesisRecordDto {
 	private String id;
 	private String url;
 	private List<String> titles;
@@ -32,12 +32,12 @@ public class OaiRecordDto {
 	private List<String> relations;
 	private List<String> coverages;
 	private List<String> rights;
-	private String oaiSetId;
+	private String thesisSetId;
 	private Timestamp createdAt;
 	private Timestamp updateAt;
 	private boolean isActive;
 
-	public OaiRecordDto() {
+	public ThesisRecordDto() {
 		this.id = "";
 		this.url = "";
 		this.titles = new ArrayList<String>();
@@ -57,13 +57,13 @@ public class OaiRecordDto {
 		this.relations = new ArrayList<String>();
 		this.coverages = new ArrayList<String>();
 		this.rights = new ArrayList<String>();
-		this.oaiSetId = "";
+		this.thesisSetId = "";
 		this.createdAt = new Timestamp(System.currentTimeMillis());
 		this.updateAt = new Timestamp(System.currentTimeMillis());
 		this.isActive = false;
 	}
 
-	public OaiRecordDto(String id, List<String> titles, List<String> creators, List<String> subjects,
+	public ThesisRecordDto(String id, List<String> titles, List<String> creators, List<String> subjects,
 			List<String> descriptions, List<String> publishers, List<String> contributors, List<Date> dates,
 			List<String> types, List<String> formats, List<String> identifiers, List<String> sources,
 			List<String> languages, List<String> relations, List<String> coverages, List<String> rights, Date inferredIssueDate,
@@ -218,11 +218,11 @@ public class OaiRecordDto {
 	}
 
 	public String getOaiSetId() {
-		return oaiSetId;
+		return thesisSetId;
 	}
 
 	public void setOaiSetId(String oaiSetId) {
-		this.oaiSetId = oaiSetId;
+		this.thesisSetId = oaiSetId;
 	}
 
 	public Timestamp getCreatedAt() {

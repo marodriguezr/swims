@@ -8,8 +8,8 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import swimsEJB.model.harvesting.entities.OaiRecord;
-import swimsEJB.model.harvesting.managers.OaiRecordManager;
+import swimsEJB.model.harvesting.entities.ThesisRecord;
+import swimsEJB.model.harvesting.managers.ThesisRecordManager;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH;
 
@@ -20,8 +20,8 @@ public class ThesisRecordsManagementBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	private OaiRecordManager oaiRecordManager;
-	private List<OaiRecord> oaiRecords;
+	private ThesisRecordManager thesisRecordManager;
+	private List<ThesisRecord> thesisRecords;
 
 	public ThesisRecordsManagementBean() {
 		// TODO Auto-generated constructor stub
@@ -29,27 +29,27 @@ public class ThesisRecordsManagementBean implements Serializable {
 
 	@PostConstruct
 	public void onLoad() {
-		loadOaiRecords();
+		loadThesisRecords();
 	}
 	
 	public void refresh() {
-		loadOaiRecords();
+		loadThesisRecords();
 	}
 
-	public void loadOaiRecords() {
-		this.oaiRecords = oaiRecordManager.findAllOaiRecords();
+	public void loadThesisRecords() {
+		this.thesisRecords = thesisRecordManager.findAllThesisRecords();
 	}
 
 	public String loadPage() {
 		return HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
-	public List<OaiRecord> getOaiRecords() {
-		return oaiRecords;
+	public List<ThesisRecord> getThesisRecords() {
+		return thesisRecords;
 	}
 
-	public void setOaiRecords(List<OaiRecord> oaiRecords) {
-		this.oaiRecords = oaiRecords;
+	public void setThesisRecords(List<ThesisRecord> thesisRecords) {
+		this.thesisRecords = thesisRecords;
 	}
 
 }

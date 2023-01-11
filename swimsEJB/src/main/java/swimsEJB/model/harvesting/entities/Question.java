@@ -18,16 +18,14 @@ public class Question implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(nullable=false, length=512)
 	private String question;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to Answer
@@ -40,7 +38,7 @@ public class Question implements Serializable {
 
 	//bi-directional many-to-one association to StudyVariable
 	@ManyToOne
-	@JoinColumn(name="study_variable_id", nullable=false)
+	@JoinColumn(name="study_variable_id")
 	private StudyVariable studyVariable;
 
 	public Question() {

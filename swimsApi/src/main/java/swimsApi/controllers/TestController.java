@@ -11,8 +11,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import swimsEJB.model.harvesting.entities.OaiRecord;
-import swimsEJB.model.harvesting.managers.OaiRecordManager;
+import swimsEJB.model.harvesting.entities.ThesisRecord;
+import swimsEJB.model.harvesting.managers.ThesisRecordManager;
 
 @RequestScoped
 @Path("test")
@@ -21,14 +21,14 @@ import swimsEJB.model.harvesting.managers.OaiRecordManager;
 public class TestController {
 
 	@EJB
-	private OaiRecordManager oaiRecordManager;
+	private ThesisRecordManager thesisRecordManager;
 
 	@GET
 	@Path(value = "test2")
 	public List<HashMap<String, Object>> test2() {
 		List<HashMap<String, Object>> hashMaps = new ArrayList<>();
-		List<OaiRecord> oaiRecords = oaiRecordManager.findAllOaiRecords();
-		for (OaiRecord oaiRecord : oaiRecords) {
+		List<ThesisRecord> oaiRecords = thesisRecordManager.findAllThesisRecords();
+		for (ThesisRecord oaiRecord : oaiRecords) {
 			HashMap<String, Object> hashMap = new HashMap<>();
 			hashMap.put("id", oaiRecord.getId());
 			hashMap.put("contributor", oaiRecord.getContributor());

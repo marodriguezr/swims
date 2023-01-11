@@ -9,7 +9,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import swimsEJB.model.harvesting.dtos.OaiRecordAssignedLimesurveySurveyIdsDto;
+import swimsEJB.model.harvesting.dtos.ThesisRecordAssignedLimesurveySurveyIdsDto;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsWeb.utilities.JSFMessages;
 
@@ -39,10 +39,10 @@ public class ConfirmationBean implements Serializable {
 		if (surveysSelectionBean.getCompoundThesisSurveyAssignments().isEmpty()) {
 			return HARVESTING_THESIS_RECORD_ASSIGNMENT_SURVEYS_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
-		for (OaiRecordAssignedLimesurveySurveyIdsDto oaiRecordSurveyAssignments : surveysSelectionBean
+		for (ThesisRecordAssignedLimesurveySurveyIdsDto oaiRecordSurveyAssignments : surveysSelectionBean
 				.getCompoundThesisSurveyAssignments()) {
 			if (oaiRecordSurveyAssignments.getAssignedLimesurveySurveyIds().isEmpty()) {
-				JSFMessages.WARN("La tesis " + oaiRecordSurveyAssignments.getOaiRecord().getTitle()
+				JSFMessages.WARN("La tesis " + oaiRecordSurveyAssignments.getThesisRecord().getTitle()
 						+ " carece de encuestas asignadas. Por favor seleccione una o mas.");
 				return HARVESTING_THESIS_RECORD_ASSIGNMENT_SURVEYS_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 			}
@@ -54,10 +54,10 @@ public class ConfirmationBean implements Serializable {
 		if (surveysSelectionBean.getCompoundThesisSurveyAssignments().isEmpty()) {
 			return null;
 		}
-		for (OaiRecordAssignedLimesurveySurveyIdsDto oaiRecordSurveyAssignments : surveysSelectionBean
+		for (ThesisRecordAssignedLimesurveySurveyIdsDto oaiRecordSurveyAssignments : surveysSelectionBean
 				.getCompoundThesisSurveyAssignments()) {
 			if (oaiRecordSurveyAssignments.getAssignedLimesurveySurveyIds().isEmpty()) {
-				JSFMessages.WARN("La tesis " + oaiRecordSurveyAssignments.getOaiRecord().getTitle()
+				JSFMessages.WARN("La tesis " + oaiRecordSurveyAssignments.getThesisRecord().getTitle()
 						+ " carece de encuestas asignadas. Por favor seleccione una o mas.");
 				return null;
 			}

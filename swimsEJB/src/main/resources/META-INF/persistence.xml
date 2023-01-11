@@ -14,11 +14,15 @@
 		<class>swimsEJB.model.harvesting.entities.LimesurveyQuestion</class>
 		<class>swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment</class>
 		<class>swimsEJB.model.harvesting.entities.LimesurveyUnexpectedAnswer</class>
-		<class>swimsEJB.model.harvesting.entities.OaiRecord</class>
-		<class>swimsEJB.model.harvesting.entities.OaiSet</class>
 		<class>swimsEJB.model.harvesting.entities.Question</class>
 		<class>swimsEJB.model.harvesting.entities.StudyVariableClass</class>
 		<class>swimsEJB.model.harvesting.entities.StudyVariable</class>
 		<class>swimsEJB.model.harvesting.entities.ThesisAssignment</class>
+		<class>swimsEJB.model.harvesting.entities.ThesisRecord</class>
+		<class>swimsEJB.model.harvesting.entities.ThesisSet</class>
+		<class>swimsEJB.model.harvesting.entities.views.LimesurveySurveyIdsInnerThesisAssignment</class>
+		<class>swimsEJB.model.harvesting.entities.views.UnassignedThesisAssignmentId</class>
+		<class>swimsEJB.model.harvesting.entities.views.UndispatchedThesisAssignment</class>
+		<class>swimsEJB.model.harvesting.entities.views.UndispatchedSurveyAssignment</class>
 	</persistence-unit>
 </persistence>

@@ -15,8 +15,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import swimsEJB.model.harvesting.dtos.OaiRecordDto;
-import swimsEJB.model.harvesting.managers.OaiRecordManager;
+import swimsEJB.model.harvesting.dtos.ThesisRecordDto;
+import swimsEJB.model.harvesting.managers.ThesisRecordManager;
 import swimsWeb.utilities.JSFMessages;
 
 @Named
@@ -28,12 +28,12 @@ public class RecordsSelectionBean implements Serializable {
 	private DatesSelectionBean fechaBean;
 	@Inject
 	private SetSelectionBean origenBean;
-	private List<OaiRecordDto> oaiRecordDtos;
+	private List<ThesisRecordDto> thesisRecordDtos;
 	private DateFormat dateFormat;
-	private OaiRecordDto selectedOaiRecordDto;
-	private List<OaiRecordDto> selectedOaiRecordDtos;
+	private ThesisRecordDto selectedOaiRecordDto;
+	private List<ThesisRecordDto> selectedOaiRecordDtos;
 	@EJB
-	private OaiRecordManager oaiRecordManager;
+	private ThesisRecordManager thesisRecordManager;
 
 	public RecordsSelectionBean() {
 		// TODO Auto-generated constructor stub
@@ -42,7 +42,7 @@ public class RecordsSelectionBean implements Serializable {
 	@PostConstruct
 	public void onLoad() {
 		this.dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		selectedOaiRecordDtos = new ArrayList<OaiRecordDto>();
+		selectedOaiRecordDtos = new ArrayList<ThesisRecordDto>();
 	}
 
 	public String onPageLoad() {
@@ -79,11 +79,11 @@ public class RecordsSelectionBean implements Serializable {
 			return null;
 		}
 		try {
-			this.oaiRecordDtos = oaiRecordManager.parseStringsToOaiRecordDtos(oaiRecordManager.fetchOaiStrings(
+			this.thesisRecordDtos = thesisRecordManager.parseStringsToOaiRecordDtos(thesisRecordManager.fetchOaiStrings(
 					this.origenBean.getOaiSetId(), this.fechaBean.getFrom(), this.fechaBean.getUntil()));
-			this.oaiRecordDtos = oaiRecordManager.removeDuplicateOaiRecordDtos(
-					oaiRecordManager.oaiRecordsToOaiRecordDtos(oaiRecordManager.findAllOaiRecords()),
-					this.oaiRecordDtos);
+			this.thesisRecordDtos = thesisRecordManager.removeDuplicateOaiRecordDtos(
+					thesisRecordManager.oaiRecordsToOaiRecordDtos(thesisRecordManager.findAllThesisRecords()),
+					this.thesisRecordDtos);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -94,26 +94,26 @@ public class RecordsSelectionBean implements Serializable {
 	}
 
 	public void autoSelectOaiRecordDtos() {
-		this.selectedOaiRecordDtos = oaiRecordManager.filterOaiRecordDtosByKeyWords(
-				new String[] { "desarrollo de", "implementación de", "desarrollar", "implementar" }, oaiRecordDtos);
+		this.selectedOaiRecordDtos = thesisRecordManager.filterOaiRecordDtosByKeyWords(
+				new String[] { "desarrollo de", "implementación de", "desarrollar", "implementar" }, thesisRecordDtos);
 	}
-	
+
 	public void clean() {
 		this.selectedOaiRecordDto = null;
 		this.selectedOaiRecordDtos = new ArrayList<>();
 		fechaBean.clean();
 	}
 
-	public String getURLFromOaiRecordDto(OaiRecordDto oaiRecordDto) {
-		return oaiRecordManager.getURLFromOaiRecordDto(oaiRecordDto);
+	public String getURLFromOaiRecordDto(ThesisRecordDto thesisRecordDto) {
+		return thesisRecordManager.getURLFromOaiRecordDto(thesisRecordDto);
 	}
 
-	public List<OaiRecordDto> getOaiRecordDtos() {
-		return oaiRecordDtos;
+	public List<ThesisRecordDto> getOaiRecordDtos() {
+		return thesisRecordDtos;
 	}
 
-	public void setOaiRecordDtos(List<OaiRecordDto> oaiRecordDtos) {
-		this.oaiRecordDtos = oaiRecordDtos;
+	public void setOaiRecordDtos(List<ThesisRecordDto> thesisRecordDtos) {
+		this.thesisRecordDtos = thesisRecordDtos;
 	}
 
 	public DateFormat getDateFormat() {
@@ -124,19 +124,19 @@ public class RecordsSelectionBean implements Serializable {
 		this.dateFormat = dateFormat;
 	}
 
-	public OaiRecordDto getSelectedOaiRecordDto() {
+	public ThesisRecordDto getSelectedOaiRecordDto() {
 		return selectedOaiRecordDto;
 	}
 
-	public void setSelectedOaiRecordDto(OaiRecordDto selectedOaiRecordDto) {
+	public void setSelectedOaiRecordDto(ThesisRecordDto selectedOaiRecordDto) {
 		this.selectedOaiRecordDto = selectedOaiRecordDto;
 	}
 
-	public List<OaiRecordDto> getSelectedOaiRecordDtos() {
+	public List<ThesisRecordDto> getSelectedOaiRecordDtos() {
 		return selectedOaiRecordDtos;
 	}
 
-	public void setSelectedOaiRecordDtos(List<OaiRecordDto> selectedOaiRecordDtos) {
+	public void setSelectedOaiRecordDtos(List<ThesisRecordDto> selectedOaiRecordDtos) {
 		this.selectedOaiRecordDtos = selectedOaiRecordDtos;
 	}
 }

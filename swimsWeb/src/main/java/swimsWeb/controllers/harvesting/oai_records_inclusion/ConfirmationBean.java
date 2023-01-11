@@ -10,8 +10,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import swimsEJB.model.harvesting.managers.OaiRecordManager;
-import swimsEJB.model.harvesting.managers.OaiSetManager;
+import swimsEJB.model.harvesting.managers.ThesisRecordManager;
+import swimsEJB.model.harvesting.managers.ThesisSetManager;
 import swimsWeb.utilities.JSFMessages;
 
 @Named
@@ -24,9 +24,9 @@ public class ConfirmationBean implements Serializable {
 	@Inject
 	private RecordsSelectionBean filtradoBean;
 	@EJB
-	private OaiRecordManager oaiRecordManager;
+	private ThesisRecordManager thesisRecordManager;
 	@EJB
-	private OaiSetManager oaiSetManager;
+	private ThesisSetManager thesisSetManager;
 
 	private int toAddOaiRecordsCount;
 
@@ -54,16 +54,16 @@ public class ConfirmationBean implements Serializable {
 		}
 		return HARVESTING_OAI_RECORDS_INCLUSION_CONFIRMATION_WEBAPP_PATH + "?faces-redirect=true";
 	}
-	
+
 	public void clean() {
 		this.filtradoBean.clean();
 	}
 
 	public String createManyOaiRecordsAction() {
 		try {
-			oaiRecordManager.createManyOaiRecords(
-					oaiRecordManager.oaiRecordDtosToOaiRecords(this.filtradoBean.getSelectedOaiRecordDtos()),
-					oaiSetManager.findOneOaiSetById(this.origenBean.getOaiSetId()));
+			thesisRecordManager.createManyThesisRecords(
+					thesisRecordManager.thesisRecordDtosToThesisRecords(this.filtradoBean.getSelectedOaiRecordDtos()),
+					thesisSetManager.findOneOaiSetById(this.origenBean.getOaiSetId()));
 			JSFMessages.INFO("Registros creados de forma exitosa.");
 			this.clean();
 			return INDEX_WEBAPP_PATH + "?faces-redirec=true";

@@ -8,14 +8,14 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
 import swimsEJB.model.core.managers.DaoManager;
-import swimsEJB.model.harvesting.entities.OaiSet;
+import swimsEJB.model.harvesting.entities.ThesisSet;
 
 /**
  * Session Bean implementation class OaiSetManager
  */
 @Stateless
 @LocalBean
-public class OaiSetManager {
+public class ThesisSetManager {
 
 	@EJB
 	private DaoManager daoManager;
@@ -23,14 +23,14 @@ public class OaiSetManager {
 	/**
 	 * Default constructor.
 	 */
-	public OaiSetManager() {
+	public ThesisSetManager() {
 		// TODO Auto-generated constructor stub
 	}
 	
 
-	public OaiSet createOneOaiSet(String identifier, String name) throws Exception {
-		OaiSet oaiSet;
-		oaiSet = new OaiSet();
+	public ThesisSet createOneOaiSet(String identifier, String name) throws Exception {
+		ThesisSet oaiSet;
+		oaiSet = new ThesisSet();
 
 		oaiSet.setId(identifier);
 		oaiSet.setName(name);
@@ -39,7 +39,7 @@ public class OaiSetManager {
 		oaiSet.setIsActive(true);
 
 		try {
-			oaiSet = (OaiSet) daoManager.createOne(oaiSet);
+			oaiSet = (ThesisSet) daoManager.createOne(oaiSet);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -50,23 +50,23 @@ public class OaiSetManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<OaiSet> findAllOaiSets() {
-		return daoManager.findAll(OaiSet.class);
+	public List<ThesisSet> findAllOaiSets() {
+		return daoManager.findAll(ThesisSet.class);
 	}
 
-	public OaiSet findOneOaiSetById(String identifier) throws Exception {
-		return (OaiSet) daoManager.findOneById(OaiSet.class, identifier);
+	public ThesisSet findOneOaiSetById(String identifier) throws Exception {
+		return (ThesisSet) daoManager.findOneById(ThesisSet.class, identifier);
 	}
 
-	public OaiSet updateOneOaiSetById(String identifier, String name) throws Exception {
-		OaiSet oaiSet = findOneOaiSetById(identifier);
+	public ThesisSet updateOneOaiSetById(String identifier, String name) throws Exception {
+		ThesisSet oaiSet = findOneOaiSetById(identifier);
 		if (oaiSet == null)
 			throw new Exception("El Set OAI que ha especificado no existe.");
 		oaiSet.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-		return (OaiSet) daoManager.updateOne(oaiSet);
+		return (ThesisSet) daoManager.updateOne(oaiSet);
 	}
 
-	public OaiSet deleteOneOaiSetById(String identifier) throws Exception {
-		return (OaiSet) daoManager.deleteOneById(OaiSet.class, identifier);
+	public ThesisSet deleteOneOaiSetById(String identifier) throws Exception {
+		return (ThesisSet) daoManager.deleteOneById(ThesisSet.class, identifier);
 	}
 }

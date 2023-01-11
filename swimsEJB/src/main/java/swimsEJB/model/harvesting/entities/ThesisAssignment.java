@@ -18,16 +18,15 @@ public class ThesisAssignment implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
-	@Column(name="user_id", nullable=false)
+	@Column(name="user_id")
 	private Integer userId;
 
 	//bi-directional many-to-one association to Answer
@@ -38,10 +37,10 @@ public class ThesisAssignment implements Serializable {
 	@OneToMany(mappedBy="thesisAssignment")
 	private List<LimesurveySurveyAssignment> limesurveySurveyAssignments;
 
-	//bi-directional many-to-one association to OaiRecord
+	//bi-directional many-to-one association to ThesisRecord
 	@ManyToOne
-	@JoinColumn(name="oai_record_id", nullable=false)
-	private OaiRecord oaiRecord;
+	@JoinColumn(name="thesis_record_id")
+	private ThesisRecord thesisRecord;
 
 	public ThesisAssignment() {
 	}
@@ -122,12 +121,12 @@ public class ThesisAssignment implements Serializable {
 		return limesurveySurveyAssignment;
 	}
 
-	public OaiRecord getOaiRecord() {
-		return this.oaiRecord;
+	public ThesisRecord getThesisRecord() {
+		return this.thesisRecord;
 	}
 
-	public void setOaiRecord(OaiRecord oaiRecord) {
-		this.oaiRecord = oaiRecord;
+	public void setThesisRecord(ThesisRecord thesisRecord) {
+		this.thesisRecord = thesisRecord;
 	}
 
 }

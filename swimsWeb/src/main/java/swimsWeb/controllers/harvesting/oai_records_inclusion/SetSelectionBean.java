@@ -10,8 +10,8 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import swimsEJB.model.harvesting.entities.OaiSet;
-import swimsEJB.model.harvesting.managers.OaiSetManager;
+import swimsEJB.model.harvesting.entities.ThesisSet;
+import swimsEJB.model.harvesting.managers.ThesisSetManager;
 
 @Named
 @SessionScoped
@@ -19,9 +19,9 @@ public class SetSelectionBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private String oaiSetId;
-	private List<OaiSet> oaiSets;
+	private List<ThesisSet> oaiSets;
 	@EJB
-	private OaiSetManager oaiSetManager;
+	private ThesisSetManager thesisSetManager;
 
 	public SetSelectionBean() {
 		// TODO Auto-generated constructor stub
@@ -29,11 +29,11 @@ public class SetSelectionBean implements Serializable {
 	
 	@PostConstruct
 	public void onLoad() {
-		this.oaiSets = oaiSetManager.findAllOaiSets();
+		this.oaiSets = thesisSetManager.findAllOaiSets();
 	}
 	
 	public String loadPage() {
-		this.oaiSets = oaiSetManager.findAllOaiSets();
+		this.oaiSets = thesisSetManager.findAllOaiSets();
 		return HARVESTING_OAI_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 	}
 	
@@ -49,11 +49,11 @@ public class SetSelectionBean implements Serializable {
 		this.oaiSetId = oaiSetId;
 	}
 
-	public List<OaiSet> getOaiSets() {
+	public List<ThesisSet> getOaiSets() {
 		return oaiSets;
 	}
 
-	public void setOaiSets(List<OaiSet> oaiSets) {
+	public void setOaiSets(List<ThesisSet> oaiSets) {
 		this.oaiSets = oaiSets;
 	}
 	

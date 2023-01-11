@@ -26,7 +26,7 @@ import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
 import swimsEJB.model.harvesting.entities.Question;
 import swimsEJB.model.harvesting.entities.StudyVariable;
 import swimsEJB.model.harvesting.entities.StudyVariableClass;
-import swimsEJB.model.harvesting.managers.OaiSetManager;
+import swimsEJB.model.harvesting.managers.ThesisSetManager;
 import swimsEJB.model.harvesting.managers.QuestionManager;
 import swimsEJB.model.harvesting.managers.ExpectedAnswerManager;
 import swimsEJB.model.harvesting.managers.LimesurveyQuestionManager;
@@ -53,7 +53,7 @@ public class SeedManager {
 	@EJB
 	private SysparamManager sysparamManager;
 	@EJB
-	private OaiSetManager oaiSetManager;
+	private ThesisSetManager thesisSetManager;
 	@EJB
 	private StudyVariableClassManager studyVariableClassManager;
 	@EJB
@@ -190,7 +190,7 @@ public class SeedManager {
 		/**
 		 * 6.1. CISIC OAI SET
 		 */
-		oaiSetManager.createOneOaiSet("col_123456789_40", "CISIC");
+		thesisSetManager.createOneOaiSet("col_123456789_40", "CISIC");
 
 		/**
 		 * 

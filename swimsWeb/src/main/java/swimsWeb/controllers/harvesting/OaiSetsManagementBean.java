@@ -12,7 +12,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import swimsEJB.model.harvesting.managers.OaiSetManager;
+import swimsEJB.model.harvesting.managers.ThesisSetManager;
 import swimsWeb.utilities.JSFMessages;
 
 @Named
@@ -32,7 +32,7 @@ public class OaiSetsManagementBean implements Serializable {
 	private String identifier;
 
 	@EJB
-	private OaiSetManager oaiSetManager;
+	private ThesisSetManager thesisSetManager;
 
 	/**
 	 * 
@@ -54,7 +54,7 @@ public class OaiSetsManagementBean implements Serializable {
 
 	public void createOneOaiSetActionListener() {
 		try {
-			oaiSetManager.createOneOaiSet(identifier, name);
+			thesisSetManager.createOneOaiSet(identifier, name);
 			JSFMessages.INFO("Set OAI creado de forma exitosa.");
 			onLoad();
 		} catch (Exception e) {

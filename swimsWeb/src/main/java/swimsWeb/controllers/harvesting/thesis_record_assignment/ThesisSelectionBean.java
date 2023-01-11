@@ -14,9 +14,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
-import swimsEJB.model.harvesting.dtos.OaiRecordDto;
-import swimsEJB.model.harvesting.entities.OaiRecord;
-import swimsEJB.model.harvesting.managers.OaiRecordManager;
+import swimsEJB.model.harvesting.dtos.ThesisRecordDto;
+import swimsEJB.model.harvesting.entities.ThesisRecord;
+import swimsEJB.model.harvesting.managers.ThesisRecordManager;
 import swimsEJB.model.harvesting.services.LimesurveyService;
 import swimsWeb.utilities.JSFMessages;;
 
@@ -29,10 +29,10 @@ public class ThesisSelectionBean implements Serializable {
 	@Inject
 	private UserSelectionBean userSelectionBean;
 	@EJB
-	private OaiRecordManager oaiRecordManager;
-	List<OaiRecord> oaiRecords;
-	List<OaiRecord> selectedOaiRecords;
-	private OaiRecordDto selectedOaiRecordDto;
+	private ThesisRecordManager thesisRecordManager;
+	List<ThesisRecord> oaiRecords;
+	List<ThesisRecord> selectedOaiRecords;
+	private ThesisRecordDto selectedOaiRecordDto;
 	private List<LimesurveySurveyDto> limesurveySurveyDtos;
 
 	public ThesisSelectionBean() {
@@ -48,8 +48,8 @@ public class ThesisSelectionBean implements Serializable {
 			this.limesurveySurveyDtos = new ArrayList<>();
 		}
 		try {
-			this.oaiRecords = oaiRecordManager
-					.findAllUnassignedOaiRecordsByLimesurveySurveyDtos(this.limesurveySurveyDtos);
+			this.oaiRecords = thesisRecordManager
+					.findAllUnassignedThesisRecordsByLimesurveySurveyDtos(this.limesurveySurveyDtos);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,43 +79,43 @@ public class ThesisSelectionBean implements Serializable {
 		this.selectedOaiRecords = new ArrayList<>();
 		this.limesurveySurveyDtos = new ArrayList<>();
 	}
-	
+
 	public void clean() {
 		this.selectedOaiRecords = new ArrayList<>();
 		userSelectionBean.clean();
 	}
 
-	public void setSelectedOaiRecordDtoWithExternalData(OaiRecord oaiRecord) {
+	public void setSelectedOaiRecordDtoWithExternalData(ThesisRecord oaiRecord) {
 		try {
-			this.selectedOaiRecordDto = oaiRecordManager.findOneExternalOaiRecordDtoById(oaiRecord.getId());
+			this.selectedOaiRecordDto = thesisRecordManager.findOneExternalOaiRecordDtoById(oaiRecord.getId());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			this.selectedOaiRecordDto = oaiRecordManager.oaiRecordToOaiRecordDto(oaiRecord);
+			this.selectedOaiRecordDto = thesisRecordManager.oaiRecordToOaiRecordDto(oaiRecord);
 		}
 	}
 
-	public List<OaiRecord> getOaiRecords() {
+	public List<ThesisRecord> getOaiRecords() {
 		return oaiRecords;
 	}
 
-	public void setOaiRecords(List<OaiRecord> oaiRecords) {
+	public void setOaiRecords(List<ThesisRecord> oaiRecords) {
 		this.oaiRecords = oaiRecords;
 	}
 
-	public List<OaiRecord> getSelectedOaiRecords() {
+	public List<ThesisRecord> getSelectedOaiRecords() {
 		return selectedOaiRecords;
 	}
 
-	public void setSelectedOaiRecords(List<OaiRecord> selectedOaiRecords) {
+	public void setSelectedOaiRecords(List<ThesisRecord> selectedOaiRecords) {
 		this.selectedOaiRecords = selectedOaiRecords;
 	}
 
-	public OaiRecordDto getSelectedOaiRecordDto() {
+	public ThesisRecordDto getSelectedOaiRecordDto() {
 		return selectedOaiRecordDto;
 	}
 
-	public void setSelectedOaiRecordDto(OaiRecordDto selectedOaiRecordDto) {
+	public void setSelectedOaiRecordDto(ThesisRecordDto selectedOaiRecordDto) {
 		this.selectedOaiRecordDto = selectedOaiRecordDto;
 	}
 

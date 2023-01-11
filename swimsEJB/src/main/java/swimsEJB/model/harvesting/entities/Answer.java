@@ -17,28 +17,26 @@ public class Answer implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(unique=true, nullable=false)
 	private Long id;
 
-	@Column(name="created_at", nullable=false)
+	@Column(name="created_at")
 	private Timestamp createdAt;
 
-	@Column(name="updated_at", nullable=false)
+	@Column(name="updated_at")
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to ExpectedAnswer
 	@ManyToOne
-	@JoinColumn(name="expected_answer_id", nullable=false)
+	@JoinColumn(name="expected_answer_id")
 	private ExpectedAnswer expectedAnswer;
 
 	//bi-directional many-to-one association to Question
 	@ManyToOne
-	@JoinColumn(name="question_id", nullable=false)
 	private Question question;
 
 	//bi-directional many-to-one association to ThesisAssignment
 	@ManyToOne
-	@JoinColumn(name="thesis_assignment_id", nullable=false)
+	@JoinColumn(name="thesis_assignment_id")
 	private ThesisAssignment thesisAssignment;
 
 	public Answer() {

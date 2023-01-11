@@ -19,7 +19,7 @@ import swimsEJB.model.harvesting.entities.ThesisAssignment;
 import swimsEJB.model.harvesting.managers.LimesurveySurveyAssignmentManager;
 import swimsEJB.model.harvesting.managers.ExpectedAnswerManager;
 import swimsEJB.model.harvesting.managers.AnswerManager;
-import swimsEJB.model.harvesting.managers.OaiRecordManager;
+import swimsEJB.model.harvesting.managers.ThesisRecordManager;
 import swimsEJB.model.harvesting.managers.ThesisAssignmentManager;
 import swimsEJB.model.harvesting.services.LimesurveyService;
 import swimsWeb.controllers.auth.SignInBean;
@@ -40,7 +40,7 @@ public class ExtractionBean implements Serializable {
 	@EJB
 	private LimesurveySurveyAssignmentManager limesurveySurveyAssignmentManager;
 	@EJB
-	private OaiRecordManager oaiRecordManager;
+	private ThesisRecordManager thesisRecordManager;
 
 	@Inject
 	private ThesisSelectionBean thesisSelectionBean;
