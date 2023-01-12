@@ -196,12 +196,6 @@ public class SeedManager {
 		 * 
 		 */
 		sysparamManager.createOneSysparam("IS_SYSTEM_SEEDED", "true");
-
-		/**
-		 * temp
-		 */
-		groupManager.addUserById(thesisRecordManagementGroup.getId(), adminUser.getId());
-		groupManager.addUserById(thesisDataExtracionGroup.getId(), adminUser.getId());
 	}
 
 	public void seedStudyVariablesAndLimesurvey() throws Exception {
