@@ -22,19 +22,28 @@
 				<ui:include
 					src="#{webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH}/steps.xhtml" />
 
-				<div class="p-pt-4 p-pb-2">
-					<div>
-						<h:outputText styleClass="p-text-bold"
-							value="Conteo total de registros: " />
-						<h:outputText value="#{thesisSelectionBean.oaiRecords.size()}" />
-					</div>
-				</div>
-				<div class="ui-fluid">
+
+				<div class="ui-fluid p-mt-4">
 					<p:dataTable value="#{thesisSelectionBean.oaiRecords}"
 						var="oaiRecord" reflow="true" rows="5" paginator="true"
 						id="availableOaiRecords" rowSelectMode="add"
 						rowKey="#{oaiRecord.id}"
-						selection="#{thesisSelectionBean.selectedOaiRecords}">
+						selection="#{thesisSelectionBean.selectedOaiRecords}" paginatorPosition="bottom">
+
+						<f:facet name="header">
+							<div
+								style="display: flex; justify-content: space-between; align-items: center;">
+								<span style="font-weight: bold">#{thesisSelectionBean.oaiRecords.size()}
+									REGISTROS DE TESIS</span> <span class="ui-input-icon-left"
+									style="display: flex; align-items: center;"> <i
+									class="pi pi-search"></i> <p:inputText id="globalFilter"
+										onkeyup="PF('availableOaiRecords').filter()"
+										placeholder="Buscar" />
+								</span>
+
+							</div>
+						</f:facet>
+
 						<p:column filterMatchMode="contains" selectionMode="multiple"
 							exportable="false"></p:column>
 

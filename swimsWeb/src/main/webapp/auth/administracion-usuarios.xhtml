@@ -71,8 +71,8 @@
 				<f:facet name="header">
 					<div
 						style="display: flex; justify-content: space-between; align-items: center;">
-						<span style="font-weight: bold">USUARIOS</span> <span
-							class="ui-input-icon-left"
+						<span style="font-weight: bold">#{userManagementBean.userDtos.size()}
+							USUARIOS</span> <span class="ui-input-icon-left"
 							style="display: flex; align-items: center;"> <i
 							class="pi pi-search"></i> <p:inputText id="globalFilter"
 								onkeyup="PF('dtUsers').filter()" placeholder="Buscar" />
@@ -210,7 +210,8 @@
 							</p:selectManyMenu>
 						</div>
 
-						<div class="p-field" style="display: flex; flex-direction: column;">
+						<div class="p-field"
+							style="display: flex; flex-direction: column;">
 							<p:outputLabel
 								rendered="#{userManagementBean.selectedUserDto.id ne -1}"
 								for="isActive">Estado</p:outputLabel>
@@ -247,18 +248,6 @@
 				<p:commandButton value="No" type="button"
 					styleClass="ui-button-secondary" icon="pi pi-times"
 					onclick="PF('inactivateUserDialog').hide()" />
-			</p:confirmDialog>
-
-			<p:confirmDialog widgetVar="deleteUserDialog" showEffect="fade"
-				width="300" message="¿Está seguro de eliminar este usuario?"
-				header="Confirmación" severity="warn">
-				<p:commandButton value="Si" icon="pi pi-check"
-					actionListener="#{userManagementBean.deleteSelectedUserDto()}"
-					update=":form:dt-users" process="@this"
-					oncomplete="PF('deleteUserDialog').hide()" />
-				<p:commandButton value="No" type="button"
-					styleClass="ui-button-secondary" icon="pi pi-times"
-					onclick="PF('deleteUserDialog').hide()" />
 			</p:confirmDialog>
 
 			<p:confirmDialog global="true" showEffect="fade" width="300">

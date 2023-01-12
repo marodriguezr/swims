@@ -22,23 +22,29 @@
 				<ui:include
 					src="#{webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
 
-				<div class="p-pt-4 p-pb-2">
-					<p:commandButton update="@form"
-						actionListener="#{recordsSelectionBean.autoSelectOaiRecordDtos()}"
-						icon="pi pi-fw pi-check-square"
-						value="Seleccionar de forma automática"></p:commandButton>
-					<div class="p-pt-2">
-						<h:outputText styleClass="p-text-bold"
-							value="Conteo total de registros: " />
-						<h:outputText value="#{recordsSelectionBean.oaiRecordDtos.size()}" />
-					</div>
-				</div>
-				<div class="ui-fluid">
+
+				<div class="ui-fluid p-mt-4">
 					<p:dataTable value="#{recordsSelectionBean.oaiRecordDtos}"
 						var="oaiRecordDto" reflow="true" rows="5" paginator="true"
 						id="availableOaiRecords" rowSelectMode="add"
 						rowKey="#{oaiRecordDto.id}"
-						selection="#{recordsSelectionBean.selectedOaiRecordDtos}">
+						selection="#{recordsSelectionBean.selectedOaiRecordDtos}" paginatorPosition="bottom">
+
+						<f:facet name="header">
+							<div
+								style="display: flex; justify-content: space-between; align-items: center;">
+								<span style="font-weight: bold">#{recordsSelectionBean.oaiRecordDtos.size()}
+									REGISTROS DE TESIS</span> <span class="ui-input-icon-left"
+									style="display: flex; align-items: center;"> <i
+									class="pi pi-search"></i> <p:inputText id="globalFilter"
+										onkeyup="PF('availableOaiRecords').filter()"
+										placeholder="Buscar" />
+								</span>
+
+							</div>
+						</f:facet>
+
+
 						<p:column filterMatchMode="contains" selectionMode="multiple"
 							exportable="false"></p:column>
 

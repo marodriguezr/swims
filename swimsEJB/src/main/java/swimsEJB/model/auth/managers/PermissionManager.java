@@ -78,6 +78,7 @@ public class PermissionManager {
 		permission.setName(name);
 		permission.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		permission.setIsActive(isActive);
+		permission.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		try {
 			return (Permission) daoManager.updateOne(permission);
 		} catch (Exception e) {

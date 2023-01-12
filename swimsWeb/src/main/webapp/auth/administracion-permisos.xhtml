@@ -14,9 +14,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-
 		<h:form id="form">
-
 			<p:toolbar>
 				<p:toolbarGroup>
 					<p:commandButton value="Nuevo" icon="pi pi-plus"
@@ -57,8 +55,8 @@
 				<f:facet name="header">
 					<div
 						style="display: flex; justify-content: space-between; align-items: center;">
-						<span style="font-weight: bold">PERMISOS</span> <span
-							class="ui-input-icon-left"
+						<span style="font-weight: bold">#{permissionManagementBean.permissions.size()}
+							PERMISOS</span> <span class="ui-input-icon-left"
 							style="display: flex; align-items: center;"> <i
 							class="pi pi-search"></i> <p:inputText id="globalFilter"
 								onkeyup="PF('dtPermissions').filter()" placeholder="Buscar" />
@@ -147,7 +145,7 @@
 							<p:outputLabel for="name">Nombre</p:outputLabel>
 							<p:inputText id="name"
 								value="#{permissionManagementBean.selectedPermission.name}"
-								required="true" requiredMessage="Debe ingresar un Nombre."/>
+								required="true" requiredMessage="Debe ingresar un Nombre." />
 						</div>
 
 						<div class="field">
@@ -155,11 +153,13 @@
 							<p:inputText id="webappRelatedPath"
 								value="#{permissionManagementBean.selectedPermission.webappRelatedPath}"
 								required="true"
-								rendered="#{permissionManagementBean.selectedPermission.id eq null}" requiredMessage="Debe ingresar una Ruta Web."/>
+								rendered="#{permissionManagementBean.selectedPermission.id eq null}"
+								requiredMessage="Debe ingresar una Ruta Web." />
 							<p:inputText
 								value="#{permissionManagementBean.selectedPermission.webappRelatedPath}"
 								required="true" disabled="true"
-								rendered="#{permissionManagementBean.selectedPermission.id ne null}" requiredMessage="Debe ingresar una Ruta Web."/>
+								rendered="#{permissionManagementBean.selectedPermission.id ne null}"
+								requiredMessage="Debe ingresar una Ruta Web." />
 						</div>
 
 						<div class="field" style="display: flex; flex-direction: column;">

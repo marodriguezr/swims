@@ -30,8 +30,23 @@
 				</p:toolbarGroup>
 			</p:toolbar>
 			<p:dataTable reflow="true" rows="5" paginator="true"
+				paginatorPosition="bottom"
 				value="#{thesisRecordsManagementBean.thesisRecords}"
-				var="thesisRecord">
+				var="thesisRecord" id="dtThesisRecords"
+				emptyMessage="No existen registros.">
+
+				<f:facet name="header">
+					<div
+						style="display: flex; justify-content: space-between; align-items: center;">
+						<span style="font-weight: bold">#{thesisRecordsManagementBean.thesisRecords.size()}
+							REGISTROS DE TESIS</span> <span class="ui-input-icon-left"
+							style="display: flex; align-items: center;"> <i
+							class="pi pi-search"></i> <p:inputText id="globalFilter"
+								onkeyup="PF('dtThesisRecords').filter()" placeholder="Buscar" />
+						</span>
+
+					</div>
+				</f:facet>
 
 				<p:column filterMatchMode="contains" sortBy="#{thesisRecord.title}"
 					filterBy="#{thesisRecord.title}" headerText="Titulo">

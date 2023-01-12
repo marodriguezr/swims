@@ -60,7 +60,10 @@ public class PermissionManagementBean implements Serializable {
 	public void inactivateSelectedPermissions() {
 		for (Permission permission : selectedPermissions) {
 			try {
-				permissionManager.updateOnePermissionById(permission.getId(), permission.getName(), false);
+				Permission updatedPermission = permissionManager.updateOnePermissionById(permission.getId(),
+						permission.getName(), false);
+				this.permissions.removeIf(t -> t.getId() == updatedPermission.getId());
+				this.permissions.add(0, updatedPermission);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -71,7 +74,6 @@ public class PermissionManagementBean implements Serializable {
 		JSFMessages.INFO(
 				selectedPermissions.size() > 1 ? selectedPermissions.size() + " permisos inactivados de forma exitosa."
 						: "1 permiso inactivado de forma exitosa.");
-		permissions = permissionManager.findAllPermissions();
 		selectedPermissions = new ArrayList<>();
 	}
 
@@ -82,9 +84,11 @@ public class PermissionManagementBean implements Serializable {
 
 	public void activatePermission(Permission permission) {
 		try {
-			permissionManager.updateOnePermissionById(permission.getId(), permission.getName(), true);
+			Permission updatedPermission = permissionManager.updateOnePermissionById(permission.getId(),
+					permission.getName(), true);
+			this.permissions.removeIf(t -> t.getId() == updatedPermission.getId());
+			this.permissions.add(0, updatedPermission);
 			JSFMessages.INFO("Permiso activado de forma exitosa.");
-			permissions = permissionManager.findAllPermissions();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,9 +120,9 @@ public class PermissionManagementBean implements Serializable {
 	public void savePermission() {
 		if (selectedPermission.getId() == null) {
 			try {
-				permissionManager.createOnePermission(selectedPermission.getName(),
+				Permission createdPermission = permissionManager.createOnePermission(selectedPermission.getName(),
 						selectedPermission.getWebappRelatedPath());
-				this.permissions = permissionManager.findAllPermissions();
+				this.permissions.add(0, createdPermission);
 				JSFMessages.INFO("Permiso creado de forma exitosa.");
 				return;
 			} catch (Exception e) {
@@ -128,9 +132,10 @@ public class PermissionManagementBean implements Serializable {
 			}
 		}
 		try {
-			permissionManager.updateOnePermissionById(selectedPermission.getId(), selectedPermission.getName(),
-					selectedPermission.getIsActive());
-			this.permissions = permissionManager.findAllPermissions();
+			Permission updatedPermission = permissionManager.updateOnePermissionById(selectedPermission.getId(),
+					selectedPermission.getName(), selectedPermission.getIsActive());
+			this.permissions.removeIf(arg0 -> arg0.getId() == updatedPermission.getId());
+			this.permissions.add(0, updatedPermission);
 			JSFMessages.INFO("Permiso actualizado de forma exitosa.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
