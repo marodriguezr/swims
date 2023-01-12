@@ -284,6 +284,27 @@ public class SeedManager {
 				"Concepto de Entrega del Producto", false, false, true, false,
 				socialImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(conceptoEntregaStudyVariable);
+
+		StudyVariable directlyBenefitedPeopleAmountStudyVariable = studyVariableManager.createOneStudyVariable(
+				"numeroPerBeneficiada", "Número de personas directamente beneficiadas por el producto de software",
+				false, true, false, false, socialImpactIndicatorsStudyVariableClass);
+		impactStudyVariables.add(directlyBenefitedPeopleAmountStudyVariable);
+
+		StudyVariable indirectlyBenefitedPeopleAmountStudyVariable = studyVariableManager.createOneStudyVariable(
+				"numPerIndirBenficiad", "Número de personas indirectamente beneficiadas por el producto de software",
+				false, true, false, false, socialImpactIndicatorsStudyVariableClass);
+		impactStudyVariables.add(indirectlyBenefitedPeopleAmountStudyVariable);
+
+		StudyVariable focusedSDGStudyVariable = studyVariableManager.createOneStudyVariable("odsFocalizado",
+				"Objetivo de Desarrollo Sostenible focalizado", false, false, true, false,
+				socialImpactIndicatorsStudyVariableClass);
+		impactStudyVariables.add(focusedSDGStudyVariable);
+
+		StudyVariable currentStateStudyVariable = studyVariableManager.createOneStudyVariable("estadoActual",
+				"Estado actual del producto de software", false, false, true, false,
+				socialImpactIndicatorsStudyVariableClass);
+		impactStudyVariables.add(currentStateStudyVariable);
+
 		/**
 		 * 0.2.1.2. Economic Impact Indicators
 		 */
@@ -471,6 +492,18 @@ public class SeedManager {
 					.get(studyVariable.getId());
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), studyVariable);
+		}
+		/**
+		 * 2.2.1. Focused SDG's subquestions
+		 */
+		LimesurveyQuestionDto focusedSdgsQuestion = impactIndicatorsSurveyQuestionDtosMap
+				.get(focusedSDGStudyVariable.getId());
+		List<LimesurveyQuestionDto> focusedSdgSurveyQuestionDtos = impactIndicatorsSurveyQuestionDtosMap.values()
+				.stream().filter(arg0 -> arg0.getParentQid() == focusedSdgsQuestion.getId())
+				.collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : focusedSdgSurveyQuestionDtos) {
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), focusedSDGStudyVariable);
 		}
 		/**
 		 * 2.2. Success or Failure Factors
