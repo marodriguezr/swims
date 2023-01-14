@@ -10,14 +10,15 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import swimsEJB.model.harvesting.entities.ThesisRecord;
 import swimsEJB.model.harvesting.managers.ThesisRecordManager;
 
 @RequestScoped
 @Path("test")
-@Produces("application/json")
-@Consumes("application/json")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class TestController {
 
 	@EJB

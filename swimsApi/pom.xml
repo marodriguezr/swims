@@ -15,6 +15,8 @@
 			<groupId>jakarta.platform</groupId>
 			<artifactId>jakarta.jakartaee-web-api</artifactId>
 			<version>8.0.0</version>
+			<!-- Limits the dependency jar file to be packaged, insted wildfly's implicit dependencies are used -->
+			<!-- Automatic implicit dependencies: https://docs.wildfly.org/26/Developer_Guide.html#Implicit_module_dependencies_for_deployments -->
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

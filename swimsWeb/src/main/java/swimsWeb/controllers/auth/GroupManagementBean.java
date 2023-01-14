@@ -33,6 +33,7 @@ public class GroupManagementBean implements Serializable {
 	private Group selectedGroup;
 	private List<Integer> selectedPermissionIds;
 	private List<Permission> permissions;
+	private List<Permission> permissionsExceptGroupManagementPermission;
 	@EJB
 	private PermissionManager permissionManager;
 
@@ -49,6 +50,8 @@ public class GroupManagementBean implements Serializable {
 		this.groups = signInBean.getSignedUserDto() == null ? new ArrayList<>()
 				: groupManager.findAllGroups(signInBean.getSignedUserDto().isRoot());
 		this.selectedGroups = new ArrayList<>();
+		this.permissionsExceptGroupManagementPermission = signInBean.getSignedUserDto() == null ? new ArrayList<>()
+				: permissionManager.findAllActivePermissionsExcept(AUTH_GROUP_MANAGEMENT_WEBAPP_PATH);
 		this.permissions = signInBean.getSignedUserDto() == null ? new ArrayList<>()
 				: permissionManager.findAllActivePermissions();
 	}
@@ -56,6 +59,7 @@ public class GroupManagementBean implements Serializable {
 	public void openNew() {
 		this.selectedGroup = new Group();
 		this.selectedGroup.setId(-1);
+		this.selectedGroup.setIsRoot(false);
 		this.selectedPermissionIds = new ArrayList<>();
 	}
 
@@ -79,6 +83,12 @@ public class GroupManagementBean implements Serializable {
 			}
 		}
 		try {
+			Permission groupManagementPermission = permissionManager
+					.findOnePermissionByRelatedWebappPath(AUTH_GROUP_MANAGEMENT_WEBAPP_PATH);
+			if (this.selectedGroup.getIsRoot()) {
+				this.selectedPermissionIds.add(groupManagementPermission.getId());
+				this.selectedGroup.setIsActive(true);
+			}
 			Group updatedGroup = groupManager.updateOneGroupById(selectedGroup.getId(), selectedGroup.getName(),
 					selectedGroup.getIsActive(), selectedPermissionIds);
 			this.groups.removeIf(arg0 -> arg0.getId() == updatedGroup.getId());
@@ -97,8 +107,13 @@ public class GroupManagementBean implements Serializable {
 	}
 
 	public void inactivateSelectedGroups() {
+		int groupsCount = selectedGroups.size();
 		for (Group group : selectedGroups) {
 			try {
+				if (group.getIsRoot()) {
+					groupsCount--;
+					continue;
+				}
 				Group updatedGroup = groupManager.updateOneGroupById(group.getId(), null, false);
 				this.groups.removeIf(t -> t.getId() == updatedGroup.getId());
 				this.groups.add(0, updatedGroup);
@@ -108,8 +123,8 @@ public class GroupManagementBean implements Serializable {
 				JSFMessages.ERROR(e.getMessage());
 			}
 		}
-		JSFMessages.INFO(selectedGroups.size() > 1 ? selectedGroups.size() + " grupos inactivados de forma exitosa."
-				: "grupo inactivado de forma exitosa.");
+		JSFMessages.INFO(groupsCount > 1 ? groupsCount + " grupos inactivados de forma exitosa."
+				: groupsCount == 1 ? "grupo inactivado de forma exitosa." : "0 Grupos modificados");
 
 		selectedGroups = new ArrayList<>();
 	}
@@ -183,6 +198,15 @@ public class GroupManagementBean implements Serializable {
 
 	public void setPermissions(List<Permission> permissions) {
 		this.permissions = permissions;
+	}
+
+	public List<Permission> getPermissionsExceptGroupManagementPermission() {
+		return permissionsExceptGroupManagementPermission;
+	}
+
+	public void setPermissionsExceptGroupManagementPermission(
+			List<Permission> permissionsExceptGroupManagementPermission) {
+		this.permissionsExceptGroupManagementPermission = permissionsExceptGroupManagementPermission;
 	}
 
 }

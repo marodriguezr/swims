@@ -91,7 +91,7 @@
 					<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
 						action="/index?faces-redirect=true"></p:menuitem>
 					<p:submenu
-						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH)}"
+						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}"
 						label="Adquisición de datos" icon="pi pi-fw pi-book">
 						<p:menuitem value="Administración de Sets de Tesis"
 							icon="pi pi-fw pi-cog"
@@ -120,7 +120,7 @@
 							action="#{extractionBean.loadPage()}"></p:menuitem>
 					</p:submenu>
 					<p:submenu
-						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}"
+						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.AUTH_USER_MANAGEMENT_WEBAPP_PATH, webappPathsBean.AUTH_GROUP_MANAGEMENT_WEBAPP_PATH, webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}"
 						label="Autenticación y Autorización" icon="pi pi-fw pi-cog">
 						<p:menuitem icon="pi pi-fw pi-user"
 							value="Administración de Usuarios"

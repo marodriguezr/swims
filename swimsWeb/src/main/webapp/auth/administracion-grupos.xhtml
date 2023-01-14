@@ -118,12 +118,13 @@
 						<p:resetInput target=":dialogs:manage-groups-content" />
 					</p:commandButton>
 					<p:commandButton icon="pi pi-check" alt="Activar"
-						update=":form:dt-groups"
+						rendered="#{group.isRoot eq false}" update=":form:dt-groups"
 						styleClass="p-mr-2 rounded-button ui-button-success"
 						actionListener="#{groupManagementBean.activateGroup(group)}"
 						process="@this">
 					</p:commandButton>
 					<p:commandButton alt="Inactivar"
+						rendered="#{group.isRoot eq false}"
 						styleClass="ui-button-warning rounded-button p-mr-2"
 						icon="pi pi-times" process="@this"
 						oncomplete="PF('inactivateGroupDialog').show()">
@@ -152,26 +153,34 @@
 
 						<div class="p-field p-mb-3">
 							<p:outputLabel for="@next">Permisos</p:outputLabel>
-							<p:selectManyMenu filter="true" filterMatchMode="contains"
-								showCheckbox="true" id="permission"
+							<p:selectManyMenu
+								rendered="#{groupManagementBean.selectedGroup.isRoot ne true}"
+								filter="true" filterMatchMode="contains" showCheckbox="true"
 								value="#{groupManagementBean.selectedPermissionIds}">
 								<f:selectItems value="#{groupManagementBean.permissions}"
 									var="permission" itemLabel="#{permission.name}"
 									itemValue="#{permission.id}" />
 							</p:selectManyMenu>
+							<p:selectManyMenu
+								rendered="#{groupManagementBean.selectedGroup.isRoot eq true}"
+								filter="true" filterMatchMode="contains" showCheckbox="true"
+								value="#{groupManagementBean.selectedPermissionIds}">
+								<f:selectItems
+									value="#{groupManagementBean.permissionsExceptGroupManagementPermission}"
+									var="permission" itemLabel="#{permission.name}"
+									itemValue="#{permission.id}" />
+							</p:selectManyMenu>
 						</div>
 
-						<div class="p-field p-d-flex p-flex-column">
-							<p:outputLabel
-								rendered="#{groupManagementBean.selectedGroup.id ne -1}"
-								for="@next">Estado</p:outputLabel>
-							<p:selectBooleanCheckbox
-								rendered="#{groupManagementBean.selectedGroup.id ne -1}"
-								id="isActive"
+						<h:panelGroup layout="block"
+							rendered="#{groupManagementBean.selectedGroup.id ne -1 and groupManagementBean.selectedGroup.isRoot eq false}"
+							styleClass="p-field p-d-flex p-flex-column">
+							<p:outputLabel for="@next">Estado</p:outputLabel>
+							<p:selectBooleanCheckbox id="isActive"
 								value="#{groupManagementBean.selectedGroup.isActive}"
 								required="true">
 							</p:selectBooleanCheckbox>
-						</div>
+						</h:panelGroup>
 					</p:outputPanel>
 				</p:outputPanel>
 
