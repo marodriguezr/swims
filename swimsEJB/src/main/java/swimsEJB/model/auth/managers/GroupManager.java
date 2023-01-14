@@ -53,13 +53,74 @@ public class GroupManager {
 		}
 	}
 
+	public List<GroupPermission> updateGroupPermissions(int groupId, List<Integer> permissionIds) throws Exception {
+		List<GroupPermission> foundGroupsPermissions = groupPermissionManager.findAllGroupPermissionsByGroupId(groupId);
+
+		List<Integer> toAddPermissionIds = new ArrayList<>(permissionIds);
+		toAddPermissionIds.removeIf(arg0 -> foundGroupsPermissions.stream().map(arg1 -> arg1.getPermission().getId())
+				.collect(Collectors.toList()).contains(arg0));
+
+		List<GroupPermission> toModifyGroupPermissions = new ArrayList<>(foundGroupsPermissions);
+		toModifyGroupPermissions.removeIf(arg0 -> permissionIds.contains(arg0.getPermission().getId()));
+
+		int difference = toAddPermissionIds.size() - toModifyGroupPermissions.size();
+
+		if (difference > 0) {
+			for (int i = 0; i < toModifyGroupPermissions.size(); i++) {
+				groupPermissionManager.updateOneGroupPermissionById(toModifyGroupPermissions.get(i).getId(), groupId,
+						toAddPermissionIds.get(i));
+			}
+			while (difference != 0) {
+				groupPermissionManager.createOneGroupPermission(groupId,
+						toAddPermissionIds.get(toModifyGroupPermissions.size() - 1 + difference));
+				difference--;
+			}
+			return groupPermissionManager.findAllGroupPermissionsByGroupId(groupId);
+		}
+		if (difference < 0) {
+			for (int i = 0; i < toAddPermissionIds.size(); i++) {
+				groupPermissionManager.updateOneGroupPermissionById(toModifyGroupPermissions.get(i).getId(), groupId,
+						toAddPermissionIds.get(i));
+			}
+			while (difference != 0) {
+				groupPermissionManager.deleteOneGroupPermissionById(
+						toModifyGroupPermissions.get(toModifyGroupPermissions.size() - (difference * -1)).getId());
+				difference++;
+			}
+			return groupPermissionManager.findAllGroupPermissionsByGroupId(groupId);
+		}
+
+		for (int i = 0; i < toModifyGroupPermissions.size(); i++) {
+			groupPermissionManager.updateOneGroupPermissionById(toModifyGroupPermissions.get(i).getId(), groupId,
+					toAddPermissionIds.get(i));
+		}
+		return groupPermissionManager.findAllGroupPermissionsByGroupId(groupId);
+	}
+
 	public Group createOneGroup(String name) throws Exception {
 		return createOneGroup(name, false);
 	}
 
+	public Group createOneGroupWithPermissionIds(String name, List<Integer> permissionIds) throws Exception {
+		Group createdGroup = createOneGroup(name);
+		for (Integer integer : permissionIds) {
+			this.addPermissionById(createdGroup.getId(), integer);
+		}
+		return createdGroup;
+	}
+
 	@SuppressWarnings("unchecked")
-	public List<Group> findAllGroups() {
-		return daoManager.findAll(Group.class);
+	private List<Group> findAllGroups() {
+		return daoManager.findAll(Group.class, "updatedAt", false);
+	}
+
+	public List<Group> findAllGroups(boolean isRoot) {
+		List<Group> foundGroups = findAllGroups();
+		if (isRoot) {
+			return foundGroups;
+		}
+		foundGroups.removeIf(arg0 -> arg0.getIsRoot());
+		return foundGroups;
 	}
 
 	public List<Group> findAllActiveGroups() {
@@ -101,15 +162,26 @@ public class GroupManager {
 		if (group == null)
 			throw new Exception("El Grupo especificado no existe.");
 
-		group.setName(name);
+		if (name != null)
+			group.setName(name);
 		group.setIsActive(isActive);
+		group.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 
-		try {
+		try
+
+		{
 			return (Group) daoManager.updateOne(group);
 		} catch (Exception e) {
 			// TODO: handle exception
 			throw new Exception("Ha ocurrido un error en la actualización del Grupo.");
 		}
+	}
+
+	public Group updateOneGroupById(int id, String name, Boolean isActive, List<Integer> permissionIds)
+			throws Exception {
+		updateGroupPermissions(id, permissionIds);
+		System.out.println(1);
+		return updateOneGroupById(id, name, isActive);
 	}
 
 	public Group addPermissionById(int groupId, int permissionId) throws Exception {

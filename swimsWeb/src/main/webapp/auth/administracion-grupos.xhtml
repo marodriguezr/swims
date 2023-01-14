@@ -1,0 +1,213 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Administración de grupos</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{authBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<script>
+			//<![CDATA[
+			function start() {
+				PF('statusDialog').show();
+			}
+
+			function stop() {
+				PF('statusDialog').hide();
+			}
+			//]]>
+		</script>
+
+		<h:form id="form">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Nuevo" icon="pi pi-plus"
+						styleClass="ui-button-success"
+						actionListener="#{groupManagementBean.openNew()}"
+						update=":dialogs:manage-groups-content"
+						oncomplete="PF('manageGroupsDialog').show()"
+						style="margin-right: .5rem">
+						<p:resetInput target=":dialogs:manage-groups-content" />
+					</p:commandButton>
+					<p:commandButton id="inactivate-groups-button"
+						value="#{groupManagementBean.inactivateButtonMessage}"
+						icon="pi pi-times" styleClass="ui-button-info"
+						actionListener="#{groupManagementBean.inactivateSelectedGroups()}"
+						disabled="#{!groupManagementBean.hasSelectedGroups()}"
+						update="@form">
+						<p:confirm header="Confirmación"
+							message="¿Está seguro de inactivar los grupos seleccionados? Los usuarios perderán el acceso."
+							icon="pi pi-exclamation-triangle" />
+					</p:commandButton>
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:commandButton value="Refrescar" icon="pi pi-refresh"
+						styleClass="ui-button-secondary"
+						actionListener="#{groupManagementBean.onLoad()}" update="@form">
+					</p:commandButton>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable emptyMessage="No existen registros." id="dt-groups"
+				widgetVar="dtGroups" var="group"
+				value="#{groupManagementBean.groups}" reflow="true"
+				selection="#{groupManagementBean.selectedGroups}"
+				rowKey="#{group.id}" paginator="true" rows="10" rowSelectMode="add"
+				paginatorPosition="bottom">
+
+				<f:facet name="header">
+					<div
+						style="display: flex; justify-content: space-between; align-items: center;">
+						<span style="font-weight: bold">#{groupManagementBean.groups.size()}
+							GRUPOS</span> <span class="ui-input-icon-left"
+							style="display: flex; align-items: center;"> <i
+							class="pi pi-search"></i> <p:inputText id="globalFilter"
+								onkeyup="PF('dtGroups').filter()" placeholder="Buscar" />
+						</span>
+					</div>
+				</f:facet>
+
+				<p:ajax event="rowSelect" update=":form:inactivate-groups-button" />
+				<p:ajax event="rowUnselect" update=":form:inactivate-groups-button" />
+				<p:ajax event="rowSelectCheckbox"
+					update=":form:inactivate-groups-button" />
+				<p:ajax event="rowUnselectCheckbox"
+					update=":form:inactivate-groups-button" />
+				<p:ajax event="toggleSelect" update=":form:inactivate-groups-button" />
+
+				<p:column selectionMode="multiple" exportable="false"></p:column>
+
+				<p:column headerText="Nombre" sortBy="#{group.name}"
+					filterBy="#{group.name}">
+					<h:outputText value="#{group.name}" />
+				</p:column>
+
+				<p:column headerText="Fecha de creación" sortBy="#{group.createdAt}"
+					filterBy="#{group.createdAt}">
+					<h:outputText value="#{group.createdAt}" />
+				</p:column>
+
+				<p:column headerText="Fecha de actualización"
+					sortBy="#{group.updatedAt}" filterBy="#{group.updatedAt}">
+					<h:outputText value="#{group.updatedAt}" />
+				</p:column>
+
+				<p:column headerText="Estado" sortBy="#{group.isActive}">
+					<h:outputText rendered="#{group.isActive eq true}" value="Activo" />
+					<h:outputText rendered="#{group.isActive eq false}"
+						value="Inactivo" />
+				</p:column>
+
+
+
+				<p:column exportable="false">
+					<p:commandButton icon="pi pi-pencil" alt="Modificar"
+						update=":dialogs:manage-groups-content"
+						oncomplete="PF('manageGroupsDialog').show()"
+						styleClass="p-mr-2 rounded-button ui-button-help" process="@this">
+						<f:setPropertyActionListener value="#{group}"
+							target="#{groupManagementBean.selectedGroupWithPermissions}" />
+						<p:resetInput target=":dialogs:manage-groups-content" />
+					</p:commandButton>
+					<p:commandButton icon="pi pi-check" alt="Activar"
+						update=":form:dt-groups"
+						styleClass="p-mr-2 rounded-button ui-button-success"
+						actionListener="#{groupManagementBean.activateGroup(group)}"
+						process="@this">
+					</p:commandButton>
+					<p:commandButton alt="Inactivar"
+						styleClass="ui-button-warning rounded-button p-mr-2"
+						icon="pi pi-times" process="@this"
+						oncomplete="PF('inactivateGroupDialog').show()">
+						<f:setPropertyActionListener value="#{group}"
+							target="#{groupManagementBean.selectedGroup}" />
+					</p:commandButton>
+
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="dialogs">
+			<p:dialog header="Detalles del Grupo" showEffect="fade" modal="true"
+				widgetVar="manageGroupsDialog" responsive="true">
+				<p:outputPanel id="manage-groups-content" class="ui-fluid">
+					<p:outputPanel
+						rendered="#{groupManagementBean.selectedGroup ne null}">
+
+						<div class="p-field p-mb-3">
+							<p:outputLabel for="name">Nombre</p:outputLabel>
+							<p:inputText id="name"
+								value="#{groupManagementBean.selectedGroup.name}"
+								required="true" requiredMessage="Debe ingresar un Nombre." />
+						</div>
+
+						<div class="p-field p-mb-3">
+							<p:outputLabel for="@next">Permisos</p:outputLabel>
+							<p:selectManyMenu filter="true" filterMatchMode="contains"
+								showCheckbox="true" id="permission"
+								value="#{groupManagementBean.selectedPermissionIds}">
+								<f:selectItems value="#{groupManagementBean.permissions}"
+									var="permission" itemLabel="#{permission.name}"
+									itemValue="#{permission.id}" />
+							</p:selectManyMenu>
+						</div>
+
+						<div class="p-field p-d-flex p-flex-column">
+							<p:outputLabel
+								rendered="#{groupManagementBean.selectedGroup.id ne -1}"
+								for="@next">Estado</p:outputLabel>
+							<p:selectBooleanCheckbox
+								rendered="#{groupManagementBean.selectedGroup.id ne -1}"
+								id="isActive"
+								value="#{groupManagementBean.selectedGroup.isActive}"
+								required="true">
+							</p:selectBooleanCheckbox>
+						</div>
+					</p:outputPanel>
+				</p:outputPanel>
+
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" icon="pi pi-save"
+						actionListener="#{groupManagementBean.saveGroup()}"
+						update=":form:dt-groups"
+						onsuccess="PF('manageGroupsDialog').hide()"
+						process="manage-groups-content @form" />
+					<p:commandButton value="Cancelar" icon="pi pi-times"
+						onclick="PF('manageGroupsDialog').hide()"
+						class="ui-button-secondary" type="button" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+
+		<h:form>
+			<p:confirmDialog widgetVar="inactivateGroupDialog" showEffect="fade"
+				width="300" message="¿Está seguro de inactivar este grupo?"
+				header="Confirmación" severity="warn">
+				<p:commandButton value="Si" icon="pi pi-check"
+					actionListener="#{groupManagementBean.inactivateSelectedGroup()}"
+					update=":form:dt-groups" process="@this"
+					oncomplete="PF('inactivateGroupDialog').hide()" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('inactivateGroupDialog').hide()" />
+			</p:confirmDialog>
+
+			<p:confirmDialog global="true" showEffect="fade" width="300">
+				<p:commandButton value="Si" type="button"
+					styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button-secondary"
+					icon="pi pi-times" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

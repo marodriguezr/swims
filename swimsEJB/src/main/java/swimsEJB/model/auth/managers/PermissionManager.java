@@ -61,9 +61,21 @@ public class PermissionManager {
 		return daoManager.findAll(Permission.class, "updatedAt", false);
 	}
 
+	public List<Permission> findAllActivePermissions() {
+		List<Permission> permissions = findAllPermissions();
+		permissions.removeIf(t -> !t.getIsActive());
+		return permissions;
+	}
+
 	public List<Permission> findAllPermissionsExcept(String webappRelatedPath) {
 		List<Permission> permissions = findAllPermissions();
-		permissions.removeIf(arg0 -> arg0.getWebappRelatedPath().equals(webappRelatedPath));
+		permissions.removeIf(arg0 -> arg0.getWebappRelatedPath().contains(webappRelatedPath));
+		return permissions;
+	}
+
+	public List<Permission> findAllActivePermissionsExcept(String webappRelatedPath) {
+		List<Permission> permissions = findAllActivePermissions();
+		permissions.removeIf(arg0 -> arg0.getWebappRelatedPath().contains(webappRelatedPath));
 		return permissions;
 	}
 
@@ -106,6 +118,11 @@ public class PermissionManager {
 		}
 		return permissions;
 	};
+
+	public List<Integer> findAllPermissionIdsByGroupId(int groupId) {
+		List<Permission> permissions = findAllPermissionsByGroupId(groupId);
+		return permissions.stream().map(arg0 -> arg0.getId()).collect(Collectors.toList());
+	}
 
 	public List<Permission> findAllActivePermissionsByGroupId(int groupId) {
 		List<Permission> permissions = findAllPermissionsByGroupId(groupId);

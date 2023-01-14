@@ -81,12 +81,16 @@ public class WebappPathsBean implements Serializable {
 	public String getLIMESURVEY_BASE_URL() {
 		return LIMESURVEY_BASE_URL;
 	}
-	
+
 	public String getLIMESURVEY_PROTOCOL() {
 		return LIMESURVEY_PROTOCOL;
 	}
-	
+
 	public String getHARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH() {
 		return HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH;
+	}
+
+	public String getAUTH_GROUP_MANAGEMENT_WEBAPP_PATH() {
+		return AUTH_GROUP_MANAGEMENT_WEBAPP_PATH;
 	}
 }

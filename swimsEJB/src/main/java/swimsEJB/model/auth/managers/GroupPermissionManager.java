@@ -52,6 +52,27 @@ public class GroupPermissionManager {
 		}
 	}
 
+	public GroupPermission updateOneGroupPermissionById(int groupPermissionId, int groupId, int permissionId)
+			throws Exception {
+		GroupPermission foundGroupPermission = (GroupPermission) daoManager.findOneById(GroupPermission.class,
+				groupPermissionId);
+		if (foundGroupPermission == null)
+			throw new Exception("GroupPermission indicado no registrado.");
+		Group group = groupManager.findOneGroupById(groupId);
+		if (group == null)
+			throw new Exception("Grupo indicado no registrado.");
+		Permission permission = permissionManager.findOnePermissionById(permissionId);
+		if (permission == null)
+			throw new Exception("Permiso indicado no registrado.");
+		foundGroupPermission.setGroup(group);
+		foundGroupPermission.setPermission(permission);
+		return (GroupPermission) daoManager.updateOne(foundGroupPermission);
+	}
+
+	public GroupPermission deleteOneGroupPermissionById(int groupPermissionId) throws Exception {
+		return (GroupPermission) daoManager.deleteOneById(GroupPermission.class, groupPermissionId);
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<GroupPermission> findAllGroupPermissionsByGroupId(int groupId) {
 		List<GroupPermission> groupPermissions = daoManager.findManyWhere(GroupPermission.class,

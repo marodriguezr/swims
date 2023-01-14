@@ -107,8 +107,6 @@ public class SeedManager {
 		if (sysparam != null)
 			if (sysparam.getValue() == "true")
 				throw new Exception("System already seeded.");
-		if (!userManager.findAllUsers().isEmpty())
-			throw new Exception("System already seeded.");
 
 		verifyWebappPathsMapCorrectness(webappPaths);
 
@@ -145,6 +143,8 @@ public class SeedManager {
 				webappPaths.get("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH"));
 		Permission userManagementPermission = permissionManager.createOnePermission("Administración de Usuarios",
 				webappPaths.get("AUTH_USER_MANAGEMENT_WEBAPP_PATH"));
+		Permission groupManagementPermission = permissionManager.createOnePermission("Administración de Grupos",
+				webappPaths.get("AUTH_GROUP_MANAGEMENT_WEBAPP_PATH"));
 
 		/**
 		 * 2. GROUPS
@@ -162,6 +162,7 @@ public class SeedManager {
 		groupManager.addPermissionById(adminGroup.getId(), thesisSetsManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), permissionManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), userManagementPermission.getId());
+		groupManager.addPermissionById(adminGroup.getId(), groupManagementPermission.getId());
 
 		/**
 		 * 3.2. Thesis Record Management Group

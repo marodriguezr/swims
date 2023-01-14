@@ -106,7 +106,8 @@
 								action="#{setSelectionBean.loadPage()}"></p:menuitem>
 							<p:menuitem
 								rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}"
-								icon="pi pi-fw pi-eye" value="Administración de Registros de Tesis"
+								icon="pi pi-fw pi-eye"
+								value="Administración de Registros de Tesis"
 								action="#{thesisRecordsManagementBean.loadPage()}"></p:menuitem>
 						</p:submenu>
 						<p:menuitem
@@ -121,15 +122,20 @@
 					<p:submenu
 						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}"
 						label="Autenticación y Autorización" icon="pi pi-fw pi-cog">
+						<p:menuitem icon="pi pi-fw pi-user"
+							value="Administración de Usuarios"
+							action="#{userManagementBean.loadPage()}"
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_USER_MANAGEMENT_WEBAPP_PATH)}">
+						</p:menuitem>
+						<p:menuitem icon="pi pi-fw pi-users"
+							value="Administración de Grupos"
+							action="#{groupManagementBean.loadPage()}"
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_GROUP_MANAGEMENT_WEBAPP_PATH)}">
+						</p:menuitem>
 						<p:menuitem value="Administración de Permisos"
 							icon="pi pi-fw pi-id-card"
 							action="#{permissionManagementBean.loadPage()}"
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}">
-						</p:menuitem>
-						<p:menuitem icon="pi pi-fw pi-users"
-							value="Administración de Usuarios"
-							action="#{userManagementBean.loadPage()}"
-							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_USER_MANAGEMENT_WEBAPP_PATH)}">
 						</p:menuitem>
 					</p:submenu>
 					<f:facet name="options">

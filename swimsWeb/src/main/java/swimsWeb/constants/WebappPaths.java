@@ -89,13 +89,17 @@ public final class WebappPaths {
 	 */
 	public static final String AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH = AUTH_WEBAPP_PATH + "/administracion-permisos";
 	/**
-	 * 3.2 USER MANAGEMENT
+	 * 3.2. USER MANAGEMENT
 	 */
 	public static final String AUTH_USER_MANAGEMENT_WEBAPP_PATH = AUTH_WEBAPP_PATH + "/administracion-usuarios";
 	/**
-	 * 3.3 UPDATE PASSWORD
+	 * 3.3. UPDATE PASSWORD
 	 */
 	public static final String AUTH_UPDATE_PASSWORD_WEBAPP_PATH = AUTH_WEBAPP_PATH + "/actualizar-contrasena";
+	/**
+	 * 3.4. GROUP MANAGEMENT
+	 */
+	public static final String AUTH_GROUP_MANAGEMENT_WEBAPP_PATH = AUTH_WEBAPP_PATH + "/administracion-grupos";
 
 	/**
 	 * 
@@ -134,6 +138,7 @@ public final class WebappPaths {
 		webAppPatHashMap.put("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH", AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH);
 		webAppPatHashMap.put("AUTH_USER_MANAGEMENT_WEBAPP_PATH", AUTH_USER_MANAGEMENT_WEBAPP_PATH);
 		webAppPatHashMap.put("AUTH_UPDATE_PASSWORD_WEBAPP_PATH", AUTH_UPDATE_PASSWORD_WEBAPP_PATH);
+		webAppPatHashMap.put("AUTH_GROUP_MANAGEMENT_WEBAPP_PATH", AUTH_GROUP_MANAGEMENT_WEBAPP_PATH);
 		webAppPatHashMap.put("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH",
 				HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH);
 

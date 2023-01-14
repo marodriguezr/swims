@@ -140,7 +140,7 @@ public class UserManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<UserDto> findAllUsers() {
+	private List<UserDto> findAllUsers() {
 		List<UserDto> foundUserDtos = UsersToUserDtos(daoManager.findAll(User.class, "updatedAt", false));
 		return foundUserDtos;
 	}
