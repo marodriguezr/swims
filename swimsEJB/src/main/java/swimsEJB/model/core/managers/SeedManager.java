@@ -134,7 +134,7 @@ public class SeedManager {
 				"Extracción de Datos de Tesis",
 				webappPaths.get("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH"));
 		Permission thesisRecordManagementPermission = permissionManager.createOnePermission(
-				"Administración de Registros de Tesis",
+				"Gestión de Registros de Tesis",
 				webappPaths.get("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH"));
 		/**
 		 * 1.2. AUTH
@@ -704,6 +704,8 @@ public class SeedManager {
 		expectedAnswerManager.createOneExpectedAnswer("EMPRESA J&L COMPUTER SERVICE", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("EMPRESA PAPAGAYODEV CIA. LTDA", beneficiaryQuestion);
 		expectedAnswerManager.createOneExpectedAnswer("Bitproy Cia. Ltda.", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("Universidad Técnica del Norte", beneficiaryQuestion);
+		expectedAnswerManager.createOneExpectedAnswer("En Beneficio de Ninguna Entidad", beneficiaryQuestion);
 
 	}
 
