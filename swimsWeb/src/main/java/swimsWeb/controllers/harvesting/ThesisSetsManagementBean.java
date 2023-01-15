@@ -46,7 +46,7 @@ public class ThesisSetsManagementBean implements Serializable {
 		this.name = "";
 		this.identifier = "";
 	}
-	
+
 	public String loadPage() {
 		return HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
 	}
@@ -59,7 +59,7 @@ public class ThesisSetsManagementBean implements Serializable {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
-			JSFMessages.ERROR(e.getMessage());
+			JSFMessages.ERROR("El Set ya ha sido registrado previamente.\n" + e.getMessage());
 		}
 	}
 

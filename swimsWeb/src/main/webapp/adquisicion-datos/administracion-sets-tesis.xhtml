@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Sets OAI</ui:define>
+	<ui:define name="title">Sets de Tesis</ui:define>
 
 	<ui:define name="onLoad">
 		<f:metadata>
@@ -17,7 +17,7 @@
 		<h:form>
 			<p:card>
 				<f:facet name="title">
-			Sets OAI
+			Sets de Tesis
 			</f:facet>
 
 				<div class="ui-fluid">
@@ -38,9 +38,9 @@
 					<p:commandButton icon="pi pi-save" update="@form" value="Guardar"
 						actionListener="#{thesisSetsManagementBean.createOneOaiSetActionListener()}" />
 
-					<p:commandButton oncomplete="PF('oaiSetsHelpDialog').show()"
-						icon="pi pi-question" value="Ayuda"
-						styleClass="p-ml-2 ui-button-secondary" />
+					<p:commandButton type="button"
+						onclick="PF('oaiSetsHelpDialog').show()" icon="pi pi-question"
+						value="Ayuda" styleClass="p-ml-2 ui-button-secondary" />
 				</f:facet>
 			</p:card>
 		</h:form>
@@ -49,11 +49,23 @@
 		<p:dialog header="Ayuda" showEffect="fade" modal="true"
 			widgetVar="oaiSetsHelpDialog" responsive="true">
 			<p>
-				Refierase al sítio <a
+				Diríjase al sítio <a target="_blank"
 					href="http://repositorio.utn.edu.ec/oai/request?verb=ListSets">http://repositorio.utn.edu.ec/oai/request?verb=ListSets</a>
 				para conocer los identificadores y nombres de los sets puestos a
 				disposición por la Universidad Técnica del Norte.
 			</p>
+			<p>Considere que:</p>
+			<ul>
+				<li>Un Set tiene un formato similar a: "col_123456789_40" y se
+					encuentra entre corchetes a la derecha del título o nombre del Set.</li>
+				<li>Usted puede elegir el nombre a tomar por el Set registrado,
+					este nombre puede diferir del título anotado en la Web del
+					Repositorio de la Universidad Técnica del Norte.</li>
+				<li>El identificador debe ser único, es decir un set puede ser
+					registrado una sola vez.</li>
+			</ul>
+			<h3>Video explicativo:</h3>
 		</p:dialog>
+
 	</ui:define>
 </ui:composition>
