@@ -22,6 +22,8 @@ import swimsEJB.model.auth.dtos.UserDto;
 import swimsEJB.model.auth.entities.Group;
 import swimsEJB.model.auth.managers.GroupManager;
 import swimsEJB.model.auth.managers.UserManager;
+import swimsWeb.controllers.NavBarBean;
+import swimsWeb.interfaces.OnRefreshEventListener;
 import swimsWeb.utilities.JSFMessages;
 
 @Named
@@ -49,6 +51,8 @@ public class UserManagementBean implements Serializable {
 	private StreamedContent xlsxTemplate;
 	private StreamedContent odsTemplate;
 	private StreamedContent csvTemplate;
+	@Inject
+	private NavBarBean navBarBean;
 
 	public UserManagementBean() {
 		// TODO Auto-generated constructor stub
@@ -73,6 +77,17 @@ public class UserManagementBean implements Serializable {
 		this.groups = signInBean != null ? groupManager.findAllActiveGroups(signInBean.getSignedUserDto().isRoot())
 				: new ArrayList<>();
 		this.selectedGroupIds = new ArrayList<>();
+	}
+
+	public void onPageLoad() {
+		this.navBarBean.setOnRefreshEventListener(new OnRefreshEventListener() {
+			@Override
+			public void onRefreshEvent() {
+				// TODO Auto-generated method stub
+				onLoad();
+			}
+		});
+		this.navBarBean.setToUpdateFormId(":form");
 	}
 
 	public void findAllUserDtos() {

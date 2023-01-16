@@ -3,7 +3,6 @@ package swimsWeb.controllers.harvesting;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -27,16 +26,7 @@ public class ThesisRecordsManagementBean implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	@PostConstruct
-	public void onLoad() {
-		loadThesisRecords();
-	}
-	
-	public void refresh() {
-		loadThesisRecords();
-	}
-
-	public void loadThesisRecords() {
+	public void onPageLoad() {
 		this.thesisRecords = thesisRecordManager.findAllThesisRecords();
 	}
 

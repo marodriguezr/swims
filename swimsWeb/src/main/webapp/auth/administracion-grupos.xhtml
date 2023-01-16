@@ -10,6 +10,7 @@
 	<ui:define name="onLoad">
 		<f:metadata>
 			<f:viewAction action="#{authBean.onPageLoad()}" />
+			<f:viewAction action="#{groupManagementBean.onPageLoad()}" />
 		</f:metadata>
 	</ui:define>
 
@@ -46,12 +47,6 @@
 						<p:confirm header="Confirmación"
 							message="¿Está seguro de inactivar los grupos seleccionados? Los usuarios perderán el acceso."
 							icon="pi pi-exclamation-triangle" />
-					</p:commandButton>
-				</p:toolbarGroup>
-				<p:toolbarGroup align="right">
-					<p:commandButton value="Refrescar" icon="pi pi-refresh"
-						styleClass="ui-button-secondary"
-						actionListener="#{groupManagementBean.onLoad()}" update="@form">
 					</p:commandButton>
 				</p:toolbarGroup>
 			</p:toolbar>

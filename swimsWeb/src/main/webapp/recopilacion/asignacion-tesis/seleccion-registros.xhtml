@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Selección de Tesis</ui:define>
+	<ui:define name="title">Selección de Registros</ui:define>
 
 	<ui:define name="onLoad">
 		<f:metadata>
@@ -17,7 +17,7 @@
 		<h:form>
 			<p:card>
 				<f:facet name="title">
-			Selección de Tesis
+			Selección de Registros
 			</f:facet>
 				<ui:include
 					src="#{webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH}/steps.xhtml" />
@@ -27,8 +27,9 @@
 					<p:dataTable value="#{thesisSelectionBean.oaiRecords}"
 						var="oaiRecord" reflow="true" rows="5" paginator="true"
 						id="availableOaiRecords" rowSelectMode="add"
-						rowKey="#{oaiRecord.id}"
-						selection="#{thesisSelectionBean.selectedOaiRecords}" paginatorPosition="bottom">
+						rowKey="#{oaiRecord.id}" widgetVar="availableOaiRecords"
+						selection="#{thesisSelectionBean.selectedOaiRecords}"
+						paginatorPosition="bottom">
 
 						<f:facet name="header">
 							<div

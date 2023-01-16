@@ -87,8 +87,8 @@ public class SeedManager {
 			throw new Exception("HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH non existent.");
 		if (!webappPaths.containsKey("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH"))
 			throw new Exception("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH non existent.");
-		if (!webappPaths.containsKey("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH"))
-			throw new Exception("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH non existent.");
 		if (!webappPaths.containsKey("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH"))
 			throw new Exception("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH non existent.");
 		if (!webappPaths.containsKey("AUTH_USER_MANAGEMENT_WEBAPP_PATH"))
@@ -131,8 +131,8 @@ public class SeedManager {
 		Permission thesisRecordInclussionPermission = permissionManager.createOnePermission(
 				"Asignación de Tesis y Encuestas", webappPaths.get("HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH"));
 		Permission thesisRecordDataExtractionPermission = permissionManager.createOnePermission(
-				"Extracción de Datos de Tesis",
-				webappPaths.get("HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH"));
+				"Recopilación de Datos de Tesis",
+				webappPaths.get("HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH"));
 		Permission thesisRecordManagementPermission = permissionManager.createOnePermission(
 				"Gestión de Registros de Tesis",
 				webappPaths.get("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH"));
@@ -191,7 +191,7 @@ public class SeedManager {
 		/**
 		 * 6.1. CISIC THESIS SET
 		 */
-		thesisSetManager.createOneThesisSet("col_123456789_40", "CISIC");
+		thesisSetManager.createOneThesisSet("col_123456789_40", "Ing. Sistemas Computacionales");
 
 		/**
 		 * 

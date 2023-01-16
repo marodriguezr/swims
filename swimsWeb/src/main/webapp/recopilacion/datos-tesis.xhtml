@@ -5,12 +5,12 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Inicio</ui:define>
+	<ui:define name="title">Recopilación de Datos</ui:define>
 
 	<ui:define name="onLoad">
 		<f:metadata>
 			<f:viewAction action="#{authBean.onPageLoad()}" />
-			<f:viewAction action="#{extractionBean.onPageLoad()}" />
+			<f:viewAction action="#{thesisRecordDataCollectionBean.onPageLoad()}" />
 		</f:metadata>
 	</ui:define>
 
@@ -18,22 +18,18 @@
 
 	<ui:define name="content">
 		<h:form id="main">
-			<p:toolbar>
-				<p:toolbarGroup align="right">
-					<p:commandButton value="Refrescar" icon="pi pi-refresh"
-						styleClass="ui-button-secondary"
-						actionListener="#{extractionBean.refresh()}" update="@form">
-					</p:commandButton>
-				</p:toolbarGroup>
-			</p:toolbar>
 			<p:card id="card">
 				<f:facet name="title">
-						Extracción de datos
+						Recopilación de Datos
 					</f:facet>
-				<p>Por favor conteste las encuestas asignadas.</p>
+				<h:panelGroup layout="block"
+					rendered="#{thesisRecordDataCollectionBean.thesisAssignments.size() gt 0}">
+					<p>Por favor conteste las encuestas asignadas.</p>
+				</h:panelGroup>
+
 
 				<ui:repeat var="thesisAssignment"
-					value="#{extractionBean.thesisAssignments}">
+					value="#{thesisRecordDataCollectionBean.thesisAssignments}">
 					<p:card class="p-mb-2">
 						<f:facet name="subtitle">
 							<h3>#{thesisAssignment.thesisRecord.title}</h3>
@@ -66,7 +62,7 @@
 
 							<h:panelGroup layout="block"
 								class="data-extraction-beneficiary-container"
-								rendered="#{extractionBean.isBeneficiaryStudyVariableAnsweredForThesisAssignent(thesisAssignment) eq false}">
+								rendered="#{thesisRecordDataCollectionBean.isBeneficiaryStudyVariableAnsweredForThesisAssignent(thesisAssignment) eq false}">
 								<div class="p-p-4 p-shadow-1"
 									style="border-style: solid; border-width: 1px; border-radius: 5px; border-color: gray;">
 									<div class="p-d-flex p-jc-center p-ai-center"
@@ -79,9 +75,10 @@
 
 									<p:selectOneMenu styleClass="p-mb-3" filter="true"
 										filterMatchMode="contains"
-										value="#{extractionBean.selectedBeneficiaryId}"
+										value="#{thesisRecordDataCollectionBean.selectedBeneficiaryId}"
 										style="width: 100%;">
-										<f:selectItems value="#{extractionBean.beneficiaries}"
+										<f:selectItems
+											value="#{thesisRecordDataCollectionBean.beneficiaries}"
 											var="beneficiary" itemLabel="#{beneficiary.expectedAnswer}"
 											itemValue="#{beneficiary.id}"></f:selectItems>
 									</p:selectOneMenu>
@@ -89,14 +86,14 @@
 									<div class="p-d-flex p-jc-center">
 										<p:commandButton icon="pi pi-plus"
 											oncomplete="PF('newBeneficiaryDialog').show()"
-											actionListener="#{extractionBean.openNewBeneficiaryDialog()}"
+											actionListener="#{thesisRecordDataCollectionBean.openNewBeneficiaryDialog()}"
 											styleClass="rounded-button p-mr-2"
 											update=":newBeneficiaryForm"></p:commandButton>
 
 										<p:commandButton title="Marcar como completado"
 											icon="pi pi-check"
 											styleClass="ui-button-success rounded-button" update="@form"
-											actionListener="#{extractionBean.dispatchBeneficiaryAnswer(thesisAssignment)}"></p:commandButton>
+											actionListener="#{thesisRecordDataCollectionBean.dispatchBeneficiaryAnswer(thesisAssignment)}"></p:commandButton>
 									</div>
 								</div>
 							</h:panelGroup>
@@ -105,7 +102,7 @@
 								rendered="#{thesisAssignment.limesurveySurveyAssignments.size() gt 1}"
 								class="data-extraction-carousel-container">
 								<p:carousel numScroll="1" styleClass="p-mt-4"
-									responsiveOptions="#{extractionBean.responsiveOptions}"
+									responsiveOptions="#{thesisRecordDataCollectionBean.responsiveOptions}"
 									value="#{thesisAssignment.limesurveySurveyAssignments}"
 									var="limesurveySurveyAssignment" numVisible="3">
 
@@ -113,7 +110,7 @@
 										<div class="p-p-4 p-shadow-1"
 											style="border-style: solid; border-width: 1px; border-radius: 5px; border-color: gray;">
 											<div class="p-d-flex p-jc-center">
-												<h4 class="p-text-center">#{extractionBean.findLimesurveySurveyById(limesurveySurveyAssignment.limesurveySurveyId).surveylsTitle}</h4>
+												<h4 class="p-text-center">#{thesisRecordDataCollectionBean.findLimesurveySurveyById(limesurveySurveyAssignment.limesurveySurveyId).surveylsTitle}</h4>
 											</div>
 											<div class="p-d-flex p-jc-center">
 												<a target="_blank"
@@ -125,7 +122,7 @@
 												<p:commandButton title="Marcar como completado"
 													icon="pi pi-check"
 													styleClass="ui-button-success rounded-button"
-													actionListener="#{extractionBean.dispatchSurveyActionListener(limesurveySurveyAssignment)}"
+													actionListener="#{thesisRecordDataCollectionBean.dispatchSurveyActionListener(limesurveySurveyAssignment)}"
 													update="@form"></p:commandButton>
 											</div>
 										</div>
@@ -138,7 +135,7 @@
 								styleClass="p-p-2 p-shadow-1 p-ml-6 p-mr-6 p-mb-4 p-mt-4 data-extraction-carousel-container"
 								rendered="#{thesisAssignment.limesurveySurveyAssignments.size() eq 1}">
 								<div class="p-d-flex p-jc-center">
-									<h4 class="p-text-center">#{extractionBean.findLimesurveySurveyById(thesisAssignment.limesurveySurveyAssignments.get(0).limesurveySurveyId).surveylsTitle}</h4>
+									<h4 class="p-text-center">#{thesisRecordDataCollectionBean.findLimesurveySurveyById(thesisAssignment.limesurveySurveyAssignments.get(0).limesurveySurveyId).surveylsTitle}</h4>
 								</div>
 								<div class="p-d-flex p-jc-center">
 									<a target="_blank"
@@ -150,7 +147,7 @@
 									<p:commandButton title="Marcar como completado"
 										icon="pi pi-check"
 										styleClass="ui-button-success rounded-button"
-										actionListener="#{extractionBean.dispatchSurveyActionListener(thesisAssignment.limesurveySurveyAssignments.get(0))}"
+										actionListener="#{thesisRecordDataCollectionBean.dispatchSurveyActionListener(thesisAssignment.limesurveySurveyAssignments.get(0))}"
 										update="@form"></p:commandButton>
 								</div>
 							</h:panelGroup>
@@ -159,7 +156,7 @@
 					</p:card>
 				</ui:repeat>
 				<h:outputText value="No existen Tesis asignadas o pendientes."
-					rendered="#{extractionBean.thesisAssignments.size() eq 0}" />
+					rendered="#{thesisRecordDataCollectionBean.thesisAssignments.size() eq 0}" />
 			</p:card>
 		</h:form>
 	</ui:define>
@@ -171,14 +168,14 @@
 					<div class="p-d-flex p-flex-column">
 						<p:outputLabel styleClass="p-mb-2" for="name">Nombre/s</p:outputLabel>
 						<p:inputText id="name" required="true"
-							value="#{extractionBean.beneficiaryName}"
+							value="#{thesisRecordDataCollectionBean.beneficiaryName}"
 							requiredMessage="Debe ingresar un Nombre." />
 					</div>
 				</p:outputPanel>
 				<f:facet name="footer">
 					<p:commandButton value="Guardar" icon="pi pi-save"
 						onsuccess="PF('newBeneficiaryDialog').hide()" update=":main:card"
-						actionListener="#{extractionBean.createNewBeneficiary()}" />
+						actionListener="#{thesisRecordDataCollectionBean.createNewBeneficiary()}" />
 					<p:commandButton value="Cancelar" icon="pi pi-times"
 						onclick="PF('newBeneficiaryDialog').hide()"
 						class="ui-button-secondary" type="button" />

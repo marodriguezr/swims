@@ -15,6 +15,8 @@ import swimsEJB.model.auth.entities.Group;
 import swimsEJB.model.auth.entities.Permission;
 import swimsEJB.model.auth.managers.GroupManager;
 import swimsEJB.model.auth.managers.PermissionManager;
+import swimsWeb.controllers.NavBarBean;
+import swimsWeb.interfaces.OnRefreshEventListener;
 import swimsWeb.utilities.JSFMessages;
 
 import static swimsWeb.constants.WebappPaths.AUTH_GROUP_MANAGEMENT_WEBAPP_PATH;
@@ -36,6 +38,8 @@ public class GroupManagementBean implements Serializable {
 	private List<Permission> permissionsExceptGroupManagementPermission;
 	@EJB
 	private PermissionManager permissionManager;
+	@Inject
+	private NavBarBean navBarBean;
 
 	public GroupManagementBean() {
 		// TODO Auto-generated constructor stub
@@ -54,6 +58,16 @@ public class GroupManagementBean implements Serializable {
 				: permissionManager.findAllActivePermissionsExcept(AUTH_GROUP_MANAGEMENT_WEBAPP_PATH);
 		this.permissions = signInBean.getSignedUserDto() == null ? new ArrayList<>()
 				: permissionManager.findAllActivePermissions();
+	}
+
+	public void onPageLoad() {
+		navBarBean.setOnRefreshEventListener(new OnRefreshEventListener() {
+			@Override
+			public void onRefreshEvent() {
+				onLoad();
+			}
+		});
+		navBarBean.setToUpdateFormId(":form");
 	}
 
 	public void openNew() {

@@ -5,7 +5,7 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Filtrado de registros</ui:define>
+	<ui:define name="title">Selección de registros</ui:define>
 
 	<ui:define name="onLoad">
 		<f:metadata>
@@ -17,7 +17,7 @@
 		<h:form>
 			<p:card>
 				<f:facet name="title">
-			Filtrado de registros
+			Selección de registros
 			</f:facet>
 				<ui:include
 					src="#{webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
@@ -27,8 +27,9 @@
 					<p:dataTable value="#{recordsSelectionBean.oaiRecordDtos}"
 						var="oaiRecordDto" reflow="true" rows="5" paginator="true"
 						id="availableOaiRecords" rowSelectMode="add"
-						rowKey="#{oaiRecordDto.id}"
-						selection="#{recordsSelectionBean.selectedOaiRecordDtos}" paginatorPosition="bottom">
+						rowKey="#{oaiRecordDto.id}" widgetVar="availableOaiRecords"
+						selection="#{recordsSelectionBean.selectedOaiRecordDtos}"
+						paginatorPosition="bottom">
 
 						<f:facet name="header">
 							<div

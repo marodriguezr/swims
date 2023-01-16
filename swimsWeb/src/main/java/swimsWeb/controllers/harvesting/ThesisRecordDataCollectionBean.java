@@ -26,12 +26,12 @@ import swimsWeb.controllers.auth.SignInBean;
 import swimsWeb.controllers.harvesting.thesis_record_assignment.ThesisSelectionBean;
 import swimsWeb.utilities.JSFMessages;
 
-import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH;
 import static swimsEJB.constants.StudyVariables.BENEFICIARY_NAME_STUDY_VARIABLE_NAME;
 
 @Named
 @SessionScoped
-public class ExtractionBean implements Serializable {
+public class ThesisRecordDataCollectionBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	private List<ThesisAssignment> thesisAssignments;
@@ -55,12 +55,12 @@ public class ExtractionBean implements Serializable {
 	@EJB
 	private ExpectedAnswerManager expectedAnswerManager;
 
-	public ExtractionBean() {
+	public ThesisRecordDataCollectionBean() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public String loadPage() {
-		return HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH + "?faces-redirect=true";
+		return HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public String onPageLoad() {

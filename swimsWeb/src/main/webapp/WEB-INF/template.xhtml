@@ -91,8 +91,8 @@
 					<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
 						action="/index?faces-redirect=true"></p:menuitem>
 					<p:submenu
-						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}"
-						label="Adquisición de datos" icon="pi pi-fw pi-book">
+						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}"
+						label="Recopilación" icon="pi pi-fw pi-book">
 						<p:menuitem value="Administración de Sets de Tesis"
 							icon="pi pi-fw pi-cog"
 							action="#{thesisSetsManagementBean.loadPage()}"
@@ -106,8 +106,7 @@
 								action="#{setSelectionBean.loadPage()}"></p:menuitem>
 							<p:menuitem
 								rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}"
-								icon="pi pi-fw pi-eye"
-								value="Gestión de Registros de Tesis"
+								icon="pi pi-fw pi-eye" value="Gestión de Registros de Tesis"
 								action="#{thesisRecordsManagementBean.loadPage()}"></p:menuitem>
 						</p:submenu>
 						<p:menuitem
@@ -115,9 +114,9 @@
 							icon="pi pi-fw pi-inbox" value="Asignación de Registros de Tesis"
 							action="#{userSelectionBean.loadPage()}"></p:menuitem>
 						<p:menuitem
-							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH)}"
-							icon="pi pi-fw pi-list" value="Extracción de Datos"
-							action="#{extractionBean.loadPage()}"></p:menuitem>
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH)}"
+							icon="pi pi-fw pi-list" value="Recopilación de Datos de Tesis"
+							action="#{thesisRecordDataCollectionBean.loadPage()}"></p:menuitem>
 					</p:submenu>
 					<p:submenu
 						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.AUTH_USER_MANAGEMENT_WEBAPP_PATH, webappPathsBean.AUTH_GROUP_MANAGEMENT_WEBAPP_PATH, webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}"
@@ -138,6 +137,10 @@
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}">
 						</p:menuitem>
 					</p:submenu>
+					<p:menuitem icon="pi pi-refresh" value="Refrescar"
+						rendered="#{signInBean.signedUserDto ne null and navBarBean.onRefreshEventListener ne null and navBarBean.toUpdateFormId ne null}"
+						action="#{navBarBean.onRefreshEventListener.onRefreshEvent()}"
+						update="#{navBarBean.toUpdateFormId}"></p:menuitem>
 					<f:facet name="options">
 						<div style="display: flex; align-items: center;">
 							<h:outputText value="#{signInBean.signedUserDto.firstName}"

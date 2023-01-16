@@ -10,10 +10,13 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import swimsEJB.model.auth.entities.Permission;
 import swimsEJB.model.auth.managers.PermissionManager;
+import swimsWeb.controllers.NavBarBean;
+import swimsWeb.interfaces.OnRefreshEventListener;
 import swimsWeb.utilities.JSFMessages;
 
 @Named
@@ -28,10 +31,11 @@ public class PermissionManagementBean implements Serializable {
 
 	@EJB
 	private PermissionManager permissionManager;
-
 	private List<Permission> permissions;
 	private List<Permission> selectedPermissions;
 	private Permission selectedPermission;
+	@Inject
+	private NavBarBean navBarBean;
 
 	@PostConstruct
 	public void onLoad() {
@@ -41,6 +45,17 @@ public class PermissionManagementBean implements Serializable {
 
 	public String loadPage() {
 		return AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
+	}
+
+	public void onPageLoad() {
+		navBarBean.setOnRefreshEventListener(new OnRefreshEventListener() {
+			@Override
+			public void onRefreshEvent() {
+				System.out.println("Refresh");
+				onLoad();
+			}
+		});
+		navBarBean.setToUpdateFormId(":form");
 	}
 
 	public void openNew() {

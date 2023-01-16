@@ -65,7 +65,7 @@ public class ThesisRecordManager {
 
 	@SuppressWarnings("unchecked")
 	public List<ThesisRecord> findAllThesisRecords() {
-		return daoManager.findAll(ThesisRecord.class);
+		return daoManager.findAll(ThesisRecord.class, "updatedAt", false);
 	}
 
 	public ThesisRecord createOneThesisRecord(ThesisRecord thesisRecord, ThesisSet thesisSet) throws Exception {
@@ -180,11 +180,13 @@ public class ThesisRecordManager {
 		}
 	}
 
-	public List<String> fetchThesisStrings(String thesisSetIdentifier, LocalDate from, LocalDate until) throws Exception {
+	public List<String> fetchThesisStrings(String thesisSetIdentifier, LocalDate from, LocalDate until)
+			throws Exception {
 		DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
 		String OAI_URI = MessageFormat.format(
 				"http://repositorio.utn.edu.ec/oai/request?verb=ListRecords&metadataPrefix=oai_dc&from={1}&until={2}&set={0}",
-				thesisSetIdentifier, dateFormat.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
+				thesisSetIdentifier,
+				dateFormat.format(Date.from(from.atStartOfDay(ZoneId.systemDefault()).toInstant())),
 				dateFormat.format(Date.from(until.atStartOfDay(ZoneId.systemDefault()).toInstant())));
 		HttpClient httpClient = HttpClient.newHttpClient();
 		HttpRequest request = HttpRequest.newBuilder().uri(URI.create(OAI_URI)).build();

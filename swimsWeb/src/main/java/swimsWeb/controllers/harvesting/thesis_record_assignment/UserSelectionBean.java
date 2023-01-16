@@ -1,7 +1,7 @@
 package swimsWeb.controllers.harvesting.thesis_record_assignment;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_ASSIGNMENT_USER_SELECTION_WEBAPP_PATH;
-import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ public class UserSelectionBean implements Serializable {
 	public void setDefaultValues() {
 		try {
 			this.userDtos = userManager
-					.findAllUserDtosByWebappRelatedPath(HARVESTING_THESIS_RECORD_DATA_EXTRACTION_WEBAPP_PATH);
+					.findAllUserDtosByWebappRelatedPath(HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -5,35 +5,29 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="title">Administración de Registros de Tesis</ui:define>
+	<ui:define name="title">Gestión de Registros de Tesis</ui:define>
 
 	<ui:define name="onLoad">
 		<f:metadata>
 			<f:viewAction action="#{authBean.onPageLoad()}" />
+			<f:viewAction action="#{thesisRecordsManagementBean.onPageLoad()}" />
 		</f:metadata>
 	</ui:define>
 
 	<ui:define name="content">
-		<h:form>
+		<h:form id="main">
 			<p:toolbar>
-				<p:toolbarGroup>
+				<p:toolbarGroup align="right">
 					<p:commandButton value="Exportar" icon="pi pi-upload"
 						onclick="PF('exportDialog').show()">
-					</p:commandButton>
-				</p:toolbarGroup>
-				<p:toolbarGroup align="right">
-					<p:commandButton value="Refrescar" icon="pi pi-refresh"
-						styleClass="ui-button-secondary"
-						actionListener="#{thesisRecordsManagementBean.refresh()}"
-						update="@form">
 					</p:commandButton>
 				</p:toolbarGroup>
 			</p:toolbar>
 			<p:dataTable reflow="true" rows="5" paginator="true"
 				paginatorPosition="bottom"
 				value="#{thesisRecordsManagementBean.thesisRecords}"
-				var="thesisRecord" id="dtThesisRecords"
-				emptyMessage="No existen registros.">
+				var="thesisRecord" emptyMessage="No existen registros."
+				widgetVar="dtThesisRecords">
 
 				<f:facet name="header">
 					<div
