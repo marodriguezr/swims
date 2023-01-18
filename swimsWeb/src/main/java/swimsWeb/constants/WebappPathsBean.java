@@ -93,4 +93,9 @@ public class WebappPathsBean implements Serializable {
 	public String getAUTH_GROUP_MANAGEMENT_WEBAPP_PATH() {
 		return AUTH_GROUP_MANAGEMENT_WEBAPP_PATH;
 	}
+
+	public String getHARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH() {
+		return HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH;
+	}
+
 }

@@ -49,15 +49,19 @@ public class GroupManagementBean implements Serializable {
 		return AUTH_GROUP_MANAGEMENT_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
+	public void loadPermissions() {
+		this.permissionsExceptGroupManagementPermission = signInBean.getSignedUserDto() == null ? new ArrayList<>()
+				: permissionManager.findAllActivePermissionsExcept(AUTH_GROUP_MANAGEMENT_WEBAPP_PATH);
+		this.permissions = signInBean.getSignedUserDto() == null ? new ArrayList<>()
+				: permissionManager.findAllActivePermissions();
+	}
+
 	@PostConstruct
 	public void onLoad() {
 		this.groups = signInBean.getSignedUserDto() == null ? new ArrayList<>()
 				: groupManager.findAllGroups(signInBean.getSignedUserDto().isRoot());
 		this.selectedGroups = new ArrayList<>();
-		this.permissionsExceptGroupManagementPermission = signInBean.getSignedUserDto() == null ? new ArrayList<>()
-				: permissionManager.findAllActivePermissionsExcept(AUTH_GROUP_MANAGEMENT_WEBAPP_PATH);
-		this.permissions = signInBean.getSignedUserDto() == null ? new ArrayList<>()
-				: permissionManager.findAllActivePermissions();
+		loadPermissions();
 	}
 
 	public void onPageLoad() {
@@ -68,6 +72,7 @@ public class GroupManagementBean implements Serializable {
 			}
 		});
 		navBarBean.setToUpdateFormId(":form");
+		loadPermissions();
 	}
 
 	public void openNew() {

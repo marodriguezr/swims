@@ -1,6 +1,7 @@
 package swimsEJB.model.harvesting.managers;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -26,6 +27,11 @@ public class StudyVariableClassManager {
 		// TODO Auto-generated constructor stub
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<StudyVariableClass> findAllStudyVariableClasses() {
+		return daoManager.findAll(StudyVariableClass.class);
+	}
+
 	public StudyVariableClass createOneStudyVariableClass(String id, String name) throws Exception {
 		if (id.isBlank()) {
 			throw new Exception("Debe ingresar un valor apropiado como identificador.");
@@ -46,6 +52,9 @@ public class StudyVariableClassManager {
 		studyVariableClass.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
 		return (StudyVariableClass) daoManager.createOne(studyVariableClass);
 	}
-	
-	
+
+	public StudyVariableClass findOneStudyVariableClassById(String id) throws Exception {
+		return (StudyVariableClass) daoManager.findOneById(StudyVariableClass.class, id);
+	}
+
 }

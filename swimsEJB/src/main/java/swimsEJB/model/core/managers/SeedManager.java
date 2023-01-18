@@ -93,6 +93,10 @@ public class SeedManager {
 			throw new Exception("AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH non existent.");
 		if (!webappPaths.containsKey("AUTH_USER_MANAGEMENT_WEBAPP_PATH"))
 			throw new Exception("AUTH_USER_MANAGEMENT_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH non existent.");
 	}
 
 	public void seed(String firstName, String lastName, String email, String password,
@@ -134,8 +138,10 @@ public class SeedManager {
 				"Recopilación de Datos de Tesis",
 				webappPaths.get("HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH"));
 		Permission thesisRecordManagementPermission = permissionManager.createOnePermission(
-				"Gestión de Registros de Tesis",
-				webappPaths.get("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH"));
+				"Gestión de Registros de Tesis", webappPaths.get("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH"));
+		Permission studyVariableManagementPermission = permissionManager.createOnePermission(
+				"Administración de Variables de Estudio",
+				webappPaths.get("HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH"));
 		/**
 		 * 1.2. AUTH
 		 */
@@ -163,6 +169,7 @@ public class SeedManager {
 		groupManager.addPermissionById(adminGroup.getId(), permissionManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), userManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), groupManagementPermission.getId());
+		groupManager.addPermissionById(adminGroup.getId(), studyVariableManagementPermission.getId());
 
 		/**
 		 * 3.2. Thesis Record Management Group

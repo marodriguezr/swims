@@ -1,0 +1,162 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Administración de Variables de Estudio</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction action="#{authBean.onPageLoad()}" />
+			<f:viewAction action="#{studyVariableManagementBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form id="form">
+			<p:toolbar>
+				<p:toolbarGroup>
+					<p:commandButton value="Nuevo" icon="pi pi-plus"
+						styleClass="ui-button-success"
+						actionListener="#{studyVariableManagementBean.openNew()}"
+						update=":dialogs:manage-study-variables-content"
+						oncomplete="PF('manageStudyVariablesDialog').show()"
+						style="margin-right: .5rem">
+						<p:resetInput target=":dialogs:manage-study-variables-content" />
+					</p:commandButton>
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:dataTable emptyMessage="No existen registros."
+				id="dt-study-variables" widgetVar="dtStudyVariables"
+				var="studyVariable"
+				value="#{studyVariableManagementBean.studyVariables}" reflow="true"
+				paginator="true" rows="10" paginatorPosition="bottom">
+
+				<f:facet name="header">
+					<div
+						style="display: flex; justify-content: space-between; align-items: center;">
+						<span style="font-weight: bold">#{studyVariableManagementBean.studyVariables.size()}
+							VARIABLES DE ESTUDIO</span> <span class="ui-input-icon-left"
+							style="display: flex; align-items: center;"> <i
+							class="pi pi-search"></i> <p:inputText id="globalFilter"
+								onkeyup="PF('dtStudyVariables').filter()" placeholder="Buscar" />
+						</span>
+					</div>
+				</f:facet>
+
+				<p:column headerText="Identificador" sortBy="#{studyVariable.id}"
+					filterBy="#{studyVariable.id}">
+					<h:outputText value="#{studyVariable.id}" />
+				</p:column>
+
+				<p:column headerText="Nombre" sortBy="#{studyVariable.name}"
+					filterBy="#{studyVariable.name}">
+					<h:outputText value="#{studyVariable.name}" />
+				</p:column>
+
+				<p:column headerText="Clase"
+					sortBy="#{studyVariable.studyVariableClass.name}"
+					filterBy="#{studyVariable.studyVariableClass.name}">
+					<h:outputText value="#{studyVariable.studyVariableClass.name}" />
+				</p:column>
+
+				<p:column headerText="Tipo"
+					sortBy="#{studyVariableManagementBean.renderStudyVariableType(studyVariable)}"
+					filterBy="#{studyVariableManagementBean.renderStudyVariableType(studyVariable)}">
+					<h:outputText
+						value="#{studyVariableManagementBean.renderStudyVariableType(studyVariable)}" />
+				</p:column>
+
+				<p:column exportable="false">
+					<p:commandButton icon="pi pi-pencil" alt="Modificar"
+						update=":dialogs:manage-study-variables-content"
+						oncomplete="PF('manageStudyVariablesDialog').show()"
+						styleClass="p-mr-2 rounded-button ui-button-help" process="@this">
+						<f:setPropertyActionListener value="#{studyVariable}"
+							target="#{studyVariableManagementBean.selectedStudyVariableWithNewStudyVariableFlag}" />
+						<p:resetInput target=":dialogs:manage-study-variables-content" />
+					</p:commandButton>
+				</p:column>
+
+			</p:dataTable>
+		</h:form>
+
+		<h:form id="dialogs">
+			<p:dialog header="Detalles de la Variable de Estudio"
+				showEffect="fade" modal="true"
+				widgetVar="manageStudyVariablesDialog" responsive="true">
+				<p:outputPanel id="manage-study-variables-content" class="ui-fluid">
+					<p:outputPanel
+						rendered="#{studyVariableManagementBean.selectedStudyVariable ne null}">
+
+						<div class="p-field p-mb-3">
+							<p:outputLabel for="@next">Identificador</p:outputLabel>
+							<p:inputText
+								rendered="#{studyVariableManagementBean.createNewStudyVariableDialog}"
+								value="#{studyVariableManagementBean.selectedStudyVariable.id}"
+								required="true"
+								requiredMessage="Debe ingresar un Identificador." maxlength="32" />
+
+							<p:inputText
+								rendered="#{studyVariableManagementBean.createNewStudyVariableDialog eq false}"
+								disabled="true"
+								value="#{studyVariableManagementBean.selectedStudyVariable.id}"
+								required="true"
+								requiredMessage="Debe ingresar un Identificador." maxlength="32" />
+						</div>
+
+						<div class="p-field p-mb-3">
+							<p:outputLabel for="@next">Nombre</p:outputLabel>
+							<p:inputText
+								value="#{studyVariableManagementBean.selectedStudyVariable.name}"
+								required="true" requiredMessage="Debe ingresar un Nombre."
+								maxlength="256" />
+						</div>
+
+						<div class="p-field p-mb-3">
+							<p:outputLabel for="@next">Tipo</p:outputLabel>
+							<p:selectOneRadio required="true"
+								requiredMessage="Debe seleccionar un Tipo"
+								value="#{studyVariableManagementBean.selectedStudyVariableTypeId}">
+								<f:selectItem itemLabel="Numérica Continua"
+									itemValue="#{constantsBean.IS_NUMERIC_CONTINUOUS_ID}" />
+								<f:selectItem itemLabel="Numérica Discreta"
+									itemValue="#{constantsBean.IS_NUMERIC_DISCRETE_ID}" />
+								<f:selectItem itemLabel="Categórica Nominal"
+									itemValue="#{constantsBean.IS_CATEGORICAL_NOMINAL_ID}" />
+								<f:selectItem itemLabel="Categórica Ordinal"
+									itemValue="#{constantsBean.IS_CATEGORICAL_ORDINAL_ID}" />
+							</p:selectOneRadio>
+						</div>
+
+						<div class="p-field p-mb-3">
+							<p:outputLabel for="@next">Clase</p:outputLabel>
+							<p:selectOneListbox filter="true" filterMatchMode="contains"
+								value="#{studyVariableManagementBean.selectedVariableClassId}">
+								<f:selectItems
+									value="#{studyVariableManagementBean.studyVariableClasses}"
+									var="studyVariableClass" itemLabel="#{studyVariableClass.name}"
+									itemValue="#{studyVariableClass.id}" />
+							</p:selectOneListbox>
+						</div>
+					</p:outputPanel>
+				</p:outputPanel>
+
+				<f:facet name="footer">
+					<p:commandButton value="Guardar" icon="pi pi-save"
+						actionListener="#{studyVariableManagementBean.saveStudyVariable()}"
+						update=":form:dt-study-variables"
+						onsuccess="PF('manageStudyVariablesDialog').hide()"
+						process="manage-study-variables-content @form" />
+					<p:commandButton value="Cancelar" icon="pi pi-times"
+						onclick="PF('manageStudyVariablesDialog').hide()"
+						class="ui-button-secondary" type="button" />
+				</f:facet>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
