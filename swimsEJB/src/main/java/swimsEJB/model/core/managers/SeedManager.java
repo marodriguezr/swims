@@ -97,6 +97,8 @@ public class SeedManager {
 			throw new Exception("HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH non existent.");
 		if (!webappPaths.containsKey("HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH"))
 			throw new Exception("HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH non existent.");
+		if (!webappPaths.containsKey("HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH"))
+			throw new Exception("HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH non existent.");
 	}
 
 	public void seed(String firstName, String lastName, String email, String password,
@@ -142,6 +144,9 @@ public class SeedManager {
 		Permission studyVariableManagementPermission = permissionManager.createOnePermission(
 				"Administración de Variables de Estudio",
 				webappPaths.get("HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH"));
+		Permission limesurveyQuestionLinkPermission = permissionManager.createOnePermission(
+				"Enlace de Preguntas de Limesurvey",
+				webappPaths.get("HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH"));
 		/**
 		 * 1.2. AUTH
 		 */
@@ -170,6 +175,7 @@ public class SeedManager {
 		groupManager.addPermissionById(adminGroup.getId(), userManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), groupManagementPermission.getId());
 		groupManager.addPermissionById(adminGroup.getId(), studyVariableManagementPermission.getId());
+		groupManager.addPermissionById(adminGroup.getId(), limesurveyQuestionLinkPermission.getId());
 
 		/**
 		 * 3.2. Thesis Record Management Group

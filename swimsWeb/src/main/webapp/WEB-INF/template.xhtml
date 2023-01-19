@@ -91,7 +91,7 @@
 					<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
 						action="/index?faces-redirect=true"></p:menuitem>
 					<p:submenu
-						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH)}"
+						rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH)}"
 						label="Recopilación" icon="pi pi-fw pi-book">
 						<p:menuitem value="Administración de Sets de Tesis"
 							icon="pi pi-fw pi-cog"
@@ -102,6 +102,10 @@
 							icon="pi pi-tags"
 							action="#{studyVariableManagementBean.loadPage()}"
 							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH)}">
+						</p:menuitem>
+						<p:menuitem value="Enlace de Preguntas de Limesurvey"
+							icon="pi pi-question" action="#{surveySelectionBean.loadPage()}"
+							rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH)}">
 						</p:menuitem>
 						<p:submenu label="Registros de Tesis" icon="pi pi-copy"
 							rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}">
