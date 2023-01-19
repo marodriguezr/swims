@@ -55,7 +55,7 @@ public class PermissionManagementBean implements Serializable {
 				onLoad();
 			}
 		});
-		navBarBean.setToUpdateFormId(":form");
+		navBarBean.setUpdatableFormString(":form");
 	}
 
 	public void openNew() {

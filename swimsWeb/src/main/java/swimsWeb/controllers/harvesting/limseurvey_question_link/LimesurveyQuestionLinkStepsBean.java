@@ -1,6 +1,7 @@
 package swimsWeb.controllers.harvesting.limseurvey_question_link;
 
 import static swimsWeb.constants.WebappPaths.HARVESTING_LIMESURVEY_QUESTION_LINK_SURVEY_SELECTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_LIMESURVEY_QUESTION_LINK_STUDY_VARIABLE_SELECTION_WEBAPP_PATH;
 
 import java.io.Serializable;
 
@@ -25,8 +26,11 @@ public class LimesurveyQuestionLinkStepsBean implements Serializable {
 		FacesContext ctx = FacesContext.getCurrentInstance();
 		String viewId = ctx.getViewRoot().getViewId();
 		switch (viewId) {
-		case HARVESTING_LIMESURVEY_QUESTION_LINK_SURVEY_SELECTION_WEBAPP_PATH + ".xhmtl":
+		case HARVESTING_LIMESURVEY_QUESTION_LINK_SURVEY_SELECTION_WEBAPP_PATH + ".xhtml":
 			this.activeIndex = 0;
+			break;
+		case HARVESTING_LIMESURVEY_QUESTION_LINK_STUDY_VARIABLE_SELECTION_WEBAPP_PATH + ".xhtml":
+			this.activeIndex = 1;
 			break;
 		default:
 			break;

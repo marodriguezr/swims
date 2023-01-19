@@ -2,19 +2,19 @@ package swimsWeb.controllers;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 import swimsWeb.interfaces.OnRefreshEventListener;
 
 @Named
-@RequestScoped
+@ViewScoped
 public class NavBarBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private OnRefreshEventListener onRefreshEventListener;
-	private String toUpdateFormId;
+	private String updatableFormString;
 
 	public NavBarBean() {
 		// TODO Auto-generated constructor stub
@@ -28,12 +28,12 @@ public class NavBarBean implements Serializable {
 		this.onRefreshEventListener = onRefreshEventListener;
 	}
 
-	public String getToUpdateFormId() {
-		return toUpdateFormId;
+	public String getUpdatableFormString() {
+		return updatableFormString;
 	}
 
-	public void setToUpdateFormId(String toUpdateFormId) {
-		this.toUpdateFormId = toUpdateFormId;
+	public void setUpdatableFormString(String updatableFormString) {
+		this.updatableFormString = updatableFormString;
 	}
 
 }

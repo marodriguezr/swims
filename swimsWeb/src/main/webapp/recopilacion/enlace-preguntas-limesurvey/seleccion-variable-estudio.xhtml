@@ -10,7 +10,7 @@
 	<ui:define name="onLoad">
 		<f:metadata>
 			<f:viewAction action="#{authBean.onPageLoad()}" />
-			<f:viewAction actionListener="#{surveySelectionBean.onPageLoad()}" />
+			<f:viewAction action="#{studyVariableSelectionBean.onPageLoad()}" />
 		</f:metadata>
 	</ui:define>
 
@@ -18,32 +18,32 @@
 		<h:form id="form">
 			<p:card>
 				<f:facet name="title">
-			Selección de Encuesta
+			Selección de Variable de Estudio
 			</f:facet>
 				<ui:include
 					src="#{webappPathsBean.HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH}/steps.xhtml" />
 				<div class="p-pt-4">
 					<div class="ui-fluid">
 						<div class="p-field">
-							<p:outputLabel>Encuesta de Limesurvey</p:outputLabel>
+							<p:outputLabel>Variable de Estudio</p:outputLabel>
 							<p:selectOneListbox filter="true" filterMatchMode="contains"
-								value="#{surveySelectionBean.selectedSurveyId}">
+								value="#{studyVariableSelectionBean.selectedStudyVariableId}">
 								<f:selectItems
-									value="#{surveySelectionBean.limesurveySurveyDtos}"
-									var="limesurveySurvey"
-									itemLabel="#{limesurveySurvey.surveylsTitle}"
-									itemValue="#{limesurveySurvey.sid}"></f:selectItems>
+									value="#{studyVariableSelectionBean.studyVariables}"
+									var="studyVariable" itemLabel="#{studyVariable.name}"
+									itemValue="#{studyVariable.id}"></f:selectItems>
 							</p:selectOneListbox>
 						</div>
 					</div>
 				</div>
 				<f:facet name="footer">
 					<p:commandButton icon="pi pi-fw pi-angle-double-left"
-						value="Regresar" styleClass="ui-button-secondary" disabled="true" />
+						value="Regresar" styleClass="ui-button-secondary"
+						action="#{surveySelectionBean.loadPage()}" />
 
 					<p:commandButton styleClass="p-ml-2"
 						icon="pi pi-fw pi-angle-double-right" value="Avanzar"
-						action="#{studyVariableSelectionBean.loadPage()}" />
+						action="#{datesSelectionBean.loadPage()}" />
 				</f:facet>
 			</p:card>
 		</h:form>
