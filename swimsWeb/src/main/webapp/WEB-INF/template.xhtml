@@ -148,8 +148,9 @@
 					</p:submenu>
 
 					<p:menuitem icon="pi pi-refresh" value="Refrescar"
-						rendered="#{signInBean.signedUserDto ne null and navBarBean.onRefreshEventListener ne null and navBarBean.updatableFormString ne null}"
-						action="#{navBarBean.onRefreshEventListener.onRefreshEvent()}"></p:menuitem>
+						rendered="#{navBarBean.onRefreshEventListener ne null and navBarBean.updatableFormString ne null}"
+						action="#{navBarBean.onRefreshEventListener.onRefreshEvent()}"
+						update="#{navBarBean.updatableFormString}"></p:menuitem>
 					<f:facet name="options">
 						<div style="display: flex; align-items: center;">
 							<h:outputText value="#{signInBean.signedUserDto.firstName}"

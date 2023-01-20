@@ -9,6 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import static swimsWeb.constants.WebappPaths.HARVESTING_LIMESURVEY_QUESTION_LINK_QUESTION_SELECTION_WEBAPP_PATH;
+import static swimsWeb.constants.WebappPaths.HARVESTING_LIMESURVEY_QUESTION_LINK_CONFIRMATION_WEBAPP_PATH;
 
 @Named
 @ViewScoped
@@ -31,6 +33,12 @@ public class LimesurveyQuestionLinkStepsBean implements Serializable {
 			break;
 		case HARVESTING_LIMESURVEY_QUESTION_LINK_STUDY_VARIABLE_SELECTION_WEBAPP_PATH + ".xhtml":
 			this.activeIndex = 1;
+			break;
+		case HARVESTING_LIMESURVEY_QUESTION_LINK_QUESTION_SELECTION_WEBAPP_PATH + ".xhtml":
+			this.activeIndex = 2;
+			break;
+		case HARVESTING_LIMESURVEY_QUESTION_LINK_CONFIRMATION_WEBAPP_PATH + ".xhtml":
+			this.activeIndex = 3;
 			break;
 		default:
 			break;

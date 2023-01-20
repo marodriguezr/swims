@@ -1,0 +1,58 @@
+<ui:composition template="/WEB-INF/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Confirmación</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction
+				action="#{limesurveyQuestionLinkConfirmationBean.onPageLoad()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<h:form>
+			<p:card>
+				<f:facet name="title">
+			Confirmación
+			</f:facet>
+				<ui:include
+					src="#{webappPathsBean.HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH}/steps.xhtml" />
+
+				<div class="ui-fluid p-pt-4">
+					<div class="p-field">
+						<p:outputLabel value="Variable de estudio a ser enlazada"
+							for="@next"></p:outputLabel>
+						<p:inputText disabled="true"
+							value="#{studyVariableSelectionBean.selectedStudyVariableId}"></p:inputText>
+					</div>
+
+					<div class="p-field">
+						<p:outputLabel value="Preguntas a ser enlazadas" for="@next"></p:outputLabel>
+						<ol>
+							<ui:repeat var="compound"
+								value="#{questionSelectionBean.selectedLinkableLimesurveyQuestionDtos}">
+								<li>#{compound.linkableParentLimesurveyQuestionDto.question}</li>
+							</ui:repeat>
+						</ol>
+					</div>
+				</div>
+
+				<f:facet name="footer">
+					<p:commandButton icon="pi pi-fw pi-angle-double-left"
+						value="Regresar" styleClass="ui-button-secondary"
+						action="#{questionSelectionBean.loadPage()}" />
+					<p:commandButton
+						action="#{limesurveyQuestionLinkConfirmationBean.createManyLimeSurveyQuestionsAction()}"
+						styleClass="p-ml-2" icon="pi pi-fw pi-save"
+						value="Confirmar y Registrar" />
+
+				</f:facet>
+			</p:card>
+		</h:form>
+	</ui:define>
+</ui:composition>
