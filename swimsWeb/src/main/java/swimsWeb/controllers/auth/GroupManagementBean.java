@@ -71,8 +71,7 @@ public class GroupManagementBean implements Serializable {
 				onLoad();
 			}
 		});
-		navBarBean.setUpdatableFormString(":form");
-		loadPermissions();
+		navBarBean.setUpdatableFormString(":form :dialogs");
 	}
 
 	public void openNew() {

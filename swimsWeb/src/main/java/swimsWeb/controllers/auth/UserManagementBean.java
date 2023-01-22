@@ -87,7 +87,7 @@ public class UserManagementBean implements Serializable {
 				onLoad();
 			}
 		});
-		this.navBarBean.setUpdatableFormString(":form");
+		this.navBarBean.setUpdatableFormString(":form :dialogs");
 	}
 
 	public void findAllUserDtos() {

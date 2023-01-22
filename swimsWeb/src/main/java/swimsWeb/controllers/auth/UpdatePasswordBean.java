@@ -25,7 +25,8 @@ public class UpdatePasswordBean implements Serializable {
 
 	@Inject
 	private SignInBean signInBean;
-	@Inject AuthBean authBean;
+	@Inject
+	AuthBean authBean;
 	@EJB
 	private UserManager userManager;
 
@@ -60,11 +61,11 @@ public class UpdatePasswordBean implements Serializable {
 		try {
 			userManager.updateSelfPassword(this.signInBean.getSignedUserDto(), currentPassword, newPassword);
 			JSFMessages.INFO("Contraseña actualizada de forma exitosa.");
+			setDefaultValues();
 			return authBean.signOutAction();
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.WARN("La contrasena actual es incorrecta.");
-			setDefaultValues();
 			return null;
 		}
 	}
