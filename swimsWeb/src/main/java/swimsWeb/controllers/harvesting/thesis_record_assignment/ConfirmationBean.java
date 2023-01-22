@@ -86,7 +86,7 @@ public class ConfirmationBean implements Serializable {
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.ERROR(
-					"Las asignaciones que está intentando crear ya han sido creadas por otra persona, por favor reinicie el proceso para ver datos actualizados. "
+					"Las asignaciones que está intentando crear ya han sido creadas por otra persona o La Encuesta se encuentra inactiva, por favor reinicie el proceso para ver datos actualizados. "
 							+ e.getMessage());
 			e.printStackTrace();
 			return null;

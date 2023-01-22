@@ -69,6 +69,7 @@ public class ConfirmationBean implements Serializable {
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.ERROR("Ha ocurrido un error en el enlace de las preguntas. " + e.getMessage());
+			e.printStackTrace();
 			return null;
 		}
 	}

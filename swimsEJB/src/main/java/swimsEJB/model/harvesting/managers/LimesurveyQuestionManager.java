@@ -100,19 +100,22 @@ public class LimesurveyQuestionManager {
 	public List<LimesurveyQuestion> createManyLimesurveyQuestions(StudyVariable studyVariable,
 			List<LinkableLimesurveyQuestionDto> linkableLimesurveyQuestionDtos) throws Exception {
 		List<LimesurveyQuestion> createdLimesurveyQuestions = new ArrayList<>();
+		if (linkableLimesurveyQuestionDtos == null) {
+			throw new Exception("Linkable limesurvey question dtos cannot be null.");
+		}
 		for (LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto : linkableLimesurveyQuestionDtos) {
 			createdLimesurveyQuestions.add(createOneQuestion(
 					linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto().getTitle(),
 					linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto().getSid(),
 					linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto().getId(), studyVariable));
-
+			if (linkableLimesurveyQuestionDto.getLinkableChildLimesurveyQuestionDtos() == null)
+				continue;
 			for (LimesurveyQuestionDto limesurveyQuestionDto : linkableLimesurveyQuestionDto
 					.getLinkableChildLimesurveyQuestionDtos()) {
 				createdLimesurveyQuestions.add(createOneQuestion(limesurveyQuestionDto.getTitle(),
 						limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), studyVariable));
 			}
 		}
-
 		return createdLimesurveyQuestions;
 	}
 
@@ -121,6 +124,6 @@ public class LimesurveyQuestionManager {
 		StudyVariable studyVariable = studyVariableManager.findOneStudyVariableById(studyVariableId);
 		if (studyVariable == null)
 			throw new Exception("La variable de estudio no está registrada.");
-		return createManyLimesurveyQuestions(studyVariableId, linkableLimesurveyQuestionDtos);
+		return createManyLimesurveyQuestions(studyVariable, linkableLimesurveyQuestionDtos);
 	}
 }
