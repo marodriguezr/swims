@@ -17,24 +17,26 @@ public class LimesurveyAnswer implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(unique=true, nullable=false)
 	private Long id;
 
+	@Column(nullable=false, length=2147483647)
 	private String answer;
 
-	@Column(name="created_at")
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="updated_at")
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to LimesurveyQuestion
 	@ManyToOne
-	@JoinColumn(name="limesurvey_question_id")
+	@JoinColumn(name="limesurvey_question_id", nullable=false)
 	private LimesurveyQuestion limesurveyQuestion;
 
 	//bi-directional many-to-one association to LimesurveySurveyAssignment
 	@ManyToOne
-	@JoinColumn(name="limesurvey_survey_assignment_id")
+	@JoinColumn(name="limesurvey_survey_assignment_id", nullable=false)
 	private LimesurveySurveyAssignment limesurveySurveyAssignment;
 
 	public LimesurveyAnswer() {

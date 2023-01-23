@@ -1,5 +1,6 @@
 package swimsEJB.model.harvesting.managers;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -25,6 +26,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
+
 
 import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
@@ -77,6 +79,13 @@ public class ThesisRecordManager {
 		return (ThesisRecord) daoManager.createOne(thesisRecord);
 	}
 
+	public ThesisRecord createOneThesisRecord(ThesisRecord thesisRecord, String thesisSetId) throws Exception {
+		ThesisSet thesisSet = thesisSetManager.findOneThesisSetById(thesisSetId);
+		if (thesisSet == null)
+			throw new Exception("El set de tesis no se encuentra registrado.");
+		return createOneThesisRecord(thesisRecord, thesisSet);
+	}
+
 	public List<ThesisRecord> createManyThesisRecords(List<ThesisRecord> thesisRecords, ThesisSet thesisSet)
 			throws Exception {
 		List<ThesisRecord> thesisRecords2 = new ArrayList<>();
@@ -86,7 +95,7 @@ public class ThesisRecordManager {
 		return thesisRecords2;
 	}
 
-	public ThesisRecord thesisRecordDtoToThesisRecord(ThesisRecordDto thesisRecordDto) {
+	public ThesisRecord thesisRecordDtoToThesisRecord(ThesisRecordDto thesisRecordDto) throws IOException {
 		ThesisRecord thesisRecord = new ThesisRecord();
 		thesisRecord.setId(thesisRecordDto.getId());
 		thesisRecord.setUrl(thesisRecordDto.getUrl());
@@ -98,18 +107,20 @@ public class ThesisRecordManager {
 				thesisRecordDto.getSubjects().isEmpty() ? "Registro sin tema" : thesisRecordDto.getSubjects().get(0));
 		thesisRecord.setDescription(thesisRecordDto.getDescriptions().isEmpty() ? "Registro sin descripción"
 				: thesisRecordDto.getDescriptions().get(0));
-		thesisRecord.setPublisher(thesisRecordDto.getPublishers().isEmpty() ? "Publisher non registered"
-				: thesisRecordDto.getPublishers().get(0));
 		thesisRecord.setContributor(thesisRecordDto.getContributors().isEmpty() ? "Registro sin director"
 				: thesisRecordDto.getContributors().get(0));
 		thesisRecord.setInferredIssueDate(thesisRecordDto.getInferredIssueDate() == null
 				? thesisRecordDto.getDates().isEmpty() ? null : thesisRecordDto.getDates().get(0)
 				: thesisRecordDto.getInferredIssueDate());
-
+		thesisRecord.setInferredCreationDate(thesisRecordDto.getInferredCreationDate() == null
+				? thesisRecordDto.getDates().isEmpty() ? null
+						: thesisRecordDto.getDates().get(thesisRecordDto.getDates().size() - 1)
+				: thesisRecordDto.getInferredCreationDate());
 		return thesisRecord;
 	}
 
-	public List<ThesisRecord> thesisRecordDtosToThesisRecords(List<ThesisRecordDto> thesisRecordDtos) {
+	public List<ThesisRecord> thesisRecordDtosToThesisRecords(List<ThesisRecordDto> thesisRecordDtos)
+			throws IOException {
 		List<ThesisRecord> thesisRecords = new ArrayList<ThesisRecord>();
 		for (ThesisRecordDto thesisRecordDto : thesisRecordDtos) {
 			thesisRecords.add(this.thesisRecordDtoToThesisRecord(thesisRecordDto));
@@ -125,7 +136,6 @@ public class ThesisRecordManager {
 		thesisRecordDto.getCreators().add(thesisRecord.getCreator());
 		thesisRecordDto.getSubjects().add(thesisRecord.getSubject());
 		thesisRecordDto.getDescriptions().add(thesisRecord.getDescription());
-		thesisRecordDto.getPublishers().add(thesisRecord.getPublisher());
 		thesisRecordDto.getContributors().add(thesisRecord.getContributor());
 		thesisRecordDto.getDates().add(thesisRecord.getInferredIssueDate());
 		thesisRecordDto.setInferredIssueDate(thesisRecord.getInferredIssueDate());
@@ -142,6 +152,12 @@ public class ThesisRecordManager {
 			thesisRecordDtos.add(thesisRecordToThesisRecordDto(thesisRecord));
 		}
 		return thesisRecordDtos;
+	}
+
+	public List<ThesisRecordDto> removeBlankThesisRecordDtos(List<ThesisRecordDto> thesisRecordDtos) {
+		List<ThesisRecordDto> nonBlankThesisRecordDtos = new ArrayList<>(thesisRecordDtos);
+		nonBlankThesisRecordDtos.removeIf(arg0 -> arg0.getTitles().size() == 0);
+		return nonBlankThesisRecordDtos;
 	}
 
 	public List<ThesisRecordDto> removeDuplicateThesisRecordDtos(List<ThesisRecordDto> existentThesisRecordDtos,

@@ -18,15 +18,16 @@ public class ExpectedAnswer implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="created_at")
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="expected_answer")
+	@Column(name="expected_answer", nullable=false, length=256)
 	private String expectedAnswer;
 
-	@Column(name="updated_at")
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to Answer
@@ -35,6 +36,7 @@ public class ExpectedAnswer implements Serializable {
 
 	//bi-directional many-to-one association to Question
 	@ManyToOne
+	@JoinColumn(name="question_id", nullable=false)
 	private Question question;
 
 	public ExpectedAnswer() {

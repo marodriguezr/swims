@@ -17,19 +17,19 @@ public class LimesurveyQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="limesurvey_question_id")
+	@Column(name="limesurvey_question_id", unique=true, nullable=false)
 	private Integer limesurveyQuestionId;
 
-	@Column(name="created_at")
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="limesurvey_question_title")
+	@Column(name="limesurvey_question_title", nullable=false, length=20)
 	private String limesurveyQuestionTitle;
 
-	@Column(name="limesurvey_survey_id")
+	@Column(name="limesurvey_survey_id", nullable=false)
 	private Integer limesurveySurveyId;
 
-	@Column(name="updated_at")
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to LimesurveyAnswer
@@ -38,7 +38,7 @@ public class LimesurveyQuestion implements Serializable {
 
 	//bi-directional many-to-one association to StudyVariable
 	@ManyToOne
-	@JoinColumn(name="study_variable_id")
+	@JoinColumn(name="study_variable_id", nullable=false)
 	private StudyVariable studyVariable;
 
 	//bi-directional many-to-one association to LimesurveyUnexpectedAnswer

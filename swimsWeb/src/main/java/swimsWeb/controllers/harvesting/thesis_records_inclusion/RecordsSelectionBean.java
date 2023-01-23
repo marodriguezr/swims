@@ -17,6 +17,8 @@ import javax.inject.Named;
 
 import swimsEJB.model.harvesting.dtos.ThesisRecordDto;
 import swimsEJB.model.harvesting.managers.ThesisRecordManager;
+import swimsWeb.controllers.NavBarBean;
+import swimsWeb.interfaces.OnRefreshEventListener;
 import swimsWeb.utilities.JSFMessages;
 
 @Named
@@ -34,6 +36,8 @@ public class RecordsSelectionBean implements Serializable {
 	private List<ThesisRecordDto> selectedOaiRecordDtos;
 	@EJB
 	private ThesisRecordManager thesisRecordManager;
+	@Inject
+	private NavBarBean navBarBean;
 
 	public RecordsSelectionBean() {
 		// TODO Auto-generated constructor stub
@@ -60,7 +64,34 @@ public class RecordsSelectionBean implements Serializable {
 					.WARN("Debe seleccionar fechas apropiadas. La fecha de inicio debe ser menor a la fecha de fin.");
 			return HARVESTING_THESIS_RECORDS_INCLUSION_DATES_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
+		navBarBean.setOnRefreshEventListener(new OnRefreshEventListener() {
+			@Override
+			public void onRefreshEvent() {
+				loadThesisRecordDtos();
+			}
+		});
+		navBarBean.setUpdatableFormString(":form");
+		if (thesisRecordDtos == null)
+			loadThesisRecordDtos();
 		return null;
+	}
+
+	public void loadThesisRecordDtos() {
+		try {
+			this.thesisRecordDtos = thesisRecordManager.parseStringsToThesisRecordDtos(
+					thesisRecordManager.fetchThesisStrings(this.origenBean.getOaiSetId(), this.fechaBean.getFrom(),
+							this.fechaBean.getUntil()));
+			this.thesisRecordDtos = thesisRecordManager.removeBlankThesisRecordDtos(thesisRecordDtos);
+			this.thesisRecordDtos = thesisRecordManager.removeDuplicateThesisRecordDtos(
+					thesisRecordManager.thesisRecordsToThesisRecordDtos(thesisRecordManager.findAllThesisRecords()),
+					this.thesisRecordDtos);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			JSFMessages.ERROR("Ha ocurrido un error en la adquisición de registros de tesis. " + e.getMessage());
+			this.thesisRecordDtos = new ArrayList<>();
+		}
+
 	}
 
 	public String loadPage() {
@@ -78,18 +109,7 @@ public class RecordsSelectionBean implements Serializable {
 					.WARN("Debe seleccionar fechas apropiadas. La fecha de inicio debe ser menor a la fecha de fin.");
 			return null;
 		}
-		try {
-			this.thesisRecordDtos = thesisRecordManager.parseStringsToThesisRecordDtos(thesisRecordManager.fetchThesisStrings(
-					this.origenBean.getOaiSetId(), this.fechaBean.getFrom(), this.fechaBean.getUntil()));
-			this.thesisRecordDtos = thesisRecordManager.removeDuplicateThesisRecordDtos(
-					thesisRecordManager.thesisRecordsToThesisRecordDtos(thesisRecordManager.findAllThesisRecords()),
-					this.thesisRecordDtos);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			JSFMessages.ERROR(e.getMessage());
-			return null;
-		}
+
 		return HARVESTING_THESIS_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 	}
 

@@ -8,6 +8,10 @@
 		<class>swimsEJB.model.auth.entities.User</class>
 		<class>swimsEJB.model.auth.entities.UserGroup</class>
 		<class>swimsEJB.model.core.entities.Sysparam</class>
+		<class>swimsEJB.model.harvesting.entities.views.LimesurveySurveyIdsInnerThesisAssignment</class>
+		<class>swimsEJB.model.harvesting.entities.views.UnassignedThesisAssignmentId</class>
+		<class>swimsEJB.model.harvesting.entities.views.UndispatchedThesisAssignment</class>
+		<class>swimsEJB.model.harvesting.entities.views.UndispatchedSurveyAssignment</class>
 		<class>swimsEJB.model.harvesting.entities.Answer</class>
 		<class>swimsEJB.model.harvesting.entities.ExpectedAnswer</class>
 		<class>swimsEJB.model.harvesting.entities.LimesurveyAnswer</class>
@@ -20,9 +24,5 @@
 		<class>swimsEJB.model.harvesting.entities.ThesisAssignment</class>
 		<class>swimsEJB.model.harvesting.entities.ThesisRecord</class>
 		<class>swimsEJB.model.harvesting.entities.ThesisSet</class>
-		<class>swimsEJB.model.harvesting.entities.views.LimesurveySurveyIdsInnerThesisAssignment</class>
-		<class>swimsEJB.model.harvesting.entities.views.UnassignedThesisAssignmentId</class>
-		<class>swimsEJB.model.harvesting.entities.views.UndispatchedThesisAssignment</class>
-		<class>swimsEJB.model.harvesting.entities.views.UndispatchedSurveyAssignment</class>
 	</persistence-unit>
 </persistence>

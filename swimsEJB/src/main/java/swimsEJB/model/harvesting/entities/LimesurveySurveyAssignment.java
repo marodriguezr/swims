@@ -18,21 +18,22 @@ public class LimesurveySurveyAssignment implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(unique=true, nullable=false)
 	private Integer id;
 
-	@Column(name="created_at")
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="is_dispatched")
+	@Column(name="is_dispatched", nullable=false)
 	private Boolean isDispatched;
 
-	@Column(name="limesurvey_survey_id")
+	@Column(name="limesurvey_survey_id", nullable=false)
 	private Integer limesurveySurveyId;
 
-	@Column(name="limesurvey_survey_token")
+	@Column(name="limesurvey_survey_token", nullable=false, length=2147483647)
 	private String limesurveySurveyToken;
 
-	@Column(name="updated_at")
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to LimesurveyAnswer
@@ -41,7 +42,7 @@ public class LimesurveySurveyAssignment implements Serializable {
 
 	//bi-directional many-to-one association to ThesisAssignment
 	@ManyToOne
-	@JoinColumn(name="thesis_assignment_id")
+	@JoinColumn(name="thesis_assignment_id", nullable=false)
 	private ThesisAssignment thesisAssignment;
 
 	//bi-directional many-to-one association to LimesurveyUnexpectedAnswer

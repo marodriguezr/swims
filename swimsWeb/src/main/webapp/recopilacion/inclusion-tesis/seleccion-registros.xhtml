@@ -14,7 +14,7 @@
 	</ui:define>
 
 	<ui:define name="content">
-		<h:form>
+		<h:form id="form">
 			<p:card>
 				<f:facet name="title">
 			Selección de registros
@@ -96,6 +96,15 @@
 							<h:outputText
 								rendered="#{oaiRecordDto.inferredIssueDate ne null}"
 								value="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.inferredIssueDate)}" />
+						</p:column>
+
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecordDto.inferredCreationDate}"
+							filterBy="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.inferredCreationDate)}"
+							headerText="Fecha de creación">
+							<h:outputText
+								rendered="#{oaiRecordDto.inferredCreationDate ne null}"
+								value="#{recordsSelectionBean.dateFormat.format(oaiRecordDto.inferredCreationDate)}" />
 						</p:column>
 
 						<p:column>

@@ -70,7 +70,7 @@ public class TestBean implements Serializable {
 
 	public void test3() {
 		try {
-			seedManager.seedStudyVariablesAndLimesurvey();
+			testManager.test();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

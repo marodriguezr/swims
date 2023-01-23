@@ -33,6 +33,7 @@ public class QuestionSelectionBean implements Serializable {
 	private LimesurveyQuestionManager limesurveyQuestionManager;
 	private List<LinkableLimesurveyQuestionDto> linkableLimesurveyQuestionDtos;
 	private List<LinkableLimesurveyQuestionDto> selectedLinkableLimesurveyQuestionDtos;
+	private boolean showChildQuestions;
 
 	public QuestionSelectionBean() {
 		// TODO Auto-generated constructor stub
@@ -94,6 +95,14 @@ public class QuestionSelectionBean implements Serializable {
 	public void setSelectedLinkableLimesurveyQuestionDtos(
 			List<LinkableLimesurveyQuestionDto> selectedLinkableLimesurveyQuestionDtos) {
 		this.selectedLinkableLimesurveyQuestionDtos = selectedLinkableLimesurveyQuestionDtos;
+	}
+
+	public boolean isShowChildQuestions() {
+		return showChildQuestions;
+	}
+
+	public void setShowChildQuestions(boolean showChildQuestions) {
+		this.showChildQuestions = showChildQuestions;
 	}
 
 }

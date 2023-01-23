@@ -23,8 +23,9 @@
 					src="#{webappPathsBean.HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH}/steps.xhtml" />
 
 
-				<div class="ui-fluid p-mt-4">
+				<div class="p-ui-fluid p-mt-4">
 					<p:dataTable
+						rendered="#{questionSelectionBean.showChildQuestions ne true}"
 						value="#{questionSelectionBean.linkableLimesurveyQuestionDtos}"
 						var="linkableLimesurveyQuestionDto" reflow="true" rows="5"
 						paginator="true" id="linkableLimesurveyQuestions"
@@ -39,11 +40,17 @@
 							<div
 								style="display: flex; justify-content: space-between; align-items: center;">
 								<span style="font-weight: bold">#{questionSelectionBean.linkableLimesurveyQuestionDtos.size()}
-									PREGUNTAS DE LIMESURVEY</span> <span class="ui-input-icon-left"
+									PREGUNTAS DE LIMESURVEY</span> <span class="p-d-flex p-ai-center"
+									style="gap: .1rem;"> <p:commandButton
+										value="Mostrar sub-preguntas" icon="pi pi-plus"
+										actionListener="#{questionSelectionBean.setShowChildQuestions(true)}"
+										update="@form"></p:commandButton> <span
+									class="ui-input-icon-left"
 									style="display: flex; align-items: center;"> <i
-									class="pi pi-search"></i> <p:inputText id="globalFilter"
-										onkeyup="PF('linkableLimesurveyQuestions').filter()"
-										placeholder="Buscar" />
+										class="pi pi-search"></i> <p:inputText id="globalFilter"
+											onkeyup="PF('linkableLimesurveyQuestions').filter()"
+											placeholder="Buscar" />
+								</span>
 								</span>
 							</div>
 						</f:facet>

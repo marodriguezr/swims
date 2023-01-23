@@ -17,17 +17,19 @@ public class ThesisSet implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(unique=true, nullable=false, length=2147483647)
 	private String id;
 
-	@Column(name="created_at")
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(name="is_active")
+	@Column(name="is_active", nullable=false)
 	private Boolean isActive;
 
+	@Column(nullable=false, length=2147483647)
 	private String name;
 
-	@Column(name="updated_at")
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
 	//bi-directional many-to-one association to ThesisRecord
