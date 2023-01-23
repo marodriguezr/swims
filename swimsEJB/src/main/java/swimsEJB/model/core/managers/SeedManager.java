@@ -213,9 +213,8 @@ public class SeedManager {
 	}
 
 	public void seedStudyVariablesAndLimesurvey() throws Exception {
-		String limesurveySessionKey;
 		try {
-			limesurveySessionKey = LimesurveyService.getSessionKey();
+			String limesurveySessionKey = LimesurveyService.getSessionKey();
 			LimesurveyService.releaseSessionKey(limesurveySessionKey);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -352,10 +351,6 @@ public class SeedManager {
 		StudyVariable objetivesClarityStudyVariable = studyVariableManager.createOneStudyVariable("claridadObjetivos",
 				"Objetivos y metas claras", false, false, false, true, successFactorsStudyVariableClass);
 		successFailureFactorsStudyVariables.add(objetivesClarityStudyVariable);
-		StudyVariable cronogramaRealistaStudyVariable = studyVariableManager.createOneStudyVariable(
-				"cronogramaRealista", "Cronograma realista", false, false, false, true,
-				successFactorsStudyVariableClass);
-		successFailureFactorsStudyVariables.add(cronogramaRealistaStudyVariable);
 		StudyVariable directivesSupportStudyVariable = studyVariableManager.createOneStudyVariable("soporteDirectivos",
 				"Soporte de directivos de la empresa beneficiaria", false, false, false, true,
 				successFactorsStudyVariableClass);
