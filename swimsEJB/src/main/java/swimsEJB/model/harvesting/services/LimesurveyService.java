@@ -144,18 +144,23 @@ public class LimesurveyService {
 		return response.get("result").getAsInt();
 	}
 
-	public static List<LimesurveyQuestionDto> listQuestions(int limesurveySurveyId) throws Exception {
+	public static HashMap<String, LimesurveyQuestionDto> listQuestions(int limesurveySurveyId) throws Exception {
 		JsonObject response = executeHttpPostRequestWithoutSessionKey("list_questions", limesurveySurveyId);
 		JsonArray jsonArray = response.get("result").getAsJsonArray();
-		List<LimesurveyQuestionDto> limesurveyQuestionDtos = new ArrayList<>();
+		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtosMap = new HashMap<>();
 		jsonArray.forEach(arg0 -> {
 			JsonObject jsonObject = arg0.getAsJsonObject();
-			limesurveyQuestionDtos.add(
-					new LimesurveyQuestionDto(jsonObject.get("id").getAsInt(), jsonObject.get("question").getAsString(),
+			limesurveyQuestionDtosMap.put(
+					jsonObject.get("sid").getAsString() + jsonObject.get("parent_qid").getAsString()
+							+ jsonObject.get("title").getAsString(),
+					new LimesurveyQuestionDto(
+							jsonObject.get("sid").getAsString() + jsonObject.get("parent_qid").getAsString()
+									+ jsonObject.get("title").getAsString(),
+							jsonObject.get("id").getAsInt(), jsonObject.get("question").getAsString(),
 							jsonObject.get("sid").getAsInt(), jsonObject.get("gid").getAsInt(),
 							jsonObject.get("title").getAsString(), jsonObject.get("parent_qid").getAsInt()));
 		});
-		return limesurveyQuestionDtos;
+		return limesurveyQuestionDtosMap;
 	}
 
 	public static void activateSurvey(int surveyId) throws Exception {
@@ -176,9 +181,12 @@ public class LimesurveyService {
 				.get("result").getAsJsonObject();
 
 		if (!(jsonObject.get("answeroptions").isJsonObject())) {
-			return new LimesurveyQuestionPropertiesDto(jsonObject.get("qid").getAsInt(), "",
-					jsonObject.get("sid").getAsInt(), jsonObject.get("gid").getAsInt(),
-					jsonObject.get("title").getAsString(), jsonObject.get("parent_qid").getAsInt(), new HashMap<>());
+			return new LimesurveyQuestionPropertiesDto(
+					jsonObject.get("sid").getAsString() + jsonObject.get("parent_qid").getAsString()
+							+ jsonObject.get("title").getAsString(),
+					jsonObject.get("qid").getAsInt(), "", jsonObject.get("sid").getAsInt(),
+					jsonObject.get("gid").getAsInt(), jsonObject.get("title").getAsString(),
+					jsonObject.get("parent_qid").getAsInt(), new HashMap<>());
 		}
 		JsonObject jsonAnswerOptions = jsonObject.get("answeroptions").getAsJsonObject();
 		HashMap<String, String> answerOptions = new HashMap<>();
@@ -186,9 +194,12 @@ public class LimesurveyService {
 			answerOptions.put(entry.getKey(), entry.getValue().getAsJsonObject().get("answer").getAsString());
 		}
 
-		return new LimesurveyQuestionPropertiesDto(jsonObject.get("qid").getAsInt(), "",
-				jsonObject.get("sid").getAsInt(), jsonObject.get("gid").getAsInt(),
-				jsonObject.get("title").getAsString(), jsonObject.get("parent_qid").getAsInt(), answerOptions);
+		return new LimesurveyQuestionPropertiesDto(
+				jsonObject.get("sid").getAsString() + jsonObject.get("parent_qid").getAsString()
+						+ jsonObject.get("title").getAsString(),
+				jsonObject.get("qid").getAsInt(), "", jsonObject.get("sid").getAsInt(),
+				jsonObject.get("gid").getAsInt(), jsonObject.get("title").getAsString(),
+				jsonObject.get("parent_qid").getAsInt(), answerOptions);
 	}
 
 }

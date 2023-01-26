@@ -486,7 +486,8 @@ public class SeedManager {
 		 * 2.1. Impact Indicator Questions
 		 */
 		HashMap<String, LimesurveyQuestionDto> impactIndicatorsSurveyQuestionDtosMap = new HashMap<>();
-		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService.listQuestions(impactIndicatorsSurveyId)) {
+		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService.listQuestions(impactIndicatorsSurveyId)
+				.values()) {
 			impactIndicatorsSurveyQuestionDtosMap.put(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto);
 		}
 		for (StudyVariable studyVariable : impactStudyVariables) {
@@ -504,7 +505,7 @@ public class SeedManager {
 		LimesurveyQuestionDto focusedSdgsQuestion = impactIndicatorsSurveyQuestionDtosMap
 				.get(focusedSDGStudyVariable.getId());
 		List<LimesurveyQuestionDto> focusedSdgSurveyQuestionDtos = impactIndicatorsSurveyQuestionDtosMap.values()
-				.stream().filter(arg0 -> arg0.getParentQid() == focusedSdgsQuestion.getId())
+				.stream().filter(arg0 -> arg0.getParentQid() == focusedSdgsQuestion.getLimesurveyQuestionId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : focusedSdgSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
@@ -515,7 +516,7 @@ public class SeedManager {
 		 */
 		HashMap<String, LimesurveyQuestionDto> successFailureFactorsSurveyQuestionDtos = new HashMap<>();
 		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService
-				.listQuestions(successFailureFactorsSurveyId)) {
+				.listQuestions(successFailureFactorsSurveyId).values()) {
 			successFailureFactorsSurveyQuestionDtos.put(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto);
 		}
 		for (StudyVariable studyVariable : successFailureFactorsStudyVariables) {
@@ -531,7 +532,8 @@ public class SeedManager {
 		 * 2.3. Development Resources
 		 */
 		HashMap<String, LimesurveyQuestionDto> devResourcesSurveyQuestionDtos = new HashMap<>();
-		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService.listQuestions(devResourcesSurveyId)) {
+		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService.listQuestions(devResourcesSurveyId)
+				.values()) {
 			devResourcesSurveyQuestionDtos.put(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto);
 		}
 		for (StudyVariable studyVariable : devResourcesStudyVariables) {
@@ -551,7 +553,7 @@ public class SeedManager {
 		LimesurveyQuestionDto programmingLanguagesQuestion = devResourcesSurveyQuestionDtos
 				.get(programmingLanguageStudyVariable.getId());
 		List<LimesurveyQuestionDto> programmingLanguagesSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
-				.stream().filter(arg0 -> arg0.getParentQid() == programmingLanguagesQuestion.getId())
+				.stream().filter(arg0 -> arg0.getParentQid() == programmingLanguagesQuestion.getLimesurveyQuestionId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : programmingLanguagesSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
@@ -562,7 +564,8 @@ public class SeedManager {
 		 */
 		LimesurveyQuestionDto frameworkQuestion = devResourcesSurveyQuestionDtos.get(frameworkStudyVariable.getId());
 		List<LimesurveyQuestionDto> frameworkSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
-				.filter(arg0 -> arg0.getParentQid() == frameworkQuestion.getId()).collect(Collectors.toList());
+				.filter(arg0 -> arg0.getParentQid() == frameworkQuestion.getLimesurveyQuestionId())
+				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : frameworkSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), frameworkStudyVariable);
@@ -572,7 +575,8 @@ public class SeedManager {
 		 */
 		LimesurveyQuestionDto libraryQuestion = devResourcesSurveyQuestionDtos.get(libraryStudyVariable.getId());
 		List<LimesurveyQuestionDto> librarySurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
-				.filter(arg0 -> arg0.getParentQid() == libraryQuestion.getId()).collect(Collectors.toList());
+				.filter(arg0 -> arg0.getParentQid() == libraryQuestion.getLimesurveyQuestionId())
+				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : librarySurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), libraryStudyVariable);
@@ -583,7 +587,8 @@ public class SeedManager {
 		LimesurveyQuestionDto devEnvironmentQuestion = devResourcesSurveyQuestionDtos
 				.get(devEnvironmentStudyVariable.getId());
 		List<LimesurveyQuestionDto> devEnviromentSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
-				.filter(arg0 -> arg0.getParentQid() == devEnvironmentQuestion.getId()).collect(Collectors.toList());
+				.filter(arg0 -> arg0.getParentQid() == devEnvironmentQuestion.getLimesurveyQuestionId())
+				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : devEnviromentSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), devEnvironmentStudyVariable);
@@ -593,7 +598,8 @@ public class SeedManager {
 		 */
 		LimesurveyQuestionDto dbmsQuestion = devResourcesSurveyQuestionDtos.get(dbmsStudyVariable.getId());
 		List<LimesurveyQuestionDto> dbmsSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
-				.filter(arg0 -> arg0.getParentQid() == dbmsQuestion.getId()).collect(Collectors.toList());
+				.filter(arg0 -> arg0.getParentQid() == dbmsQuestion.getLimesurveyQuestionId())
+				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : dbmsSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), dbmsStudyVariable);
@@ -604,7 +610,7 @@ public class SeedManager {
 		LimesurveyQuestionDto deploymentServerQuestion = devResourcesSurveyQuestionDtos
 				.get(deploymentServerStudyVariable.getId());
 		List<LimesurveyQuestionDto> deploymentServerSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
-				.stream().filter(arg0 -> arg0.getParentQid() == deploymentServerQuestion.getId())
+				.stream().filter(arg0 -> arg0.getParentQid() == deploymentServerQuestion.getLimesurveyQuestionId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : deploymentServerSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
@@ -616,7 +622,8 @@ public class SeedManager {
 		LimesurveyQuestionDto deploymentOsQuestion = devResourcesSurveyQuestionDtos
 				.get(deploymentOsStudyVariable.getId());
 		List<LimesurveyQuestionDto> deploymentOsSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
-				.filter(arg0 -> arg0.getParentQid() == deploymentOsQuestion.getId()).collect(Collectors.toList());
+				.filter(arg0 -> arg0.getParentQid() == deploymentOsQuestion.getLimesurveyQuestionId())
+				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : deploymentOsSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), deploymentOsStudyVariable);
@@ -627,7 +634,8 @@ public class SeedManager {
 		LimesurveyQuestionDto helpfulSwQuestion = devResourcesSurveyQuestionDtos
 				.get(helpfulSoftwareStudyVariable.getId());
 		List<LimesurveyQuestionDto> helpfulSwSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
-				.filter(arg0 -> arg0.getParentQid() == helpfulSwQuestion.getId()).collect(Collectors.toList());
+				.filter(arg0 -> arg0.getParentQid() == helpfulSwQuestion.getLimesurveyQuestionId())
+				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : helpfulSwSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), helpfulSoftwareStudyVariable);
@@ -638,7 +646,8 @@ public class SeedManager {
 		LimesurveyQuestionDto iaasProviderQuestion = devResourcesSurveyQuestionDtos
 				.get(iaasProviderStudyVariable.getId());
 		List<LimesurveyQuestionDto> iaasProviderSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values().stream()
-				.filter(arg0 -> arg0.getParentQid() == iaasProviderQuestion.getId()).collect(Collectors.toList());
+				.filter(arg0 -> arg0.getParentQid() == iaasProviderQuestion.getLimesurveyQuestionId())
+				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : iaasProviderSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), iaasProviderStudyVariable);
@@ -651,7 +660,7 @@ public class SeedManager {
 		LimesurveyQuestionDto devMethodologiesQuestion = devResourcesSurveyQuestionDtos
 				.get(devMethodologyStudyVariable.getId());
 		List<LimesurveyQuestionDto> devMethodologiesSurveyQuestionDtos = devResourcesSurveyQuestionDtos.values()
-				.stream().filter(arg0 -> arg0.getParentQid() == devMethodologiesQuestion.getId())
+				.stream().filter(arg0 -> arg0.getParentQid() == devMethodologiesQuestion.getLimesurveyQuestionId())
 				.collect(Collectors.toList());
 		for (LimesurveyQuestionDto limesurveyQuestionDto : devMethodologiesSurveyQuestionDtos) {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),

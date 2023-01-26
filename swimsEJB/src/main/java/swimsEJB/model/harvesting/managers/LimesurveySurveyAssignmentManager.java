@@ -139,16 +139,13 @@ public class LimesurveySurveyAssignmentManager {
 		List<LimesurveyAnswer> expectedAnswers = new ArrayList<>();
 		List<LimesurveyUnexpectedAnswer> unexpectedAnswers = new ArrayList<>();
 
-		HashMap<Integer, LimesurveyQuestion> questionsMap = new HashMap<>();
+		HashMap<String, LimesurveyQuestion> questionsMap = new HashMap<>();
 		for (LimesurveyQuestion question : limesurveyQuestionManager
 				.findAllQuestionsByLimesurveySurveyId(surveyAssignment.getLimesurveySurveyId())) {
-			questionsMap.put(question.getLimesurveyQuestionId(), question);
+			questionsMap.put(question.getId(), question);
 		}
-		HashMap<Integer, LimesurveyQuestionDto> limesurveyQuestionDtosMap = new HashMap<>();
-		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService
-				.listQuestions(surveyAssignment.getLimesurveySurveyId())) {
-			limesurveyQuestionDtosMap.put(limesurveyQuestionDto.getId(), limesurveyQuestionDto);
-		}
+		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtosMap = LimesurveyService
+				.listQuestions(surveyAssignment.getLimesurveySurveyId());
 
 		for (LimesurveyQuestion question : questionsMap.values()) {
 			JsonElement element = response.get(question.getLimesurveyQuestionTitle() + "[other]");
@@ -173,8 +170,15 @@ public class LimesurveySurveyAssignmentManager {
 				continue;
 			}
 
+			LimesurveyQuestionDto currentQuestionLimesurveyQuestionDto = limesurveyQuestionDtosMap
+					.get(question.getId());
+			LimesurveyQuestionDto parentLimesurveyQuestionDto = limesurveyQuestionDtosMap.values().stream()
+					.filter(t -> t.getLimesurveyQuestionId() == currentQuestionLimesurveyQuestionDto.getParentQid())
+					.findFirst().orElse(null);
+			if (parentLimesurveyQuestionDto == null)
+				continue;
 			LimesurveyQuestion parentQuestion = questionsMap
-					.get(limesurveyQuestionDtosMap.get(question.getLimesurveyQuestionId()).getParentQid());
+					.get(currentQuestionLimesurveyQuestionDto.getSid() + "0" + parentLimesurveyQuestionDto.getTitle());
 			if (parentQuestion == null)
 				continue;
 			element = response.get(

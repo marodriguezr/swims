@@ -17,8 +17,8 @@ public class LimesurveyQuestion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="limesurvey_question_id", unique=true, nullable=false)
-	private Integer limesurveyQuestionId;
+	@Column(unique=true, nullable=false, length=2147483647)
+	private String id;
 
 	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
@@ -48,12 +48,12 @@ public class LimesurveyQuestion implements Serializable {
 	public LimesurveyQuestion() {
 	}
 
-	public Integer getLimesurveyQuestionId() {
-		return this.limesurveyQuestionId;
+	public String getId() {
+		return this.id;
 	}
 
-	public void setLimesurveyQuestionId(Integer limesurveyQuestionId) {
-		this.limesurveyQuestionId = limesurveyQuestionId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public Timestamp getCreatedAt() {

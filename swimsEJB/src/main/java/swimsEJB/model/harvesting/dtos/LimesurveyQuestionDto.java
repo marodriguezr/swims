@@ -1,20 +1,13 @@
 package swimsEJB.model.harvesting.dtos;
 
-public class LimesurveyQuestionDto {
-	private int id;
+public class LimesurveyQuestionDto implements AutoCloseable {
+	private String id;
+	private int limesurveyQuestionId;
 	private String question;
 	private int sid;
 	private int gid;
 	private String title;
 	private int parentQid;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getQuestion() {
 		return question;
@@ -56,14 +49,37 @@ public class LimesurveyQuestionDto {
 		this.parentQid = parentQid;
 	}
 
-	public LimesurveyQuestionDto(int id, String question, int sid, int gid, String title, int parentQid) {
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public Integer getLimesurveyQuestionId() {
+		return limesurveyQuestionId;
+	}
+
+	public void setLimesurveyQuestionId(Integer limesurveyQuestionId) {
+		this.limesurveyQuestionId = limesurveyQuestionId;
+	}
+
+	public LimesurveyQuestionDto(String id, Integer limesurveyQuestionId, String question, int sid, int gid,
+			String title, int parentQid) {
 		super();
 		this.id = id;
+		this.limesurveyQuestionId = limesurveyQuestionId;
 		this.question = question;
 		this.sid = sid;
 		this.gid = gid;
 		this.title = title;
 		this.parentQid = parentQid;
+	}
+
+	@Override
+	public void close() throws Exception {
+		// TODO Auto-generated method stub
 	}
 
 }

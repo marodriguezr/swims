@@ -6,9 +6,9 @@ public class LimesurveyQuestionPropertiesDto extends LimesurveyQuestionDto {
 
 	private HashMap<String, String> answerOptions;
 
-	public LimesurveyQuestionPropertiesDto(int id, String question, int sid, int gid, String title, int parentQid,
-			HashMap<String, String> answerOptions) {
-		super(id, question, sid, gid, title, parentQid);
+	public LimesurveyQuestionPropertiesDto(String id, int limesurveyQuestionId, String question, int sid, int gid,
+			String title, int parentQid, HashMap<String, String> answerOptions) {
+		super(id, limesurveyQuestionId, question, sid, gid, title, parentQid);
 		this.answerOptions = answerOptions;
 		// TODO Auto-generated constructor stub
 	}
@@ -21,5 +21,4 @@ public class LimesurveyQuestionPropertiesDto extends LimesurveyQuestionDto {
 		this.answerOptions = answerOptions;
 	}
 
-	
 }

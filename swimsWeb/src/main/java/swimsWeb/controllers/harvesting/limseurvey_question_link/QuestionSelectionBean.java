@@ -52,6 +52,9 @@ public class QuestionSelectionBean implements Serializable {
 		try {
 			this.linkableLimesurveyQuestionDtos = limesurveyQuestionManager
 					.findAllLinkableLimesurveyQuestionDtos(surveySelectionBean.getSelectedSurveyId());
+			for (LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto : linkableLimesurveyQuestionDtos) {
+				System.out.println(linkableLimesurveyQuestionDto.isParentQuestionAlreadyRegistered());
+			}
 			this.onlyParentQuestionCount = (int) this.linkableLimesurveyQuestionDtos.stream()
 					.filter(arg0 -> arg0.getLinkableChildLimesurveyQuestionDtos() == null
 							|| arg0.getLinkableChildLimesurveyQuestionDtos().isEmpty())
@@ -62,7 +65,8 @@ public class QuestionSelectionBean implements Serializable {
 			this.compoundLinkableLimesurveyQuestionDtos = this.linkableLimesurveyQuestionDtos.stream()
 					.map(arg0 -> new CompoundLinkableLimesurveyQuestionDto(
 							arg0.getLinkableParentLimesurveyQuestionDto(),
-							arg0.getLinkableChildLimesurveyQuestionDtos(), new ArrayList<>()))
+							arg0.getLinkableChildLimesurveyQuestionDtos(), arg0.isParentQuestionAlreadyRegistered(),
+							new ArrayList<>()))
 					.collect(Collectors.toList());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

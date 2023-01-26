@@ -35,12 +35,12 @@ public class LimesurveyQuestionManager {
 		// TODO Auto-generated constructor stub
 	}
 
-	public LimesurveyQuestion createOneQuestion(String limesurveyQuestionTitle, int limesurveySurveyId,
-			int limesurveyQuestionId, StudyVariable studyVariable) throws Exception {
+	public LimesurveyQuestion createOneQuestion(String limesurveyQuestionTitle, int limesurveySurveyId, String id,
+			StudyVariable studyVariable) throws Exception {
 		LimesurveyQuestion question = new LimesurveyQuestion();
 		question.setLimesurveyQuestionTitle(limesurveyQuestionTitle);
 		question.setLimesurveySurveyId(limesurveySurveyId);
-		question.setLimesurveyQuestionId(limesurveyQuestionId);
+		question.setId(id);
 		question.setStudyVariable(studyVariable);
 
 		question.setCreatedAt(new Timestamp(System.currentTimeMillis()));
@@ -57,36 +57,48 @@ public class LimesurveyQuestionManager {
 		return daoManager.findManyWhere(LimesurveyQuestion.class, "o.limesurveySurveyId = " + limesurveySurveyId, null);
 	}
 
+	public String getLimesurveyQuestionDtoId(LimesurveyQuestionDto limesurveyQuestionDto) {
+		return limesurveyQuestionDto.getSid() + limesurveyQuestionDto.getParentQid() + limesurveyQuestionDto.getTitle();
+
+	}
+
 	public List<LinkableLimesurveyQuestionDto> findAllLinkableLimesurveyQuestionDtos(Integer limesurveySurveyId)
 			throws Exception {
 		if (limesurveySurveyId == null) {
 			throw new Exception("Survey id cannot be null.");
 		}
 
-		HashMap<Integer, LinkableLimesurveyQuestionDto> linkableLimesurveyQuestionDtosMap = new HashMap<>();
+		HashMap<String, LinkableLimesurveyQuestionDto> linkableLimesurveyQuestionDtosMap = new HashMap<>();
 
-		HashMap<Integer, LimesurveyQuestion> alreadyRegisteredQuestionsMap = new HashMap<>();
+		HashMap<String, LimesurveyQuestion> alreadyRegisteredQuestionsMap = new HashMap<>();
 		for (LimesurveyQuestion limesurveyQuestion : findAllQuestionsByLimesurveySurveyId(limesurveySurveyId)) {
-			alreadyRegisteredQuestionsMap.put(limesurveyQuestion.getLimesurveyQuestionId(), limesurveyQuestion);
+			alreadyRegisteredQuestionsMap.put(limesurveyQuestion.getId(), limesurveyQuestion);
 		}
-		HashMap<Integer, LimesurveyQuestionDto> limesurveyQuestionDtosMap = new HashMap<>();
-		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService.listQuestions(limesurveySurveyId)) {
-			limesurveyQuestionDtosMap.put(limesurveyQuestionDto.getId(), limesurveyQuestionDto);
-		}
+		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtosMap = LimesurveyService
+				.listQuestions(limesurveySurveyId);
 
 		for (LimesurveyQuestionDto limesurveyQuestionDto : limesurveyQuestionDtosMap.values()) {
 			if (alreadyRegisteredQuestionsMap.containsKey(limesurveyQuestionDto.getId())) {
 				continue;
 			}
 
+			LimesurveyQuestionDto parentLimesurveyQuestionDto = limesurveyQuestionDtosMap.values().stream()
+					.filter(t -> t.getLimesurveyQuestionId() == limesurveyQuestionDto.getParentQid()).findFirst()
+					.orElse(new LimesurveyQuestionDto(null, limesurveySurveyId, null, 0, 0, "", 0));
+
 			if (limesurveyQuestionDto.getParentQid() != 0) {
-				LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto = linkableLimesurveyQuestionDtosMap
-						.containsKey(limesurveyQuestionDto.getParentQid())
-								? linkableLimesurveyQuestionDtosMap.get(limesurveyQuestionDto.getParentQid())
+				LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto;
+
+				linkableLimesurveyQuestionDto = linkableLimesurveyQuestionDtosMap
+						.containsKey(limesurveyQuestionDto.getSid() + "0" + parentLimesurveyQuestionDto.getTitle())
+								? linkableLimesurveyQuestionDtosMap.get(
+										limesurveyQuestionDto.getSid() + "0" + parentLimesurveyQuestionDto.getTitle())
 								: new LinkableLimesurveyQuestionDto();
+
 				if (linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto() == null)
-					linkableLimesurveyQuestionDto.setLinkableParentLimesurveyQuestionDto(
-							limesurveyQuestionDtosMap.get(limesurveyQuestionDto.getParentQid()));
+					linkableLimesurveyQuestionDto.setLinkableParentLimesurveyQuestionDto(limesurveyQuestionDtosMap
+							.get(limesurveyQuestionDto.getSid() + "0" + parentLimesurveyQuestionDto.getTitle()));
+
 				List<LimesurveyQuestionDto> limesurveyQuestionDtos = linkableLimesurveyQuestionDto
 						.getLinkableChildLimesurveyQuestionDtos() == null ? new ArrayList<>()
 								: new ArrayList<>(
@@ -94,17 +106,19 @@ public class LimesurveyQuestionManager {
 				limesurveyQuestionDtos.add(limesurveyQuestionDto);
 				linkableLimesurveyQuestionDto.setLinkableChildLimesurveyQuestionDtos(limesurveyQuestionDtos);
 				linkableLimesurveyQuestionDto.setParentQuestionAlreadyRegistered(true);
-				linkableLimesurveyQuestionDtosMap.put(limesurveyQuestionDto.getParentQid(),
+				linkableLimesurveyQuestionDtosMap.put(
+						limesurveyQuestionDto.getSid() + "0" + parentLimesurveyQuestionDto.getTitle(),
 						linkableLimesurveyQuestionDto);
 				continue;
 			}
 
-			if (linkableLimesurveyQuestionDtosMap.containsKey(limesurveyQuestionDto.getId()))
+			if (linkableLimesurveyQuestionDtosMap.containsKey(getLimesurveyQuestionDtoId(limesurveyQuestionDto)))
 				continue;
 
 			LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto = new LinkableLimesurveyQuestionDto();
 			linkableLimesurveyQuestionDto.setLinkableParentLimesurveyQuestionDto(limesurveyQuestionDto);
-			linkableLimesurveyQuestionDtosMap.put(limesurveyQuestionDto.getId(), linkableLimesurveyQuestionDto);
+			linkableLimesurveyQuestionDtosMap.put(getLimesurveyQuestionDtoId(limesurveyQuestionDto),
+					linkableLimesurveyQuestionDto);
 
 		}
 
@@ -115,8 +129,9 @@ public class LimesurveyQuestionManager {
 			LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto) {
 		List<LimesurveyQuestionDto> limesurveyQuestionDtos = new ArrayList<>();
 
-//		if (linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto() != null)
-//			limesurveyQuestionDtos.add(linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto());
+		if (linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto() != null
+				&& !linkableLimesurveyQuestionDto.isParentQuestionAlreadyRegistered())
+			limesurveyQuestionDtos.add(linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto());
 
 		if (linkableLimesurveyQuestionDto.getLinkableChildLimesurveyQuestionDtos() == null)
 			return limesurveyQuestionDtos;

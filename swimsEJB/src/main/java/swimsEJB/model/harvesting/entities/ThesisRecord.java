@@ -6,62 +6,63 @@ import java.util.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
+
 /**
  * The persistent class for the thesis_records database table.
  * 
  */
 @Entity
-@Table(name = "thesis_records", schema = "harvesting")
-@NamedQuery(name = "ThesisRecord.findAll", query = "SELECT t FROM ThesisRecord t")
+@Table(name="thesis_records", schema="harvesting")
+@NamedQuery(name="ThesisRecord.findAll", query="SELECT t FROM ThesisRecord t")
 public class ThesisRecord implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(unique = true, nullable = false, length = 2147483647)
+	@Column(unique=true, nullable=false, length=2147483647)
 	private String id;
 
-	@Column(nullable = false, length = 2147483647)
+	@Column(nullable=false, length=2147483647)
 	private String contributor;
 
-	@Column(name = "created_at", nullable = false)
+	@Column(name="created_at", nullable=false)
 	private Timestamp createdAt;
 
-	@Column(nullable = false, length = 2147483647)
+	@Column(nullable=false, length=2147483647)
 	private String creator;
 
-	@Column(nullable = false, length = 2147483647)
+	@Column(nullable=false, length=2147483647)
 	private String description;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "inferred_creation_date", nullable = false)
+	@Column(name="inferred_creation_date", nullable=false)
 	private Date inferredCreationDate;
 
 	@Temporal(TemporalType.DATE)
-	@Column(name = "inferred_issue_date", nullable = false)
+	@Column(name="inferred_issue_date", nullable=false)
 	private Date inferredIssueDate;
 
-	@Column(name = "is_active", nullable = false)
+	@Column(name="is_active", nullable=false)
 	private Boolean isActive;
 
-	@Column(nullable = false, length = 2147483647)
+	@Column(nullable=false, length=2147483647)
 	private String subject;
 
-	@Column(nullable = false, length = 2147483647)
+	@Column(nullable=false, length=2147483647)
 	private String title;
 
-	@Column(name = "updated_at", nullable = false)
+	@Column(name="updated_at", nullable=false)
 	private Timestamp updatedAt;
 
-	@Column(nullable = false, length = 2147483647)
+	@Column(nullable=false, length=2147483647)
 	private String url;
 
-	// bi-directional many-to-one association to ThesisAssignment
-	@OneToMany(mappedBy = "thesisRecord")
+	//bi-directional many-to-one association to ThesisAssignment
+	@OneToMany(mappedBy="thesisRecord")
 	private List<ThesisAssignment> thesisAssignments;
 
-	// bi-directional many-to-one association to ThesisSet
+	//bi-directional many-to-one association to ThesisSet
 	@ManyToOne
-	@JoinColumn(name = "thesis_set_id", nullable = false)
+	@JoinColumn(name="thesis_set_id", nullable=false)
 	private ThesisSet thesisSet;
 
 	public ThesisRecord() {

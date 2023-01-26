@@ -6,24 +6,25 @@ import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
 import swimsEJB.model.harvesting.dtos.LinkableLimesurveyQuestionDto;
 
 public class CompoundLinkableLimesurveyQuestionDto extends LinkableLimesurveyQuestionDto {
-	private List<Integer> selectedLimesurveyQuestionIds;
+	private List<String> selectedLimesurveyQuestionIds;
 
 	public CompoundLinkableLimesurveyQuestionDto() {
 		super();
 	}
 
 	public CompoundLinkableLimesurveyQuestionDto(LimesurveyQuestionDto linkableParentLimesurveyQuestionDto,
-			List<LimesurveyQuestionDto> linkableChildLimesurveyQuestionDtos,
-			List<Integer> selectedLimesurveyQuestionIds) {
-		super(linkableParentLimesurveyQuestionDto, linkableChildLimesurveyQuestionDtos);
+			List<LimesurveyQuestionDto> linkableChildLimesurveyQuestionDtos, boolean isParentQuestionAlreadyRegistered,
+			List<String> selectedLimesurveyQuestionIds) {
+		super(linkableParentLimesurveyQuestionDto, linkableChildLimesurveyQuestionDtos,
+				isParentQuestionAlreadyRegistered);
 		this.selectedLimesurveyQuestionIds = selectedLimesurveyQuestionIds;
 	}
 
-	public List<Integer> getSelectedLimesurveyQuestionIds() {
+	public List<String> getSelectedLimesurveyQuestionIds() {
 		return selectedLimesurveyQuestionIds;
 	}
 
-	public void setSelectedLimesurveyQuestionIds(List<Integer> selectedLimesurveyQuestionIds) {
+	public void setSelectedLimesurveyQuestionIds(List<String> selectedLimesurveyQuestionIds) {
 		this.selectedLimesurveyQuestionIds = selectedLimesurveyQuestionIds;
 	}
 

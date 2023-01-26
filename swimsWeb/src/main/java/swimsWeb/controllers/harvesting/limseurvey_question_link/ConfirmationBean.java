@@ -80,7 +80,7 @@ public class ConfirmationBean implements Serializable {
 		questionSelectionBean.clean();
 	}
 
-	public LimesurveyQuestionDto findOneLimesurveyQuestionDto(int limesurveyQuestionDtoId,
+	public LimesurveyQuestionDto findOneLimesurveyQuestionDto(String limesurveyQuestionDtoId,
 			List<LimesurveyQuestionDto> limesurveyQuestionDtos) {
 		LimesurveyQuestionDto foundLimesurveyQuestionDto = limesurveyQuestionDtos.stream()
 				.filter(t -> t.getId() == limesurveyQuestionDtoId).findFirst().orElse(null);
