@@ -144,8 +144,11 @@ public class LimesurveySurveyAssignmentManager {
 				.findAllQuestionsByLimesurveySurveyId(surveyAssignment.getLimesurveySurveyId())) {
 			questionsMap.put(question.getLimesurveyQuestionId(), question);
 		}
-		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtos = LimesurveyService
-				.listQuestions(surveyAssignment.getLimesurveySurveyId());
+		HashMap<Integer, LimesurveyQuestionDto> limesurveyQuestionDtosMap = new HashMap<>();
+		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService
+				.listQuestions(surveyAssignment.getLimesurveySurveyId())) {
+			limesurveyQuestionDtosMap.put(limesurveyQuestionDto.getId(), limesurveyQuestionDto);
+		}
 
 		for (LimesurveyQuestion question : questionsMap.values()) {
 			JsonElement element = response.get(question.getLimesurveyQuestionTitle() + "[other]");
@@ -171,7 +174,7 @@ public class LimesurveySurveyAssignmentManager {
 			}
 
 			LimesurveyQuestion parentQuestion = questionsMap
-					.get(limesurveyQuestionDtos.get(question.getLimesurveyQuestionTitle()).getParentQid());
+					.get(limesurveyQuestionDtosMap.get(question.getLimesurveyQuestionId()).getParentQid());
 			if (parentQuestion == null)
 				continue;
 			element = response.get(

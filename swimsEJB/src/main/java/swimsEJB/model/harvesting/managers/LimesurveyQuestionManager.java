@@ -62,39 +62,83 @@ public class LimesurveyQuestionManager {
 		if (limesurveySurveyId == null) {
 			throw new Exception("Survey id cannot be null.");
 		}
+
 		HashMap<Integer, LinkableLimesurveyQuestionDto> linkableLimesurveyQuestionDtosMap = new HashMap<>();
+
 		HashMap<Integer, LimesurveyQuestion> alreadyRegisteredQuestionsMap = new HashMap<>();
 		for (LimesurveyQuestion limesurveyQuestion : findAllQuestionsByLimesurveySurveyId(limesurveySurveyId)) {
 			alreadyRegisteredQuestionsMap.put(limesurveyQuestion.getLimesurveyQuestionId(), limesurveyQuestion);
 		}
-		List<LimesurveyQuestionDto> linkableChildLimesurveyQuestionDtos = new ArrayList<>();
+		HashMap<Integer, LimesurveyQuestionDto> limesurveyQuestionDtosMap = new HashMap<>();
+		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService.listQuestions(limesurveySurveyId)) {
+			limesurveyQuestionDtosMap.put(limesurveyQuestionDto.getId(), limesurveyQuestionDto);
+		}
 
-		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService.listQuestions(limesurveySurveyId)
-				.values()) {
-			if (alreadyRegisteredQuestionsMap.containsKey(limesurveyQuestionDto.getId()))
-				continue;
-			if (limesurveyQuestionDto.getParentQid() != 0) {
-				linkableChildLimesurveyQuestionDtos.add(limesurveyQuestionDto);
+		for (LimesurveyQuestionDto limesurveyQuestionDto : limesurveyQuestionDtosMap.values()) {
+			if (alreadyRegisteredQuestionsMap.containsKey(limesurveyQuestionDto.getId())) {
 				continue;
 			}
+
+			if (limesurveyQuestionDto.getParentQid() != 0) {
+				LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto = linkableLimesurveyQuestionDtosMap
+						.containsKey(limesurveyQuestionDto.getParentQid())
+								? linkableLimesurveyQuestionDtosMap.get(limesurveyQuestionDto.getParentQid())
+								: new LinkableLimesurveyQuestionDto();
+				if (linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto() == null)
+					linkableLimesurveyQuestionDto.setLinkableParentLimesurveyQuestionDto(
+							limesurveyQuestionDtosMap.get(limesurveyQuestionDto.getParentQid()));
+				List<LimesurveyQuestionDto> limesurveyQuestionDtos = linkableLimesurveyQuestionDto
+						.getLinkableChildLimesurveyQuestionDtos() == null ? new ArrayList<>()
+								: new ArrayList<>(
+										linkableLimesurveyQuestionDto.getLinkableChildLimesurveyQuestionDtos());
+				limesurveyQuestionDtos.add(limesurveyQuestionDto);
+				linkableLimesurveyQuestionDto.setLinkableChildLimesurveyQuestionDtos(limesurveyQuestionDtos);
+				linkableLimesurveyQuestionDto.setParentQuestionAlreadyRegistered(true);
+				linkableLimesurveyQuestionDtosMap.put(limesurveyQuestionDto.getParentQid(),
+						linkableLimesurveyQuestionDto);
+				continue;
+			}
+
+			if (linkableLimesurveyQuestionDtosMap.containsKey(limesurveyQuestionDto.getId()))
+				continue;
+
 			LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto = new LinkableLimesurveyQuestionDto();
 			linkableLimesurveyQuestionDto.setLinkableParentLimesurveyQuestionDto(limesurveyQuestionDto);
 			linkableLimesurveyQuestionDtosMap.put(limesurveyQuestionDto.getId(), linkableLimesurveyQuestionDto);
-		}
 
-		for (LimesurveyQuestionDto limesurveyQuestionDto : linkableChildLimesurveyQuestionDtos) {
-			LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto = linkableLimesurveyQuestionDtosMap
-					.get(limesurveyQuestionDto.getParentQid());
-			if (linkableLimesurveyQuestionDto == null)
-				continue;
-			List<LimesurveyQuestionDto> limesurveyQuestionDtos = linkableLimesurveyQuestionDto
-					.getLinkableChildLimesurveyQuestionDtos() == null ? new ArrayList<>()
-							: new ArrayList<>(linkableLimesurveyQuestionDto.getLinkableChildLimesurveyQuestionDtos());
-			limesurveyQuestionDtos.add(limesurveyQuestionDto);
-			linkableLimesurveyQuestionDto.setLinkableChildLimesurveyQuestionDtos(limesurveyQuestionDtos);
 		}
 
 		return new ArrayList<>(linkableLimesurveyQuestionDtosMap.values());
+	}
+
+	public List<LimesurveyQuestionDto> linkableLimesurveyQuestionDtoToLimesurveyQuestionDtos(
+			LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto) {
+		List<LimesurveyQuestionDto> limesurveyQuestionDtos = new ArrayList<>();
+
+//		if (linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto() != null)
+//			limesurveyQuestionDtos.add(linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto());
+
+		if (linkableLimesurveyQuestionDto.getLinkableChildLimesurveyQuestionDtos() == null)
+			return limesurveyQuestionDtos;
+
+		if (linkableLimesurveyQuestionDto.getLinkableChildLimesurveyQuestionDtos().isEmpty())
+			return limesurveyQuestionDtos;
+
+		limesurveyQuestionDtos.addAll(linkableLimesurveyQuestionDto.getLinkableChildLimesurveyQuestionDtos());
+		return limesurveyQuestionDtos;
+	}
+
+	public List<LimesurveyQuestionDto> linkableLimesurveyQuestionDtosToLimesurveyQuestionDtos(
+			List<LinkableLimesurveyQuestionDto> linkableLimesurveyQuestionDtos) {
+
+		List<LimesurveyQuestionDto> limesurveyQuestionDtos = new ArrayList<>();
+
+		for (LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto : linkableLimesurveyQuestionDtos) {
+			limesurveyQuestionDtos
+					.addAll(linkableLimesurveyQuestionDtoToLimesurveyQuestionDtos(linkableLimesurveyQuestionDto));
+		}
+
+		return limesurveyQuestionDtos;
 	}
 
 	public List<LimesurveyQuestion> createManyLimesurveyQuestions(StudyVariable studyVariable,
@@ -103,18 +147,12 @@ public class LimesurveyQuestionManager {
 		if (linkableLimesurveyQuestionDtos == null) {
 			throw new Exception("Linkable limesurvey question dtos cannot be null.");
 		}
-		for (LinkableLimesurveyQuestionDto linkableLimesurveyQuestionDto : linkableLimesurveyQuestionDtos) {
-			createdLimesurveyQuestions.add(createOneQuestion(
-					linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto().getTitle(),
-					linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto().getSid(),
-					linkableLimesurveyQuestionDto.getLinkableParentLimesurveyQuestionDto().getId(), studyVariable));
-			if (linkableLimesurveyQuestionDto.getLinkableChildLimesurveyQuestionDtos() == null)
-				continue;
-			for (LimesurveyQuestionDto limesurveyQuestionDto : linkableLimesurveyQuestionDto
-					.getLinkableChildLimesurveyQuestionDtos()) {
-				createdLimesurveyQuestions.add(createOneQuestion(limesurveyQuestionDto.getTitle(),
-						limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), studyVariable));
-			}
+
+		List<LimesurveyQuestionDto> toLinkLimesurveyQuestionDtos = linkableLimesurveyQuestionDtosToLimesurveyQuestionDtos(
+				linkableLimesurveyQuestionDtos);
+		for (LimesurveyQuestionDto toLinkLimesurveyQuestionDto : toLinkLimesurveyQuestionDtos) {
+			createdLimesurveyQuestions.add(createOneQuestion(toLinkLimesurveyQuestionDto.getTitle(),
+					toLinkLimesurveyQuestionDto.getSid(), toLinkLimesurveyQuestionDto.getId(), studyVariable));
 		}
 		return createdLimesurveyQuestions;
 	}

@@ -79,6 +79,15 @@
 								value="#{recordsSelectionBean.dateFormat.format(oaiRecord.inferredIssueDate)}" />
 						</p:column>
 
+						<p:column filterMatchMode="contains"
+							sortBy="#{oaiRecord.inferredCreationDate}"
+							filterBy="#{recordsSelectionBean.dateFormat.format(oaiRecord.inferredCreationDate)}"
+							headerText="Fecha de creación">
+							<h:outputText
+								rendered="#{oaiRecord.inferredCreationDate ne null}"
+								value="#{recordsSelectionBean.dateFormat.format(oaiRecord.inferredCreationDate)}" />
+						</p:column>
+
 						<p:column>
 							<p:commandButton icon="pi pi-fw pi-plus"
 								oncomplete="PF('allRecordInfoDialog').show()"
@@ -213,6 +222,15 @@
 							header="Fecha de publicación" toggleable="true" collapsed="false">
 							<h:outputText
 								value="#{recordsSelectionBean.dateFormat.format(thesisSelectionBean.selectedOaiRecordDto.inferredIssueDate)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.inferredCreationDate ne null}"
+							header="Fecha de creación" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{recordsSelectionBean.dateFormat.format(thesisSelectionBean.selectedOaiRecordDto.inferredCreationDate)}" />
 						</p:panel>
 					</div>
 

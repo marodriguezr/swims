@@ -485,8 +485,10 @@ public class SeedManager {
 		/**
 		 * 2.1. Impact Indicator Questions
 		 */
-		HashMap<String, LimesurveyQuestionDto> impactIndicatorsSurveyQuestionDtosMap = LimesurveyService
-				.listQuestions(impactIndicatorsSurveyId);
+		HashMap<String, LimesurveyQuestionDto> impactIndicatorsSurveyQuestionDtosMap = new HashMap<>();
+		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService.listQuestions(impactIndicatorsSurveyId)) {
+			impactIndicatorsSurveyQuestionDtosMap.put(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto);
+		}
 		for (StudyVariable studyVariable : impactStudyVariables) {
 			if (impactIndicatorsSurveyQuestionDtosMap.get(studyVariable.getId()) == null)
 				throw new Exception("La pregunta correspondiente al indicador " + studyVariable.getName()
@@ -511,8 +513,11 @@ public class SeedManager {
 		/**
 		 * 2.2. Success or Failure Factors
 		 */
-		HashMap<String, LimesurveyQuestionDto> successFailureFactorsSurveyQuestionDtos = LimesurveyService
-				.listQuestions(successFailureFactorsSurveyId);
+		HashMap<String, LimesurveyQuestionDto> successFailureFactorsSurveyQuestionDtos = new HashMap<>();
+		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService
+				.listQuestions(successFailureFactorsSurveyId)) {
+			successFailureFactorsSurveyQuestionDtos.put(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto);
+		}
 		for (StudyVariable studyVariable : successFailureFactorsStudyVariables) {
 			if (successFailureFactorsSurveyQuestionDtos.get(studyVariable.getId()) == null)
 				throw new Exception("La pregunta correspondiente al factor " + studyVariable.getName()
@@ -525,8 +530,10 @@ public class SeedManager {
 		/**
 		 * 2.3. Development Resources
 		 */
-		HashMap<String, LimesurveyQuestionDto> devResourcesSurveyQuestionDtos = LimesurveyService
-				.listQuestions(devResourcesSurveyId);
+		HashMap<String, LimesurveyQuestionDto> devResourcesSurveyQuestionDtos = new HashMap<>();
+		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService.listQuestions(devResourcesSurveyId)) {
+			devResourcesSurveyQuestionDtos.put(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto);
+		}
 		for (StudyVariable studyVariable : devResourcesStudyVariables) {
 			if (devResourcesSurveyQuestionDtos.get(studyVariable.getId()) == null)
 				throw new Exception("La pregunta correspondiente al recurso " + studyVariable.getName()

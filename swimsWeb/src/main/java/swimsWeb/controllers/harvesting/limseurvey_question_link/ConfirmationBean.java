@@ -1,12 +1,16 @@
 package swimsWeb.controllers.harvesting.limseurvey_question_link;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
+import swimsEJB.model.harvesting.dtos.LinkableLimesurveyQuestionDto;
 import swimsEJB.model.harvesting.managers.LimesurveyQuestionManager;
 import swimsWeb.utilities.JSFMessages;
 
@@ -21,36 +25,54 @@ public class ConfirmationBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Inject
 	private QuestionSelectionBean questionSelectionBean;
-	@Inject
-	private StudyVariableSelectionBean studyVariableSelectionBean;
 	@EJB
 	private LimesurveyQuestionManager limesurveyQuestionManager;
+	@Inject
+	private StudyVariableSelectionBean studyVariableSelectionBean;
 
 	public ConfirmationBean() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public String loadPage() {
-		if (questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos() == null) {
+		if (questionSelectionBean.isShowChildQuestions()
+				&& questionSelectionBean.getCompoundLinkableLimesurveyQuestionDtos().stream()
+						.allMatch(t -> t.getSelectedLimesurveyQuestionIds().isEmpty())) {
+			JSFMessages.WARN("Debe seleccionar una o mas sub preguntas.");
+			return null;
+		}
+		if (!questionSelectionBean.isShowChildQuestions()
+				&& questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos() == null) {
 			JSFMessages.WARN("Debe seleccionar una o mas preguntas.");
 			return null;
 		}
-		if (questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos().size() == 0) {
+		if (!questionSelectionBean.isShowChildQuestions()
+				&& questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos().size() == 0) {
 			JSFMessages.WARN("Debe seleccionar una o mas preguntas.");
 			return null;
 		}
+
 		return HARVESTING_LIMESURVEY_QUESTION_LINK_CONFIRMATION_WEBAPP_PATH + "?faces-redirect=true";
 	}
 
 	public String onPageLoad() {
-		if (questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos() == null) {
+		if (questionSelectionBean.isShowChildQuestions()
+				&& questionSelectionBean.getCompoundLinkableLimesurveyQuestionDtos().stream()
+						.allMatch(t -> t.getSelectedLimesurveyQuestionIds().isEmpty())) {
+			JSFMessages.WARN("Debe seleccionar una o mas sub preguntas.");
+			return HARVESTING_LIMESURVEY_QUESTION_LINK_QUESTION_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
+		}
+		if (!questionSelectionBean.isShowChildQuestions()
+				&& questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos() == null) {
 			JSFMessages.WARN("Debe seleccionar una o mas preguntas.");
 			return HARVESTING_LIMESURVEY_QUESTION_LINK_QUESTION_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
-		if (questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos().size() == 0) {
+		if (!questionSelectionBean.isShowChildQuestions()
+				&& questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos().size() == 0) {
 			JSFMessages.WARN("Debe seleccionar una o mas preguntas.");
 			return HARVESTING_LIMESURVEY_QUESTION_LINK_QUESTION_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
 		}
+
 		return null;
 	}
 
@@ -58,11 +80,29 @@ public class ConfirmationBean implements Serializable {
 		questionSelectionBean.clean();
 	}
 
+	public LimesurveyQuestionDto findOneLimesurveyQuestionDto(int limesurveyQuestionDtoId,
+			List<LimesurveyQuestionDto> limesurveyQuestionDtos) {
+		LimesurveyQuestionDto foundLimesurveyQuestionDto = limesurveyQuestionDtos.stream()
+				.filter(t -> t.getId() == limesurveyQuestionDtoId).findFirst().orElse(null);
+		return foundLimesurveyQuestionDto;
+	}
+
 	public String createManyLimeSurveyQuestionsAction() {
 		try {
 			limesurveyQuestionManager.createManyLimesurveyQuestions(
 					studyVariableSelectionBean.getSelectedStudyVariableId(),
-					questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos());
+					questionSelectionBean.isShowChildQuestions()
+							? questionSelectionBean.getCompoundLinkableLimesurveyQuestionDtos().stream()
+									.map(arg0 -> new LinkableLimesurveyQuestionDto(
+											arg0.getLinkableParentLimesurveyQuestionDto(),
+											arg0.getSelectedLimesurveyQuestionIds().stream()
+													.map(t -> findOneLimesurveyQuestionDto(t,
+															arg0.getLinkableChildLimesurveyQuestionDtos()))
+													.collect(Collectors.toList()).stream().filter(t -> t != null)
+													.collect(Collectors.toList()),
+											arg0.isParentQuestionAlreadyRegistered()))
+									.collect(Collectors.toList())
+							: questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos());
 			JSFMessages.INFO("Preguntas enlazadas de forma exitosa.");
 			clean();
 			return INDEX_WEBAPP_PATH + "?faces-redirect=true";

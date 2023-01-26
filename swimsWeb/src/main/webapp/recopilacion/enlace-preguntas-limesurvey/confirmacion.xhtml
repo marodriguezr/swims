@@ -33,12 +33,39 @@
 
 					<div class="p-field">
 						<p:outputLabel value="Preguntas a ser enlazadas" for="@next"></p:outputLabel>
-						<ol>
-							<ui:repeat var="compound"
-								value="#{questionSelectionBean.selectedLinkableLimesurveyQuestionDtos}">
-								<li>#{compound.linkableParentLimesurveyQuestionDto.question}</li>
-							</ui:repeat>
-						</ol>
+						<h:panelGroup
+							rendered="#{questionSelectionBean.showChildQuestions ne true}"
+							layout="block">
+							<ol>
+								<ui:repeat var="compound"
+									value="#{questionSelectionBean.selectedLinkableLimesurveyQuestionDtos}">
+									<li>#{compound.linkableParentLimesurveyQuestionDto.question}
+										(#{compound.linkableParentLimesurveyQuestionDto.title})</li>
+								</ui:repeat>
+							</ol>
+						</h:panelGroup>
+
+						<h:panelGroup
+							rendered="#{questionSelectionBean.showChildQuestions}"
+							layout="block">
+							<ol>
+								<ui:repeat var="compound"
+									value="#{questionSelectionBean.compoundLinkableLimesurveyQuestionDtos}">
+									<li>#{compound.linkableParentLimesurveyQuestionDto.question}
+										(#{compound.linkableParentLimesurveyQuestionDto.title})</li>
+									<ul>
+										<ui:repeat var="selectedLimesurveyQuestionId"
+											value="#{compound.selectedLimesurveyQuestionIds}">
+											<li>#{limesurveyQuestionLinkConfirmationBean.findOneLimesurveyQuestionDto(selectedLimesurveyQuestionId,
+												compound.linkableChildLimesurveyQuestionDtos).question}
+												(#{limesurveyQuestionLinkConfirmationBean.findOneLimesurveyQuestionDto(selectedLimesurveyQuestionId,
+												compound.linkableChildLimesurveyQuestionDtos).title})</li>
+										</ui:repeat>
+									</ul>
+
+								</ui:repeat>
+							</ol>
+						</h:panelGroup>
 					</div>
 				</div>
 

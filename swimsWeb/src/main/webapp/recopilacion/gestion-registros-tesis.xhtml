@@ -74,6 +74,15 @@
 						value="#{recordsSelectionBean.dateFormat.format(thesisRecord.inferredIssueDate)}" />
 				</p:column>
 
+				<p:column filterMatchMode="contains"
+					sortBy="#{thesisRecord.inferredCreationDate}"
+					filterBy="#{recordsSelectionBean.dateFormat.format(thesisRecord.inferredCreationDate)}"
+					headerText="Fecha de creación">
+					<h:outputText
+						rendered="#{thesisRecord.inferredCreationDate ne null}"
+						value="#{recordsSelectionBean.dateFormat.format(thesisRecord.inferredCreationDate)}" />
+				</p:column>
+
 				<p:column>
 					<p:commandButton icon="pi pi-fw pi-plus"
 						oncomplete="PF('allRecordInfoDialog').show()"
@@ -128,9 +137,6 @@
 								<h:outputText value="#{thesisRecord.description}" />
 							</p:column>
 
-							<p:column headerText="Publicación">
-								<h:outputText value="#{thesisRecord.publisher}" />
-							</p:column>
 
 							<p:column headerText="Tutor">
 								<h:outputText value="#{thesisRecord.contributor}" />
@@ -140,6 +146,12 @@
 								<h:outputText
 									rendered="#{thesisRecord.inferredIssueDate ne null}"
 									value="#{recordsSelectionBean.dateFormat.format(thesisRecord.inferredIssueDate)}" />
+							</p:column>
+
+							<p:column headerText="Fecha de creación">
+								<h:outputText
+									rendered="#{thesisRecord.inferredCreationDate ne null}"
+									value="#{recordsSelectionBean.dateFormat.format(thesisRecord.inferredCreationDate)}" />
 							</p:column>
 
 							<p:column headerText="ID Set OAI">
@@ -267,6 +279,15 @@
 							header="Fecha de publicación" toggleable="true" collapsed="false">
 							<h:outputText
 								value="#{recordsSelectionBean.dateFormat.format(thesisSelectionBean.selectedOaiRecordDto.inferredIssueDate)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
+							rendered="#{thesisSelectionBean.selectedOaiRecordDto.inferredCreationDate ne null}"
+							header="Fecha de creación" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{recordsSelectionBean.dateFormat.format(thesisSelectionBean.selectedOaiRecordDto.inferredCreationDate)}" />
 						</p:panel>
 					</div>
 

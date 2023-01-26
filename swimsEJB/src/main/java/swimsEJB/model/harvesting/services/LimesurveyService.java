@@ -144,13 +144,13 @@ public class LimesurveyService {
 		return response.get("result").getAsInt();
 	}
 
-	public static HashMap<String, LimesurveyQuestionDto> listQuestions(int limesurveySurveyId) throws Exception {
+	public static List<LimesurveyQuestionDto> listQuestions(int limesurveySurveyId) throws Exception {
 		JsonObject response = executeHttpPostRequestWithoutSessionKey("list_questions", limesurveySurveyId);
 		JsonArray jsonArray = response.get("result").getAsJsonArray();
-		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtos = new HashMap<>();
+		List<LimesurveyQuestionDto> limesurveyQuestionDtos = new ArrayList<>();
 		jsonArray.forEach(arg0 -> {
 			JsonObject jsonObject = arg0.getAsJsonObject();
-			limesurveyQuestionDtos.put(jsonObject.get("title").getAsString(),
+			limesurveyQuestionDtos.add(
 					new LimesurveyQuestionDto(jsonObject.get("id").getAsInt(), jsonObject.get("question").getAsString(),
 							jsonObject.get("sid").getAsInt(), jsonObject.get("gid").getAsInt(),
 							jsonObject.get("title").getAsString(), jsonObject.get("parent_qid").getAsInt()));

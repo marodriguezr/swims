@@ -24,6 +24,27 @@
 
 
 				<div class="p-ui-fluid p-mt-4">
+					<p:toolbar
+						rendered="#{questionSelectionBean.showChildQuestions ne true}">
+						<p:toolbarGroup>
+							<span class="p-d-flex p-ai-center" style="gap: 1rem;"> <span
+								style="font-weight: bold">#{questionSelectionBean.linkableLimesurveyQuestionDtos.size()}
+									PREGUNTAS DE LIMESURVEY</span> <p:commandButton
+									value="Mostrar Sub Preguntas" icon="pi pi-plus-circle"
+									actionListener="#{questionSelectionBean.setShowChildQuestions(true)}"
+									update="@form"></p:commandButton>
+							</span>
+						</p:toolbarGroup>
+						<p:toolbarGroup align="right">
+							<span class="ui-input-icon-left"
+								style="display: flex; align-items: center;"> <i
+								class="pi pi-search"></i> <p:inputText id="globalFilter"
+									onkeyup="PF('linkableLimesurveyQuestions').filter()"
+									placeholder="Buscar" />
+							</span>
+						</p:toolbarGroup>
+					</p:toolbar>
+
 					<p:dataTable
 						rendered="#{questionSelectionBean.showChildQuestions ne true}"
 						value="#{questionSelectionBean.linkableLimesurveyQuestionDtos}"
@@ -35,26 +56,6 @@
 						selection="#{questionSelectionBean.selectedLinkableLimesurveyQuestionDtos}"
 						paginatorPosition="bottom"
 						emptyMessage="No exiten preguntas nuevas, todas las preguntas de la encuesta se encuentran enlazadas a una Variable de Estudio.">
-
-						<f:facet name="header">
-							<div
-								style="display: flex; justify-content: space-between; align-items: center;">
-								<span style="font-weight: bold">#{questionSelectionBean.linkableLimesurveyQuestionDtos.size()}
-									PREGUNTAS DE LIMESURVEY</span> <span class="p-d-flex p-ai-center"
-									style="gap: .1rem;"> <p:commandButton
-										value="Mostrar sub-preguntas" icon="pi pi-plus"
-										actionListener="#{questionSelectionBean.setShowChildQuestions(true)}"
-										update="@form"></p:commandButton> <span
-									class="ui-input-icon-left"
-									style="display: flex; align-items: center;"> <i
-										class="pi pi-search"></i> <p:inputText id="globalFilter"
-											onkeyup="PF('linkableLimesurveyQuestions').filter()"
-											placeholder="Buscar" />
-								</span>
-								</span>
-							</div>
-						</f:facet>
-
 
 						<p:column filterMatchMode="contains" selectionMode="multiple"
 							exportable="false"></p:column>
@@ -84,6 +85,45 @@
 						</p:column>
 
 					</p:dataTable>
+
+					<h:panelGroup layout="block"
+						rendered="#{questionSelectionBean.showChildQuestions}">
+						<p:toolbar styleClass="p-mb-3">
+							<p:toolbarGroup styleClass="p-d-flex p-ai-center"
+								style="gap: 1rem;">
+								<span style="font-weight: bold">#{questionSelectionBean.linkableLimesurveyQuestionDtos.size()
+									- questionSelectionBean.onlyParentQuestionCount} PREGUNTAS DE
+									LIMESURVEY</span>
+
+								<p:commandButton value="Mostrar Solo Preguntas"
+									icon="pi pi-minus-circle"
+									actionListener="#{questionSelectionBean.setShowChildQuestions(false)}"
+									update="@form"></p:commandButton>
+							</p:toolbarGroup>
+						</p:toolbar>
+						<ui:repeat var="compoundLinkableLimesurveyQuestionDto"
+							value="#{questionSelectionBean.compoundLinkableLimesurveyQuestionDtos}">
+							<h:panelGroup
+								rendered="#{compoundLinkableLimesurveyQuestionDto.linkableChildLimesurveyQuestionDtos ne null or compoundLinkableLimesurveyQuestionDto.linkableChildLimesurveyQuestionDtos.isEmpty() eq false}"
+								layout="block" styleClass="p-mb-3">
+								<h:outputText
+									value="#{compoundLinkableLimesurveyQuestionDto.linkableParentLimesurveyQuestionDto.question}
+									(#{compoundLinkableLimesurveyQuestionDto.linkableParentLimesurveyQuestionDto.title})
+									#{compoundLinkableLimesurveyQuestionDto.linkableChildLimesurveyQuestionDtos.size()}
+									SUB PREGUNTAS"
+									styleClass="p-text-bold p-mb-2" />
+								<p:selectManyMenu
+									value="#{compoundLinkableLimesurveyQuestionDto.selectedLimesurveyQuestionIds}"
+									showCheckbox="true" filter="true" filterMatchMode="contains">
+									<f:selectItems
+										value="#{compoundLinkableLimesurveyQuestionDto.linkableChildLimesurveyQuestionDtos}"
+										var="linkableChildLimesurveyQuestionDto"
+										itemLabel="#{linkableChildLimesurveyQuestionDto.question} (#{linkableChildLimesurveyQuestionDto.title})"
+										itemValue="#{linkableChildLimesurveyQuestionDto.id}"></f:selectItems>
+								</p:selectManyMenu>
+							</h:panelGroup>
+						</ui:repeat>
+					</h:panelGroup>
 				</div>
 				<f:facet name="footer">
 					<p:commandButton icon="pi pi-fw pi-angle-double-left"

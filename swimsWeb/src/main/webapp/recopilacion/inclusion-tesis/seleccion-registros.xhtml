@@ -246,6 +246,15 @@
 
 					<div class="p-field">
 						<p:panel
+							rendered="#{recordsSelectionBean.selectedOaiRecordDto.inferredCreationDate ne null}"
+							header="Fecha de creación" toggleable="true" collapsed="false">
+							<h:outputText
+								value="#{recordsSelectionBean.dateFormat.format(recordsSelectionBean.selectedOaiRecordDto.inferredCreationDate)}" />
+						</p:panel>
+					</div>
+
+					<div class="p-field">
+						<p:panel
 							rendered="#{recordsSelectionBean.selectedOaiRecordDto.identifiers.size() gt 1}"
 							header="Identificadores" toggleable="true" collapsed="false">
 							<p:dataScroller
