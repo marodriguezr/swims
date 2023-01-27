@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.ejb.EJB;
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -19,7 +19,7 @@ import static swimsWeb.constants.WebappPaths.HARVESTING_LIMESURVEY_QUESTION_LINK
 import static swimsWeb.constants.WebappPaths.INDEX_WEBAPP_PATH;
 
 @Named("limesurveyQuestionLinkConfirmationBean")
-@ApplicationScoped
+@SessionScoped
 public class ConfirmationBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -105,7 +105,8 @@ public class ConfirmationBean implements Serializable {
 							: questionSelectionBean.getSelectedLinkableLimesurveyQuestionDtos());
 			JSFMessages.INFO("Preguntas enlazadas de forma exitosa.");
 			clean();
-			return INDEX_WEBAPP_PATH + "?faces-redirect=true";
+//			return "";
+			return INDEX_WEBAPP_PATH;
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.ERROR("Ha ocurrido un error en el enlace de las preguntas. " + e.getMessage());

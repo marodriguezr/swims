@@ -82,7 +82,7 @@ public class ConfirmationBean implements Serializable {
 					userSelectionBean.getSelectedUserDto().getId());
 			JSFMessages.INFO("Tesis y encuestas asignadas de forma exitosa.");
 			clean();
-			return INDEX_WEBAPP_PATH + "?faces-redirec=true";
+			return INDEX_WEBAPP_PATH;
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.ERROR(

@@ -66,7 +66,7 @@ public class ConfirmationBean implements Serializable {
 					thesisSetManager.findOneThesisSetById(this.origenBean.getOaiSetId()));
 			JSFMessages.INFO("Registros creados de forma exitosa.");
 			this.clean();
-			return INDEX_WEBAPP_PATH + "?faces-redirec=true";
+			return INDEX_WEBAPP_PATH;
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
