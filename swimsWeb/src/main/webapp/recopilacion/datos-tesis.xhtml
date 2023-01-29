@@ -21,8 +21,14 @@
 						Recopilación de Datos
 					</f:facet>
 				<h:panelGroup layout="block"
-					rendered="#{thesisRecordDataCollectionBean.thesisAssignments.size() gt 0}">
-					<p>Por favor conteste las encuestas asignadas.</p>
+					rendered="#{thesisRecordDataCollectionBean.thesisAssignments.size() gt 0}" styleClass="p-mb-4">
+					<div class="p-mb-1">Por favor conteste las encuestas asignadas.</div>
+					<a target="_blank"
+						href="https://uneven-roof-d0a.notion.site/Consideraciones-7c37438464294d6ea76a7a31babcc833">
+						<p:commandButton alt="Recursos Adicionales" type="button"
+							icon="pi pi-external-link" title="Recursos adicionales"
+							value="Recursos adicionales" />
+					</a>
 				</h:panelGroup>
 
 
