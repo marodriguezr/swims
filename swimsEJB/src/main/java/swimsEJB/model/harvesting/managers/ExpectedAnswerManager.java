@@ -49,7 +49,7 @@ public class ExpectedAnswerManager {
 	}
 
 	public ExpectedAnswer createOneExpectedAnswer(String answer, String studyVariableId) throws Exception {
-		Question question = questionManager.findOneQuestionByStudyVariableId(answer);
+		Question question = questionManager.findOneQuestionByStudyVariableId(studyVariableId);
 		return createOneExpectedAnswer(answer, question);
 	}
 
