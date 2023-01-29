@@ -124,9 +124,10 @@ public class LimesurveyService {
 		}
 	}
 
-	public static JsonObject exportResponse(int limesurveySurveyId, String token) throws Exception {
+	public static HashMap<String, String> exportResponse(int limesurveySurveyId, String token, Boolean isComplete)
+			throws Exception {
 		JsonObject response = executeHttpPostRequestWithoutSessionKey("export_responses_by_token", limesurveySurveyId,
-				"json", token, null, "complete");
+				"json", token, null, isComplete == null ? isComplete ? "complete" : "incomplete" : "all");
 		if (response.get("result").isJsonObject()) {
 			throw new Exception("La encuesta no ha sido respondida aún.");
 		}
@@ -136,7 +137,19 @@ public class LimesurveyService {
 		if (jsonArray.isEmpty())
 			throw new Exception("La encuesta no ha sido respondida aún.");
 		;
-		return jsonArray.get(0).getAsJsonObject();
+
+		HashMap<String, String> answersMap = new HashMap<>();
+		for (Entry<String, JsonElement> entry : jsonArray.get(jsonArray.size() - 1).getAsJsonObject().entrySet()) {
+			if (entry.getValue().isJsonNull())
+				continue;
+			answersMap.put(entry.getKey(), entry.getValue().getAsString());
+		}
+
+		return answersMap;
+	}
+
+	public static HashMap<String, String> exportResponse(int limesurveySurveyId, String token) throws Exception {
+		return exportResponse(limesurveySurveyId, token, null);
 	}
 
 	public static int importSurvey(String base64EncodedSurvey) throws Exception {

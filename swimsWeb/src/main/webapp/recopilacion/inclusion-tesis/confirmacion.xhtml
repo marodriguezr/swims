@@ -19,7 +19,8 @@
 				<f:facet name="title">
 			Confirmación
 			</f:facet>
-				<ui:include src="#{webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
+				<ui:include
+					src="#{webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH}/steps.xhtml" />
 
 				<div class="ui-fluid p-pt-4">
 					<div class="p-field">
@@ -31,7 +32,7 @@
 				<f:facet name="footer">
 					<p:commandButton icon="pi pi-fw pi-angle-double-left"
 						value="Regresar" styleClass="ui-button-secondary"
-						action="#{recordsSelectionBean.loadPage()}" />
+						action="#{recordsSelectionBean.loadPage(true)}" />
 					<p:commandButton
 						action="#{confirmationBean.createManyOaiRecordsAction()}"
 						styleClass="p-ml-2" icon="pi pi-fw pi-save"

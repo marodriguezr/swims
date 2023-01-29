@@ -71,8 +71,7 @@ public class RecordsSelectionBean implements Serializable {
 			}
 		});
 		navBarBean.setUpdatableFormString(":form");
-		if (thesisRecordDtos == null)
-			loadThesisRecordDtos();
+
 		return null;
 	}
 
@@ -94,7 +93,7 @@ public class RecordsSelectionBean implements Serializable {
 
 	}
 
-	public String loadPage() {
+	public String loadPage(boolean avoidThesisRecordRefetching) {
 		if (this.fechaBean.getFrom() == null || this.fechaBean.getUntil() == null) {
 			JSFMessages.WARN("Debe seleccionar fechas entre las cuales se extraerán los datos.");
 			return null;
@@ -110,7 +109,13 @@ public class RecordsSelectionBean implements Serializable {
 			return null;
 		}
 
+		if (!avoidThesisRecordRefetching)
+			loadThesisRecordDtos();
 		return HARVESTING_THESIS_RECORDS_INCLUSION_RECORDS_SELECTION_WEBAPP_PATH + "?faces-redirect=true";
+	}
+
+	public String loadPage() {
+		return loadPage(false);
 	}
 
 	public void autoSelectOaiRecordDtos() {

@@ -10,9 +10,6 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvesting.dtos.LimesurveyQuestionDto;
 import swimsEJB.model.harvesting.entities.LimesurveyAnswer;
@@ -133,8 +130,8 @@ public class LimesurveySurveyAssignmentManager {
 	 * @throws Exception
 	 */
 	public LimesurveySurveyAssignment dispatchSurvey(LimesurveySurveyAssignment surveyAssignment) throws Exception {
-		JsonObject response = LimesurveyService.exportResponse(surveyAssignment.getLimesurveySurveyId(),
-				surveyAssignment.getLimesurveySurveyToken());
+		HashMap<String, String> responsesMap = LimesurveyService.exportResponse(
+				surveyAssignment.getLimesurveySurveyId(), surveyAssignment.getLimesurveySurveyToken(), true);
 
 		List<LimesurveyAnswer> expectedAnswers = new ArrayList<>();
 		List<LimesurveyUnexpectedAnswer> unexpectedAnswers = new ArrayList<>();
@@ -148,25 +145,21 @@ public class LimesurveySurveyAssignmentManager {
 				.listQuestions(surveyAssignment.getLimesurveySurveyId());
 
 		for (LimesurveyQuestion question : questionsMap.values()) {
-			JsonElement element = response.get(question.getLimesurveyQuestionTitle() + "[other]");
-			if (element != null) {
-				if (element.isJsonNull())
-					continue;
-				if (element.getAsString().isBlank())
+			String answer = responsesMap.get(question.getLimesurveyQuestionTitle() + "[other]");
+			if (answer != null) {
+				if (answer.isBlank())
 					continue;
 				unexpectedAnswers.add(limesurveyUnexpectedAnswerManager.createOneLimesurveyUnexpectedAnswer(question,
-						element.getAsString(), surveyAssignment));
+						answer, surveyAssignment));
 				continue;
 			}
 
-			element = response.get(question.getLimesurveyQuestionTitle());
-			if (element != null) {
-				if (element.isJsonNull())
+			answer = responsesMap.get(question.getLimesurveyQuestionTitle());
+			if (answer != null) {
+				if (answer.isBlank())
 					continue;
-				if (element.getAsString().isBlank())
-					continue;
-				expectedAnswers.add(limesurveyExpectedAnswerManager.createOneLimesurveyExpectedAnswer(question,
-						element.getAsString(), surveyAssignment));
+				expectedAnswers.add(limesurveyExpectedAnswerManager.createOneLimesurveyExpectedAnswer(question, answer,
+						surveyAssignment));
 				continue;
 			}
 
@@ -181,15 +174,13 @@ public class LimesurveySurveyAssignmentManager {
 					.get(currentQuestionLimesurveyQuestionDto.getSid() + "0" + parentLimesurveyQuestionDto.getTitle());
 			if (parentQuestion == null)
 				continue;
-			element = response.get(
+			answer = responsesMap.get(
 					parentQuestion.getLimesurveyQuestionTitle() + "[" + question.getLimesurveyQuestionTitle() + "]");
-			if (element != null) {
-				if (element.isJsonNull())
+			if (answer != null) {
+				if (answer.isBlank())
 					continue;
-				if (element.getAsString().isBlank())
-					continue;
-				expectedAnswers.add(limesurveyExpectedAnswerManager.createOneLimesurveyExpectedAnswer(question,
-						element.getAsString(), surveyAssignment));
+				expectedAnswers.add(limesurveyExpectedAnswerManager.createOneLimesurveyExpectedAnswer(question, answer,
+						surveyAssignment));
 				continue;
 			}
 		}
