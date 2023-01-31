@@ -25,7 +25,7 @@
 
 				<div class="ui-fluid p-mt-4">
 					<p:dataTable value="#{thesisSelectionBean.oaiRecords}"
-						var="oaiRecord" reflow="true" rows="5" paginator="true"
+						var="oaiRecord" reflow="true" rows="6" paginator="true"
 						id="availableOaiRecords" rowSelectMode="add"
 						rowKey="#{oaiRecord.id}" widgetVar="availableOaiRecords"
 						selection="#{thesisSelectionBean.selectedOaiRecords}"
@@ -68,8 +68,12 @@
 						<p:column filterMatchMode="contains"
 							sortBy="#{oaiRecord.description}"
 							filterBy="#{oaiRecord.description}" headerText="Descripción">
-							<h:outputText value="#{oaiRecord.description}" />
+							<h:outputText rendered="#{oaiRecord.description.length() le 256}"
+								value="#{oaiRecord.description}" />
+							<h:outputText rendered="#{oaiRecord.description.length() gt 256}"
+								value="Campo de texto de extensión mayor a lo permitido. Revise todos los detalles del registro." />
 						</p:column>
+
 
 						<p:column filterMatchMode="contains"
 							sortBy="#{oaiRecord.inferredIssueDate}"

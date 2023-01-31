@@ -50,43 +50,39 @@
 							exportable="false"></p:column>
 
 						<p:column filterMatchMode="contains"
-							sortBy="#{oaiRecordDto.titles.get(0)}"
-							filterBy="#{oaiRecordDto.titles.get(0)}" headerText="Titulo">
-							<a target="_blank"
-								href="#{recordsSelectionBean.getURLFromOaiRecordDto(oaiRecordDto)}"><h:outputText
-									rendered="#{oaiRecordDto.titles.size() ge 1}"
-									value="#{oaiRecordDto.titles.get(0)}" /></a>
-							<h:outputText rendered="#{oaiRecordDto.titles.size() eq 0}"
-								value="Registro sin título" />
+							sortBy="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.titles)}"
+							filterBy="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.titles)}"
+							headerText="Titulo">
+							<a target="_blank" href="#{oaiRecordDto.url}"><h:outputText
+									value="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.titles)}" /></a>
 						</p:column>
 
 						<p:column filterMatchMode="contains"
-							sortBy="#{oaiRecordDto.creators.get(0)}"
-							filterBy="#{oaiRecordDto.creators.get(0)}" headerText="Autor">
-							<h:outputText rendered="#{oaiRecordDto.creators.size() ge 1}"
-								value="#{oaiRecordDto.creators.get(0)}" />
-							<h:outputText rendered="#{oaiRecordDto.creators.size() eq 0}"
-								value="Registro sin autor" />
+							sortBy="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.creators)}"
+							filterBy="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.creators)}"
+							headerText="Autor">
+							<h:outputText
+								value="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.creators)}" />
 						</p:column>
 
 						<p:column filterMatchMode="contains"
-							sortBy="#{oaiRecordDto.contributors.get(0)}"
-							filterBy="#{oaiRecordDto.contributors.get(0)}"
+							sortBy="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.contributors)}"
+							filterBy="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.contributors)}"
 							headerText="Director">
-							<h:outputText rendered="#{oaiRecordDto.contributors.size() ge 1}"
-								value="#{oaiRecordDto.contributors.get(0)}" />
-							<h:outputText rendered="#{oaiRecordDto.contributors.size() eq 0}"
-								value="Registro sin director" />
+							<h:outputText
+								value="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.contributors)}" />
 						</p:column>
 
 						<p:column filterMatchMode="contains"
-							sortBy="#{oaiRecordDto.descriptions.get(0)}"
-							filterBy="#{oaiRecordDto.descriptions.get(0)}"
+							sortBy="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.descriptions)}"
+							filterBy="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.descriptions)}"
 							headerText="Descripción">
-							<h:outputText rendered="#{oaiRecordDto.descriptions.size() ge 1}"
-								value="#{oaiRecordDto.descriptions.get(0)}" />
-							<h:outputText rendered="#{oaiRecordDto.descriptions.size() eq 0}"
-								value="Registro sin descripción" />
+							<h:outputText
+								rendered="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.descriptions).length() le 256}"
+								value="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.descriptions)}" />
+							<h:outputText
+								rendered="#{recordsSelectionBean.getFirstObjectFromListAsString(oaiRecordDto.descriptions).length() gt 256}"
+								value="Campo de texto de extensión mayor a lo permitido. Revise todos los detalles del registro." />
 						</p:column>
 
 						<p:column filterMatchMode="contains"

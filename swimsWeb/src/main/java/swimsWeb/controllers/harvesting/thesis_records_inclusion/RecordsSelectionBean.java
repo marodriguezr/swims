@@ -133,6 +133,12 @@ public class RecordsSelectionBean implements Serializable {
 		return thesisRecordManager.getURLFromThesisRecordDto(thesisRecordDto);
 	}
 
+	public String getFirstObjectFromListAsString(List<Object> objects) {
+		if (objects.isEmpty())
+			return "Registro sin dato disponible.";
+		return objects.get(0).toString();
+	}
+
 	public List<ThesisRecordDto> getOaiRecordDtos() {
 		return thesisRecordDtos;
 	}

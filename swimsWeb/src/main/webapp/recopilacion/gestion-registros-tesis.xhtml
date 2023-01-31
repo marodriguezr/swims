@@ -63,7 +63,12 @@
 				<p:column filterMatchMode="contains"
 					sortBy="#{thesisRecord.description}"
 					filterBy="#{thesisRecord.description}" headerText="Descripción">
-					<h:outputText value="#{thesisRecord.description}" />
+					<h:outputText
+						rendered="#{thesisRecord.description.length() le 256}"
+						value="#{thesisRecord.description}" />
+					<h:outputText
+						rendered="#{thesisRecord.description.length() gt 256}"
+						value="Campo de texto de extensión mayor a lo permitido. Revise todos los detalles del registro." />
 				</p:column>
 
 				<p:column filterMatchMode="contains"
