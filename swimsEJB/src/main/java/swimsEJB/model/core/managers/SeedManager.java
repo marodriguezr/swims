@@ -237,14 +237,14 @@ public class SeedManager {
 		StudyVariableClass naturalEnvironmentImpactIndicatorsStudyVariableClass = studyVariableClassManager
 				.createOneStudyVariableClass("indicadoresImpactoMedioambiental",
 						"Indicadores de Impacto Medioambiental");
-		StudyVariableClass otherIndicatorsStudyVariableClass = studyVariableClassManager
-				.createOneStudyVariableClass("otrosIndicadores", "Otros Indicadores");
 		StudyVariableClass successFactorsStudyVariableClass = studyVariableClassManager
 				.createOneStudyVariableClass("factoresExito", "Factores de Éxito");
 		StudyVariableClass failureFactorsStudyVariableClass = studyVariableClassManager
 				.createOneStudyVariableClass("factoresFracaso", "Factores de Fracaso");
 		StudyVariableClass devResourcesStudyVariableClass = studyVariableClassManager
 				.createOneStudyVariableClass("recursosDesarrollo", "Recursos de Desarrollo");
+		StudyVariableClass informativeThesisDataStudyVariableClass = studyVariableClassManager
+				.createOneStudyVariableClass("datosInformativosTesis", "Datos Informativos del Proyecto de Tesis");
 		/**
 		 * 0.2. Study Variables
 		 */
@@ -330,12 +330,6 @@ public class SeedManager {
 				"rlcnMedioambiente", "Relación con áreas del medio ambiente", false, false, true, false,
 				naturalEnvironmentImpactIndicatorsStudyVariableClass);
 		impactStudyVariables.add(naturalEnvironmentRelatedStudyVariable);
-		/**
-		 * 0.2.1.4. Other Impact Indicators
-		 */
-		StudyVariable startDateStudyVariable = studyVariableManager.createOneStudyVariable("fechaInicio",
-				"Fecha de inicio del proyecto", false, true, false, false, otherIndicatorsStudyVariableClass);
-		impactStudyVariables.add(startDateStudyVariable);
 
 		/*
 		 * 0.2.4. Factors
@@ -456,6 +450,24 @@ public class SeedManager {
 		devResourcesStudyVariables.add(devMethodologyStudyVariable);
 
 		/**
+		 * 0.2.6. Informative Thesis Data
+		 */
+		List<StudyVariable> informativeDataStudyVariables = new ArrayList<>();
+		/**
+		 * 0.2.6.1. Project Start Date
+		 */
+		StudyVariable startDateStudyVariable = studyVariableManager.createOneStudyVariable("fechaInicio",
+				"Fecha de Inicio del Proyecto de Tesis", false, true, false, false,
+				informativeThesisDataStudyVariableClass);
+		informativeDataStudyVariables.add(startDateStudyVariable);
+		/**
+		 * 0.2.6.2. Related Topics
+		 */
+		StudyVariable relatedTopicsStudyVariable = studyVariableManager.createOneStudyVariable("tematicaRelacionada",
+				"Temática relacionada", false, false, true, false, informativeThesisDataStudyVariableClass);
+		informativeDataStudyVariables.add(relatedTopicsStudyVariable);
+
+		/**
 		 * 1. Survey creation
 		 */
 		/**
@@ -479,6 +491,14 @@ public class SeedManager {
 		int devResourcesSurveyId = LimesurveyService
 				.importSurvey(new String(encoder.encode(inputStream.readAllBytes()), StandardCharsets.UTF_8));
 		LimesurveyService.activateSurveyWithParticipants(devResourcesSurveyId);
+		/**
+		 * 1.4 Informative Thesis Data Survey
+		 */
+		inputStream = ResourceUtilities.getResourceInputStream("informative-thesis-data_limesurvey-survey.lss");
+		int informativeThesisDataSurveyId = LimesurveyService
+				.importSurvey(new String(encoder.encode(inputStream.readAllBytes()), StandardCharsets.UTF_8));
+		LimesurveyService.activateSurveyWithParticipants(informativeThesisDataSurveyId);
+
 		/**
 		 * 2. Limesurvey Questions
 		 */
@@ -528,6 +548,38 @@ public class SeedManager {
 			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), studyVariable);
 		}
+
+//		informativeDataStudyVariables
+		/**
+		 * 2.4. Informative Thesis Data
+		 */
+		HashMap<String, LimesurveyQuestionDto> informativeThesisDataSurveyQuestionDtos = new HashMap<>();
+		for (LimesurveyQuestionDto limesurveyQuestionDto : LimesurveyService
+				.listQuestions(informativeThesisDataSurveyId).values()) {
+			informativeThesisDataSurveyQuestionDtos.put(limesurveyQuestionDto.getTitle(), limesurveyQuestionDto);
+		}
+		for (StudyVariable studyVariable : informativeDataStudyVariables) {
+			if (informativeThesisDataSurveyQuestionDtos.get(studyVariable.getId()) == null)
+				throw new Exception("La pregunta correspondiente al recurso " + studyVariable.getName()
+						+ " no se encuentra registrada.");
+			LimesurveyQuestionDto limesurveyQuestionDto = informativeThesisDataSurveyQuestionDtos
+					.get(studyVariable.getId());
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), studyVariable);
+		}
+		/**
+		 * 2.4.1. Related Topics
+		 */
+		LimesurveyQuestionDto relatedTopicQuestion = informativeThesisDataSurveyQuestionDtos
+				.get(relatedTopicsStudyVariable.getId());
+		List<LimesurveyQuestionDto> relatedTopicSurveyQuestionDtos = informativeThesisDataSurveyQuestionDtos.values()
+				.stream().filter(arg0 -> arg0.getParentQid() == relatedTopicQuestion.getLimesurveyQuestionId())
+				.collect(Collectors.toList());
+		for (LimesurveyQuestionDto limesurveyQuestionDto : relatedTopicSurveyQuestionDtos) {
+			limesurveyQuestionManager.createOneQuestion(limesurveyQuestionDto.getTitle(),
+					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), relatedTopicsStudyVariable);
+		}
+
 		/**
 		 * 2.3. Development Resources
 		 */
