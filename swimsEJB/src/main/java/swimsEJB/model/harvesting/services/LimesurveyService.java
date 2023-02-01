@@ -97,23 +97,16 @@ public class LimesurveyService {
 		return listAllSurveys().stream().filter(arg0 -> arg0.isActive()).collect(Collectors.toList());
 	}
 
-	/**
-	 * 
-	 * @param limesurveySurveyId
-	 * @param firstName
-	 * @param lastName
-	 * @param email
-	 * @return Access token that the user is meant to use to access the survey.
-	 */
-	public static String addParticipant(int limesurveySurveyId, String email) throws Exception {
+	public static String addParticipant(String sessionKey, int limesurveySurveyId, String email) throws Exception {
 		HashMap<String, String> map = new HashMap<>();
 		map.put("email", email);
 
 		List<HashMap<String, String>> hashMaps = new ArrayList<>();
 		hashMaps.add(map);
 		try {
-			JsonObject response = executeHttpPostRequestWithoutSessionKey("add_participants", limesurveySurveyId,
-					hashMaps);
+			JsonObject response = sessionKey == null
+					? executeHttpPostRequestWithoutSessionKey("add_participants", limesurveySurveyId, hashMaps)
+					: executeHttpPostRequest("add_participants", sessionKey, limesurveySurveyId, hashMaps);
 			JsonArray jsonArray = response.get("result").getAsJsonArray();
 			return jsonArray.get(0).getAsJsonObject().get("token").getAsString();
 		} catch (Exception e) {
@@ -124,10 +117,17 @@ public class LimesurveyService {
 		}
 	}
 
-	public static HashMap<String, String> exportResponse(int limesurveySurveyId, String token, Boolean isComplete)
-			throws Exception {
-		JsonObject response = executeHttpPostRequestWithoutSessionKey("export_responses_by_token", limesurveySurveyId,
-				"json", token, null, isComplete == null ? isComplete ? "complete" : "incomplete" : "all");
+	public static String addParticipant(int limesurveySurveyId, String email) throws Exception {
+		return addParticipant(null, limesurveySurveyId, email);
+	}
+
+	public static HashMap<String, String> exportResponse(String sessionKey, int limesurveySurveyId, String token,
+			Boolean isComplete) throws Exception {
+		JsonObject response = sessionKey == null
+				? executeHttpPostRequestWithoutSessionKey("export_responses_by_token", limesurveySurveyId, "json",
+						token, null, isComplete == null ? isComplete ? "complete" : "incomplete" : "all")
+				: executeHttpPostRequest("export_responses_by_token", sessionKey, limesurveySurveyId, "json", token,
+						null, isComplete == null ? isComplete ? "complete" : "incomplete" : "all");
 		if (response.get("result").isJsonObject()) {
 			throw new Exception("La encuesta no ha sido respondida aún.");
 		}
@@ -148,8 +148,18 @@ public class LimesurveyService {
 		return answersMap;
 	}
 
+	public static HashMap<String, String> exportResponse(int limesurveySurveyId, String token, Boolean isComplete)
+			throws Exception {
+		return exportResponse(null, limesurveySurveyId, token, isComplete);
+	}
+
 	public static HashMap<String, String> exportResponse(int limesurveySurveyId, String token) throws Exception {
-		return exportResponse(limesurveySurveyId, token, null);
+		return exportResponse(null, limesurveySurveyId, token, null);
+	}
+
+	public static HashMap<String, String> exportResponse(String sessionKey, int limesurveySurveyId, String token)
+			throws Exception {
+		return exportResponse(sessionKey, limesurveySurveyId, token, null);
 	}
 
 	public static int importSurvey(String base64EncodedSurvey) throws Exception {
@@ -157,8 +167,11 @@ public class LimesurveyService {
 		return response.get("result").getAsInt();
 	}
 
-	public static HashMap<String, LimesurveyQuestionDto> listQuestions(int limesurveySurveyId) throws Exception {
-		JsonObject response = executeHttpPostRequestWithoutSessionKey("list_questions", limesurveySurveyId);
+	public static HashMap<String, LimesurveyQuestionDto> listQuestions(String sessionKey, int limesurveySurveyId)
+			throws Exception {
+		JsonObject response = sessionKey == null
+				? executeHttpPostRequestWithoutSessionKey("list_questions", limesurveySurveyId)
+				: executeHttpPostRequest("list_questions", sessionKey, limesurveySurveyId);
 		JsonArray jsonArray = response.get("result").getAsJsonArray();
 		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtosMap = new HashMap<>();
 		jsonArray.forEach(arg0 -> {
@@ -174,6 +187,10 @@ public class LimesurveyService {
 							jsonObject.get("title").getAsString(), jsonObject.get("parent_qid").getAsInt()));
 		});
 		return limesurveyQuestionDtosMap;
+	}
+
+	public static HashMap<String, LimesurveyQuestionDto> listQuestions(int limesurveySurveyId) throws Exception {
+		return listQuestions(null, limesurveySurveyId);
 	}
 
 	public static void activateSurvey(int surveyId) throws Exception {

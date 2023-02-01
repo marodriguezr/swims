@@ -16,6 +16,7 @@ import swimsEJB.model.harvesting.dtos.ThesisRecordAssignedLimesurveySurveyIdsDto
 import swimsEJB.model.harvesting.entities.ThesisRecord;
 import swimsEJB.model.harvesting.entities.views.UndispatchedSurveyAssignment;
 import swimsEJB.model.harvesting.entities.views.UndispatchedThesisAssignment;
+import swimsEJB.model.harvesting.entities.LimesurveySurveyAssignment;
 import swimsEJB.model.harvesting.entities.ThesisAssignment;
 import swimsEJB.model.harvesting.services.LimesurveyService;
 
@@ -122,22 +123,30 @@ public class ThesisAssignmentManager {
 		User user = userManager.findOneUserById2(userId);
 		if (user == null)
 			throw new Exception("El usuario especificado no está registrado.");
+		String sessionKey = LimesurveyService.getSessionKey();
 
 		List<ThesisAssignment> thesisAssignments = new ArrayList<>();
 		for (ThesisRecordAssignedLimesurveySurveyIdsDto thesisRecordAssignedLimesurveySurveyIds : assignedLimesurveySurveyIds) {
+			ThesisAssignment thesisAssignment = findOneThesisAssignmentByThesisRecordIdAndUserId(
+					thesisRecordAssignedLimesurveySurveyIds.getThesisRecord().getId(), userId);
+			thesisAssignment = thesisAssignment == null
+					? createOneThesisAssignment(user.getId(),
+							thesisRecordAssignedLimesurveySurveyIds.getThesisRecord().getId())
+					: thesisAssignment;
+			List<LimesurveySurveyAssignment> limesurveySurveyAssignments = thesisAssignment
+					.getLimesurveySurveyAssignments() == null ? new ArrayList<>()
+							: new ArrayList<>(thesisAssignment.getLimesurveySurveyAssignments());
 			for (int limesurveySurveyId : thesisRecordAssignedLimesurveySurveyIds.getAssignedLimesurveySurveyIds()) {
-
-				ThesisAssignment thesisAssignment = findOneThesisAssignmentByThesisRecordIdAndUserId(
-						thesisRecordAssignedLimesurveySurveyIds.getThesisRecord().getId(), userId);
-				thesisAssignment = thesisAssignment == null
-						? createOneThesisAssignment(user.getId(),
-								thesisRecordAssignedLimesurveySurveyIds.getThesisRecord().getId())
-						: thesisAssignment;
-				limesurveySurveyAssignmentManager.createOneSurveyAssignment(limesurveySurveyId,
-						LimesurveyService.addParticipant(limesurveySurveyId, user.getEmail()), thesisAssignment);
-				thesisAssignments.add(thesisAssignment);
+				limesurveySurveyAssignments
+						.add(limesurveySurveyAssignmentManager.createOneSurveyAssignment(limesurveySurveyId,
+								LimesurveyService.addParticipant(sessionKey, limesurveySurveyId, user.getEmail()),
+								thesisAssignment));
 			}
+			thesisAssignments.add(thesisAssignment);
+			thesisAssignment.setLimesurveySurveyAssignments(limesurveySurveyAssignments);
 		}
+
+		LimesurveyService.releaseSessionKey(sessionKey);
 		return thesisAssignments;
 	}
 

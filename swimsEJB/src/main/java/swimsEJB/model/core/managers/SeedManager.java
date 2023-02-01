@@ -549,7 +549,6 @@ public class SeedManager {
 					limesurveyQuestionDto.getSid(), limesurveyQuestionDto.getId(), studyVariable);
 		}
 
-//		informativeDataStudyVariables
 		/**
 		 * 2.4. Informative Thesis Data
 		 */

@@ -130,7 +130,9 @@ public class LimesurveySurveyAssignmentManager {
 	 * @throws Exception
 	 */
 	public LimesurveySurveyAssignment dispatchSurvey(LimesurveySurveyAssignment surveyAssignment) throws Exception {
-		HashMap<String, String> responsesMap = LimesurveyService.exportResponse(
+		String sessionKey = LimesurveyService.getSessionKey();
+
+		HashMap<String, String> responsesMap = LimesurveyService.exportResponse(sessionKey,
 				surveyAssignment.getLimesurveySurveyId(), surveyAssignment.getLimesurveySurveyToken(), true);
 
 		List<LimesurveyAnswer> expectedAnswers = new ArrayList<>();
@@ -141,8 +143,8 @@ public class LimesurveySurveyAssignmentManager {
 				.findAllQuestionsByLimesurveySurveyId(surveyAssignment.getLimesurveySurveyId())) {
 			questionsMap.put(question.getId(), question);
 		}
-		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtosMap = LimesurveyService
-				.listQuestions(surveyAssignment.getLimesurveySurveyId());
+		HashMap<String, LimesurveyQuestionDto> limesurveyQuestionDtosMap = LimesurveyService.listQuestions(sessionKey,
+				surveyAssignment.getLimesurveySurveyId());
 
 		for (LimesurveyQuestion question : questionsMap.values()) {
 			String answer = responsesMap.get(question.getLimesurveyQuestionTitle() + "[other]");
@@ -192,6 +194,7 @@ public class LimesurveySurveyAssignmentManager {
 		surveyAssignment.setLimesurveyAnswers(expectedAnswers);
 		surveyAssignment.setLimesurveyUnexpectedAnswers(unexpectedAnswers);
 
+		LimesurveyService.releaseSessionKey(sessionKey);
 		return surveyAssignment;
 	}
 
