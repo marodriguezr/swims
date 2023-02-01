@@ -119,7 +119,7 @@ public class ThesisRecordDataCollectionBean implements Serializable {
 			limesurveySurveyAssignmentManager.dispatchSurvey(surveyAssignment);
 			loadThesisAssignments();
 //			this.thesisAssignments.removeIf(arg0 -> arg0.getId() == dispatchedSurveyAssignment.getId());
-			JSFMessages.INFO("Ecuesta registrada de forma exitosa.");
+			JSFMessages.INFO("Encuesta registrada de forma exitosa.");
 		} catch (Exception e) {
 			// TODO: handle exception
 			JSFMessages.ERROR(e.getMessage());
