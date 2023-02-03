@@ -1,0 +1,18 @@
+<ui:composition template="/WEB-INF/tableau-wdc_template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="title">Inicio</ui:define>
+
+	<ui:define name="script">
+		<h:outputScript library="js" name="wdc.js"></h:outputScript>
+	</ui:define>
+
+	<ui:define name="content">
+		<button type="button" id="submitButton" class="btn btn-success"
+			style="margin: 10px;">Get Earthquake Data!</button>
+	</ui:define>
+</ui:composition>
