@@ -10,14 +10,16 @@
 	<script
 		src="https://connectors.tableau.com/libs/tableauwdc-2.3.latest.js"
 		type="text/javascript"></script>
-	<script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
-		type="text/javascript"></script>
 	<ui:insert name="script" />
+	<h:outputStylesheet library="css" name="primeflex.min.css" />
 </h:head>
 <h:body>
 
-	<p:card>
+	<ui:insert name="navigationBar">
+		<ui:include src="/WEB-INF/components/navbar.xhtml" />
+	</ui:insert>
+
+	<p:card styleClass="p-mt-2">
 		<f:facet name="header">
 			<img
 				src="#{constantsBean.BASE_URL}/resources/assets/tableau-logo.png"

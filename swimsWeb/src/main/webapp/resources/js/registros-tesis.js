@@ -47,7 +47,7 @@
 
     const tableSchema = {
       id: "thesisRecord",
-      alias: "Thesis records",
+      alias: "Thesis Records",
       columns: cols,
     };
 

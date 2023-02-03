@@ -1,0 +1,99 @@
+<div xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<h:form>
+		<p:menubar>
+			<p:menuitem icon="pi pi-fw pi-home" value="Inicio"
+				action="/index?faces-redirect=true"></p:menuitem>
+			<p:submenu
+				rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_SET_SELECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH, webappPathsBean.HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH)}"
+				label="Recopilación" icon="pi pi-fw pi-book">
+				<p:menuitem value="Administración de Sets de Tesis"
+					icon="pi pi-fw pi-cog"
+					action="#{thesisSetsManagementBean.loadPage()}"
+					rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_SETS_MANAGEMENT_WEBAPP_PATH)}">
+				</p:menuitem>
+				<p:menuitem value="Administración de Variables de Estudio"
+					icon="pi pi-tags"
+					action="#{studyVariableManagementBean.loadPage()}"
+					rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_STUDY_VARIABLE_MANAGEMENT_WEBAPP_PATH)}">
+				</p:menuitem>
+				<p:menuitem value="Enlace de Preguntas de Limesurvey"
+					icon="pi pi-question" action="#{surveySelectionBean.loadPage()}"
+					rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_LIMESURVEY_QUESTION_LINK_WEBAPP_PATH)}">
+				</p:menuitem>
+				<p:submenu label="Registros de Tesis" icon="pi pi-copy"
+					rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH, webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}">
+					<p:menuitem
+						rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORDS_INCLUSION_WEBAPP_PATH)}"
+						icon="pi pi-fw pi-plus" value="Inclusión de Registros de Tesis"
+						action="#{setSelectionBean.loadPage()}"></p:menuitem>
+					<p:menuitem
+						rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_MANAGEMENT_WEBAPP_PATH)}"
+						icon="pi pi-fw pi-eye" value="Gestión de Registros de Tesis"
+						action="#{thesisRecordsManagementBean.loadPage()}"></p:menuitem>
+				</p:submenu>
+				<p:menuitem
+					rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_ASSIGNMENT_WEBAPP_PATH)}"
+					icon="pi pi-fw pi-inbox" value="Asignación de Registros de Tesis"
+					action="#{userSelectionBean.loadPage()}"></p:menuitem>
+				<p:menuitem
+					rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.HARVESTING_THESIS_RECORD_DATA_COLLECTION_WEBAPP_PATH)}"
+					icon="pi pi-fw pi-list" value="Recopilación de Datos de Tesis"
+					action="#{thesisRecordDataCollectionBean.loadPage()}"></p:menuitem>
+			</p:submenu>
+			<p:submenu
+				rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.AUTH_USER_MANAGEMENT_WEBAPP_PATH, webappPathsBean.AUTH_GROUP_MANAGEMENT_WEBAPP_PATH, webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}"
+				label="Autenticación y Autorización" icon="pi pi-fw pi-cog">
+				<p:menuitem icon="pi pi-fw pi-user"
+					value="Administración de Usuarios"
+					action="#{userManagementBean.loadPage()}"
+					rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_USER_MANAGEMENT_WEBAPP_PATH)}">
+				</p:menuitem>
+				<p:menuitem icon="pi pi-fw pi-users"
+					value="Administración de Grupos"
+					action="#{groupManagementBean.loadPage()}"
+					rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_GROUP_MANAGEMENT_WEBAPP_PATH)}">
+				</p:menuitem>
+				<p:menuitem value="Administración de Permisos"
+					icon="pi pi-fw pi-id-card"
+					action="#{permissionManagementBean.loadPage()}"
+					rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}">
+				</p:menuitem>
+			</p:submenu>
+
+			<p:menuitem icon="pi pi-refresh" value="Refrescar"
+				rendered="#{navBarBean.onRefreshEventListener ne null and navBarBean.updatableFormString ne null}"
+				action="#{navBarBean.onRefreshEventListener.onRefreshEvent()}"
+				update="#{navBarBean.updatableFormString}"></p:menuitem>
+			<f:facet name="options">
+				<div style="display: flex; align-items: center;">
+					<h:outputText value="#{signInBean.signedUserDto.firstName}"
+						rendered="#{signInBean.signedUserDto ne null}"
+						styleClass="p-text-bold p-mr-2" />
+					<p:commandButton id="dynaButton" type="button"
+						icon="pi pi-angle-down" />
+				</div>
+				<p:menu overlay="true" trigger="dynaButton" my="right top"
+					at="right bottom">
+					<p:submenu label="Cuenta"
+						rendered="#{signInBean.signedUserDto ne null}">
+						<p:menuitem value="Actualizar contraseña"
+							action="#{updatePasswordBean.loadPage()}"
+							icon="pi pi-fw pi-shield" />
+					</p:submenu>
+
+					<p:submenu label="Sesión">
+						<p:menuitem action="#{authBean.signOutAction()}"
+							value="Cerrar Sesión" icon="pi pi-fw pi-sign-out"
+							rendered="#{signInBean.signedUserDto ne null}" />
+						<p:menuitem action="#{signInBean.loadPage()}"
+							value="Iniciar Sesión" icon="pi pi-fw pi-sign-in"
+							rendered="#{signInBean.signedUserDto eq null}" />
+					</p:submenu>
+				</p:menu>
+			</f:facet>
+		</p:menubar>
+	</h:form>
+</div>
