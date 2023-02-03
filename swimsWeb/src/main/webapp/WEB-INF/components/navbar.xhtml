@@ -43,6 +43,11 @@
 					icon="pi pi-fw pi-list" value="Recopilación de Datos de Tesis"
 					action="#{thesisRecordDataCollectionBean.loadPage()}"></p:menuitem>
 			</p:submenu>
+			<p:submenu label="Recursos de Análisis" icon="pi pi-folder">
+				<p:menuitem icon="pi pi-folder-open" value="Tableau WDC"
+					action="/tableau-wdc/index">
+				</p:menuitem>
+			</p:submenu>
 			<p:submenu
 				rendered="#{authBean.verifyRenderabilityByOneWebappPath(webappPathsBean.AUTH_USER_MANAGEMENT_WEBAPP_PATH, webappPathsBean.AUTH_GROUP_MANAGEMENT_WEBAPP_PATH, webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}"
 				label="Autenticación y Autorización" icon="pi pi-fw pi-cog">
@@ -62,6 +67,7 @@
 					rendered="#{authBean.verifyRenderabilityByAllWebappPaths(webappPathsBean.AUTH_PERMISSION_MANAGEMENT_WEBAPP_PATH)}">
 				</p:menuitem>
 			</p:submenu>
+
 
 			<p:menuitem icon="pi pi-refresh" value="Refrescar"
 				rendered="#{navBarBean.onRefreshEventListener ne null and navBarBean.updatableFormString ne null}"
