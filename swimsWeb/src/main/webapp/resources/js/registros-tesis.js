@@ -37,11 +37,11 @@
       },
       {
         id: "issue_date",
-        dataType: tableau.dataTypeEnum.string,
+        dataType: tableau.dataTypeEnum.date,
       },
       {
         id: "creation_date",
-        dataType: tableau.dataTypeEnum.string,
+        dataType: tableau.dataTypeEnum.date,
       },
     ];
 

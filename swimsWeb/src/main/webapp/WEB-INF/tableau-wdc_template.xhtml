@@ -17,8 +17,22 @@
 </h:head>
 <h:body>
 
-	<!-- content -->
-	<ui:insert name="content" />
+	<p:card>
+		<f:facet name="header">
+			<img
+				src="#{constantsBean.BASE_URL}/resources/assets/tableau-logo.png"
+				alt="Tableau logo" style="width: 5vw; padding: 1rem;" />
+		</f:facet>
+		<f:facet name="title">
+        Tableau Web Data Connector
+    </f:facet>
+		<f:facet name="subtitle">
+			<ui:insert name="title">SWIMS</ui:insert>
+		</f:facet>
+
+		<p:commandButton icon="pi pi-cloud-download" value="Obtener Datos"
+			onclick="tableau.submit()" type="button"></p:commandButton>
+	</p:card>
 
 </h:body>
 </html>

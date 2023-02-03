@@ -22,4 +22,6 @@ public final class SystemEnvironmentVariables {
 	public static final String LIMESURVEY_REMOTECONTROL_PROTOCOL = LIMESURVEY_REMOTECONTROL_USES_SSL ? "https://"
 			: "http://";
 	public static final String LIMESURVEY_PROTOCOL = LIMESURVEY_USES_SSL ? "https://" : "http://";
+	public static final String BASE_URL = System.getenv("BASE_URL");
+	
 }
