@@ -117,4 +117,10 @@ public class StudyVariableManager {
 	public StudyVariable findOneStudyVariableById(String id) throws Exception {
 		return (StudyVariable) daoManager.findOneById(StudyVariable.class, id);
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<StudyVariable> findAllStudyVariablesByStudyVariableClassId(String studyVariableClassId) {
+		return daoManager.findManyWhere(StudyVariable.class, "o.studyVariableClass.id = '" + studyVariableClassId + "'",
+				null);
+	}
 }

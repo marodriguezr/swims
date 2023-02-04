@@ -272,3 +272,29 @@ where
 	where
 		or2.id = ta.thesis_record_id);
 	
+CREATE SCHEMA "analytics";
+create view analytics.compound_answers as 
+select
+	concat(ta.thesis_record_id,
+	la.answer,
+	lq.limesurvey_question_title) as id, 
+	ta.thesis_record_id,
+	la.answer,
+	lq.limesurvey_question_title,
+	lq.study_variable_id,
+	sv.study_variable_class_id,
+	sv.is_numeric_continuous,
+	sv.is_numeric_discrete,
+	sv.is_categorical_nominal,
+	sv.is_categorical_ordinal
+from
+	harvesting.thesis_assignments ta,
+	harvesting.limesurvey_survey_assignments lsa,
+	harvesting.limesurvey_answers la,
+	harvesting.limesurvey_questions lq,
+	harvesting.study_variables sv
+where
+	ta.id = lsa.thesis_assignment_id
+	and la.limesurvey_survey_assignment_id = lsa.id
+	and la.limesurvey_question_id = lq.id
+	and lq.study_variable_id = sv.id;

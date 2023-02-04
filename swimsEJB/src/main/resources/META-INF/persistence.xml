@@ -24,5 +24,6 @@
 		<class>swimsEJB.model.harvesting.entities.ThesisAssignment</class>
 		<class>swimsEJB.model.harvesting.entities.ThesisRecord</class>
 		<class>swimsEJB.model.harvesting.entities.ThesisSet</class>
+		<class>swimsEJB.model.analytics.entities.views.CompoundAnswer</class>
 	</persistence-unit>
 </persistence>
