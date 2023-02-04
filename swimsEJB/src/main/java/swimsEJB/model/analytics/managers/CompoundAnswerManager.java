@@ -101,7 +101,7 @@ public class CompoundAnswerManager {
 				}
 				if (map.values().isEmpty())
 					continue;
-				map.put("thesis_record_id", thesisMap.keySet().toArray(new String[thesisMap.keySet().size()])[i]);
+				map.put("thesisRecordId", thesisMap.keySet().toArray(new String[thesisMap.keySet().size()])[i]);
 				maps.add(map);
 			}
 		}
