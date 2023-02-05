@@ -32,15 +32,15 @@
         dataType: tableau.dataTypeEnum.string,
       },
       {
-        id: "thesis_set_id",
+        id: "thesisSetId",
         dataType: tableau.dataTypeEnum.string,
       },
       {
-        id: "issue_date",
+        id: "issueDate",
         dataType: tableau.dataTypeEnum.date,
       },
       {
-        id: "creation_date",
+        id: "creationDate",
         dataType: tableau.dataTypeEnum.date,
       },
     ];

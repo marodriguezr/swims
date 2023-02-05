@@ -27,7 +27,6 @@ import javax.persistence.Query;
 
 import org.apache.commons.lang3.StringUtils;
 
-
 import swimsEJB.model.core.managers.DaoManager;
 import swimsEJB.model.harvesting.dtos.LimesurveySurveyDto;
 import swimsEJB.model.harvesting.dtos.ThesisRecordDto;
@@ -173,8 +172,9 @@ public class ThesisRecordManager {
 				continue;
 			if (uniqueThesisRecordDtosMap.containsKey(thesisRecordDto.getId()))
 				continue;
+			if (existentThesisRecordDtos.stream().anyMatch(t -> thesisRecordDto.getTitles().containsAll(t.getTitles())))
+				continue;
 			uniqueThesisRecordDtosMap.put(thesisRecordDto.getId(), thesisRecordDto);
-
 		}
 
 		return new ArrayList<ThesisRecordDto>(uniqueThesisRecordDtosMap.values());

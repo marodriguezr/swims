@@ -5,17 +5,17 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the compound_limesurvey_answers database table.
+ * The persistent class for the compound_answers database table.
  * 
  */
 @Entity
-@Table(name="compound_limesurvey_answers", schema="analytics")
-@NamedQuery(name="CompoundLimesurveyAnswer.findAll", query="SELECT c FROM CompoundLimesurveyAnswer c")
-public class CompoundLimesurveyAnswer implements Serializable {
+@Table(name="compound_answers", schema="analytics")
+@NamedQuery(name="CompoundAnswer.findAll", query="SELECT c FROM CompoundAnswer c")
+public class CompoundAnswer implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	@Column(length=2147483647)
-	private String answer;
+	@Column(name="expected_answer_id")
+	private Integer expectedAnswerId;
 
 	@Id
 	private Long id;
@@ -32,9 +32,6 @@ public class CompoundLimesurveyAnswer implements Serializable {
 	@Column(name="is_numeric_discrete")
 	private Boolean isNumericDiscrete;
 
-	@Column(name="limesurvey_question_title", length=20)
-	private String limesurveyQuestionTitle;
-
 	@Column(name="study_variable_class_id", length=32)
 	private String studyVariableClassId;
 
@@ -44,15 +41,15 @@ public class CompoundLimesurveyAnswer implements Serializable {
 	@Column(name="thesis_record_id", length=2147483647)
 	private String thesisRecordId;
 
-	public CompoundLimesurveyAnswer() {
+	public CompoundAnswer() {
 	}
 
-	public String getAnswer() {
-		return this.answer;
+	public Integer getExpectedAnswerId() {
+		return this.expectedAnswerId;
 	}
 
-	public void setAnswer(String answer) {
-		this.answer = answer;
+	public void setExpectedAnswerId(Integer expectedAnswerId) {
+		this.expectedAnswerId = expectedAnswerId;
 	}
 
 	public Long getId() {
@@ -93,14 +90,6 @@ public class CompoundLimesurveyAnswer implements Serializable {
 
 	public void setIsNumericDiscrete(Boolean isNumericDiscrete) {
 		this.isNumericDiscrete = isNumericDiscrete;
-	}
-
-	public String getLimesurveyQuestionTitle() {
-		return this.limesurveyQuestionTitle;
-	}
-
-	public void setLimesurveyQuestionTitle(String limesurveyQuestionTitle) {
-		this.limesurveyQuestionTitle = limesurveyQuestionTitle;
 	}
 
 	public String getStudyVariableClassId() {

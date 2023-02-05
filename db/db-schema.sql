@@ -275,9 +275,28 @@ where
 CREATE SCHEMA "analytics";
 create view analytics.compound_answers as 
 select
-	concat(ta.thesis_record_id,
-	la.answer,
-	lq.limesurvey_question_title) as id, 
+	row_number() over() as id,
+	ta.thesis_record_id,
+	a.expected_answer_id,
+	q.study_variable_id,
+	sv.study_variable_class_id,
+	sv.is_numeric_continuous,
+	sv.is_numeric_discrete,
+	sv.is_categorical_nominal,
+	sv.is_categorical_ordinal
+from
+	harvesting.thesis_assignments ta,
+	harvesting.answers a,
+	harvesting.questions q,
+	harvesting.study_variables sv
+where
+	ta.id = a.thesis_assignment_id
+	and a.question_id = q.id
+	and q.study_variable_id = sv.id;
+	
+create view analytics.compound_limesurvey_answers as
+select
+	row_number() over() as id, 
 	ta.thesis_record_id,
 	la.answer,
 	lq.limesurvey_question_title,
@@ -297,4 +316,27 @@ where
 	ta.id = lsa.thesis_assignment_id
 	and la.limesurvey_survey_assignment_id = lsa.id
 	and la.limesurvey_question_id = lq.id
+	and lq.study_variable_id = sv.id;
+	
+create view analytics.compound_unexpected_limesurvey_answers as
+select
+	row_number() over() as id, 
+	ta.thesis_record_id,
+	lua.answer,
+	lq.study_variable_id,
+	sv.study_variable_class_id,
+	sv.is_numeric_continuous,
+	sv.is_numeric_discrete,
+	sv.is_categorical_nominal,
+	sv.is_categorical_ordinal
+from
+	harvesting.thesis_assignments ta,
+	harvesting.limesurvey_survey_assignments lsa,
+	harvesting.limesurvey_unexpected_answers lua,
+	harvesting.limesurvey_questions lq,
+	harvesting.study_variables sv
+where
+	ta.id = lsa.thesis_assignment_id
+	and lua.limesurvey_survey_assignment_id = lsa.id
+	and lua.limesurvey_question_id = lq.id
 	and lq.study_variable_id = sv.id;
