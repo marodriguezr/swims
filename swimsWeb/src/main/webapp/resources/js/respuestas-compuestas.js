@@ -4,188 +4,233 @@
   connector.getSchema = (schemaCallback) => {
     const cols = [
       {
-        id: "thesisRecordId",
+        id: "thesis_record_id",
         dataType: tableau.dataTypeEnum.string,
       },
       {
-        id: "nombreEntidadBenef",
+        id: "nombre_entidad_benef",
         dataType: tableau.dataTypeEnum.string,
+      	description: "Nombre de la entidad beneficiaria"
       },
       {
-        id: "numeroEmpleados",
+        id: "numero_empleados",
         dataType: tableau.dataTypeEnum.int,
+        description: "Número de empleados de la empresa beneficiaria"
       },
       {
-        id: "tamanoEmpresa",
+        id: "tamano_empresa",
         dataType: tableau.dataTypeEnum.string,
+        description: "Tamaño de la empresa beneficiaria"
       },
       {
-        id: "propiedadCapital",
+        id: "propiedad_capital",
         dataType: tableau.dataTypeEnum.string,
+        description: "Propiedad del capital"
       },
       {
-        id: "sectorEconomia",
+        id: "sector_economia",
         dataType: tableau.dataTypeEnum.string,
+        description: "Sector de la economía"
       },
       {
-        id: "ambitoActuacion",
+        id: "ambito_actuacion",
         dataType: tableau.dataTypeEnum.string,
+        description: "Ámbito de actuación"
       },
       {
-        id: "ubicacionAfeccion",
+        id: "ubicacion_afeccion",
         dataType: tableau.dataTypeEnum.string,
+        description: "Ubicación de Afección"
       },
       {
-        id: "conceptoEntrega",
+        id: "concepto_entrega",
         dataType: tableau.dataTypeEnum.string,
+        description: "Concepto de Entrega del Producto"
       },
       {
-        id: "numeroPerBeneficiada",
+        id: "numero_per_beneficiada",
         dataType: tableau.dataTypeEnum.int,
+        description: "Número de personas directamente beneficiadas por el producto de software"
       },
       {
-        id: "numPerIndirBenficiad",
+        id: "num_per_indir_benficiad",
         dataType: tableau.dataTypeEnum.int,
+        description: "Número de personas indirectamente beneficiadas por el producto de software"
       },
        {
-        id: "odsFocalizado",
+        id: "ods_focalizado",
         dataType: tableau.dataTypeEnum.string,
+        description: "Objetivo de Desarrollo Sostenible focalizado"
       },
       {
-        id: "estadoActual",
+        id: "estado_actual",
         dataType: tableau.dataTypeEnum.string,
+        description: "Estado actual del producto de software"
       },
       {
         id: "presupuesto",
         dataType: tableau.dataTypeEnum.float,
+        description: "Presupuesto del Proyecto de Tesis"
       },
       {
-        id: "ingresoBrutoEmpresa",
+        id: "ingreso_bruto_empresa",
         dataType: tableau.dataTypeEnum.float,
+        description: "Ingreso bruto anual de la empresa"
       },
       {
-        id: "rlcnMedioambiente",
+        id: "rlcn_medioambiente",
         dataType: tableau.dataTypeEnum.string,
+        description: "Relación con áreas del medio ambiente"
       },
       {
-        id: "claridadRequisitos",
+        id: "claridad_requisitos",
         dataType: tableau.dataTypeEnum.string,
+        description: "Requisitos claros y bien definidos"
       },
       {
-        id: "claridadObjetivos",
+        id: "claridad_objetivos",
         dataType: tableau.dataTypeEnum.string,
+        description: "Objetivos y metas claras"
       },
       {
-        id: "soporteDirectivos",
+        id: "soporte_directivos",
         dataType: tableau.dataTypeEnum.string,
+        description: "Soporte de directivos de la empresa beneficiaria"
       },
       {
-        id: "involucramientoUsrio",
+        id: "involucramiento_usrio",
         dataType: tableau.dataTypeEnum.string,
+        description: "Involucramiento del usuario o del cliente"
       },
       {
-        id: "comunicacionEfectiva",
+        id: "comunicacion_efectiva",
         dataType: tableau.dataTypeEnum.string,
+        description: "Comunicación efectiva entre interesados y desarrollador"
       },
       {
-        id: "familiaridadHerramnt",
+        id: "familiaridad_herramnt",
         dataType: tableau.dataTypeEnum.string,
+        description: "Familiaridad con las herramientas de desarrollo"
       },
       {
-        id: "claridadAlcance",
+        id: "claridad_alcance",
         dataType: tableau.dataTypeEnum.string,
+        description: "Alcance del proyecto bien definido"
       },
       {
-        id: "aseguramientoCalidad",
+        id: "aseguramiento_calidad",
         dataType: tableau.dataTypeEnum.string,
+        description: "Aseguramiento de la calidad"
       },
       {
-        id: "provisionCapacitacio",
+        id: "provision_capacitacio",
         dataType: tableau.dataTypeEnum.string,
+        description: "Provisión de tutorías o capacitaciones a los beneficiarios"
       },
       {
-        id: "aseguramtoSatsfacsn",
+        id: "aseguramto_satsfacsn",
         dataType: tableau.dataTypeEnum.string,
+        description: "Satisfacción del cliente"
       },
       {
-        id: "reporteProgActualiz",
+        id: "reporte_prog_actualiz",
         dataType: tableau.dataTypeEnum.string,
+        description: "Reporte de progreso actualizado"
       },
       {
-        id: "faltaPruebas",
+        id: "falta_pruebas",
         dataType: tableau.dataTypeEnum.string,
+        description: "Falta de pruebas de software"
       },
       {
-        id: "faltaIdentPobObjet",
+        id: "falta_ident_pob_objet",
         dataType: tableau.dataTypeEnum.string,
+        description: "Falta de identificación de la población objetivo"
       },
       {
-        id: "cambioRequisitos",
+        id: "cambio_requisitos",
         dataType: tableau.dataTypeEnum.string,
+        description: "Cambio de requisitos y especificaciones"
       },
       {
-        id: "presupuestoInsufic",
+        id: "presupuesto_insufic",
         dataType: tableau.dataTypeEnum.string,
+        description: "Presupuesto insuficiente"
       },
       {
-        id: "crecimiInespAlcanc",
+        id: "crecimi_inesp_alcanc",
         dataType: tableau.dataTypeEnum.string,
+        description: "Crecimiento inesperado del alcance"
       },
       {
-        id: "herramientRestric",
+        id: "herramient_restric",
         dataType: tableau.dataTypeEnum.string,
+        description: "Herramientas restrictivas"
       },
       {
-        id: "cambioGestor",
+        id: "cambio_gestor",
         dataType: tableau.dataTypeEnum.string,
+        description: "Cambio de gestor del proyecto"
       },
       {
         id: "lenguaje",
         dataType: tableau.dataTypeEnum.string,
+        description: "Lenguaje utilizado"
       },
       {
         id: "framework",
         dataType: tableau.dataTypeEnum.string,
+        description: "Framework"
       },
       {
         id: "libreria",
         dataType: tableau.dataTypeEnum.string,
+        description: "Librería"
       },
       {
-        id: "entornoDesarrollo",
+        id: "entorno_desarrollo",
         dataType: tableau.dataTypeEnum.string,
+        description: "Entorno de desarrollo"
       },
       {
         id: "dbms",
         dataType: tableau.dataTypeEnum.string,
+        description: "Sistema gestor de base de datos"
       },
       {
-        id: "servidorDespliegue",
+        id: "servidor_despliegue",
         dataType: tableau.dataTypeEnum.string,
+        description: "Servidor de despliegue"
       },
       {
-        id: "soDespliegue",
+        id: "so_despliegue",
         dataType: tableau.dataTypeEnum.string,
+        description: "Sistema operativo de despliegue"
       },
       {
-        id: "swApoyo",
+        id: "sw_apoyo",
         dataType: tableau.dataTypeEnum.string,
+        description: "Software de apoyo"
       },
       {
-        id: "iaasProvider",
+        id: "iaas_provider",
         dataType: tableau.dataTypeEnum.string,
+        description: "Proveedor de infraestructura como servicio"
       },
       {
-        id: "metodologiaDesarroll",
+        id: "metodologia_desarroll",
         dataType: tableau.dataTypeEnum.string,
+        description: "Metodología de desarrollo"
       },
       {
-        id: "fechaInicio",
+        id: "fecha_inicio",
         dataType: tableau.dataTypeEnum.date,
+        description: "Fecha de Inicio del Proyecto de Tesis"
       },
       {
-        id: "tematicaRelacionada",
+        id: "tematica_relacionada",
         dataType: tableau.dataTypeEnum.string,
+        description: "Temática relacionada"
       },
     ];
 

@@ -18,6 +18,7 @@ import swimsEJB.model.harvesting.entities.ThesisRecord;
 import swimsEJB.model.harvesting.managers.StudyVariableClassManager;
 import swimsEJB.model.harvesting.managers.StudyVariableManager;
 import swimsEJB.model.harvesting.managers.ThesisRecordManager;
+import swimsEJB.utilities.StringHelpers;
 
 import javax.ejb.EJB;
 
@@ -45,8 +46,8 @@ public class CompoundAnswerManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<HashMap<String, Object>> findAllCompoundAnswersByStudyVariableClassId(
-			String studyVariableClassId) throws Exception {
+	public List<HashMap<String, Object>> findAllCompoundAnswersByStudyVariableClassId(String studyVariableClassId)
+			throws Exception {
 		List<StudyVariable> studyVariables = studyVariableClassId == null ? studyVariableManager.findAllStudyVariables()
 				: studyVariableManager.findAllStudyVariablesByStudyVariableClassId(studyVariableClassId);
 		List<ThesisRecord> thesisRecords = thesisRecordManager.findAllThesisRecords();
@@ -112,7 +113,7 @@ public class CompoundAnswerManager {
 						answer = answer.replace(".", "");
 						answer = answer.replace(',', '.');
 					}
-					map.put(studyVariable.getId(),
+					map.put(StringHelpers.cammelCaseToSnakeCase(studyVariable.getId()),
 							NumberUtils.isCreatable(answer) && !studyVariable.getIsCategoricalNominal()
 									&& !studyVariable.getIsCategoricalOrdinal()
 											? studyVariable.getIsNumericContinuous() ? Float.parseFloat(answer)
@@ -121,7 +122,7 @@ public class CompoundAnswerManager {
 				}
 				if (map.values().isEmpty())
 					continue;
-				map.put("thesisRecordId", thesisMap.keySet().toArray(new String[thesisMap.keySet().size()])[i]);
+				map.put("thesis_record_id", thesisMap.keySet().toArray(new String[thesisMap.keySet().size()])[i]);
 				maps.add(map);
 			}
 		}

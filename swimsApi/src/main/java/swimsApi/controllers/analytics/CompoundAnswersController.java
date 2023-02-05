@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.QueryParam;
 
 import swimsEJB.model.analytics.managers.CompoundAnswerManager;
 
@@ -24,9 +25,10 @@ public class CompoundAnswersController {
 
 	@GET
 	@Path(value = "")
-	public List<HashMap<String, Object>> findAllCompoundAnswers() {
+	public List<HashMap<String, Object>> findCompoundAnswers(
+			@QueryParam("study-variable-class-id") String studyVariableClassId) {
 		try {
-			return compoundAnswerManager.findAllCompoundAnswers();
+			return compoundAnswerManager.findAllCompoundAnswersByStudyVariableClassId(studyVariableClassId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

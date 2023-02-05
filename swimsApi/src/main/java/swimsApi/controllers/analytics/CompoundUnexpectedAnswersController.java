@@ -11,6 +11,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.QueryParam;
 
 import swimsEJB.model.analytics.managers.CompoundUnexpectedAnswerManager;
 
@@ -24,9 +25,11 @@ public class CompoundUnexpectedAnswersController {
 
 	@GET
 	@Path(value = "")
-	public List<HashMap<String, Object>> findAllCompoundAnswers() {
+	public List<HashMap<String, Object>> findCompoundUnexpectedAnswers(
+			@QueryParam("study-variable-class-id") String studyVariableClassId) {
 		try {
-			return compoundUnexpectedAnswerManager.findAllCompoundUnexpectedAnswers();
+			return compoundUnexpectedAnswerManager
+					.findAllCompoundUnexpectedAnswersByStudyVariableClassId(studyVariableClassId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

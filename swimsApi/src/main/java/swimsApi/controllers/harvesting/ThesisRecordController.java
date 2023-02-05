@@ -37,9 +37,9 @@ public class ThesisRecordController {
 			hashMap.put("subject", oaiRecord.getSubject());
 			hashMap.put("description", oaiRecord.getDescription());
 			hashMap.put("contributor", oaiRecord.getContributor());
-			hashMap.put("issueDate", oaiRecord.getInferredIssueDate());
-			hashMap.put("creationDate", oaiRecord.getInferredCreationDate());
-			hashMap.put("thesisSetId", oaiRecord.getThesisSet().getId());
+			hashMap.put("issue-date", oaiRecord.getInferredIssueDate());
+			hashMap.put("creation-date", oaiRecord.getInferredCreationDate());
+			hashMap.put("thesis-set-id", oaiRecord.getThesisSet().getId());
 
 			hashMaps.add(hashMap);
 		}

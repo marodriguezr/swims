@@ -567,7 +567,7 @@
                     header-name="Access-Control-Allow-Origin" header-value="*" />
                 <response-header name="Access-Control-Allow-Methods"
                     header-name="Access-Control-Allow-Methods"
-                    header-value="GET, POST, OPTIONS, PUT" />
+                    header-value="GET" />
             </filters>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:webservices:2.0"

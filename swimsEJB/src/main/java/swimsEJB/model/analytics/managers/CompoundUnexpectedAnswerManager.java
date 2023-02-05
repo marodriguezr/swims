@@ -15,6 +15,7 @@ import swimsEJB.model.harvesting.entities.ThesisRecord;
 import swimsEJB.model.harvesting.managers.StudyVariableClassManager;
 import swimsEJB.model.harvesting.managers.StudyVariableManager;
 import swimsEJB.model.harvesting.managers.ThesisRecordManager;
+import swimsEJB.utilities.StringHelpers;
 
 import javax.ejb.EJB;
 
@@ -83,11 +84,12 @@ public class CompoundUnexpectedAnswerManager {
 					if (studyVariableMap.get(studyVariable).size() <= j)
 						continue;
 
-					map.put(studyVariable.getId(), studyVariableMap.get(studyVariable).get(j).getAnswer());
+					map.put(StringHelpers.cammelCaseToSnakeCase(studyVariable.getId()),
+							studyVariableMap.get(studyVariable).get(j).getAnswer());
 				}
 				if (map.values().isEmpty())
 					continue;
-				map.put("thesisRecordId", thesisMap.keySet().toArray(new String[thesisMap.keySet().size()])[i]);
+				map.put("thesis_record_id", thesisMap.keySet().toArray(new String[thesisMap.keySet().size()])[i]);
 				maps.add(map);
 			}
 		}
