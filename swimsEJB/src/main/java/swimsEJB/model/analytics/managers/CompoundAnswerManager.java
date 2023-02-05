@@ -53,22 +53,31 @@ public class CompoundAnswerManager {
 		List<ThesisRecord> thesisRecords = thesisRecordManager.findAllThesisRecords();
 		int maxAnswerCountForEachStudyVariable = 0;
 
+		System.out.println(-2);
+		List<CompoundLimesurveyAnswer> compoundLimesurveyAnswers = studyVariableClassId == null
+				? daoManager.findAll(CompoundLimesurveyAnswer.class)
+				: daoManager.findManyWhere(CompoundLimesurveyAnswer.class,
+						"o.studyVariableClassId = '" + studyVariableClassId + "'", null);
+		System.out.println(-1);
+		List<CompoundAnswer> compoundAnswers = studyVariableClassId == null ? daoManager.findAll(CompoundAnswer.class)
+				: daoManager.findManyWhere(CompoundAnswer.class,
+						"o.studyVariableClassId = '" + studyVariableClassId + "'", null);
+		System.out.println(0);
+
 		HashMap<String, HashMap<StudyVariable, List<CompoundLimesurveyAnswer>>> thesisMap = new HashMap<>();
 		for (ThesisRecord thesisRecord : thesisRecords) {
 			HashMap<StudyVariable, List<CompoundLimesurveyAnswer>> studyVariablesMap = new HashMap<>();
-			List<CompoundLimesurveyAnswer> compoundLimesurveyAnswers = daoManager.findManyWhere(
-					CompoundLimesurveyAnswer.class,
-					"o.thesisRecordId = '" + thesisRecord.getId() + (studyVariableClassId == null ? "'"
-							: ("' AND o.studyVariableClassId = '" + studyVariableClassId + "'")),
-					null);
-			List<CompoundAnswer> compoundAnswers = daoManager.findManyWhere(CompoundAnswer.class,
-					"o.thesisRecordId = '" + thesisRecord.getId() + (studyVariableClassId == null ? "'"
-							: ("' AND o.studyVariableClassId = '" + studyVariableClassId + "'")),
-					null);
+			System.out.println(1);
+			List<CompoundLimesurveyAnswer> thesisCompoundLimesurveyAnswers = compoundLimesurveyAnswers.stream()
+					.filter(t -> t.getThesisRecordId().equals(thesisRecord.getId())).collect(Collectors.toList());
+			System.out.println(2);
+			List<CompoundAnswer> thesisCompoundAnswers = compoundAnswers.stream()
+					.filter(t -> t.getThesisRecordId().equals(thesisRecord.getId())).collect(Collectors.toList());
+			System.out.println(3);
 			for (StudyVariable studyVariable : studyVariables) {
-				List<CompoundLimesurveyAnswer> studyVariableCompoundAnswers = compoundLimesurveyAnswers.stream()
+				List<CompoundLimesurveyAnswer> studyVariableCompoundAnswers = thesisCompoundLimesurveyAnswers.stream()
 						.filter(t -> t.getStudyVariableId().equals(studyVariable.getId())).collect(Collectors.toList());
-				studyVariableCompoundAnswers.addAll(compoundAnswers.stream()
+				studyVariableCompoundAnswers.addAll(thesisCompoundAnswers.stream()
 						.filter(t -> t.getStudyVariableId().equals(studyVariable.getId())).map(t -> {
 							CompoundLimesurveyAnswer compoundLimesurveyAnswer = new CompoundLimesurveyAnswer();
 							compoundLimesurveyAnswer.setAnswer(t.getExpectedAnswerId().toString());
