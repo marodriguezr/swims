@@ -1,5 +1,6 @@
 (() => {
-  tableau.connectionName = "Compound Answers";
+  const id = "compound_answers";
+  const name = "Compound Answers";
   const apiUrl = "/api/analytics/compound-answers";
 
   const connector = tableau.makeConnector();
@@ -241,8 +242,8 @@
     ];
 
     const tableSchema = {
-      id: "compoundAnswer",
-      alias: "Compound Answers",
+      id: id,
+      alias: name,
       columns: cols,
     };
 
@@ -269,5 +270,6 @@
       });
   };
 
+  tableau.connectionName = name;
   tableau.registerConnector(connector);
 })();

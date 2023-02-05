@@ -1,5 +1,6 @@
 (() => {
-  tableau.connectionName = "Thesis Records";
+  const id = "thesis_records";
+  const name = "Thesis Records";
   const apiUrl = "/api/harvesting/thesis-records";
 
   const connector = tableau.makeConnector();
@@ -49,8 +50,8 @@
     ];
 
     const tableSchema = {
-      id: "thesisRecord",
-      alias: "Thesis Records",
+      id: id,
+      alias: name,
       columns: cols,
     };
 
@@ -77,5 +78,6 @@
       });
   };
 
+  tableau.connectionName = name;
   tableau.registerConnector(connector);
 })();
