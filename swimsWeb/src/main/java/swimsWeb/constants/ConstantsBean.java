@@ -6,7 +6,6 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 import static swimsWeb.constants.Constants.*;
-import static swimsEJB.constants.SystemEnvironmentVariables.*;
 
 @Named
 @RequestScoped
@@ -32,9 +31,5 @@ public class ConstantsBean implements Serializable {
 
 	public int getIS_CATEGORICAL_ORDINAL_ID() {
 		return IS_CATEGORICAL_ORDINAL_ID;
-	}
-
-	public String getBASE_URL() {
-		return BASE_URL;
 	}
 }

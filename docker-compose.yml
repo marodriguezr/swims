@@ -34,7 +34,6 @@ services:
       LIMESURVEY_ADMIN_USER: swims
       LIMESURVEY_ON_SAME_NETWORK: true
       LIMESURVEY_PORT: 8080
-      BASE_URL: ${BASE_URL:-/swims}
     networks:
       - swims_network
     depends_on:

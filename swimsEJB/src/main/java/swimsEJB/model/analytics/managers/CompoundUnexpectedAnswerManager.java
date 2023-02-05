@@ -50,17 +50,18 @@ public class CompoundUnexpectedAnswerManager {
 		List<ThesisRecord> thesisRecords = thesisRecordManager.findAllThesisRecords();
 		int maxAnswerCountForEachStudyVariable = 0;
 
+		List<CompoundUnexpectedLimesurveyAnswer> compoundLimesurveyAnswers = studyVariableClassId == null
+				? daoManager.findAll(CompoundUnexpectedLimesurveyAnswer.class)
+				: daoManager.findManyWhere(CompoundUnexpectedLimesurveyAnswer.class,
+						"o.studyVariableClassId = '" + studyVariableClassId + "'", null);
+
 		HashMap<String, HashMap<StudyVariable, List<CompoundUnexpectedLimesurveyAnswer>>> thesisMap = new HashMap<>();
 		for (ThesisRecord thesisRecord : thesisRecords) {
 			HashMap<StudyVariable, List<CompoundUnexpectedLimesurveyAnswer>> studyVariablesMap = new HashMap<>();
-			List<CompoundUnexpectedLimesurveyAnswer> compoundLimesurveyAnswers = daoManager.findManyWhere(
-					CompoundUnexpectedLimesurveyAnswer.class,
-					"o.thesisRecordId = '" + thesisRecord.getId() + (studyVariableClassId == null ? "'"
-							: ("' AND o.studyVariableClassId = '" + studyVariableClassId + "'")),
-					null);
 			for (StudyVariable studyVariable : studyVariables) {
 				List<CompoundUnexpectedLimesurveyAnswer> studyVariableCompoundAnswers = compoundLimesurveyAnswers
-						.stream().filter(t -> t.getStudyVariableId().equals(studyVariable.getId()))
+						.stream().filter(t -> t.getThesisRecordId().equals(thesisRecord.getId())
+								&& t.getStudyVariableId().equals(studyVariable.getId()))
 						.collect(Collectors.toList());
 				if (studyVariableCompoundAnswers.isEmpty())
 					continue;

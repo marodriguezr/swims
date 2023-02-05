@@ -1,5 +1,8 @@
 (() => {
-  connector = tableau.makeConnector();
+  tableau.connectionName = "Thesis Records";
+  const apiUrl = "/api/harvesting/thesis-records";
+
+  const connector = tableau.makeConnector();
 
   connector.getSchema = (schemaCallback) => {
     const cols = [
@@ -55,7 +58,14 @@
   };
 
   connector.getData = (table, doneCallback) => {
-    fetch("https://appfica.utn.edu.ec/swims/api/harvesting/thesis-records")
+    const context = window.location.pathname.substring(
+      0,
+      window.location.pathname.indexOf("/", 2)
+    );
+    const url =
+      window.location.protocol + "//" + window.location.host + context + apiUrl;
+
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         table.appendRows(data);
@@ -68,5 +78,4 @@
   };
 
   tableau.registerConnector(connector);
-  tableau.connectionName = "Thesis Records";
 })();
