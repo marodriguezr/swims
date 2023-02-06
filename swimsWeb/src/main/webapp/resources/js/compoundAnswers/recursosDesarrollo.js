@@ -1,6 +1,6 @@
 (() => {
-  const id = "compound_answers";
-  const name = "Compound Answers";
+  const id = "recursos_desarrollo";
+  const name = "Recursos de Desarrollo";
   const apiUrl = "/api/analytics/compound-answers?study-variable-class-id=recursosDesarrollo";
 
   const connector = tableau.makeConnector();
