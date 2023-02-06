@@ -25,11 +25,46 @@
 						action="/tableau-wdc/registros-tesis?faces-redirect=true"
 						value="Registros de Tesis" /></li>
 				<li><p:commandLink
-						action="/tableau-wdc/respuestas-compuestas?faces-redirect=true"
-						value="Respuestas Compuestas" /></li>
+						action="/tableau-wdc/respuestas-compuestas/index?faces-redirect=true"
+						value="Respuestas Compuestas" />
+					<ul>
+						<li><p:commandLink
+								action="/tableau-wdc/respuestas-compuestas/indicadores-impacto-social?faces-redirect=true"
+								value="Indicadores de Impacto Social" /></li>
+						<li><p:commandLink
+								action="/tableau-wdc/respuestas-compuestas/indicadores-impacto-economico?faces-redirect=true"
+								value="Indicadores de Impacto Económico" /></li>
+						<li><p:commandLink
+								action="/tableau-wdc/respuestas-compuestas/indicadores-impacto-medioambiental?faces-redirect=true"
+								value="Indicadores de Impacto Medioambiental" /></li>
+						<li><p:commandLink
+								action="/tableau-wdc/respuestas-compuestas/factores-exito?faces-redirect=true"
+								value="Factores de Éxito" /></li>
+						<li><p:commandLink
+								action="/tableau-wdc/respuestas-compuestas/factores-fracaso?faces-redirect=true"
+								value="Factores de Fracaso" /></li>
+						<li><p:commandLink
+								action="/tableau-wdc/respuestas-compuestas/recursos-desarrollo?faces-redirect=true"
+								value="Recursos de Desarrollo" /></li>
+						<li><p:commandLink
+								action="/tableau-wdc/respuestas-compuestas/datos-informativos-tesis?faces-redirect=true"
+								value="Datos Informativos de Tesis" /></li>
+					</ul></li>
+
 				<li><p:commandLink
-						action="/tableau-wdc/respuestas-inesperadas-compuestas?faces-redirect=true"
-						value="Respuestas Inesperadas Compuestas (Otras Respuestas)" /></li>
+						action="/tableau-wdc/respuestas-inesperadas-compuestas/index?faces-redirect=true"
+						value="Respuestas Inesperadas Compuestas (Otras Respuestas)" />
+					<ul>
+						<li><p:commandLink
+								action="/tableau-wdc/respuestas-inesperadas-compuestas/recursos-desarrollo?faces-redirect=true"
+								value="Recursos de Desarrollo" /></li>
+						<li><p:commandLink
+								action="/tableau-wdc/respuestas-inesperadas-compuestas/datos-informativos-tesis?faces-redirect=true"
+								value="Datos Informativos de Tesis" /></li>
+					</ul></li>
+				<li><p:commandLink
+						action="/tableau-wdc/etiquetas-nombre-entidad-benef?faces-redirect=true"
+						value="Etiquetas de la Variable de Estudio (nombreEntidadBenef)" /></li>
 			</ul>
 		</p:card>
 	</ui:define>
