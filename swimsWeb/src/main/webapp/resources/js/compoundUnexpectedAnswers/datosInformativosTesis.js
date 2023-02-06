@@ -8,6 +8,10 @@
   connector.getSchema = (schemaCallback) => {
     const cols = [
       {
+        id: "thesis_record_id",
+        dataType: tableau.dataTypeEnum.string,
+      },
+      {
         id: "tematica_relacionada",
         dataType: tableau.dataTypeEnum.string,
         description: "Temática relacionada",
