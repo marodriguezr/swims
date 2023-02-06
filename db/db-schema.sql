@@ -340,3 +340,14 @@ where
 	and lua.limesurvey_survey_assignment_id = lsa.id
 	and lua.limesurvey_question_id = lq.id
 	and lq.study_variable_id = sv.id;
+	
+create view analytics.labels as 
+select
+	ea.id,
+	ea.expected_answer as label,
+	q.study_variable_id 
+from
+	harvesting.expected_answers ea,
+	harvesting.questions q
+where
+	ea.question_id = q.id;

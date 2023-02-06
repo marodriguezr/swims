@@ -63,6 +63,8 @@ public class LimesurveyService {
 	}
 
 	public static void releaseSessionKey(String sessionKey) throws Exception {
+		if (sessionKey == null)
+			return;
 		executeHttpPostRequest("release_session_key", sessionKey);
 	}
 

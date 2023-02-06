@@ -25,7 +25,7 @@ public class ThesisRecordController {
 
 	@GET
 	@Path(value = "")
-	public List<HashMap<String, Object>> test2() {
+	public List<HashMap<String, Object>> findThesisRecords() {
 		List<HashMap<String, Object>> hashMaps = new ArrayList<>();
 		List<ThesisRecord> oaiRecords = thesisRecordManager.findAllThesisRecords();
 		for (ThesisRecord oaiRecord : oaiRecords) {

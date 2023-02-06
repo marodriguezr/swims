@@ -27,5 +27,6 @@
 		<class>swimsEJB.model.analytics.entities.views.CompoundLimesurveyAnswer</class>
 		<class>swimsEJB.model.analytics.entities.views.CompoundUnexpectedLimesurveyAnswer</class>
 		<class>swimsEJB.model.analytics.entities.views.CompoundAnswer</class>
+		<class>swimsEJB.model.analytics.entities.views.Label</class>
 	</persistence-unit>
 </persistence>

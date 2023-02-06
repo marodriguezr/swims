@@ -46,7 +46,7 @@ public class CompoundAnswerManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<HashMap<String, Object>> findAllCompoundAnswersByStudyVariableClassId(String studyVariableClassId)
+	public List<HashMap<String, Object>> findCompoundAnswers(String studyVariableClassId)
 			throws Exception {
 		List<StudyVariable> studyVariables = studyVariableClassId == null ? studyVariableManager.findAllStudyVariables()
 				: studyVariableManager.findAllStudyVariablesByStudyVariableClassId(studyVariableClassId);
@@ -137,6 +137,6 @@ public class CompoundAnswerManager {
 	}
 
 	public List<HashMap<String, Object>> findAllCompoundAnswers() throws Exception {
-		return findAllCompoundAnswersByStudyVariableClassId(null);
+		return findCompoundAnswers(null);
 	}
 }

@@ -11,24 +11,24 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.PathParam;
 
-import swimsEJB.model.analytics.managers.CompoundAnswerManager;
+import swimsEJB.model.analytics.managers.LabelManager;
 
 @RequestScoped
-@Path("analytics/compound-answers")
+@Path("analytics/labels")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class CompoundAnswersController {
+public class LabelController {
 	@EJB
-	private CompoundAnswerManager compoundAnswerManager;
+	private LabelManager labelManager;
 
 	@GET
-	@Path(value = "")
-	public List<HashMap<String, Object>> findCompoundAnswers(
-			@QueryParam("study-variable-class-id") String studyVariableClassId) {
+	@Path("{studyVariableId}")
+	public List<HashMap<String, String>> findLabels(@PathParam("studyVariableId") String studyVariableId) {
 		try {
-			return compoundAnswerManager.findCompoundAnswers(studyVariableClassId);
+
+			return labelManager.findAllLabelsByStudyVariableId(studyVariableId);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
