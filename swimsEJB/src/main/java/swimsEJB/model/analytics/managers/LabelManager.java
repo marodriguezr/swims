@@ -58,6 +58,7 @@ public class LabelManager {
 
 		List<Integer> limesurveySurveyIds = studyVariable.getLimesurveyQuestions().stream()
 				.map(arg0 -> arg0.getLimesurveySurveyId()).distinct().collect(Collectors.toList());
+
 		String limesurveySessionKey = limesurveySurveyIds.isEmpty() ? null : LimesurveyService.getSessionKey();
 
 		HashMap<Integer, HashMap<String, LimesurveyQuestionDto>> limesurveySurveysMap = new HashMap<>();
@@ -70,6 +71,8 @@ public class LabelManager {
 			for (LimesurveyQuestion limesurveyQuestion : studyVariable.getLimesurveyQuestions()) {
 				LimesurveyQuestionDto limesurveyQuestionDto = limesurveySurveysMap
 						.get(limesurveyQuestion.getLimesurveySurveyId()).get(limesurveyQuestion.getId());
+				if (limesurveyQuestionDto.getParentQid() == 0)
+					continue;
 				HashMap<String, String> map = new HashMap<>();
 				map.put("id", limesurveyQuestion.getLimesurveyQuestionTitle());
 				map.put("label", limesurveyQuestionDto.getQuestion());
@@ -83,7 +86,7 @@ public class LabelManager {
 			LimesurveyQuestionDto limesurveyQuestionDto = limesurveySurveysMap
 					.get(limesurveyQuestion.getLimesurveySurveyId()).get(limesurveyQuestion.getId());
 			LimesurveyQuestionPropertiesDto limesurveyQuestionPropertiesDto = LimesurveyService
-					.getQuestionProperties(limesurveyQuestionDto.getLimesurveyQuestionId());
+					.getQuestionProperties(limesurveySessionKey, limesurveyQuestionDto.getLimesurveyQuestionId());
 			for (String key : limesurveyQuestionPropertiesDto.getAnswerOptions().keySet()) {
 				HashMap<String, String> map = new HashMap<>();
 				map.put("id", key);

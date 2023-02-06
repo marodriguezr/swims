@@ -208,9 +208,13 @@ public class LimesurveyService {
 		initializeSurveyParticipants(surveyId);
 	}
 
-	public static LimesurveyQuestionPropertiesDto getQuestionProperties(int questionId) throws Exception {
-		JsonObject jsonObject = executeHttpPostRequestWithoutSessionKey("get_question_properties", questionId)
-				.get("result").getAsJsonObject();
+	public static LimesurveyQuestionPropertiesDto getQuestionProperties(String sessionKey, int questionId)
+			throws Exception {
+		JsonObject jsonObject = sessionKey == null
+				? executeHttpPostRequestWithoutSessionKey("get_question_properties", questionId).get("result")
+						.getAsJsonObject()
+				: executeHttpPostRequest("get_question_properties", sessionKey, questionId).get("result")
+						.getAsJsonObject();
 
 		if (!(jsonObject.get("answeroptions").isJsonObject())) {
 			return new LimesurveyQuestionPropertiesDto(
@@ -234,4 +238,7 @@ public class LimesurveyService {
 				jsonObject.get("parent_qid").getAsInt(), answerOptions);
 	}
 
+	public static LimesurveyQuestionPropertiesDto getQuestionProperties(int questionId) throws Exception {
+		return getQuestionProperties(null, questionId);
+	}
 }
