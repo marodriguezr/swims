@@ -1,6 +1,6 @@
 (() => {
-  const id = "datos_informativos_tesis";
-  const name = "Datos Informativos de Tesis";
+  const id = "datos_informativos_tesis_inesperados";
+  const name = "Datos Informativos de Tesis Inesperados";
   const apiUrl = "/api/analytics/compound-unexpected-answers?study-variable-class-id=datosInformativosTesis";
 
   const connector = tableau.makeConnector();

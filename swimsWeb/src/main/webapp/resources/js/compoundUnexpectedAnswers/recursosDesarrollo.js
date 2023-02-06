@@ -1,6 +1,6 @@
 (() => {
-  const id = "recursos_desarrollo";
-  const name = "Recursos de Desarrollo";
+  const id = "recursos_desarrollo_inesperados";
+  const name = "Recursos de Desarrollo Inesperados";
   const apiUrl = "/api/analytics/compound-unexpected-answers?study-variable-class-id=recursosDesarrollo";
 
   const connector = tableau.makeConnector();
