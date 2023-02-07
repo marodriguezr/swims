@@ -188,7 +188,7 @@ public class LimesurveySurveyAssignmentManager {
 		}
 
 		if (expectedAnswers.isEmpty() && unexpectedAnswers.isEmpty())
-			throw new Exception("Ha ocurrido un error en el proceso de despacho.");
+			throw new Exception("Ha ocurrido un error en el proceso de despacho. Asegúrese de haber provisto al menos una respuesta.");
 		surveyAssignment = updateOneSurveyAssignmentAsDispatched(surveyAssignment);
 
 		surveyAssignment.setLimesurveyAnswers(expectedAnswers);
