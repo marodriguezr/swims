@@ -17,36 +17,10 @@
 			<f:facet name="title">
         Sistema para la Medición del Impacto de Productos de Software
       </f:facet>
-			<f:facet name="subtitle"> Gráficas Disponibles </f:facet>
-
-			<div class="embed-views-container">
-
-				<p:panel toggleable="true" collapsed="false" header="Número de Tesis por Docente">
-					<h:panelGroup layout="block"
-						rendered="#{tableauJWTBean.tableauJWT eq null}">
-						<tableau-viz id="tableau-viz"
-							src="https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/swims-analytics/TesisXDocente"
-							width="100%" height="612" hide-tabs="true" toolbar="bottom"></tableau-viz>
-					</h:panelGroup>
-					<h:panelGroup layout="block"
-						rendered="#{tableauJWTBean.tableauJWT ne null}">
-						<tableau-viz id="tableau-viz"
-							src="https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/swims-analytics/TesisXDocente"
-							width="100%" height="612" hide-tabs="true" toolbar="bottom"
-							token="#{tableauJWTBean.tableauJWT}"></tableau-viz>
-					</h:panelGroup>
-				</p:panel>
-
-				<p:panel toggleable="true" collapsed="false" header="Número de Tesis por Año">
-					<iframe title="tes2" width="100%" height="612"
-						src="https://app.powerbi.com/view?r=eyJrIjoiNTY2NjVkMzYtZmFkOS00ODY4LTk4YWQtZDk1OWFkNzQ1ODgzIiwidCI6IjhkYmUxNDY5LWM3OWMtNGUyMS05ZDQzLWNhNjVkOWU5YzQ3NSIsImMiOjR9&amp;pageName=ReportSection8f0ca0e052026cb0ceee"
-						frameborder="0" allowfullscreen="true"></iframe>
-				</p:panel>
-
-				<div>3</div>
-				<div>4</div>
-			</div>
-
+			<tableau-viz id='tableau-viz'
+				src='https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/swims-analytics/TesisX'
+				width='100%' height='100vh' hide-tabs="true" toolbar='bottom'
+				token="#{tableauJWTBean.tableauJWT}"></tableau-viz>
 		</p:card>
 	</ui:define>
 </ui:composition>

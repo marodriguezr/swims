@@ -8,6 +8,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import swimsEJB.model.core.managers.TableauJWTManager;
+import swimsWeb.utilities.JSFMessages;
 
 @SessionScoped
 @Named
@@ -19,7 +20,7 @@ public class TableauJWTBean implements Serializable {
 
 	public TableauJWTBean() {
 	}
-	
+
 	@PostConstruct
 	public void onLoad() {
 		try {
@@ -27,6 +28,8 @@ public class TableauJWTBean implements Serializable {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			JSFMessages.ERROR("Error en la Autenticación de Tableau " + e.getMessage());
+			this.tableauJWT = null;
 		}
 	}
 
@@ -38,5 +41,4 @@ public class TableauJWTBean implements Serializable {
 		this.tableauJWT = tableauJWT;
 	}
 
-	
 }
