@@ -1,0 +1,44 @@
+<ui:composition template="/WEB-INF/tableau-embed-view_template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+	<ui:define name="title">Inicio</ui:define>
+
+	<ui:define name="onLoad">
+		<f:metadata>
+			<f:viewAction />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="content">
+		<div class="p-d-flex" style="height: 100%;">
+			<p:slideMenu styleClass="p-mr-2"
+				style="order: 1; flex-grow: 1; min-height: 100%;">
+				<p:submenu label="Options">
+					<p:menuitem value="Save (Non-Ajax)" action="#{menuView.save}"
+						ajax="false" icon="pi pi-save" />
+					<p:menuitem value="Update" action="#{menuView.update}"
+						icon="pi pi-refresh" />
+					<p:menuitem value="Delete" action="#{menuView.delete}"
+						icon="pi pi-times" />
+				</p:submenu>
+				<p:submenu label="Navigations">
+					<p:menuitem value="Website" url="http://www.primefaces.org"
+						icon="pi pi-external-link" />
+					<p:menuitem value="Internal" icon="pi pi-upload" />
+				</p:submenu>
+			</p:slideMenu>
+
+			<p:card style="order: 2; flex-grow: 16; min-height: 100%;">
+				<f:facet name="title">
+        Sistema para la Medición del Impacto de Productos de Software
+      </f:facet>
+Hi
+
+		</p:card>
+
+		</div>
+	</ui:define>
+</ui:composition>

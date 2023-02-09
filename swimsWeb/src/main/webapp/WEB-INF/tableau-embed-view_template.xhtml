@@ -13,7 +13,8 @@
 	<script type="module"
 		src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
 </h:head>
-<h:body>
+<h:body styleClass="p-p-2"
+	style="max-height: 100vh; height: 100vh; display: flex; flex-direction: column; margin: 0; padding: 0;">
 	<!-- onLoad -->
 	<ui:insert name="onLoad"></ui:insert>
 
@@ -29,13 +30,13 @@
 
 	<!-- content -->
 	<ui:insert name="contentContainer">
-		<div class="p-pt-2">
+		<div class="p-pt-2" style="flex: 1;">
 			<ui:insert name="content" />
 		</div>
 	</ui:insert>
 
 	<ui:insert name="dialogs"></ui:insert>
-	
+
 	<h:outputScript library="js" name="tableauEmbedView.js"></h:outputScript>
 </h:body>
 </html>
