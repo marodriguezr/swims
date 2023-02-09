@@ -6,60 +6,29 @@
 	xmlns:p="http://primefaces.org/ui">
 
 	<ui:define name="content">
-		<div class="p-d-flex inherit-full-height-flex" style="height: 100%;">
-			<p:slideMenu styleClass="p-mr-2" backLabel="Regresar">
-				<p:menuitem value="Dashboard General"
-					action="/analiticas/index?faces-redirect=true" />
-				<p:submenu label="Datos Informativos">
-					<p:menuitem value="Trabajos de Titulación por Docente" />
-					<p:menuitem value="Trabajos de Titulación por Temática" />
-					<p:menuitem value="Trabajos de Titulación por Año" />
-					<p:menuitem value="Otras Temáticas" />
-				</p:submenu>
-				<p:submenu label="Datos Informativos">
-					<p:menuitem value="Trabajos de Titulación por Docente" />
-					<p:menuitem value="Trabajos de Titulación por Temática" />
-					<p:menuitem value="Trabajos de Titulación por Año" />
-					<p:menuitem value="Otras Temáticas" />
-				</p:submenu>
-				<p:submenu label="Datos Informativos">
-					<p:menuitem value="Trabajos de Titulación por Docente" />
-					<p:menuitem value="Trabajos de Titulación por Temática" />
-					<p:menuitem value="Trabajos de Titulación por Año" />
-					<p:menuitem value="Otras Temáticas" />
-				</p:submenu>
-				<p:submenu label="Datos Informativos">
-					<p:menuitem value="Trabajos de Titulación por Docente" />
-					<p:menuitem value="Trabajos de Titulación por Temática" />
-					<p:menuitem value="Trabajos de Titulación por Año" />
-					<p:menuitem value="Otras Temáticas" />
-				</p:submenu>
-				<p:submenu label="Datos Informativos">
-					<p:menuitem value="Trabajos de Titulación por Docente" />
-					<p:menuitem value="Trabajos de Titulación por Temática" />
-					<p:menuitem value="Trabajos de Titulación por Año" />
-					<p:menuitem value="Otras Temáticas" />
-				</p:submenu>
-			</p:slideMenu>
+		<h:form id="form" class="p-d-flex" style="height: 100%;">
+			<div class="p-mr-2" style="height: 100%; width: 10%;">
+				<ui:include src="/WEB-INF/components/analytics-sidebar.xhtml" />
+			</div>
 
-			<div style="order: 2; flex-grow: 16;"
+			<div style="width: 90%;"
 				class="ui-card ui-widget ui-widget-content ui-corner-all full-height-flex">
 				<div class="ui-card-body full-height-flex">
-					<div class="ui-card-title">
+					<h:panelGroup id="tableau-embed-view-title" layout="block" class="ui-card-title">
 						<ui:insert name="title">
 						</ui:insert>
-					</div>
+					</h:panelGroup>
 					<div class="ui-card-subtitle">
 						<ui:insert name="subtitle">
 						</ui:insert>
 					</div>
-					<div
-						class="ui-card-content full-height-flex inherit-full-height-flex">
+					<h:panelGroup id="tableau-viz-container" layout="block"
+						class="ui-card-content full-height-flex">
 						<ui:insert name="tableau-viz">
 						</ui:insert>
-					</div>
+					</h:panelGroup>
 				</div>
 			</div>
-		</div>
+		</h:form>
 	</ui:define>
 </ui:composition>

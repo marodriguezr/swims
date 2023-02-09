@@ -1,4 +1,4 @@
-package swimsWeb.controllers.core;
+package swimsWeb.controllers.analytics;
 
 import java.io.Serializable;
 

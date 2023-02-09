@@ -5,12 +5,11 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
-	
-	<ui:define name="title">Dashboard General</ui:define>
+
+	<ui:define name="title">#{tableauViz.title}</ui:define>
 
 	<ui:define name="tableau-viz">
-		<tableau-viz style="flex: 1;" id='tableau-viz'
-			src='https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/Dashboard1'
+		<tableau-viz style="flex: 1;" id='tableau-viz' src="#{tableauViz.url}"
 			width='100%' height='100%' hide-tabs="true" toolbar='bottom'
 			token="#{tableauJWTBean.tableauJWT}"></tableau-viz>
 	</ui:define>

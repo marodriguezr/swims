@@ -39,7 +39,7 @@
 	height: 100%;
 }
 
-.inherit-full-height-flex:first-child {
+.inherit-full-height-flex>* {
 	flex: 1;
 	height: 100%;
 }
