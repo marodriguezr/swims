@@ -21,28 +21,36 @@
 			update=":form:tableau-viz-container :form:tableau-embed-view-title"
 			actionListener="#{tableauViz.setTableauViz('Datos Informativos', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/informative-area/OtrasTemticas')}" />
 	</p:submenu>
-	<p:submenu label="Datos Informativos">
-		<p:menuitem value="Trabajos de Titulación por Docente" />
-		<p:menuitem value="Trabajos de Titulación por Temática" />
-		<p:menuitem value="Trabajos de Titulación por Año" />
-		<p:menuitem value="Otras Temáticas" />
-	</p:submenu>
-	<p:submenu label="Datos Informativos">
-		<p:menuitem value="Trabajos de Titulación por Docente" />
-		<p:menuitem value="Trabajos de Titulación por Temática" />
-		<p:menuitem value="Trabajos de Titulación por Año" />
-		<p:menuitem value="Otras Temáticas" />
-	</p:submenu>
-	<p:submenu label="Datos Informativos">
-		<p:menuitem value="Trabajos de Titulación por Docente" />
-		<p:menuitem value="Trabajos de Titulación por Temática" />
-		<p:menuitem value="Trabajos de Titulación por Año" />
-		<p:menuitem value="Otras Temáticas" />
-	</p:submenu>
-	<p:submenu label="Datos Informativos">
-		<p:menuitem value="Trabajos de Titulación por Docente" />
-		<p:menuitem value="Trabajos de Titulación por Temática" />
-		<p:menuitem value="Trabajos de Titulación por Año" />
-		<p:menuitem value="Otras Temáticas" />
+	<p:submenu label="Indicadores de Impacto">
+		<p:submenu label="Impacto Social">
+			<p:menuitem value="Trabajos de Titulación por Ámbito de Actuación"
+				actionListener="#{tableauViz.setTableauViz('Impacto Social', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/TTitulacinmbitoActuacinEmpresas')}"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title" />
+			<p:menuitem value="Trabajos de Titulación por Concepto de Entrega"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				actionListener="#{tableauViz.setTableauViz('Impacto Social', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/T_TitulacinConceptoEntrega')}" />
+			<p:menuitem value="Trabajos de Titulación por Entidad Beneficiaria"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				actionListener="#{tableauViz.setTableauViz('Impacto Social', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/TTitulacinEntidadBeneficiaria')}" />
+			<p:menuitem value="Trabajos de Titulación por ODS Focalizado"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				actionListener="#{tableauViz.setTableauViz('Impacto Social', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/TTitulacinODS')}" />
+			<p:menuitem
+				value="Trabajos de Titulación por Propiedad del Capital de la Empresa Beneficiaria"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				actionListener="#{tableauViz.setTableauViz('Impacto Social', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/TTitulacionPropiedadCapital')}" />
+			<p:menuitem value="Trabajos de Titulación por Sector de la Economía"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				actionListener="#{tableauViz.setTableauViz('Impacto Social', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/TTitulacinSectorEconomia')}" />
+			<p:menuitem value="Trabajos de Titulación por Tamaño de Empresa"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				actionListener="#{tableauViz.setTableauViz('Impacto Social', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/TTTamaoEmpresa')}" />
+			<p:menuitem value="Trabajos de Titulación por Ubicación de Afección"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				actionListener="#{tableauViz.setTableauViz('Impacto Social', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/TTitulacinUbicacin')}" />
+			<!-- 			<p:menuitem value="Trabajos de Titulación por Año" -->
+			<!-- 				update=":form:tableau-viz-container :form:tableau-embed-view-title" -->
+			<!-- 				actionListener="#{tableauViz.setTableauViz('Impacto Social', '')}" /> -->
+		</p:submenu>
 	</p:submenu>
 </p:slideMenu>

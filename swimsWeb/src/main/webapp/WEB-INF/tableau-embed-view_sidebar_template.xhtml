@@ -7,14 +7,15 @@
 
 	<ui:define name="content">
 		<h:form id="form" class="p-d-flex" style="height: 100%;">
-			<div class="p-mr-2" style="height: 100%; width: 10%;">
+			<div class="p-mr-2" style="width: 10%;">
 				<ui:include src="/WEB-INF/components/analytics-sidebar.xhtml" />
 			</div>
 
 			<div style="width: 90%;"
 				class="ui-card ui-widget ui-widget-content ui-corner-all full-height-flex">
 				<div class="ui-card-body full-height-flex">
-					<h:panelGroup id="tableau-embed-view-title" layout="block" class="ui-card-title">
+					<h:panelGroup id="tableau-embed-view-title" layout="block"
+						class="ui-card-title">
 						<ui:insert name="title">
 						</ui:insert>
 					</h:panelGroup>
