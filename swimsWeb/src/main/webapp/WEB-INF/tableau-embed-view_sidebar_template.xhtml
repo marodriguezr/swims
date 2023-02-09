@@ -1,0 +1,65 @@
+<ui:composition template="/WEB-INF/tableau-embed-view_template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="content">
+		<div class="p-d-flex inherit-full-height-flex" style="height: 100%;">
+			<p:slideMenu styleClass="p-mr-2" backLabel="Regresar">
+				<p:menuitem value="Dashboard General"
+					action="/analiticas/index?faces-redirect=true" />
+				<p:submenu label="Datos Informativos">
+					<p:menuitem value="Trabajos de Titulación por Docente" />
+					<p:menuitem value="Trabajos de Titulación por Temática" />
+					<p:menuitem value="Trabajos de Titulación por Año" />
+					<p:menuitem value="Otras Temáticas" />
+				</p:submenu>
+				<p:submenu label="Datos Informativos">
+					<p:menuitem value="Trabajos de Titulación por Docente" />
+					<p:menuitem value="Trabajos de Titulación por Temática" />
+					<p:menuitem value="Trabajos de Titulación por Año" />
+					<p:menuitem value="Otras Temáticas" />
+				</p:submenu>
+				<p:submenu label="Datos Informativos">
+					<p:menuitem value="Trabajos de Titulación por Docente" />
+					<p:menuitem value="Trabajos de Titulación por Temática" />
+					<p:menuitem value="Trabajos de Titulación por Año" />
+					<p:menuitem value="Otras Temáticas" />
+				</p:submenu>
+				<p:submenu label="Datos Informativos">
+					<p:menuitem value="Trabajos de Titulación por Docente" />
+					<p:menuitem value="Trabajos de Titulación por Temática" />
+					<p:menuitem value="Trabajos de Titulación por Año" />
+					<p:menuitem value="Otras Temáticas" />
+				</p:submenu>
+				<p:submenu label="Datos Informativos">
+					<p:menuitem value="Trabajos de Titulación por Docente" />
+					<p:menuitem value="Trabajos de Titulación por Temática" />
+					<p:menuitem value="Trabajos de Titulación por Año" />
+					<p:menuitem value="Otras Temáticas" />
+				</p:submenu>
+			</p:slideMenu>
+
+			<div style="order: 2; flex-grow: 16;"
+				class="ui-card ui-widget ui-widget-content ui-corner-all full-height-flex">
+				<div class="ui-card-body full-height-flex">
+					<div class="ui-card-title">
+						<ui:insert name="title">
+						</ui:insert>
+					</div>
+					<div class="ui-card-subtitle">
+						<ui:insert name="subtitle">
+						</ui:insert>
+					</div>
+					<div
+						class="ui-card-content full-height-flex inherit-full-height-flex">
+						<ui:insert name="tableau-viz">
+						</ui:insert>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ui:define>
+</ui:composition>
