@@ -58,10 +58,12 @@ public class CompoundUnexpectedAnswerManager {
 		HashMap<String, HashMap<StudyVariable, List<CompoundUnexpectedLimesurveyAnswer>>> thesisMap = new HashMap<>();
 		for (ThesisRecord thesisRecord : thesisRecords) {
 			HashMap<StudyVariable, List<CompoundUnexpectedLimesurveyAnswer>> studyVariablesMap = new HashMap<>();
+			List<CompoundUnexpectedLimesurveyAnswer> thesisCompoundUnexpectedLimesurveyAnswers = compoundLimesurveyAnswers
+					.stream().filter(t -> t.getThesisRecordId().equals(thesisRecord.getId()))
+					.collect(Collectors.toList());
 			for (StudyVariable studyVariable : studyVariables) {
-				List<CompoundUnexpectedLimesurveyAnswer> studyVariableCompoundAnswers = compoundLimesurveyAnswers
-						.stream().filter(t -> t.getThesisRecordId().equals(thesisRecord.getId())
-								&& t.getStudyVariableId().equals(studyVariable.getId()))
+				List<CompoundUnexpectedLimesurveyAnswer> studyVariableCompoundAnswers = thesisCompoundUnexpectedLimesurveyAnswers
+						.stream().filter(t -> t.getStudyVariableId().equals(studyVariable.getId()))
 						.collect(Collectors.toList());
 				if (studyVariableCompoundAnswers.isEmpty())
 					continue;

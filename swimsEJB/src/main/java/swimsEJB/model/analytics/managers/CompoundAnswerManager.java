@@ -46,16 +46,15 @@ public class CompoundAnswerManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<HashMap<String, Object>> findCompoundAnswers(String studyVariableClassId)
-			throws Exception {
+	public List<HashMap<String, Object>> findCompoundAnswers(String studyVariableClassId) throws Exception {
 		List<StudyVariable> studyVariables = studyVariableClassId == null ? studyVariableManager.findAllStudyVariables()
 				: studyVariableManager.findAllStudyVariablesByStudyVariableClassId(studyVariableClassId);
 		List<ThesisRecord> thesisRecords = thesisRecordManager.findAllThesisRecords();
 		int maxAnswerCountForEachStudyVariable = 0;
 
 		/**
-		 * Possible performance improvement replace findManyWhere with Native Queries at the expense of
-		 * Class definition and overall portability
+		 * Possible performance improvement replace findManyWhere with Native Queries at
+		 * the expense of Class definition and overall portability
 		 */
 		List<CompoundLimesurveyAnswer> compoundLimesurveyAnswers = studyVariableClassId == null
 				? daoManager.findAll(CompoundLimesurveyAnswer.class)
@@ -68,26 +67,27 @@ public class CompoundAnswerManager {
 		HashMap<String, HashMap<StudyVariable, List<CompoundLimesurveyAnswer>>> thesisMap = new HashMap<>();
 		for (ThesisRecord thesisRecord : thesisRecords) {
 			HashMap<StudyVariable, List<CompoundLimesurveyAnswer>> studyVariablesMap = new HashMap<>();
+			List<CompoundLimesurveyAnswer> thesisCompoundLimesurveyAnswers = compoundLimesurveyAnswers.stream()
+					.filter(t -> t.getThesisRecordId().equals(thesisRecord.getId())).collect(Collectors.toList());
+			List<CompoundAnswer> thesisCompoundAnswers = compoundAnswers.stream()
+					.filter(t -> t.getThesisRecordId().equals(thesisRecord.getId())).collect(Collectors.toList());
 			for (StudyVariable studyVariable : studyVariables) {
-				List<CompoundLimesurveyAnswer> studyVariableCompoundAnswers = compoundLimesurveyAnswers.stream()
-						.filter(t -> t.getThesisRecordId().equals(thesisRecord.getId())
-								&& t.getStudyVariableId().equals(studyVariable.getId()))
-						.collect(Collectors.toList());
-				studyVariableCompoundAnswers
-						.addAll(compoundAnswers.stream().filter(t -> t.getThesisRecordId().equals(thesisRecord.getId())
-								&& t.getStudyVariableId().equals(studyVariable.getId())).map(t -> {
-									CompoundLimesurveyAnswer compoundLimesurveyAnswer = new CompoundLimesurveyAnswer();
-									compoundLimesurveyAnswer.setAnswer(t.getExpectedAnswerId().toString());
-									compoundLimesurveyAnswer.setIsCategoricalNominal(t.getIsCategoricalNominal());
-									compoundLimesurveyAnswer.setIsCategoricalOrdinal(t.getIsCategoricalOrdinal());
-									compoundLimesurveyAnswer.setIsNumericContinuous(t.getIsNumericContinuous());
-									compoundLimesurveyAnswer.setIsNumericDiscrete(t.getIsNumericDiscrete());
-									compoundLimesurveyAnswer.setLimesurveyQuestionTitle(t.getStudyVariableId());
-									compoundLimesurveyAnswer.setStudyVariableClassId(t.getStudyVariableClassId());
-									compoundLimesurveyAnswer.setStudyVariableId(t.getStudyVariableId());
-									compoundLimesurveyAnswer.setThesisRecordId(t.getThesisRecordId());
-									return compoundLimesurveyAnswer;
-								}).collect(Collectors.toList()));
+				List<CompoundLimesurveyAnswer> studyVariableCompoundAnswers = thesisCompoundLimesurveyAnswers.stream()
+						.filter(t -> t.getStudyVariableId().equals(studyVariable.getId())).collect(Collectors.toList());
+				studyVariableCompoundAnswers.addAll(thesisCompoundAnswers.stream()
+						.filter(t -> t.getStudyVariableId().equals(studyVariable.getId())).map(t -> {
+							CompoundLimesurveyAnswer compoundLimesurveyAnswer = new CompoundLimesurveyAnswer();
+							compoundLimesurveyAnswer.setAnswer(t.getExpectedAnswerId().toString());
+							compoundLimesurveyAnswer.setIsCategoricalNominal(t.getIsCategoricalNominal());
+							compoundLimesurveyAnswer.setIsCategoricalOrdinal(t.getIsCategoricalOrdinal());
+							compoundLimesurveyAnswer.setIsNumericContinuous(t.getIsNumericContinuous());
+							compoundLimesurveyAnswer.setIsNumericDiscrete(t.getIsNumericDiscrete());
+							compoundLimesurveyAnswer.setLimesurveyQuestionTitle(t.getStudyVariableId());
+							compoundLimesurveyAnswer.setStudyVariableClassId(t.getStudyVariableClassId());
+							compoundLimesurveyAnswer.setStudyVariableId(t.getStudyVariableId());
+							compoundLimesurveyAnswer.setThesisRecordId(t.getThesisRecordId());
+							return compoundLimesurveyAnswer;
+						}).collect(Collectors.toList()));
 				if (studyVariableCompoundAnswers.isEmpty())
 					continue;
 				studyVariablesMap.put(studyVariable, studyVariableCompoundAnswers);
