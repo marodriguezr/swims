@@ -1,4 +1,4 @@
-package swimsEJB.model.core.managers;
+package swimsEJB.model.analytics.managers;
 
 import java.util.ArrayList;
 import java.util.Arrays;

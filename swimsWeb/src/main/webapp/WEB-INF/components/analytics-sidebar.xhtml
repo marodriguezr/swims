@@ -4,22 +4,21 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui" style="width: 100%; height: 100%;"
 	backLabel="Regresar">
-	<p:menuitem value="Dashboard General"
-		update=":form:tableau-viz-container :form:tableau-embed-view-title"
+	<p:menuitem value="Dashboard General" update="@form"
 		actionListener="#{tableauViz.setTableauViz('Dashboard General', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/Dashboard1')}" />
 	<p:submenu label="Datos Informativos">
 		<p:menuitem value="Trabajos de Titulación por Docente"
 			update=":form:tableau-viz-container :form:tableau-embed-view-title"
-			actionListener="#{tableauViz.setTableauViz('Datos Informativos', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/informative-area/TTitulacinDocente')}" />
+			action="#{tableauViz.setTableauVizApiV1('Datos Informativos', '/WEB-INF/components/tableau-views/ttitulacion-docente.xhtml')}" />
 		<p:menuitem value="Trabajos de Titulación por Año"
 			update=":form:tableau-viz-container :form:tableau-embed-view-title"
-			actionListener="#{tableauViz.setTableauViz('Datos Informativos', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/informative-area/TTitulacinAo')}" />
+			action="#{tableauViz.setTableauVizApiV1('Datos Informativos', '/WEB-INF/components/tableau-views/ttitulacion-anio.xhtml')}" />
 		<p:menuitem value="Trabajos de Titulación por Temática"
 			update=":form:tableau-viz-container :form:tableau-embed-view-title"
-			actionListener="#{tableauViz.setTableauViz('Datos Informativos', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/informative-area/TTitulacinTemtica')}" />
+			action="#{tableauViz.setTableauVizApiV1('Datos Informativos', '/WEB-INF/components/tableau-views/ttitulacion-tematica.xhtml')}" />
 		<p:menuitem value="Otras Temáticas"
 			update=":form:tableau-viz-container :form:tableau-embed-view-title"
-			actionListener="#{tableauViz.setTableauViz('Datos Informativos', 'https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/informative-area/OtrasTemticas')}" />
+			action="#{tableauViz.setTableauVizApiV1('Datos Informativos', '/WEB-INF/components/tableau-views/otras-tematicas.xhtml')}" />
 	</p:submenu>
 	<p:submenu label="Indicadores de Impacto">
 		<p:submenu label="Impacto Social">

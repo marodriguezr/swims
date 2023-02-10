@@ -7,7 +7,7 @@ import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
-import swimsEJB.model.core.managers.TableauJWTManager;
+import swimsEJB.model.analytics.managers.TableauJWTManager;
 import swimsWeb.utilities.JSFMessages;
 
 @SessionScoped

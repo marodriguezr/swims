@@ -103,6 +103,13 @@
 							value="Iniciar Sesión" icon="pi pi-fw pi-sign-in"
 							rendered="#{signInBean.signedUserDto eq null}" />
 					</p:submenu>
+
+					<p:submenu label="Otros">
+						<p:menuitem action="/ayuda?faces-redirect=true" value="Ayuda"
+							icon="pi pi-fw pi-question" />
+					</p:submenu>
+
+
 				</p:menu>
 			</f:facet>
 		</p:menubar>
