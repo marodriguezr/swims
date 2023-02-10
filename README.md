@@ -15,7 +15,7 @@ Having **Maven**, **Java** and **Docker** installed locally.
 4. Execute the compiled sql script on the database, you can use tools such as dbeaver.
 5. Package and deploy the aplication running:
    ```bash
-   mvn clean package && docker cp ./swimsEAP/target/swims-1.0.ear swims_wildfly_dev:/app
+   mvn clean package && docker cp ./swimsEAP/target/swims-1.0.ear swims-wildfly-dev:/app
    ```
    or compiling within a docker container
    ```bash
