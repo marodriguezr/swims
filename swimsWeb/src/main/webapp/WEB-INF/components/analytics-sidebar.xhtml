@@ -52,4 +52,31 @@
 			<!-- 				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '')}" /> -->
 		</p:submenu>
 	</p:submenu>
+	<p:submenu label="Factores de Éxito/Fracaso">
+		<p:submenu label="Factores de Éxito">
+			<p:menuitem value="Estado Actual de los Productos de Software"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Éxito', '/WEB-INF/components/tableau-views/factores-exito/estado-actual-producto-software.xhtml')}"></p:menuitem>
+			<p:menuitem
+				value="Estado Actual de los Productos de Software, Factores de Éxito Favorables vs Desfavorables"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Éxito', '/WEB-INF/components/tableau-views/factores-exito/estado-actual-sw-favo-vs-desfav.xhtml')}"></p:menuitem>
+			<p:menuitem value="Concepto de Entrega de los Productos de Software"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Éxito', '/WEB-INF/components/tableau-views/factores-exito/concepto-entrega-producto-software.xhtml')}"></p:menuitem>
+			<p:menuitem
+				value="Concepto de Entrega de los Productos de Software, Factores de Éxito Favorables vs Desfavorables"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Éxito', '/WEB-INF/components/tableau-views/factores-exito/concepto-entrega-sw-favo-vs-desfav.xhtml')}"></p:menuitem>
+		</p:submenu>
+		<p:submenu label="Factores de Fracaso">
+			<p:menuitem value="Estado Actual de los Productos de Software"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Fracaso', '/WEB-INF/components/tableau-views/factores-fracaso/estado-actual-producto-software.xhtml')}"></p:menuitem>
+			<p:menuitem
+				value="Estado Actual de los Productos de Software, Factores de Fracaso Favorables vs Desfavorables"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Fracaso', '/WEB-INF/components/tableau-views/factores-fracaso/estado-actual-sw-favo-vs-desfav.xhtml')}"></p:menuitem>
+			<p:menuitem value="Concepto de Entrega de los Productos de Software"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Fracaso', '/WEB-INF/components/tableau-views/factores-fracaso/concepto-entrega-producto-software.xhtml')}"></p:menuitem>
+			<p:menuitem
+				value="Estado Actual de los Productos de Software, Factores de Fracaso Favorables vs Desfavorables"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Fracaso', '/WEB-INF/components/tableau-views/factores-fracaso/concepto-entrega-sw-favo-vs-desfav.xhtml')}"></p:menuitem>
+
+		</p:submenu>
+	</p:submenu>
 </p:slideMenu>

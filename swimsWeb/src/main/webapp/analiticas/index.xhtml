@@ -15,7 +15,7 @@
 				src="#{tableauViz.url}" width='100%' height='100%' hide-tabs="true"
 				toolbar='bottom' token="#{tableauJWTBean.tableauJWT}"></tableau-viz>
 		</h:panelGroup>
-		<h:panelGroup id="tableau-api-v1-viz"
+		<h:panelGroup styleClass="full-height-flex" id="tableau-api-v1-viz"
 			style="width: 100%; height: 100%;" layout="block"
 			rendered="#{tableauViz.useApiV1}">
 			<ui:include src="#{tableauViz.componentPath}" />
