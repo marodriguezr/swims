@@ -64,6 +64,8 @@
 			<p:menuitem
 				value="Concepto de Entrega de los Productos de Software, Factores de Éxito Favorables vs Desfavorables"
 				action="#{tableauViz.setTableauVizApiV1('Factores de Éxito', '/WEB-INF/components/tableau-views/factores-exito/concepto-entrega-sw-favo-vs-desfav.xhtml')}"></p:menuitem>
+			<p:menuitem value="Factores de Éxito Por Trabajo de Titulación"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Éxito', '/WEB-INF/components/tableau-views/factores-exito/factores-exito-por-trabajo-titulacion.xhtml')}"></p:menuitem>
 		</p:submenu>
 		<p:submenu label="Factores de Fracaso">
 			<p:menuitem value="Estado Actual de los Productos de Software"
@@ -76,7 +78,28 @@
 			<p:menuitem
 				value="Estado Actual de los Productos de Software, Factores de Fracaso Favorables vs Desfavorables"
 				action="#{tableauViz.setTableauVizApiV1('Factores de Fracaso', '/WEB-INF/components/tableau-views/factores-fracaso/concepto-entrega-sw-favo-vs-desfav.xhtml')}"></p:menuitem>
-
+			<p:menuitem value="Factores de Fracaso Por Trabajo de Titulación"
+				action="#{tableauViz.setTableauVizApiV1('Factores de Éxito', '/WEB-INF/components/tableau-views/factores-fracaso/factores-fracaso-por-trabajo-titulacion.xhtml')}"></p:menuitem>
 		</p:submenu>
+	</p:submenu>
+	<p:submenu label="Recursos de Desarrollo">
+		<p:menuitem value="Sistema Gestor de Base de Datos"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/dbms.xhtml')}"></p:menuitem>
+		<p:menuitem value="Lenguaje"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/lenguaje.xhtml')}"></p:menuitem>
+		<p:menuitem value="Framework"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/framework.xhtml')}"></p:menuitem>
+		<p:menuitem value="Librería"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/libreria.xhtml')}"></p:menuitem>
+		<p:menuitem value="Metodología de Desarrollo"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/metodologia-desarrollo.xhtml')}"></p:menuitem>
+		<p:menuitem value="Proveedor IAAS"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/proveedor-iaas.xhtml')}"></p:menuitem>
+		<p:menuitem value="Sistema Operativo de Despliegue"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/so-despliegue.xhtml')}"></p:menuitem>
+		<p:menuitem value="Servidor de Despliegue"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/sv-despliegue.xhtml')}"></p:menuitem>
+		<p:menuitem value="Software de Apoyo"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/sw-apoyo.xhtml')}"></p:menuitem>
 	</p:submenu>
 </p:slideMenu>

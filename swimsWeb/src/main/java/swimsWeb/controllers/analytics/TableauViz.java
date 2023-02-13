@@ -25,10 +25,10 @@ public class TableauViz implements Serializable {
 	@PostConstruct
 	public void onLoad() {
 		JSFMessages.INFO("Credenciales de Tableau. Usuario: invitado Contraseña: invitado");
-		this.url = "informative-area&#47;TTitulacinDocente";
+		this.url = "https://prod-useast-a.online.tableau.com/t/miguelrodriguez/views/social-impact/Dashboard1";
 		this.title = "Dashboard General";
 		this.componentPath = "/WEB-INF/components/tableau-views/ttitulacion-docente.xhtml";
-		this.useApiV1 = true;
+		this.useApiV1 = false;
 	}
 
 	public void setTableauViz(String title, String url) {
