@@ -22,34 +22,105 @@
 	</p:submenu>
 	<p:submenu label="Indicadores de Impacto">
 		<p:submenu label="Impacto Social">
-			<p:menuitem value="Trabajos de Titulación por Ámbito de Actuación"
-				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-ambito-actuacion.xhtml')}"
-				update=":form:tableau-viz-container :form:tableau-embed-view-title" />
-			<p:menuitem value="Trabajos de Titulación por Concepto de Entrega"
-				update=":form:tableau-viz-container :form:tableau-embed-view-title"
-				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-concepto-entrega.xhtml')}" />
 			<p:menuitem value="Trabajos de Titulación por Entidad Beneficiaria"
 				update=":form:tableau-viz-container :form:tableau-embed-view-title"
 				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-entidad-beneficiaria.xhtml')}" />
-			<p:menuitem value="Trabajos de Titulación por ODS Focalizado"
+
+			<p:menuitem
+				value="Tabla: Trabajos de Titulación por Entidad Beneficiaria"
 				update=":form:tableau-viz-container :form:tableau-embed-view-title"
-				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-ods.xhtml')}" />
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-entidad-beneficiaria2.xhtml')}" />
+
+			<p:menuitem value="Trabajos de Titulación por Tamaño de Empresa"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-tamanio-empresa.xhtml')}" />
+
+			<p:menuitem
+				value="Tabla: Trabajos de Titulación por Tamaño de Empresa"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-tamanio-empresa2.xhtml')}" />
+
 			<p:menuitem
 				value="Trabajos de Titulación por Propiedad del Capital de la Empresa Beneficiaria"
 				update=":form:tableau-viz-container :form:tableau-embed-view-title"
 				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-propiedad-capital.xhtml')}" />
+
+			<p:menuitem
+				value="Tabla: Trabajos de Titulación por Propiedad del Capital de la Empresa Beneficiaria"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-propiedad-capital2.xhtml')}" />
+
 			<p:menuitem value="Trabajos de Titulación por Sector de la Economía"
 				update=":form:tableau-viz-container :form:tableau-embed-view-title"
 				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-sector-economia.xhtml')}" />
-			<p:menuitem value="Trabajos de Titulación por Tamaño de Empresa"
+
+			<p:menuitem
+				value="Tabla: Trabajos de Titulación por Sector de la Economía"
 				update=":form:tableau-viz-container :form:tableau-embed-view-title"
-				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-tamanio-empresa.xhtml')}" />
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-sector-economia2.xhtml')}" />
+
+			<p:menuitem value="Trabajos de Titulación por Ámbito de Actuación"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-ambito-actuacion.xhtml')}"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title" />
+
+			<p:menuitem
+				value="Tabla: Trabajos de Titulación por Ámbito de Actuación"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-ambito-actuacion2.xhtml')}"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title" />
+
 			<p:menuitem value="Trabajos de Titulación por Ubicación de Afección"
 				update=":form:tableau-viz-container :form:tableau-embed-view-title"
 				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-ubicacion-afeccion.xhtml')}" />
+
+			<p:menuitem
+				value="Tabla: Trabajos de Titulación por Ubicación de Afección"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-ubicacion-afeccion2.xhtml')}" />
+
+			<p:menuitem
+				value="Barras: Trabajos de Titulación por Ubicación de Afección"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-ubicacion-afeccion3.xhtml')}" />
+
+			<p:menuitem value="Trabajos de Titulación por Concepto de Entrega"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-concepto-entrega.xhtml')}" />
+
+			<p:menuitem
+				value="Tabla: Trabajos de Titulación por Concepto de Entrega"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-concepto-entrega2.xhtml')}" />
+
+			<p:menuitem value="Productos de Software por Estado Actual"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-estado-actual.xhtml')}" />
+
+			<p:menuitem value="Productos de Software por Estado Actual"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-estado-actual2.xhtml')}" />
+
+			<p:menuitem value="Trabajos de Titulación por ODS Focalizado"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-ods.xhtml')}" />
+
+			<p:menuitem value="Tabla: Trabajos de Titulación por ODS Focalizado"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-ods2.xhtml')}" />
+
 			<!-- 			<p:menuitem value="Trabajos de Titulación por Año" -->
 			<!-- 				update=":form:tableau-viz-container :form:tableau-embed-view-title" -->
 			<!-- 				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '')}" /> -->
+		</p:submenu>
+
+		<p:submenu label="Impacto Medioambiental">
+			<p:menuitem
+				value="Trabajos de Titulación por Relación con el medioambiente"
+				update=":form:tableau-viz-container :form:tableau-embed-view-title"
+				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-rlcn-medioambiente.xhtml')}" />
+			<!-- 			<p:menuitem -->
+			<!-- 				value="Tabla: Trabajos de Titulación por Relación con el medioambiente" -->
+			<!-- 				update=":form:tableau-viz-container :form:tableau-embed-view-title" -->
+			<!-- 				action="#{tableauViz.setTableauVizApiV1('Impacto Social', '/WEB-INF/components/tableau-views/ttitulacion-rlcn-medioambiente2.xhtml')}" /> -->
 		</p:submenu>
 	</p:submenu>
 	<p:submenu label="Factores de Éxito/Fracaso">
@@ -83,14 +154,16 @@
 		</p:submenu>
 	</p:submenu>
 	<p:submenu label="Recursos de Desarrollo">
-		<p:menuitem value="Sistema Gestor de Base de Datos"
-			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/dbms.xhtml')}"></p:menuitem>
 		<p:menuitem value="Lenguaje"
 			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/lenguaje.xhtml')}"></p:menuitem>
 		<p:menuitem value="Framework"
 			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/framework.xhtml')}"></p:menuitem>
 		<p:menuitem value="Librería"
 			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/libreria.xhtml')}"></p:menuitem>
+		<p:menuitem value="Entorno de desarrollo"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/entorno-desarrollo.xhtml')}"></p:menuitem>
+		<p:menuitem value="Sistema Gestor de Base de Datos"
+			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/dbms.xhtml')}"></p:menuitem>
 		<p:menuitem value="Metodología de Desarrollo"
 			action="#{tableauViz.setTableauVizApiV1('Recursos de Desarrollo', '/WEB-INF/components/tableau-views/recursos-desarrollo/metodologia-desarrollo.xhtml')}"></p:menuitem>
 		<p:menuitem value="Proveedor IAAS"
